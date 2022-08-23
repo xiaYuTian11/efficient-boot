@@ -2,7 +2,6 @@ package com.sjr.common.util;
 
 import cn.hutool.core.date.DateUtil;
 import com.sjr.common.annotation.ExportSort;
-import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -12,7 +11,6 @@ import java.util.stream.Collectors;
  * @author TMW
  * @since 2022/6/6 15:51
  */
-@Slf4j
 public class BeanUtil {
 
     public static List<Map<String, String>> beanListToMap(List<?> list, String format) {
@@ -41,7 +39,7 @@ public class BeanUtil {
                     map.put(field.getName(), String.valueOf(value));
                 }
             } catch (IllegalAccessException e) {
-                log.error("反射获取字段值异常", e);
+                e.printStackTrace();
             }
         });
         return map;

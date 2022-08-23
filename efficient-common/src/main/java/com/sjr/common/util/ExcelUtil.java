@@ -3,7 +3,6 @@ package com.sjr.common.util;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.util.StrUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -21,7 +20,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author TMW
  * @since 2022/5/24 15:28
  */
-@Slf4j
 public class ExcelUtil {
 
     public static String FONT_SONG = "宋体";

@@ -1,8 +1,8 @@
 package com.sjr.common.util;
 
+import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 
