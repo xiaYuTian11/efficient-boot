@@ -6,6 +6,9 @@
 
     <name>springboot-efficient-parent</name>
     <description>基于springboot的二次封装框架</description>
+    <modules>
+        <module>efficient-common</module>
+    </modules>
     <groupId>com.efficient</groupId>
     <artifactId>efficient-boot</artifactId>
     <version>0.0.1</version>
@@ -33,6 +36,9 @@
         <oracle.version>21.5.0.0</oracle.version>
         <dm.version>7.18</dm.version>
         <kingbase.version>8.2.0</kingbase.version>
+
+        <aspose-cells.version>21.11</aspose-cells.version>
+        <aspose-words.version>21.6</aspose-words.version>
 
 
         <lombok.version>1.18.24</lombok.version>
@@ -112,6 +118,17 @@
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct</artifactId>
                 <version>${mapstruct.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.aspose</groupId>
+                <artifactId>aspose-cells</artifactId>
+                <version>${aspose-cells.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aspose</groupId>
+                <artifactId>aspose-words</artifactId>
+                <version>${aspose-words.version}</version>
             </dependency>
         </dependencies>
 
