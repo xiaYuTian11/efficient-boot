@@ -8,6 +8,7 @@
     <description>基于springboot的二次封装框架</description>
     <modules>
         <module>efficient-common</module>
+        <module>efficient-boot-swagger-start</module>
     </modules>
     <groupId>com.efficient</groupId>
     <artifactId>efficient-boot</artifactId>
@@ -165,7 +166,11 @@
                 <artifactId>efficient-common</artifactId>
                 <version>${efficient-boot.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.efficient</groupId>
+                <artifactId>efficient-boot-swagger-start</artifactId>
+                <version>${efficient-boot.version}</version>
+            </dependency>
         </dependencies>
 
     </dependencyManagement>

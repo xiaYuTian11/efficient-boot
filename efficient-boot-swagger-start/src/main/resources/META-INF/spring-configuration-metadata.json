@@ -1,0 +1,43 @@
+{
+  "groups": [
+    {
+      "name": "com.efficient.swagger",
+      "type": "com.efficient.swagger.properties.SwaggerProperties",
+      "sourceType": "com.efficient.swagger.config.SwaggerConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "com.efficient.swagger.enable",
+      "type": "java.lang.Boolean",
+      "description": "是否启用swagger",
+      "defaultValue": false,
+      "sourceType": "com.efficient.swagger.properties.SwaggerProperties"
+    },
+    {
+      "name": "com.efficient.swagger.title",
+      "type": "java.lang.String",
+      "description": "标题",
+      "sourceType": "com.efficient.swagger.properties.SwaggerProperties"
+    },
+    {
+      "name": "com.efficient.swagger.description",
+      "type": "java.lang.String",
+      "description": "描述",
+      "sourceType": "com.efficient.swagger.properties.SwaggerProperties"
+    },
+    {
+      "name": "com.efficient.swagger.termsOfServiceUrl",
+      "type": "java.lang.String",
+      "description": "服务条款网址",
+      "sourceType": "com.efficient.swagger.properties.SwaggerProperties"
+    },
+    {
+      "name": "com.efficient.swagger.version",
+      "type": "java.lang.String",
+      "description": "版本号",
+      "sourceType": "com.efficient.swagger.properties.SwaggerProperties"
+    }
+  ],
+  "hints": []
+}
