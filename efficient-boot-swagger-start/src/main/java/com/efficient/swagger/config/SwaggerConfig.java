@@ -36,16 +36,15 @@ import java.util.function.Predicate;
  * @since 2022/3/1 14:24
  */
 @Configuration
-@ConditionalOnClass(ApiInfo.class)
 @EnableSwagger2
 @EnableConfigurationProperties(SwaggerProperties.class)
+@ConditionalOnProperty(name = "com.efficient.swagger.enable", havingValue = "true")
 public class SwaggerConfig {
     @Autowired
     private SwaggerProperties swaggerProperties;
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = "com.efficient.swagger", value = "enabled", havingValue = "true")
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
