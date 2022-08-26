@@ -25,7 +25,7 @@ public class FileConfig {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(name = "com.efficient.file.active", havingValue = "local")
+    @ConditionalOnProperty(name = "com.efficient.file.active", havingValue = "local", matchIfMissing = true)
     public FileService localFile() {
         return new LocalFileServiceImpl();
     }
