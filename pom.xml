@@ -9,6 +9,7 @@
     <modules>
         <module>efficient-common</module>
         <module>efficient-boot-swagger-start</module>
+        <module>efficient-boot-file-start</module>
     </modules>
     <groupId>com.efficient</groupId>
     <artifactId>efficient-boot</artifactId>
@@ -52,6 +53,9 @@
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <mybatis-plus.version>3.5.1</mybatis-plus.version>
         <swagger.version>2.9.2</swagger.version>
+
+        <analysis-core.version>1.0.0</analysis-core.version>
+        <dbsync.version>1.0.0</dbsync.version>
     </properties>
 
 
@@ -161,6 +165,17 @@
                 <version>${aspose-words.version}</version>
             </dependency>
 
+            <!-- 自定义模块 -->
+            <dependency>
+                <groupId>com.sjr</groupId>
+                <artifactId>analysis-core</artifactId>
+                <version>${analysis-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sjr</groupId>
+                <artifactId>dbsync</artifactId>
+                <version>${dbsync.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.efficient</groupId>
                 <artifactId>efficient-common</artifactId>
@@ -171,6 +186,12 @@
                 <artifactId>efficient-boot-swagger-start</artifactId>
                 <version>${efficient-boot.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.efficient</groupId>
+                <artifactId>efficient-boot-file-start</artifactId>
+                <version>${efficient-boot.version}</version>
+            </dependency>
+
         </dependencies>
 
     </dependencyManagement>

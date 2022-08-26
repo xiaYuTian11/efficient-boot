@@ -1,4 +1,4 @@
-package com.sjr.common.vo;
+package com.efficient.file.vo;
 
 import lombok.Data;
 
@@ -15,16 +15,20 @@ public class FileVO {
      */
     private String fileName;
     /**
+     * 文件类型
+     */
+    private byte[] fileContent;
+    /**
      * 文件路径
      */
     private String filePath;
     /**
-     * 文件前缀
+     * 文件ID
      */
-    private String fileSuffix;
+    private String fileId;
     /**
-     * 绝对路径
+     * 存储方式
      */
-    private String path;
+    private String storeType;
 
 }

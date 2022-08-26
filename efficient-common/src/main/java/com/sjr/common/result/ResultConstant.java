@@ -1,6 +1,8 @@
 package com.sjr.common.result;
 
 /**
+ * 结果集
+ *
  * @author TMW
  * @since 2022/7/5 14:50
  */

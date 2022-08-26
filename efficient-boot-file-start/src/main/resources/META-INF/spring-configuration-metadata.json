@@ -1,0 +1,40 @@
+{
+  "groups": [
+    {
+      "name": "com.efficient.file",
+      "type": "com.efficient.file.properties.FileProperties",
+      "sourceType": "com.efficient.file.config.FileConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "com.efficient.file.active",
+      "type": "com.efficient.file.constant.StoreEnum",
+      "description": "文件存储方式",
+      "defaultValue": "local",
+      "sourceType": "com.efficient.file.properties.FileProperties"
+    },
+    {
+      "name": "com.efficient.file.path",
+      "type": "java.lang.String",
+      "description": "文件存储路径",
+      "defaultValue": "/efficient/file/",
+      "sourceType": "com.efficient.file.properties.FileProperties"
+    }
+  ],
+  "hints": [
+    {
+      "name": "com.efficient.file.active",
+      "values": [
+        {
+          "value": "local",
+          "description": "本地存储"
+        },
+        {
+          "value": "db",
+          "description": "数据库存储"
+        }
+      ]
+    }
+  ]
+}
