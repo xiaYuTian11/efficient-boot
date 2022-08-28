@@ -11,7 +11,7 @@
  Target Server Version : 80022
  File Encoding         : 65001
 
- Date: 28/08/2022 18:06:16
+ Date: 28/08/2022 22:18:52
 */
 
 SET NAMES utf8mb4;
@@ -29,6 +29,7 @@ CREATE TABLE `sys_task`  (
   `enabled` int(0) NULL DEFAULT NULL COMMENT '是否启用',
   `cron_expression` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '表达式',
   `create_time` timestamp(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `task_status` int(0) NULL DEFAULT NULL COMMENT '当前定时任务状态',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务表' ROW_FORMAT = Dynamic;
 

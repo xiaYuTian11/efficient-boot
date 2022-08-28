@@ -2,6 +2,7 @@ package com.efficient.task.config;
 
 import cn.hutool.core.collection.CollUtil;
 import com.efficient.task.api.SysTaskService;
+import com.efficient.task.constant.TaskStatusEnum;
 import com.efficient.task.model.entity.SysTask;
 import com.efficient.task.properties.TaskProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,9 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+
+import static com.efficient.task.constant.TaskConstant.JOB_GROUP;
+import static com.efficient.task.constant.TaskConstant.TRIGGER_GROUP;
 
 /**
  * @author TMW
@@ -61,19 +65,21 @@ public class TaskConfig {
                 }
 
                 JobDetail taskTest = JobBuilder.newJob(aClass)
-                        .withIdentity(sysTask.getTaskCode(), "job")
+                        .withIdentity(sysTask.getTaskCode(), JOB_GROUP)
                         // 即使没有Trigger关联时，也不需要删除该JobDetail
                         .storeDurably()
                         .build();
                 CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(sysTask.getCronExpression());
                 final CronTrigger build = TriggerBuilder.newTrigger()
                         .forJob(taskTest)
-                        .withIdentity(sysTask.getTaskCode(), "trigger")
+                        .withIdentity(sysTask.getTaskCode(), TRIGGER_GROUP)
                         .withSchedule(cronScheduleBuilder)
                         .build();
                 scheduler.scheduleJob(taskTest, build);
                 log.info("成功加载定时任务：" + sysTask.getTaskCode());
+                sysTask.setTaskStatus(TaskStatusEnum.START.getCode());
             }
+            sysTaskService.saveOrUpdateBatch(taskList);
         } catch (Exception e) {
             log.error("定时任务启动失败！", e);
         }
