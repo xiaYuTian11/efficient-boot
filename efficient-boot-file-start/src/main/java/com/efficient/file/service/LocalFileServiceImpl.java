@@ -78,7 +78,7 @@ public class LocalFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFile
         // multipartFile.transferTo(realFile);
         FileUtil.writeBytes(multipartFile.getBytes(), realFile);
         fileVo.setFileName(realFile.getName());
-        fileVo.setFilePath(realFile.getAbsolutePath());
+        // fileVo.setFilePath(realFile.getAbsolutePath());
         fileVo.setStoreType(StoreEnum.LOCAL.name());
         // 保存文件信息
         String fileId = this.saveFileInfo(realFile);
@@ -107,7 +107,7 @@ public class LocalFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFile
         SysFileInfo sysFileInfo = new SysFileInfo();
         sysFileInfo.setStoreType(StoreEnum.LOCAL.name());
         sysFileInfo.setFileName(file.getName());
-        sysFileInfo.setFilePath(file.getPath());
+        sysFileInfo.setFilePath(file.getAbsolutePath());
         sysFileInfo.setFileSize(FileUtil.size(file) / 1024);
         sysFileInfo.setCreateTime(new Date());
         final boolean save = this.save(sysFileInfo);
