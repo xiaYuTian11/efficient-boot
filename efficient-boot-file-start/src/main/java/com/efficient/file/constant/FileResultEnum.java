@@ -21,21 +21,21 @@ public enum FileResultEnum implements ResultConstant {
 
     @Override
     public int getCode() {
-        return 0;
+        return code;
     }
 
     @Override
     public void setCode(int code) {
-
+        this.code = code;
     }
 
     @Override
     public String getMsg() {
-        return null;
+        return msg;
     }
 
     @Override
     public void setMsg(String msg) {
-
+        this.msg = msg;
     }
 }
