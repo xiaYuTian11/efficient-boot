@@ -10,6 +10,7 @@
         <module>efficient-common</module>
         <module>efficient-boot-swagger-start</module>
         <module>efficient-boot-file-start</module>
+        <module>efficient-boot-task-start</module>
     </modules>
     <groupId>com.efficient</groupId>
     <artifactId>efficient-boot</artifactId>
@@ -137,7 +138,11 @@
                 <artifactId>mapstruct</artifactId>
                 <version>${mapstruct.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi-ooxml</artifactId>
@@ -189,6 +194,11 @@
             <dependency>
                 <groupId>com.efficient</groupId>
                 <artifactId>efficient-boot-file-start</artifactId>
+                <version>${efficient-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.efficient</groupId>
+                <artifactId>efficient-boot-task-start</artifactId>
                 <version>${efficient-boot.version}</version>
             </dependency>
 

@@ -1,7 +1,7 @@
 package com.efficient.file.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.efficient.file.entity.SysFileInfo;
+import com.efficient.file.model.entity.SysFileInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

@@ -1,4 +1,4 @@
-package com.efficient.file.entity;
+package com.efficient.file.model.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;

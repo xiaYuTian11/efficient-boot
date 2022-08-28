@@ -1,0 +1,19 @@
+{
+  "groups": [
+    {
+      "name": "com.efficient.task",
+      "type": "com.efficient.task.properties.TaskProperties",
+      "sourceType": "com.efficient.task.config.TaskConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "com.efficient.task.enable",
+      "type": "java.lang.Boolean",
+      "description": "是否启用定时任务",
+      "defaultValue": false,
+      "sourceType": "com.efficient.task.properties.TaskProperties"
+    }
+  ],
+  "hints": []
+}

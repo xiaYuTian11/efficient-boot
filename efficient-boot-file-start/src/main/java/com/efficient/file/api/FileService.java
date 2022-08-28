@@ -1,11 +1,11 @@
 package com.efficient.file.api;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.efficient.file.dto.DownloadVO;
-import com.efficient.file.entity.SysFileInfo;
+import com.efficient.file.model.dto.DownloadVO;
+import com.efficient.file.model.entity.SysFileInfo;
+import com.efficient.file.model.vo.FileVO;
 import com.efficient.file.properties.FileProperties;
 import com.efficient.file.util.PathUtil;
-import com.efficient.file.vo.FileVO;
 import com.sjr.common.result.Result;
 import org.springframework.web.multipart.MultipartFile;
 

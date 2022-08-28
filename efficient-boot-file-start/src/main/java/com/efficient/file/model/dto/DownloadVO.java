@@ -1,4 +1,4 @@
-package com.efficient.file.dto;
+package com.efficient.file.model.dto;
 
 import lombok.Data;
 
