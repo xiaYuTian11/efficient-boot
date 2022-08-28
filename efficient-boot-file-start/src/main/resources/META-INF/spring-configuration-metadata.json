@@ -15,11 +15,18 @@
       "sourceType": "com.efficient.file.properties.FileProperties"
     },
     {
-      "name": "com.efficient.file.path",
+      "name": "com.efficient.file.tempPath",
+      "type": "java.lang.String",
+      "description": "临时文件存储路径",
+      "defaultValue": "/efficient/file/",
+      "sourceType": "com.efficient.file.properties.FileProperties"
+    },
+    {
+      "name": "com.efficient.file.local.localPath",
       "type": "java.lang.String",
       "description": "文件存储路径",
       "defaultValue": "/efficient/file/",
-      "sourceType": "com.efficient.file.properties.FileProperties"
+      "sourceType": "com.efficient.file.properties.FileProperties.Local"
     }
   ],
   "hints": [

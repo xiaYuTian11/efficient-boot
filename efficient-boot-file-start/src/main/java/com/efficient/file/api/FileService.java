@@ -47,7 +47,7 @@ public interface FileService extends IService<SysFileInfo> {
      * @throws Exception
      */
     default File createFile(String fileName, boolean isCreate) throws Exception {
-        String basePath = getProperties().getPath() + DOWNLOAD_LINE;
+        String basePath = getProperties().getTempPath() + DOWNLOAD_LINE;
         // 根据文件格式重新设置根路径
         if (fileName.lastIndexOf(POINT) != -1) {
             String suffix = fileName.substring(fileName.lastIndexOf(POINT));
@@ -75,4 +75,11 @@ public interface FileService extends IService<SysFileInfo> {
      */
     String saveFileInfo(File file);
 
+    /**
+     * 根据文件ID删除文件
+     *
+     * @param fileId
+     * @return
+     */
+    boolean delete(String fileId);
 }

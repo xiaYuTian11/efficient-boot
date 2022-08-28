@@ -70,7 +70,16 @@ public class DbFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFileInf
         sysFileInfo.setFileContent(FileUtil.readBytes(file));
         sysFileInfo.setFileSize(FileUtil.size(file) / 1024);
         sysFileInfo.setCreateTime(new Date());
-        final boolean save = this.save(sysFileInfo);
+        this.save(sysFileInfo);
         return sysFileInfo.getId();
+    }
+
+    @Override
+    public boolean delete(String fileId) {
+        final SysFileInfo sysFileInfo = this.getById(fileId);
+        if (Objects.isNull(sysFileInfo)) {
+            return true;
+        }
+        return this.removeById(fileId);
     }
 }

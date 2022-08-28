@@ -44,7 +44,8 @@ public class LocalFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFile
         FileVO fileVo = new FileVO();
 
         // 根路径
-        String basePath = fileProperties.getPath() + UPLOAD_LINE;
+        String basePath = fileProperties.getLocal().getLocalPath() + UPLOAD_LINE;
+        // String basePath = "D:\\efficient\\file\\";
         // 获取文件的名称
         String originalFilename = multipartFile.getOriginalFilename();
 
@@ -74,9 +75,10 @@ public class LocalFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFile
         // 获取文件对象
         File realFile = new File(basePath, fileName);
         // 完成文件的上传
-        multipartFile.transferTo(realFile);
-        fileVo.setFileName(originalFilename);
-        fileVo.setFilePath(basePath + fileName);
+        // multipartFile.transferTo(realFile);
+        FileUtil.writeBytes(multipartFile.getBytes(), realFile);
+        fileVo.setFileName(realFile.getName());
+        fileVo.setFilePath(realFile.getAbsolutePath());
         fileVo.setStoreType(StoreEnum.LOCAL.name());
         // 保存文件信息
         String fileId = this.saveFileInfo(realFile);
@@ -110,5 +112,15 @@ public class LocalFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFile
         sysFileInfo.setCreateTime(new Date());
         final boolean save = this.save(sysFileInfo);
         return sysFileInfo.getId();
+    }
+
+    @Override
+    public boolean delete(String fileId) {
+        final SysFileInfo sysFileInfo = this.getById(fileId);
+        if (Objects.isNull(sysFileInfo)) {
+            return true;
+        }
+        final String filePath = sysFileInfo.getFilePath();
+        return this.removeById(fileId) && FileUtil.del(filePath);
     }
 }

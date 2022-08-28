@@ -64,7 +64,7 @@ public class SysFileInfo implements Serializable {
     /**
      * 文件大写，k单位
      */
-    @ApiModelProperty(value = "文件大写，k单位")
+    @ApiModelProperty(value = "文件大写，kb单位")
     @TableField("file_size")
     private Long fileSize;
 

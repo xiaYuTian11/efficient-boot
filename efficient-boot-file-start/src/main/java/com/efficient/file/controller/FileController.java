@@ -84,4 +84,11 @@ public class FileController {
         outputStream.close();
         response.flushBuffer();
     }
+
+    @PostMapping("/delete")
+    @ApiOperation(value = "下载")
+    public Result delete(@Validated @RequestBody DownloadVO downloadVO) throws Exception {
+        boolean flag = fileService.delete(downloadVO.getFileId());
+        return flag ? Result.ok() : Result.fail();
+    }
 }

@@ -4,6 +4,7 @@ import com.efficient.file.api.FileService;
 import com.efficient.file.properties.FileProperties;
 import com.efficient.file.service.DbFileServiceImpl;
 import com.efficient.file.service.LocalFileServiceImpl;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -19,6 +20,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableConfigurationProperties(FileProperties.class)
+@MapperScan(basePackages = {"com.efficient.file.dao"})
 public class FileConfig {
     @Autowired
     private FileProperties fileProperties;
