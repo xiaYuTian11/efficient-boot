@@ -12,7 +12,7 @@
         <module>efficient-boot-file-start</module>
         <module>efficient-boot-task-start</module>
     </modules>
-    <groupId>com.efficient</groupId>
+    <groupId>top.tanmw</groupId>
     <artifactId>efficient-boot</artifactId>
     <version>0.0.1</version>
     <packaging>pom</packaging>
@@ -182,22 +182,22 @@
                 <version>${dbsync.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.efficient</groupId>
+                <groupId>top.tanmw</groupId>
                 <artifactId>efficient-common</artifactId>
                 <version>${efficient-boot.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.efficient</groupId>
+                <groupId>top.tanmw</groupId>
                 <artifactId>efficient-boot-swagger-start</artifactId>
                 <version>${efficient-boot.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.efficient</groupId>
+                <groupId>top.tanmw</groupId>
                 <artifactId>efficient-boot-file-start</artifactId>
                 <version>${efficient-boot.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.efficient</groupId>
+                <groupId>top.tanmw</groupId>
                 <artifactId>efficient-boot-task-start</artifactId>
                 <version>${efficient-boot.version}</version>
             </dependency>
