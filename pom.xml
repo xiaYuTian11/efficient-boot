@@ -6,6 +6,7 @@
 
     <name>springboot-efficient-parent</name>
     <description>基于springboot的二次封装框架</description>
+    <url>https://github.com/xiaYuTian11/efficient</url>
     <modules>
         <module>efficient-common</module>
         <module>efficient-boot-swagger-start</module>
@@ -16,13 +17,6 @@
     <artifactId>efficient-boot</artifactId>
     <version>0.0.1</version>
     <packaging>pom</packaging>
-
-    <developers>
-        <developer>
-            <name>tanmw</name>
-            <email>2998662089@qq.com</email>
-        </developer>
-    </developers>
 
     <properties>
         <efficient-boot.version>0.0.1</efficient-boot.version>
@@ -206,4 +200,112 @@
 
     </dependencyManagement>
 
+    <profiles>
+        <profile>
+            <id>disable-javadoc-doclint</id>
+            <activation>
+                <jdk>[1.8,)</jdk>
+            </activation>
+            <properties>
+                <javadoc.opts>-Xdoclint:none</javadoc.opts>
+            </properties>
+        </profile>
+
+        <!-- mvn repository;-->
+        <profile>
+            <id>oss-release</id>
+            <build>
+                <plugins>
+                    <!--                    <plugin>-->
+                    <!--                        <groupId>org.sonatype.plugins</groupId>-->
+                    <!--                        <artifactId>nexus-staging-maven-plugin</artifactId>-->
+                    <!--                        <version>1.6.8</version>-->
+                    <!--                        <extensions>true</extensions>-->
+                    <!--                        <configuration>-->
+                    <!--                            <serverId>oss-rr</serverId>-->
+                    <!--                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>-->
+                    <!--                            <autoReleaseAfterClose>false</autoReleaseAfterClose>-->
+                    <!--                        </configuration>-->
+                    <!--                    </plugin>-->
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.10.4</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <configuration>
+                                    <additionalparam>-Xdoclint:none</additionalparam>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+
+    <developers>
+        <developer>
+            <name>tanmw</name>
+            <email>2998662089@qq.com</email>
+        </developer>
+    </developers>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo,manual</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:https://github.com/xiaYuTian11/efficient.git</connection>
+        <developerConnection>scm:git:https://github.com/xiaYuTian11/efficient.git</developerConnection>
+        <url>https://github.com/xiaYuTian11/efficient</url>
+        <tag>1.2.0</tag>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>oss-rr</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+        <snapshotRepository>
+            <id>oss-rr</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
