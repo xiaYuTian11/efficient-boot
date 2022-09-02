@@ -1,0 +1,40 @@
+{
+  "groups": [
+    {
+      "name": "com.efficient.cache",
+      "type": "com.efficient.cache.properties.CacheProperties",
+      "sourceType": "com.efficient.cache.config.CacheConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "com.efficient.cache.active",
+      "type": "com.efficient.cache.constant.CacheEnum",
+      "description": "缓存插件类型",
+      "defaultValue": "ehcache",
+      "sourceType": "com.efficient.cache.properties.CacheProperties"
+    },
+    {
+      "name": "com.efficient.file.ehcache.path",
+      "type": "java.lang.String",
+      "description": "文件存储路径",
+      "defaultValue": "/ehcache.xml",
+      "sourceType": "com.efficient.cache.properties.CacheProperties"
+    }
+  ],
+  "hints": [
+    {
+      "name": "com.efficient.cache.active",
+      "values": [
+        {
+          "value": "ehcache",
+          "description": "ehcache"
+        },
+        {
+          "value": "redis",
+          "description": "redis"
+        }
+      ]
+    }
+  ]
+}
