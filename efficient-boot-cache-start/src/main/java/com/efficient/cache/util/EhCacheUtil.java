@@ -20,6 +20,10 @@ public class EhCacheUtil implements CacheUtil {
         this.cacheManager = manager;
     }
 
+    public CacheManager getCacheManager() {
+        return cacheManager;
+    }
+
     /**
      * 获取缓存
      */

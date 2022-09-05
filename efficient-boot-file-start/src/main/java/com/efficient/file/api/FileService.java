@@ -6,7 +6,7 @@ import com.efficient.file.model.entity.SysFileInfo;
 import com.efficient.file.model.vo.FileVO;
 import com.efficient.file.properties.FileProperties;
 import com.efficient.file.util.PathUtil;
-import com.sjr.common.result.Result;
+import com.efficient.common.result.Result;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;

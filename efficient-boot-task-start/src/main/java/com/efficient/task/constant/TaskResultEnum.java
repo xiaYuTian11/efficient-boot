@@ -1,6 +1,6 @@
 package com.efficient.task.constant;
 
-import com.sjr.common.result.ResultConstant;
+import com.efficient.common.result.ResultConstant;
 
 /**
  * @author TMW

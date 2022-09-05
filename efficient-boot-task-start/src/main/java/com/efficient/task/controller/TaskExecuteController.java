@@ -1,10 +1,10 @@
 package com.efficient.task.controller;
 
 import com.efficient.task.api.TaskExecuteService;
-import com.sjr.common.log.Log;
-import com.sjr.common.log.OptTypeEnum;
-import com.sjr.common.permission.Permission;
-import com.sjr.common.result.Result;
+import com.efficient.common.log.Log;
+import com.efficient.common.log.OptTypeEnum;
+import com.efficient.common.permission.Permission;
+import com.efficient.common.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;

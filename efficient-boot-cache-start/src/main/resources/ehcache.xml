@@ -22,13 +22,14 @@
        memoryStoreEvictionPolicy：当达到maxElementsInMemory限制时，Ehcache将会根据指定的策略去清理内存。默认策略是LRU（最近最少使用）。你可以设置为FIFO（先进先出）或是LFU（较少使用）。
        clearOnFlush：内存数量最大时是否清除。
     -->
-    <defaultCache
+    <cache
+            name="system"
             maxElementsInMemory="10000"
             eternal="false"
-            timeToIdleSeconds="86400"
-            timeToLiveSeconds="86400"
+            overflowToDisk="false"
             maxElementsOnDisk="10000000"
-            memoryStoreEvictionPolicy="LRU"
-            overflowToDisk="false">
-    </defaultCache>
+            timeToIdleSeconds="1800"
+            timeToLiveSeconds="86400"
+            diskPersistent="false"
+            memoryStoreEvictionPolicy="FIFO"/>
 </ehcache>
