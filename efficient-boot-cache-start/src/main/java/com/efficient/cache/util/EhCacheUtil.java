@@ -1,6 +1,7 @@
 package com.efficient.cache.util;
 
 import com.efficient.cache.api.CacheUtil;
+import com.efficient.cache.exception.CacheException;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
@@ -40,7 +41,11 @@ public class EhCacheUtil implements CacheUtil {
      */
     @Override
     public void put(String cacheName, String key, Object obj) {
-        cacheManager.getCache(cacheName).put(new Element(key, obj));
+        final Cache cache = cacheManager.getCache(cacheName);
+        if (cache == null) {
+            throw new CacheException("cacheName not exist！");
+        }
+        cache.put(new Element(key, obj));
     }
 
     /**
@@ -52,7 +57,11 @@ public class EhCacheUtil implements CacheUtil {
      */
     @Override
     public void refresh(String cacheName, String key, int timeToIdleSeconds) {
-        cacheManager.getCache(cacheName).get(key).setTimeToIdle(timeToIdleSeconds);
+        final Cache cache = cacheManager.getCache(cacheName);
+        if (cache == null) {
+            throw new CacheException("cacheName not exist！");
+        }
+        cache.get(key).setTimeToIdle(timeToIdleSeconds);
     }
 
     /**
@@ -63,7 +72,11 @@ public class EhCacheUtil implements CacheUtil {
      */
     @Override
     public int getTimeToIdleSeconds(String cacheName, String key) {
-        return cacheManager.getCache(cacheName).get(key).getTimeToIdle();
+        final Cache cache = cacheManager.getCache(cacheName);
+        if (cache == null) {
+            throw new CacheException("cacheName not exist！");
+        }
+        return cache.get(key).getTimeToIdle();
     }
 
     /**
