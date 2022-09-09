@@ -1,4 +1,6 @@
-package com.efficient.common.log;
+package com.efficient.logs.annotation;
+
+import com.efficient.logs.constant.LogEnum;
 
 import java.lang.annotation.*;
 
@@ -16,7 +18,7 @@ public @interface Log {
     /**
      * 操作类型
      */
-    OptTypeEnum optType() default OptTypeEnum.OTHER;
+    LogEnum logOpt() default LogEnum.CUSTOM;
 
     /**
      * 模块

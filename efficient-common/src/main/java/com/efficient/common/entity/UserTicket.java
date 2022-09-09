@@ -17,6 +17,10 @@ public class UserTicket {
      */
     private String token;
     /**
+     * 用户ID
+     */
+    private String userId;
+    /**
      * 账号
      */
     private String account;

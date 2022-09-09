@@ -13,6 +13,7 @@
         <module>efficient-boot-file-start</module>
         <module>efficient-boot-task-start</module>
         <module>efficient-boot-cache-start</module>
+        <module>efficient-boot-logs-start</module>
     </modules>
     <groupId>top.tanmw</groupId>
     <artifactId>efficient-boot</artifactId>
@@ -199,6 +200,11 @@
             <dependency>
                 <groupId>top.tanmw</groupId>
                 <artifactId>efficient-boot-cache-start</artifactId>
+                <version>${efficient-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.tanmw</groupId>
+                <artifactId>efficient-boot-logs-start</artifactId>
                 <version>${efficient-boot.version}</version>
             </dependency>
 

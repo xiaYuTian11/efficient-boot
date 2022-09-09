@@ -1,32 +1,31 @@
-package com.efficient.common.log;
+package com.efficient.logs.constant;
 
 /**
- * 操作类型
+ * 日志操作类型
  *
  * @author TMW
  * @since 2022/3/2 17:43
  */
-public enum OptTypeEnum {
+public enum LogEnum {
 
-    NULL(0, "0"),
+    CUSTOM(-1, ""),
     QUERY(1, "查询"),
-    PAGE(2, "查询列表"),
-    INSERT(3, "新增"),
-    UPDATE(4, "修改"),
-    DELETE(5, "删除"),
-    EXPORT(6, "下载文件"),
-    IMPORT(7, "上传文件"),
-    LOGIN(8, "登录"),
-    LOGOUT(9, "退出"),
-    DOWNLOAD(10, "下载"),
-    OTHER(11, "其他"),
-    CHECK(12, "审核"),
-    SAVE(13, "保存");
+    INSERT(10, "新增"),
+    SAVE(20, "保存"),
+    UPDATE(30, "修改"),
+    DELETE(40, "删除"),
+    DOWNLOAD(50, "下载"),
+    UPLOAD(60, "上传"),
+    IMPORT(70, "导入"),
+    EXPORT(80, "导出"),
+    CHECK(90, "审核"),
+    LOGIN(100, "登录"),
+    LOGOUT(110, "退出");
 
     private Integer value;
     private String text;
 
-    private OptTypeEnum(Integer value, String text) {
+    private LogEnum(Integer value, String text) {
         this.value = value;
         this.text = text;
     }

@@ -2,6 +2,7 @@ package com.efficient.common.util;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
+import com.efficient.common.constant.CommonConstant;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,6 +46,6 @@ public class WebUtil {
         } catch (Exception e) {
             log.error("获取IP地址异常：", e);
         }
-        return null;
+        return CommonConstant.UNKNOWN;
     }
 }
