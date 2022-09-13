@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.efficient.common.constant.CommonConstant;
 import com.efficient.common.entity.UserTicket;
 import com.efficient.common.util.RequestHolder;
+import com.efficient.common.util.ThreadUtil;
 import com.efficient.logs.annotation.Log;
 import com.efficient.logs.api.SysLogService;
 import com.efficient.logs.dao.SysLogMapper;
@@ -42,12 +43,12 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
         sysLog.setLogIp(ip);
         sysLog.setLogTime(new Date());
         sysLog.setRequestUrl(url);
-        String optText = log.logOpt().getText();
+        String optText = log.logOpt().getOpt();
         sysLog.setLogOpt(optText);
         String account = userTicket.getAccount();
         StringBuilder sb = new StringBuilder(account);
-        sb.append("了");
         if (log.join()) {
+            sb.append("了");
             sb.append(optText);
         }
         sb.append(log.desc());
@@ -57,5 +58,10 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
         sysLog.setResult(result);
         sysLog.setException(exception);
         return this.save(sysLog);
+    }
+
+    @Override
+    public void saveLogAsync(Log log, String ip, String url, String params, String resultCode, String result, String exception) {
+        ThreadUtil.EXECUTOR_SERVICE.execute(() -> this.saveLog(log, ip, url, params, resultCode, result, exception));
     }
 }

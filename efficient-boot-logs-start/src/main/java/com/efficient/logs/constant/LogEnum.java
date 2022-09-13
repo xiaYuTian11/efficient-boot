@@ -22,28 +22,27 @@ public enum LogEnum {
     LOGIN(100, "登录"),
     LOGOUT(110, "退出");
 
-    private Integer value;
-    private String text;
+    private Integer code;
+    private String opt;
 
-    private LogEnum(Integer value, String text) {
-        this.value = value;
-        this.text = text;
+    private LogEnum(Integer code, String opt) {
+        this.code = code;
+        this.opt = opt;
     }
 
-    public Integer getValue() {
-        return this.value;
+    public Integer getCode() {
+        return code;
     }
 
-    public void setValue(Integer value) {
-        this.value = value;
+    public void setCode(Integer code) {
+        this.code = code;
     }
 
-    public String getText() {
-        return this.text;
+    public String getOpt() {
+        return opt;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setOpt(String opt) {
+        this.opt = opt;
     }
-
 }

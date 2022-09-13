@@ -13,5 +13,8 @@ import com.efficient.logs.model.entity.SysLog;
  * @date 2022-09-05 16:24:37
  */
 public interface SysLogService extends IService<SysLog> {
+
     public boolean saveLog(Log log, String ip, String url, String params, String resultCode, String result, String exception);
+
+    public void saveLogAsync(Log log, String ip, String url, String params, String resultCode, String result, String exception);
 }
