@@ -1,10 +1,8 @@
 package com.efficient.task.controller;
 
-import com.efficient.task.api.TaskExecuteService;
-import com.efficient.common.log.Log;
-import com.efficient.common.log.OptTypeEnum;
 import com.efficient.common.permission.Permission;
 import com.efficient.common.result.Result;
+import com.efficient.task.api.TaskExecuteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -39,7 +37,6 @@ public class TaskExecuteController {
     /**
      * 启动定时任务
      */
-    @Log(optType = OptTypeEnum.QUERY)
     @GetMapping("/start")
     @ApiOperation(value = "启动定时任务", response = Result.class)
     @ApiImplicitParams({
@@ -52,7 +49,6 @@ public class TaskExecuteController {
     /**
      * 停止定时任务
      */
-    @Log(optType = OptTypeEnum.QUERY)
     @GetMapping("/stop")
     @ApiOperation(value = "停止定时任务", response = Result.class)
     @ApiImplicitParams({
@@ -65,7 +61,6 @@ public class TaskExecuteController {
     /**
      * 重启定时任务
      */
-    @Log(optType = OptTypeEnum.QUERY)
     @GetMapping("/restart")
     @ApiOperation(value = "重启定时任务", response = Result.class)
     @ApiImplicitParams({
@@ -78,7 +73,6 @@ public class TaskExecuteController {
     /**
      * 删除定时任务
      */
-    @Log(optType = OptTypeEnum.QUERY)
     @GetMapping("/remove")
     @ApiOperation(value = "重启定时任务", response = Result.class)
     @ApiImplicitParams({
