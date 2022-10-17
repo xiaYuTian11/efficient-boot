@@ -48,7 +48,6 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
         String account = userTicket.getAccount();
         StringBuilder sb = new StringBuilder(account);
         if (log.join()) {
-            sb.append("了");
             sb.append(optText);
         }
         sb.append(log.desc());
