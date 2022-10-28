@@ -1,32 +1,20 @@
-package com.efficient.common.entity;
+package com.efficient.auth.model.entity;
 
 import lombok.Data;
 
 import java.util.List;
 
 /**
- * 用户信息
+ * 用户实体
  *
  * @author TMW
- * @since 2022/4/26 14:09
+ * @since 2022/10/28 11:34
  */
 @Data
 public class UserTicket {
-    /**
-     * token
-     */
     private String token;
-    /**
-     * 用户ID
-     */
     private String userId;
-    /**
-     * 账号
-     */
     private String account;
-    /**
-     * 用户名称
-     */
     private String username;
     /**
      * 票据生成时间
@@ -36,12 +24,17 @@ public class UserTicket {
      * 登录IP
      */
     private String loginIp;
+
     /**
-     * 权限集合
+     * 菜单权限
      */
-    private List<String> permissions;
+    private List<String> menuList;
     /**
-     * 用户信息
+     * 二级权限
      */
-    private Object userInfo;
+    private List<String> permissionList;
+    /**
+     * 扩展信息
+     */
+    private Object extendInfo;
 }

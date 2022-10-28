@@ -1,4 +1,4 @@
-package com.efficient.common.dto;
+package com.efficient.auth.model.dto;
 
 import lombok.Data;
 
@@ -16,4 +16,17 @@ public class LoginInfo {
     private String account;
     @NotBlank(message = "password 不能为空")
     private String password;
+    private String loginIp;
+    /**
+     * 验证码
+     */
+    private String captcha;
+    /**
+     * 验证码ID
+     */
+    private String captchaId;
+    /**
+     * 扩展信息
+     */
+    private Object extendInfo;
 }
