@@ -11,8 +11,6 @@ public enum ResultEnum implements ResultConstant {
     /**
      * 系统相关
      */
-    NOT_LOGIN(9994, "用户未登录"),
-    REQUEST_PATH_ERROR(9995, "请求路径错误"),
     NOT_PERMISSION(9996, "权限不足"),
     PARA_ERROR(9997, "参数错误"),
     DATA_NOT_EXIST(9998, "数据不存在"),

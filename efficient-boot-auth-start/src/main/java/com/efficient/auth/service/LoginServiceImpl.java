@@ -1,5 +1,6 @@
 package com.efficient.auth.service;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
@@ -19,6 +20,7 @@ import com.efficient.common.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -80,11 +82,13 @@ public class LoginServiceImpl implements LoginService {
 
         final int maxOnline = authProperties.getMaxOnline();
         // 计数
-        int userOnLineCount = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId);
-        if (maxOnline > 0) {
-            if (maxOnline >= userOnLineCount) {
+        List<String> userTokenList = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId);
+        if (CollUtil.isNotEmpty(userTokenList)) {
+            if (maxOnline >= userTokenList.size()) {
                 return Result.build(AuthResultEnum.USER_MAX_ONLINE);
             }
+        } else {
+            userTokenList = new ArrayList<>();
         }
         UserTicket userTicket = new UserTicket();
 
@@ -93,8 +97,8 @@ public class LoginServiceImpl implements LoginService {
         userTicket.setUsername(userCheck.getUsername());
 
         userTicket.setLoginIp(info.getLoginIp());
-        List<String> menuList = authService.getUserMenuList(userId);
-        userTicket.setMenuList(menuList);
+        List<String> operationList = authService.getUserOperationList(userId);
+        userTicket.setOperationList(operationList);
         List<String> permissionList = authService.getUserPermissionList(userId);
         userTicket.setPermissionList(permissionList);
         Object extendInfo = authService.getUserExtendInfo(userId);
@@ -106,7 +110,8 @@ public class LoginServiceImpl implements LoginService {
         userTicket.setCreateTime(timeMillis);
         // 存入缓存
         cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token, userTicket);
-        cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId, ++userOnLineCount);
+        userTokenList.add(token);
+        cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId, userTokenList);
         return Result.ok(userTicket);
     }
 
@@ -115,11 +120,12 @@ public class LoginServiceImpl implements LoginService {
         // 移除缓存
         cacheUtil.removeCache(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token);
         cacheUtil.removeCache(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_FAIL_CACHE + userId);
-        int userOnLineCount = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId);
-        if (userOnLineCount <= 1) {
-            cacheUtil.removeCache(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId);
+        List<String> userTokenList = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId);
+        if (CollUtil.isNotEmpty(userTokenList) && userTokenList.size() >= 1) {
+            userTokenList.remove(token);
+            cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId, userTokenList);
         } else {
-            cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId, --userOnLineCount);
+            cacheUtil.removeCache(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId);
         }
     }
 }

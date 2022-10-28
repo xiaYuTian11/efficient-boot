@@ -1,7 +1,7 @@
-package com.efficient.common.util;
+package com.efficient.auth.util;
 
 import com.alibaba.ttl.TransmittableThreadLocal;
-import com.efficient.common.entity.UserTicket;
+import com.efficient.auth.model.entity.UserTicket;
 
 import javax.servlet.http.HttpServletRequest;
 

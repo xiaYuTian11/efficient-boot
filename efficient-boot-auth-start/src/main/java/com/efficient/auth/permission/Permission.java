@@ -1,4 +1,4 @@
-package com.efficient.common.permission;
+package com.efficient.auth.permission;
 
 import com.efficient.common.constant.MenuRelation;
 

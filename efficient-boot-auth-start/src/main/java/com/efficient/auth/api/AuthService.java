@@ -22,15 +22,15 @@ public interface AuthService {
     UserCheck getUserInfo(LoginInfo info);
 
     /**
-     * 获取用户菜单权限
+     * 获取用户按钮权限
      *
      * @param userId
      * @return
      */
-    List<String> getUserMenuList(String userId);
+    List<String> getUserOperationList(String userId);
 
     /**
-     * 获取用户按钮权限
+     * 获取用户菜单权限
      *
      * @param userId
      * @return

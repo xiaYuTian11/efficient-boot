@@ -28,11 +28,11 @@ public class UserTicket {
     /**
      * 菜单权限
      */
-    private List<String> menuList;
+    private List<String> permissionList;
     /**
      * 二级权限
      */
-    private List<String> permissionList;
+    private List<String> operationList;
     /**
      * 扩展信息
      */
