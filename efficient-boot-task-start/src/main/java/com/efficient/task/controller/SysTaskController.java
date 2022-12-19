@@ -1,12 +1,11 @@
 package com.efficient.task.controller;
 
+import com.efficient.common.result.Result;
 import com.efficient.task.api.SysTaskService;
 import com.efficient.task.model.dto.SysTaskDTO;
 import com.efficient.task.model.dto.SysTaskListDTO;
 import com.efficient.task.model.entity.SysTask;
 import com.efficient.task.model.vo.SysTaskVO;
-import com.efficient.common.permission.Permission;
-import com.efficient.common.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -29,7 +28,6 @@ import javax.validation.constraints.NotBlank;
 @RequestMapping("/sysTask")
 @Validated
 @Api(tags = "定时任务表")
-@Permission
 public class SysTaskController {
 
     @Autowired

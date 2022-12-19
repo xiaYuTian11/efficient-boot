@@ -1,9 +1,9 @@
 package com.efficient.logs.service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.efficient.common.auth.RequestHolder;
+import com.efficient.common.auth.UserTicket;
 import com.efficient.common.constant.CommonConstant;
-import com.efficient.common.entity.UserTicket;
-import com.efficient.common.util.RequestHolder;
 import com.efficient.common.util.ThreadUtil;
 import com.efficient.logs.annotation.Log;
 import com.efficient.logs.api.SysLogService;

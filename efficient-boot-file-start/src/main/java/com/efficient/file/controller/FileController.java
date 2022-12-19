@@ -1,13 +1,12 @@
 package com.efficient.file.controller;
 
 import cn.hutool.core.util.StrUtil;
+import com.efficient.common.result.Result;
+import com.efficient.common.util.JackSonUtil;
 import com.efficient.file.api.FileService;
 import com.efficient.file.constant.FileResultEnum;
 import com.efficient.file.model.dto.DownloadVO;
 import com.efficient.file.model.vo.FileVO;
-import com.efficient.common.permission.Permission;
-import com.efficient.common.result.Result;
-import com.efficient.common.util.JackSonUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -32,7 +31,6 @@ import java.util.Objects;
 @RequestMapping("/file")
 @Validated
 @Api(tags = "文件操作")
-@Permission
 public class FileController {
     @Autowired
     private FileService fileService;

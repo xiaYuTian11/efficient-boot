@@ -1,6 +1,5 @@
 package com.efficient.task.controller;
 
-import com.efficient.common.permission.Permission;
 import com.efficient.common.result.Result;
 import com.efficient.task.api.TaskExecuteService;
 import io.swagger.annotations.Api;
@@ -28,7 +27,6 @@ import javax.validation.constraints.NotBlank;
 @RequestMapping("/sysTask/execute/")
 @Validated
 @Api(tags = "定时任务启停相关")
-@Permission
 public class TaskExecuteController {
 
     @Autowired

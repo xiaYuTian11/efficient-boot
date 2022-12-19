@@ -1,4 +1,4 @@
-package com.efficient.auth.model.entity;
+package com.efficient.common.auth;
 
 import lombok.Data;
 

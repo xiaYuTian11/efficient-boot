@@ -11,7 +11,7 @@ import com.efficient.auth.constant.AuthConstant;
 import com.efficient.auth.constant.AuthResultEnum;
 import com.efficient.auth.model.dto.LoginInfo;
 import com.efficient.auth.model.entity.UserCheck;
-import com.efficient.auth.model.entity.UserTicket;
+import com.efficient.common.auth.UserTicket;
 import com.efficient.auth.properties.AuthProperties;
 import com.efficient.auth.util.AuthUtil;
 import com.efficient.auth.util.TokenUtil;
@@ -50,7 +50,7 @@ public class LoginServiceImpl implements LoginService {
         String userId = userCheck.getUserId();
         if (Objects.nonNull(unLockTime)) {
             long between = DateUtil.between(unLockTime, new Date(), DateUnit.MINUTE);
-            if (between > 0) {
+            if (between <= 0) {
                 // 解锁
                 authService.unLockUser(userId);
             } else {

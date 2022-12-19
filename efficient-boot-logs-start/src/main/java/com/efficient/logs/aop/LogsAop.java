@@ -1,10 +1,10 @@
 package com.efficient.logs.aop;
 
 import com.alibaba.ttl.TransmittableThreadLocal;
+import com.efficient.common.auth.RequestHolder;
 import com.efficient.common.constant.CommonConstant;
 import com.efficient.common.result.Result;
 import com.efficient.common.util.JackSonUtil;
-import com.efficient.common.util.RequestHolder;
 import com.efficient.common.util.ThreadUtil;
 import com.efficient.common.util.WebUtil;
 import com.efficient.logs.annotation.Log;
