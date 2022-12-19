@@ -4,14 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>efficient-boot</artifactId>
-        <groupId>com.efficient</groupId>
-        <version>0.0.1</version>
+        <groupId>top.tanmw</groupId>
+        <version>0.2.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <description>文件存储 start</description>
     <artifactId>efficient-boot-file-start</artifactId>
 
     <properties>
+<!--        <maven.deploy.skip>true</maven.deploy.skip>-->
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
@@ -33,14 +34,32 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.efficient</groupId>
+            <groupId>top.tanmw</groupId>
             <artifactId>efficient-common</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.efficient</groupId>
+            <groupId>top.tanmw</groupId>
             <artifactId>efficient-boot-swagger-start</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>
+<!--    <build>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-deploy-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <skip>true</skip>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--            <plugin>-->
+<!--                <groupId>org.sonatype.plugins</groupId>-->
+<!--                <artifactId>nexus-staging-maven-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
 </project>

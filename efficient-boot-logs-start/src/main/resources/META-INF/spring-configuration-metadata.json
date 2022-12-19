@@ -1,0 +1,67 @@
+{
+  "groups": [
+    {
+      "name": "com.efficient.logs",
+      "type": "com.efficient.logs.properties.LogsProperties",
+      "sourceType": "com.efficient.logs.config.LogsConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "com.efficient.logs.db",
+      "type": "java.lang.Boolean",
+      "description": "是否存储数据库",
+      "defaultValue": true,
+      "sourceType": "com.efficient.logs.properties.LogsProperties"
+    },
+    {
+      "name": "com.efficient.logs.level",
+      "type": "java.lang.String",
+      "description": "日志等级",
+      "defaultValue": "info",
+      "sourceType": "com.efficient.logs.properties.LogsProperties"
+    },
+    {
+      "name": "com.efficient.logs.name",
+      "type": "java.lang.String",
+      "description": "日志文件名称前缀",
+      "defaultValue": "log",
+      "sourceType": "com.efficient.logs.properties.LogsProperties"
+    },
+    {
+      "name": "com.efficient.logs.path",
+      "type": "java.lang.String",
+      "description": "日志存储路径",
+      "defaultValue": "/efficient/logs/",
+      "sourceType": "com.efficient.logs.properties.LogsProperties"
+    }
+  ],
+  "hints": [
+    {
+      "name": "com.efficient.logs.level",
+      "values": [
+        {
+          "value": "trace"
+        },
+        {
+          "value": "debug"
+        },
+        {
+          "value": "info"
+        },
+        {
+          "value": "warn"
+        },
+        {
+          "value": "error"
+        },
+        {
+          "value": "fatal"
+        },
+        {
+          "value": "off"
+        }
+      ]
+    }
+  ]
+}

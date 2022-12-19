@@ -1,0 +1,69 @@
+{
+  "groups": [
+    {
+      "name": "com.efficient.auth",
+      "type": "com.efficient.auth.properties.AuthProperties",
+      "sourceType": "com.efficient.auth.properties.AuthProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "com.efficient.auth.captcha",
+      "type": "java.lang.Boolean",
+      "description": "是否需要验证码",
+      "defaultValue": false,
+      "sourceType": "com.efficient.auth.properties.AuthProperties"
+    },
+    {
+      "name": "com.efficient.auth.retry-count",
+      "type": "java.lang.Integer",
+      "description": "重试次数",
+      "defaultValue": 5,
+      "sourceType": "com.efficient.auth.properties.AuthProperties"
+    },
+    {
+      "name": "com.efficient.auth.lock-time",
+      "type": "java.lang.Integer",
+      "description": "登录失败过多，锁定时间，分钟",
+      "defaultValue": 30,
+      "sourceType": "com.efficient.auth.properties.AuthProperties"
+    },
+    {
+      "name": "com.efficient.auth.max-online",
+      "type": "java.lang.Integer",
+      "description": "同一个账号最多同时在线人数",
+      "defaultValue": -1,
+      "sourceType": "com.efficient.auth.properties.AuthProperties"
+    },
+    {
+      "name": "com.efficient.auth.token-live",
+      "type": "java.lang.Integer",
+      "description": "token最大存活时间，单位秒",
+      "defaultValue": 3600,
+      "sourceType": "com.efficient.auth.properties.AuthProperties"
+    },
+    {
+      "name": "com.efficient.auth.password-encrypt",
+      "type": "java.lang.Boolean",
+      "description": "密码是否加密传输",
+      "defaultValue": false,
+      "sourceType": "com.efficient.auth.properties.AuthProperties"
+    },
+    {
+      "name": "com.efficient.auth.enable-salt",
+      "type": "java.lang.Boolean",
+      "description": "密码是否加盐",
+      "defaultValue": false,
+      "sourceType": "com.efficient.auth.properties.AuthProperties"
+    },
+    {
+      "name": "com.efficient.auth.salt-value",
+      "type": "java.lang.String",
+      "description": "密码盐值",
+      "defaultValue": "1809",
+      "sourceType": "com.efficient.auth.properties.AuthProperties"
+    }
+  ],
+  "hints": [
+  ]
+}

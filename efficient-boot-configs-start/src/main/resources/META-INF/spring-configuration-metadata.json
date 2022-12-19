@@ -1,0 +1,13 @@
+{
+  "groups": [
+    {
+      "name": "com.efficient.configs",
+      "type": "com.efficient.configs.properties.ConfigsProperties",
+      "sourceType": "com.efficient.configs.config.ConfigsConfig"
+    }
+  ],
+  "properties": [
+  ],
+  "hints": [
+  ]
+}

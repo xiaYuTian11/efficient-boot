@@ -1,6 +1,6 @@
 package com.efficient.task.api;
 
-import com.sjr.common.result.Result;
+import com.efficient.common.result.Result;
 
 /**
  * @author TMW

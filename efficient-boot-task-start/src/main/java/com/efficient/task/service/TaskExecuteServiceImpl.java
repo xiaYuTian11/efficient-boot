@@ -5,7 +5,7 @@ import com.efficient.task.api.TaskExecuteService;
 import com.efficient.task.constant.TaskResultEnum;
 import com.efficient.task.constant.TaskStatusEnum;
 import com.efficient.task.model.entity.SysTask;
-import com.sjr.common.result.Result;
+import com.efficient.common.result.Result;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

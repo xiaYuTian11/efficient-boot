@@ -1,14 +1,11 @@
 package com.efficient.task.controller;
 
+import com.efficient.common.result.Result;
 import com.efficient.task.api.SysTaskService;
 import com.efficient.task.model.dto.SysTaskDTO;
 import com.efficient.task.model.dto.SysTaskListDTO;
 import com.efficient.task.model.entity.SysTask;
 import com.efficient.task.model.vo.SysTaskVO;
-import com.sjr.common.log.Log;
-import com.sjr.common.log.OptTypeEnum;
-import com.sjr.common.permission.Permission;
-import com.sjr.common.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -31,7 +28,6 @@ import javax.validation.constraints.NotBlank;
 @RequestMapping("/sysTask")
 @Validated
 @Api(tags = "定时任务表")
-@Permission
 public class SysTaskController {
 
     @Autowired
@@ -40,7 +36,6 @@ public class SysTaskController {
     /**
      * 新增
      */
-    @Log(optType = OptTypeEnum.INSERT)
     @PostMapping("/save")
     @ApiOperation(value = "保存", response = Result.class)
     public Result save(@Validated @RequestBody SysTaskDTO dto) {
@@ -51,7 +46,6 @@ public class SysTaskController {
     /**
      * 详情
      */
-    @Log(optType = OptTypeEnum.QUERY)
     @GetMapping("/find")
     @ApiOperation(value = "详情", response = Result.class)
     @ApiImplicitParams({
@@ -65,7 +59,6 @@ public class SysTaskController {
     /**
      * 修改
      */
-    @Log(optType = OptTypeEnum.UPDATE)
     @PostMapping("/update")
     @ApiOperation(value = "修改", response = Result.class)
     public Result update(@Validated @RequestBody SysTaskDTO dto) {
@@ -76,7 +69,6 @@ public class SysTaskController {
     /**
      * 删除
      */
-    @Log(optType = OptTypeEnum.DELETE)
     @GetMapping("/delete")
     @ApiOperation(value = "删除", response = Result.class)
     @ApiImplicitParams({
@@ -90,7 +82,6 @@ public class SysTaskController {
     /**
      * 列表
      */
-    @Log(optType = OptTypeEnum.PAGE)
     @PostMapping("/list")
     @ApiOperation(value = "列表", response = Result.class)
     public Result list(@Validated @RequestBody SysTaskListDTO dto) {
