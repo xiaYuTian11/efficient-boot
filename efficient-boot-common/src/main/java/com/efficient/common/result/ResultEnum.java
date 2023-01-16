@@ -11,6 +11,7 @@ public enum ResultEnum implements ResultConstant {
     /**
      * 系统相关
      */
+    NOT_LOGIN(9992, "用户未登录！"),
     NOT_IDEMPOTENCE(9993, "请勿重复提交！"),
     ERROR_METHOD(9994, "请求方式错误！"),
     ERROR_PATH(9995, "请求路径错误！"),

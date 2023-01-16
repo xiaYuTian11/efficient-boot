@@ -1,8 +1,6 @@
 package com.efficient.idempotence.interceptor;
 
-import cn.hutool.core.net.Ipv4Util;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.http.HttpUtil;
 import com.efficient.cache.api.CacheUtil;
 import com.efficient.common.result.Result;
 import com.efficient.common.result.ResultEnum;
@@ -11,6 +9,7 @@ import com.efficient.common.util.WebUtil;
 import com.efficient.idempotence.annotation.Idempotence;
 import com.efficient.idempotence.constant.IdempotenceConstant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -26,6 +25,7 @@ import java.util.Objects;
  * @author TMW
  * @since 2023/1/16 16:16
  */
+@Component
 public class IdempotenceInterceptor implements HandlerInterceptor {
     @Autowired
     private CacheUtil cacheUtil;
@@ -35,6 +35,9 @@ public class IdempotenceInterceptor implements HandlerInterceptor {
         String requestURI = request.getRequestURI();
         String token = request.getHeader(IdempotenceConstant.TOKEN);
         String ip = WebUtil.getIP(request);
+        if (StrUtil.isBlank(token)) {
+            token = "not_token";
+        }
         StringBuilder sb = new StringBuilder(token);
         String str = sb.append("_").append(ip).append("_").append(requestURI).toString();
         HandlerMethod method;
@@ -46,13 +49,16 @@ public class IdempotenceInterceptor implements HandlerInterceptor {
         }
         Idempotence idempotence = method.getMethodAnnotation(Idempotence.class);
         if (Objects.nonNull(idempotence)) {
-            Object obj = cacheUtil.get(IdempotenceConstant.IDEMPOTENCE_CACHE_PRE, str);
+            Long obj = cacheUtil.get(IdempotenceConstant.IDEMPOTENCE_CACHE_PRE, str);
+            long currentTimeMillis = System.currentTimeMillis();
             if (Objects.nonNull(obj)) {
-                this.returnJson(response, ResultEnum.NOT_IDEMPOTENCE);
-                return false;
-            } else {
-                cacheUtil.put(IdempotenceConstant.IDEMPOTENCE_CACHE_PRE, str, "true", (int) idempotence.expireTime() / 1000);
+                if (currentTimeMillis - obj <= idempotence.expireTime()) {
+                    this.returnJson(response, ResultEnum.NOT_IDEMPOTENCE);
+                    cacheUtil.put(IdempotenceConstant.IDEMPOTENCE_CACHE_PRE, str, currentTimeMillis, (int) idempotence.expireTime() / 1000);
+                    return false;
+                }
             }
+            cacheUtil.put(IdempotenceConstant.IDEMPOTENCE_CACHE_PRE, str, currentTimeMillis, (int) idempotence.expireTime() / 1000);
         }
         return true;
     }
