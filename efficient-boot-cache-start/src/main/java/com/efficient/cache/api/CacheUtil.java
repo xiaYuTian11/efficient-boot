@@ -1,5 +1,7 @@
 package com.efficient.cache.api;
 
+import java.time.Duration;
+
 /**
  * @author TMW
  * @since 2022/9/2 10:16
@@ -14,6 +16,8 @@ public interface CacheUtil {
      * 保存缓存
      */
     public void put(String cacheName, String key, Object obj);
+
+    public void put(String cacheName, String key, Object obj, int timeToIdleSeconds);
 
     /**
      * 刷新用户缓存

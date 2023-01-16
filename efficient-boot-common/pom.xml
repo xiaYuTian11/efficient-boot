@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
 
-    <artifactId>efficient-common</artifactId>
+    <artifactId>efficient-boot-common</artifactId>
 
     <properties>
 <!--        <maven.deploy.skip>true</maven.deploy.skip>-->

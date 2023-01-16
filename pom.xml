@@ -8,7 +8,7 @@
     <description>基于springboot的二次封装框架</description>
     <url>https://github.com/xiaYuTian11/efficient</url>
     <modules>
-        <module>efficient-common</module>
+        <module>efficient-boot-common</module>
         <module>efficient-boot-swagger-start</module>
         <module>efficient-boot-file-start</module>
         <module>efficient-boot-task-start</module>
@@ -16,6 +16,7 @@
         <module>efficient-boot-logs-start</module>
         <module>efficient-boot-configs-start</module>
         <module>efficient-boot-auth-start</module>
+        <module>efficient-boot-idempotence-start</module>
     </modules>
     <groupId>top.tanmw</groupId>
     <artifactId>efficient-boot</artifactId>
@@ -181,7 +182,7 @@
             </dependency>
             <dependency>
                 <groupId>top.tanmw</groupId>
-                <artifactId>efficient-common</artifactId>
+                <artifactId>efficient-boot-common</artifactId>
                 <version>${efficient-boot.version}</version>
             </dependency>
             <dependency>
@@ -217,6 +218,11 @@
             <dependency>
                 <groupId>top.tanmw</groupId>
                 <artifactId>efficient-boot-auth-start</artifactId>
+                <version>${efficient-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.tanmw</groupId>
+                <artifactId>efficient-boot-idempotence-start</artifactId>
                 <version>${efficient-boot.version}</version>
             </dependency>
         </dependencies>

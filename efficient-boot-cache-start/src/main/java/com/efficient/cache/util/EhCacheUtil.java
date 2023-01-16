@@ -6,6 +6,7 @@ import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 
+import java.time.Duration;
 import java.util.Objects;
 
 /**
@@ -50,6 +51,12 @@ public class EhCacheUtil implements CacheUtil {
             throw new CacheException("cacheName not exist！");
         }
         cache.put(new Element(key, obj));
+    }
+
+    @Override
+    public void put(String cacheName, String key, Object obj, int timeToIdleSeconds) {
+        this.put(cacheName, key, obj);
+        this.refresh(cacheName, key, timeToIdleSeconds);
     }
 
     /**

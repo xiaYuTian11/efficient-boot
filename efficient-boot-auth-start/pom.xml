@@ -28,7 +28,7 @@
         </dependency>
         <dependency>
             <groupId>top.tanmw</groupId>
-            <artifactId>efficient-common</artifactId>
+            <artifactId>efficient-boot-common</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
