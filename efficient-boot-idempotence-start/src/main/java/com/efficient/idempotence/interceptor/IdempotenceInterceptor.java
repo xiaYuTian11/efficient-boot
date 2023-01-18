@@ -8,6 +8,7 @@ import com.efficient.common.util.JackSonUtil;
 import com.efficient.common.util.WebUtil;
 import com.efficient.idempotence.annotation.Idempotence;
 import com.efficient.idempotence.constant.IdempotenceConstant;
+import com.efficient.idempotence.properties.IdempotenceProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -29,6 +30,8 @@ import java.util.Objects;
 public class IdempotenceInterceptor implements HandlerInterceptor {
     @Autowired
     private CacheUtil cacheUtil;
+    @Autowired
+    private IdempotenceProperties properties;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -47,18 +50,30 @@ public class IdempotenceInterceptor implements HandlerInterceptor {
             this.returnJson(response, ResultEnum.ERROR_PATH);
             return false;
         }
+        boolean global = properties.isGlobal();
         Idempotence idempotence = method.getMethodAnnotation(Idempotence.class);
-        if (Objects.nonNull(idempotence)) {
+        if (global || Objects.nonNull(idempotence)) {
             Long obj = cacheUtil.get(IdempotenceConstant.IDEMPOTENCE_CACHE_PRE, str);
             long currentTimeMillis = System.currentTimeMillis();
+            Integer expireTime = properties.getExpireTime();
+            if (Objects.isNull(expireTime)) {
+                if (Objects.isNull(idempotence)) {
+                    expireTime = 1;
+                } else {
+                    expireTime = idempotence.expireTime();
+                }
+            }
+            if (expireTime <= 0) {
+                return true;
+            }
             if (Objects.nonNull(obj)) {
-                if (currentTimeMillis - obj <= idempotence.expireTime()) {
+                if (currentTimeMillis - obj <= expireTime * 1000) {
                     this.returnJson(response, ResultEnum.NOT_IDEMPOTENCE);
-                    cacheUtil.put(IdempotenceConstant.IDEMPOTENCE_CACHE_PRE, str, currentTimeMillis, (int) idempotence.expireTime() / 1000);
+                    cacheUtil.put(IdempotenceConstant.IDEMPOTENCE_CACHE_PRE, str, currentTimeMillis, expireTime);
                     return false;
                 }
             }
-            cacheUtil.put(IdempotenceConstant.IDEMPOTENCE_CACHE_PRE, str, currentTimeMillis, (int) idempotence.expireTime() / 1000);
+            cacheUtil.put(IdempotenceConstant.IDEMPOTENCE_CACHE_PRE, str, currentTimeMillis, expireTime);
         }
         return true;
     }

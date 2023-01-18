@@ -84,7 +84,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
         }
         // 放入上下文
         RequestHolder.set(userTicket);
-        RequestHolder.set(request);
+        // RequestHolder.set(request);
         return true;
     }
 
