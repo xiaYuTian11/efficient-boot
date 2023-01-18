@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author TMW
  * @since 2022/9/5 15:01
  */
-@ConfigurationProperties("com.efficient.swagger")
+@ConfigurationProperties("com.efficient.log")
 @Data
 public class LogsProperties {
     /**
