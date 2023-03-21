@@ -7,10 +7,6 @@ import com.efficient.file.api.FileService;
 import com.efficient.file.constant.FileResultEnum;
 import com.efficient.file.model.dto.DownloadVO;
 import com.efficient.file.model.vo.FileVO;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +26,6 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/file")
 @Validated
-@Api(tags = "文件操作")
 public class FileController {
     @Autowired
     private FileService fileService;
@@ -45,11 +40,6 @@ public class FileController {
      * @return
      */
     @PostMapping(value = "/upload")
-    @ApiOperation(value = "上传", response = Result.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "file", value = "文件标识", required = true),
-            @ApiImplicitParam(name = "unique", value = "是否唯一文件，true标识删除现有同名文件", defaultValue = "false")
-    })
     public Result upload(@RequestParam("file") MultipartFile file,
                          @RequestParam(value = "unique", required = false) boolean unique) throws Exception {
         if (file.isEmpty() || StrUtil.isBlank(file.getOriginalFilename())) {
@@ -59,7 +49,6 @@ public class FileController {
     }
 
     @PostMapping("/download")
-    @ApiOperation(value = "下载")
     public void download(@Validated @RequestBody DownloadVO downloadVO) throws Exception {
         FileVO file = fileService.getFile(downloadVO);
         if (Objects.isNull(file)) {
@@ -84,7 +73,6 @@ public class FileController {
     }
 
     @PostMapping("/delete")
-    @ApiOperation(value = "下载")
     public Result delete(@Validated @RequestBody DownloadVO downloadVO) throws Exception {
         boolean flag = fileService.delete(downloadVO.getFileId());
         return flag ? Result.ok() : Result.fail();

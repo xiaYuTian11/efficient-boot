@@ -41,11 +41,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>top.tanmw</groupId>
-            <artifactId>efficient-boot-swagger-start</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-quartz</artifactId>
 <!--            <version>${spring-boot.version}</version>-->

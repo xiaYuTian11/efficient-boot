@@ -16,7 +16,6 @@ import com.efficient.common.result.Result;
 import com.efficient.common.util.WebUtil;
 import com.efficient.logs.annotation.Log;
 import com.efficient.logs.constant.LogEnum;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +45,6 @@ public class LoginController {
 
     @Log(logOpt = LogEnum.LOGIN, desc = "系统")
     @PostMapping("/login")
-    @ApiOperation(value = "登录", response = UserTicket.class)
     public Result login(@Validated @RequestBody LoginInfo info) {
         if (authProperties.isCaptcha()) {
             String captchaCache = cacheUtil.get(AuthConstant.CACHE_CAPTCHA_CODE, info.getCaptchaId());
@@ -65,7 +63,6 @@ public class LoginController {
      */
     @Permission
     @GetMapping("/logout")
-    @ApiOperation(value = "退出", response = Result.class)
     public Result logout(@NotBlank(message = "token 不能为空") @RequestParam("token") String token,
                          @NotBlank(message = "userId 不能为空") @RequestParam("token") String userId) {
         loginService.logout(token, userId);

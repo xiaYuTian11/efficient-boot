@@ -37,10 +37,6 @@
         </dependency>
         <dependency>
             <groupId>top.tanmw</groupId>
-            <artifactId>efficient-boot-swagger-start</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>top.tanmw</groupId>
             <artifactId>efficient-boot-cache-start</artifactId>
         </dependency>
         <dependency>
