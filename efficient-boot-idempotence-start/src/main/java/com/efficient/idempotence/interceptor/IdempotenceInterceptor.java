@@ -52,29 +52,29 @@ public class IdempotenceInterceptor implements HandlerInterceptor {
         }
         boolean global = properties.isGlobal();
         Idempotence idempotence = method.getMethodAnnotation(Idempotence.class);
-        if (global || Objects.nonNull(idempotence)) {
-            Long obj = cacheUtil.get(IdempotenceConstant.IDEMPOTENCE_CACHE_PRE, str);
-            long currentTimeMillis = System.currentTimeMillis();
-            Integer expireTime = properties.getExpireTime();
-            if (Objects.isNull(expireTime)) {
-                if (Objects.isNull(idempotence)) {
-                    expireTime = 1;
-                } else {
-                    expireTime = idempotence.expireTime();
-                }
-            }
-            if (expireTime <= 0) {
-                return true;
-            }
-            if (Objects.nonNull(obj)) {
-                if (currentTimeMillis - obj <= expireTime * 1000) {
-                    this.returnJson(response, ResultEnum.NOT_IDEMPOTENCE);
-                    cacheUtil.put(IdempotenceConstant.IDEMPOTENCE_CACHE_PRE, str, currentTimeMillis, expireTime);
-                    return false;
-                }
-            }
-            cacheUtil.put(IdempotenceConstant.IDEMPOTENCE_CACHE_PRE, str, currentTimeMillis, expireTime);
+        long expireTime;
+        if (global) {
+            expireTime = properties.getExpireTime();
+        } else if (Objects.nonNull(idempotence)) {
+            expireTime = idempotence.expireTime();
+        } else {
+            return true;
         }
+        if (expireTime <= 0) {
+            return true;
+        }
+
+        Long obj = cacheUtil.get(IdempotenceConstant.IDEMPOTENCE_CACHE_PRE, str);
+        long currentTimeMillis = System.currentTimeMillis();
+        if (Objects.nonNull(obj)) {
+            if (currentTimeMillis - obj <= expireTime) {
+                this.returnJson(response, ResultEnum.NOT_IDEMPOTENCE);
+                cacheUtil.put(IdempotenceConstant.IDEMPOTENCE_CACHE_PRE, str, currentTimeMillis, (int) (expireTime / 1000));
+                return false;
+            }
+        }
+        cacheUtil.put(IdempotenceConstant.IDEMPOTENCE_CACHE_PRE, str, currentTimeMillis, (int) (expireTime / 1000));
+
         return true;
     }
 

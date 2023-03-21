@@ -15,5 +15,5 @@ public @interface Idempotence {
     /**
      * 防重复操作过期时间,默认1s
      */
-    int expireTime() default 1;
+    long expireTime() default 1000;
 }

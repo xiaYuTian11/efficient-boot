@@ -12,6 +12,7 @@ public enum AuthResultEnum implements ResultConstant {
     USER_MAX_ONLINE(9702, "此账号现同时有多个账号已登录，已超过同一账号最大允许范围，请稍后在试！"),
     ACCOUNT_LOCK(9703, "用户已被锁定！"),
     ACCOUNT_LOCK_COUNT(9704, "用户名或密码错误，您还有%d次机会，该次数过后用户将被锁定！"),
+    ACCOUNT_FAIL(9705, "用户名或密码错误!"),
     REQUEST_PATH_ERROR(9750, "请求路径错误！"),
     NOT_LOGIN(9751, "用户未登录");
 

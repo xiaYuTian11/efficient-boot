@@ -1,15 +1,14 @@
 package com.efficient.auth.interceptor;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.efficient.auth.constant.AuthConstant;
 import com.efficient.auth.constant.AuthResultEnum;
-import com.efficient.common.auth.UserTicket;
 import com.efficient.auth.permission.Permission;
 import com.efficient.auth.properties.AuthProperties;
-import com.efficient.common.auth.RequestHolder;
+import com.efficient.auth.util.JwtUtil;
 import com.efficient.cache.api.CacheUtil;
-import com.efficient.common.constant.MenuRelation;
+import com.efficient.common.auth.RequestHolder;
+import com.efficient.common.auth.UserTicket;
 import com.efficient.common.result.Result;
 import com.efficient.common.result.ResultConstant;
 import com.efficient.common.result.ResultEnum;
@@ -24,8 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -41,6 +38,10 @@ public class PermissionInterceptor implements HandlerInterceptor {
     private CacheUtil cacheUtil;
     @Autowired
     private AuthProperties authProperties;
+    @Autowired
+    private JwtUtil jwtUtil;
+    // @Autowired
+    private static PermissionCheck permissionCheck;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -68,7 +69,17 @@ public class PermissionInterceptor implements HandlerInterceptor {
             return false;
         }
         // 根据token查询
-        UserTicket userTicket = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token);
+        String jwtToken = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token);
+        String subject = jwtUtil.validateToken(jwtToken);
+        if (StrUtil.isBlank(subject)) {
+            this.returnJson(response, AuthResultEnum.NOT_LOGIN);
+            return false;
+        }
+        if (jwtUtil.isNeedUpdate(jwtToken)) {
+            jwtToken = jwtUtil.createToken(subject);
+            cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token, jwtToken);
+        }
+        UserTicket userTicket = JackSonUtil.toObject(subject, UserTicket.class);
         if (userTicket == null) {
             this.returnJson(response, AuthResultEnum.NOT_LOGIN);
             return false;
@@ -77,7 +88,10 @@ public class PermissionInterceptor implements HandlerInterceptor {
         cacheUtil.refresh(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token, authProperties.getTokenLive());
         cacheUtil.refresh(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userTicket.getUserId(), authProperties.getTokenLive());
         // 权限校验
-        final boolean checkPermission = checkPermission(permission, userTicket.getPermissionList());
+        if (Objects.isNull(permissionCheck)) {
+            PermissionInterceptor.permissionCheck = new DefaultPermissionCheck();
+        }
+        final boolean checkPermission = permissionCheck.checkPermission(permission, userTicket);
         if (!checkPermission) {
             this.returnJson(response, ResultEnum.NOT_PERMISSION);
             return false;
@@ -88,20 +102,28 @@ public class PermissionInterceptor implements HandlerInterceptor {
         return true;
     }
 
-    private boolean checkPermission(Permission permission, List<String> currMenus) {
-        final String[] menuEnums = permission.value();
-        if (menuEnums.length <= 0) {
-            return true;
-        }
-        if (CollUtil.isEmpty(currMenus)) {
-            return false;
-        }
-        final MenuRelation relation = permission.relation();
-        if (Objects.equals(relation, MenuRelation.OR)) {
-            return Arrays.stream(menuEnums).anyMatch(currMenus::contains);
-        } else {
-            return Arrays.stream(menuEnums).allMatch(currMenus::contains);
-        }
+    // public boolean checkPermission(Permission permission, UserTicket userTicket) {
+    //     if (Objects.nonNull(permissionCheck)) {
+    //         return permissionCheck.checkPermission(permission, userTicket);
+    //     }
+    //     List<String> currMenus = userTicket.getPermissionList();
+    //     final String[] menuEnums = permission.value();
+    //     if (menuEnums.length <= 0) {
+    //         return true;
+    //     }
+    //     if (CollUtil.isEmpty(currMenus)) {
+    //         return false;
+    //     }
+    //     final MenuRelation relation = permission.relation();
+    //     if (Objects.equals(relation, MenuRelation.OR)) {
+    //         return Arrays.stream(menuEnums).anyMatch(currMenus::contains);
+    //     } else {
+    //         return Arrays.stream(menuEnums).allMatch(currMenus::contains);
+    //     }
+    // }
+
+    public static void init(PermissionCheck permissionCheck) {
+        PermissionInterceptor.permissionCheck = permissionCheck;
     }
 
     /**

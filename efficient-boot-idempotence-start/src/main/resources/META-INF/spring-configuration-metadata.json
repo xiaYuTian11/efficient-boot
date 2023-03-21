@@ -18,7 +18,7 @@
       "name": "com.efficient.idempotence.expireTime",
       "type": "java.lang.Long",
       "description": "全局幂等性校验间隔时间，设置后，com.efficient.idempotence.annotation.Idempotence的过期时间将会失效，最小1秒",
-      "defaultValue": null,
+      "defaultValue": 1000,
       "sourceType": "com.efficient.idempotence.properties.IdempotenceProperties"
     }
   ]

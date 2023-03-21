@@ -17,6 +17,6 @@ public class IdempotenceProperties {
     /**
      * 全局幂等性校验间隔时间，设置后，com.efficient.idempotence.annotation.Idempotence的过期时间将会失效,最低一秒钟
      */
-    private Integer expireTime;
+    private long expireTime = 1000;
 
 }

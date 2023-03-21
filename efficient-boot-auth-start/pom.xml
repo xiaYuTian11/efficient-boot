@@ -5,7 +5,7 @@
     <parent>
         <artifactId>efficient-boot</artifactId>
         <groupId>top.tanmw</groupId>
-        <version>0.4.3</version>
+        <version>0.4.5</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <description>权限认证插件</description>
@@ -43,6 +43,11 @@
             <groupId>top.tanmw</groupId>
             <artifactId>efficient-boot-cache-start</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

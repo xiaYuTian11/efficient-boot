@@ -20,11 +20,11 @@
     </modules>
     <groupId>top.tanmw</groupId>
     <artifactId>efficient-boot</artifactId>
-    <version>0.4.3</version>
+    <version>0.4.5</version>
     <packaging>pom</packaging>
 
     <properties>
-        <efficient-boot.version>0.4.3</efficient-boot.version>
+        <efficient-boot.version>0.4.5</efficient-boot.version>
         <java.version>1.8</java.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -56,6 +56,7 @@
 
         <analysis-core.version>1.0.0</analysis-core.version>
         <dbsync.version>1.0.0</dbsync.version>
+        <java-jwt.version>4.3.0</java-jwt.version>
     </properties>
 
 
@@ -224,6 +225,12 @@
                 <groupId>top.tanmw</groupId>
                 <artifactId>efficient-boot-idempotence-start</artifactId>
                 <version>${efficient-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${java-jwt.version}</version>
             </dependency>
         </dependencies>
 
