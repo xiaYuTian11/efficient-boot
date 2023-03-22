@@ -57,6 +57,7 @@
         <analysis-core.version>1.0.0</analysis-core.version>
         <dbsync.version>1.0.0</dbsync.version>
         <java-jwt.version>4.3.0</java-jwt.version>
+        <ik-analyzer.version>9.0.0</ik-analyzer.version>
     </properties>
 
 
@@ -231,6 +232,11 @@
                 <groupId>com.auth0</groupId>
                 <artifactId>java-jwt</artifactId>
                 <version>${java-jwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.shenyanchao.ik-analyzer</groupId>
+                <artifactId>ik-analyzer</artifactId>
+                <version>${ik-analyzer.version}</version>
             </dependency>
         </dependencies>
 
