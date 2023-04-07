@@ -4,6 +4,7 @@ import com.efficient.file.api.FileService;
 import com.efficient.file.properties.FileProperties;
 import com.efficient.file.service.DbFileServiceImpl;
 import com.efficient.file.service.LocalFileServiceImpl;
+import com.efficient.file.service.MinioFileServiceImpl;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -37,5 +38,12 @@ public class FileConfig {
     @ConditionalOnProperty(name = "com.efficient.file.active", havingValue = "db")
     public FileService dbFile() {
         return new DbFileServiceImpl();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(name = "com.efficient.file.active", havingValue = "minio")
+    public FileService minioFile() {
+        return new MinioFileServiceImpl();
     }
 }

@@ -15,22 +15,26 @@
 */
 
 SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
+SET
+FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
 -- Table structure for sys_file_info
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_file_info`;
-CREATE TABLE `sys_file_info`  (
-  `id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
-  `biz_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '业务主键',
-  `store_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '存储类型',
-  `file_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件名称',
-  `file_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件类型',
-  `file_content` longblob NULL COMMENT '文件内容',
-  `file_size` bigint(0) NULL DEFAULT NULL COMMENT '文件大写，kb单位',
-  `create_time` timestamp(0) NULL DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '文件信息' ROW_FORMAT = Dynamic;
+CREATE TABLE `sys_file_info`
+(
+    `id`           varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
+    `biz_id`       varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '业务主键',
+    `store_type`   varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '存储类型',
+    `file_name`    text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '文件名称',
+    `file_path`    text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '文件类型',
+    `file_content` longblob COMMENT '文件类型',
+    `file_size`    bigint                                                       DEFAULT NULL COMMENT '文件大写，kb单位',
+    `create_time`  timestamp NULL DEFAULT NULL COMMENT '创建时间',
+    `remark`       text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '备注',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='文件信息';
 
-SET FOREIGN_KEY_CHECKS = 1;
+SET
+FOREIGN_KEY_CHECKS = 1;

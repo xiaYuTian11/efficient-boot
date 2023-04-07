@@ -8,6 +8,7 @@ import lombok.Data;
  */
 @Data
 public class DownloadVO {
+    private String fileName;
     private String filePath;
     private String fileId;
     private String storeType;

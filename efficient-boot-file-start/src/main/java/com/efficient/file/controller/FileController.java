@@ -6,17 +6,25 @@ import com.efficient.common.util.JackSonUtil;
 import com.efficient.file.api.FileService;
 import com.efficient.file.constant.FileResultEnum;
 import com.efficient.file.model.dto.DownloadVO;
+import com.efficient.file.model.entity.SysFileInfo;
 import com.efficient.file.model.vo.FileVO;
+import io.minio.GetObjectArgs;
+import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedOutputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Objects;
 
 /**
@@ -49,27 +57,37 @@ public class FileController {
     }
 
     @PostMapping("/download")
-    public void download(@Validated @RequestBody DownloadVO downloadVO) throws Exception {
-        FileVO file = fileService.getFile(downloadVO);
-        if (Objects.isNull(file)) {
-            response.reset();
-            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-            response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().println(JackSonUtil.toJson(Result.build(FileResultEnum.FILE_NOT_EXISTS)));
-            response.flushBuffer();
-            return;
+    public ResponseEntity<byte[]> download(@Validated @RequestBody DownloadVO downloadVO) throws Exception {
+        SysFileInfo sysFileInfo = fileService.getById(downloadVO.getFileId());
+        ResponseEntity<byte[]> responseEntity = null;
+        if (Objects.isNull(sysFileInfo)) {
+            return responseEntity;
         }
-        final byte[] bytes = file.getFileContent();
-        String fileName = URLEncoder.encode(file.getFileName(), "UTF-8");
-        response.reset();
-        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-        response.addHeader("Content-Length", "" + bytes.length);
-        response.setContentType("application/octet-stream;charset=UTF-8");
-        OutputStream outputStream = new BufferedOutputStream(response.getOutputStream());
-        outputStream.write(bytes);
-        outputStream.flush();
-        outputStream.close();
-        response.flushBuffer();
+
+        ByteArrayOutputStream out = null;
+        try (InputStream in = fileService.getFile(sysFileInfo)) {
+            out = new ByteArrayOutputStream();
+            IOUtils.copy(in, out);
+            // 封装返回值
+            byte[] bytes = out.toByteArray();
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Disposition", "attachment;filename=" + URLEncoder.encode(sysFileInfo.getFileName(), StandardCharsets.UTF_8.name()));
+            headers.setContentLength(bytes.length);
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setAccessControlExposeHeaders(Collections.singletonList("*"));
+            responseEntity = new ResponseEntity<byte[]>(bytes, headers, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return responseEntity;
     }
 
     @PostMapping("/delete")

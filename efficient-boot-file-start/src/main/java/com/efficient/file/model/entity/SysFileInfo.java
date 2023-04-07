@@ -63,4 +63,10 @@ public class SysFileInfo implements Serializable {
      */
     @TableField("create_time")
     private Date createTime;
+
+    /**
+     * 备注
+     */
+    @TableField("remark")
+    private String remark;
 }

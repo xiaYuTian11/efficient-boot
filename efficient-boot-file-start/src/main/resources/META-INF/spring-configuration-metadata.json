@@ -40,6 +40,10 @@
         {
           "value": "db",
           "description": "数据库存储"
+        },
+        {
+          "value": "minio",
+          "description": "minio"
         }
       ]
     }
