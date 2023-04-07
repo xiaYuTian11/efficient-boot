@@ -239,6 +239,11 @@
                 <artifactId>ik-analyzer</artifactId>
                 <version>${ik-analyzer.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
+            </dependency>
         </dependencies>
 
     </dependencyManagement>
