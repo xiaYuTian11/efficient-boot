@@ -10,6 +10,7 @@ import com.efficient.common.result.Result;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.InputStream;
 
 import static com.efficient.file.constant.FileConstant.DOWNLOAD_LINE;
 import static com.efficient.file.constant.FileConstant.POINT;
@@ -35,6 +36,7 @@ public interface FileService extends IService<SysFileInfo> {
      * @return
      */
     FileVO getFile(DownloadVO downloadVO);
+    InputStream getFile(SysFileInfo sysFileInfo) throws Exception;
 
     FileProperties getProperties();
 
@@ -81,5 +83,5 @@ public interface FileService extends IService<SysFileInfo> {
      * @param fileId
      * @return
      */
-    boolean delete(String fileId);
+    boolean delete(String fileId)  throws Exception;
 }

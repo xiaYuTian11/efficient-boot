@@ -36,6 +36,11 @@ public class RedisUtil implements CacheUtil {
     }
 
     @Override
+    public void put(String cacheName, String key, Object obj, int timeToIdleSeconds) {
+        redisTemplate.opsForValue().set(cacheName + CONNECTOR_STR + key, obj, Duration.ofSeconds(timeToIdleSeconds));
+    }
+
+    @Override
     public void refresh(String cacheName, String key, int timeToIdleSeconds) {
         redisTemplate.expire(cacheName + CONNECTOR_STR + key, Duration.ofSeconds(timeToIdleSeconds));
     }

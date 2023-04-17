@@ -1,0 +1,5 @@
+minio:
+  endpoint: http://192.168.119.5:9090
+  accessKey: uzJRjtHyYPpDr3oI
+  secretKey: 5I6zKXjo2mpZS0lhNid5JzyKDsR6k0VL
+  bucketName: tmw

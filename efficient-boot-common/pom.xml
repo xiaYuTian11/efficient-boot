@@ -5,12 +5,12 @@
     <parent>
         <artifactId>efficient-boot</artifactId>
         <groupId>top.tanmw</groupId>
-        <version>0.2.1</version>
+        <version>0.5.6</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
-
-    <artifactId>efficient-common</artifactId>
+    <description>通用工具类</description>
+    <artifactId>efficient-boot-common</artifactId>
 
     <properties>
 <!--        <maven.deploy.skip>true</maven.deploy.skip>-->
@@ -62,6 +62,10 @@
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.shenyanchao.ik-analyzer</groupId>
+            <artifactId>ik-analyzer</artifactId>
         </dependency>
     </dependencies>
 <!--    <build>-->

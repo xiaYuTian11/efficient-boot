@@ -3,6 +3,7 @@ package com.efficient.file.service;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.efficient.common.result.Result;
 import com.efficient.file.api.FileService;
 import com.efficient.file.constant.StoreEnum;
 import com.efficient.file.dao.SysFileInfoMapper;
@@ -11,12 +12,13 @@ import com.efficient.file.model.entity.SysFileInfo;
 import com.efficient.file.model.vo.FileVO;
 import com.efficient.file.properties.FileProperties;
 import com.efficient.file.util.PathUtil;
-import com.efficient.common.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.Objects;
 
@@ -103,6 +105,18 @@ public class LocalFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFile
     }
 
     @Override
+    public InputStream getFile(SysFileInfo sysFileInfo) throws Exception{
+        if (Objects.isNull(sysFileInfo)) {
+            return null;
+        }
+        File file = new File(sysFileInfo.getFilePath());
+        if (!FileUtil.exist(file)) {
+            return null;
+        }
+        return new ByteArrayInputStream(FileUtil.readBytes(file));
+    }
+
+    @Override
     public String saveFileInfo(File file) {
         SysFileInfo sysFileInfo = new SysFileInfo();
         sysFileInfo.setStoreType(StoreEnum.LOCAL.name());
@@ -115,7 +129,7 @@ public class LocalFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFile
     }
 
     @Override
-    public boolean delete(String fileId) {
+    public boolean delete(String fileId)  throws Exception{
         final SysFileInfo sysFileInfo = this.getById(fileId);
         if (Objects.isNull(sysFileInfo)) {
             return true;

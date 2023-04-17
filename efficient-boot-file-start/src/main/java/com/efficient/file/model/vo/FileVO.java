@@ -1,5 +1,6 @@
 package com.efficient.file.model.vo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 /**
@@ -30,5 +31,8 @@ public class FileVO {
      * 存储方式
      */
     private String storeType;
-
+    /**
+     * 备注
+     */
+    private String  remark;
 }

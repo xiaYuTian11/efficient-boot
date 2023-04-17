@@ -5,10 +5,10 @@
     <parent>
         <artifactId>efficient-boot</artifactId>
         <groupId>top.tanmw</groupId>
-        <version>0.2.1</version>
+        <version>0.5.6</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
+    <description>权限认证插件</description>
     <artifactId>efficient-boot-auth-start</artifactId>
 
     <properties>
@@ -28,7 +28,7 @@
         </dependency>
         <dependency>
             <groupId>top.tanmw</groupId>
-            <artifactId>efficient-common</artifactId>
+            <artifactId>efficient-boot-common</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -37,12 +37,13 @@
         </dependency>
         <dependency>
             <groupId>top.tanmw</groupId>
-            <artifactId>efficient-boot-swagger-start</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>top.tanmw</groupId>
             <artifactId>efficient-boot-cache-start</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

@@ -11,12 +11,14 @@ import com.efficient.auth.constant.AuthConstant;
 import com.efficient.auth.constant.AuthResultEnum;
 import com.efficient.auth.model.dto.LoginInfo;
 import com.efficient.auth.model.entity.UserCheck;
-import com.efficient.common.auth.UserTicket;
 import com.efficient.auth.properties.AuthProperties;
 import com.efficient.auth.util.AuthUtil;
+import com.efficient.auth.util.JwtUtil;
 import com.efficient.auth.util.TokenUtil;
 import com.efficient.cache.api.CacheUtil;
+import com.efficient.common.auth.UserTicket;
 import com.efficient.common.result.Result;
+import com.efficient.common.util.JackSonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +41,8 @@ public class LoginServiceImpl implements LoginService {
     private AuthUtil authUtil;
     @Autowired
     private CacheUtil cacheUtil;
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Override
     public Result login(LoginInfo info) {
@@ -62,6 +66,9 @@ public class LoginServiceImpl implements LoginService {
             // 密码错误
             int retryCount = authProperties.getRetryCount();
             int lockTime = authProperties.getLockTime();
+            if (retryCount == -1) {
+                return Result.build(AuthResultEnum.ACCOUNT_FAIL);
+            }
 
             int count = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_FAIL_CACHE + userId);
             count += 1;
@@ -80,11 +87,11 @@ public class LoginServiceImpl implements LoginService {
             }
         }
 
-        final int maxOnline = authProperties.getMaxOnline();
+        int maxOnline = authProperties.getMaxOnline();
         // 计数
         List<String> userTokenList = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId);
         if (CollUtil.isNotEmpty(userTokenList)) {
-            if (maxOnline >= userTokenList.size()) {
+            if (maxOnline <= userTokenList.size()) {
                 return Result.build(AuthResultEnum.USER_MAX_ONLINE);
             }
         } else {
@@ -108,8 +115,12 @@ public class LoginServiceImpl implements LoginService {
         String token = TokenUtil.createToken(userTicket.getUserId(), timeMillis);
         userTicket.setToken(token);
         userTicket.setCreateTime(timeMillis);
+
+        String jwtToken = jwtUtil.createToken(JackSonUtil.toJson(userTicket));
+
         // 存入缓存
-        cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token, userTicket);
+        cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token, jwtToken);
+        // cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_JWT_TOKEN_CACHE + jwtToken, userTicket);
         userTokenList.add(token);
         cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId, userTokenList);
         return Result.ok(userTicket);

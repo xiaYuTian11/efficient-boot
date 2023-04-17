@@ -15,10 +15,17 @@
       "sourceType": "com.efficient.auth.properties.AuthProperties"
     },
     {
+      "name": "com.efficient.auth.secret",
+      "type": "java.lang.String",
+      "description": "jwt secret",
+      "defaultValue": "qwertyuiop0987654321",
+      "sourceType": "com.efficient.auth.properties.AuthProperties"
+    },
+    {
       "name": "com.efficient.auth.retry-count",
       "type": "java.lang.Integer",
       "description": "重试次数",
-      "defaultValue": 5,
+      "defaultValue": -1,
       "sourceType": "com.efficient.auth.properties.AuthProperties"
     },
     {

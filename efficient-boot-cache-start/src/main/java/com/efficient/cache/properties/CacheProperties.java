@@ -21,7 +21,7 @@ public class CacheProperties {
 
     @Data
     public static class Redis {
-        private String path = "ehcache.xml";
+
     }
 
 }

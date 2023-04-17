@@ -14,7 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.Objects;
 
@@ -63,6 +65,14 @@ public class DbFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFileInf
     }
 
     @Override
+    public InputStream getFile(SysFileInfo sysFileInfo) throws Exception {
+        if (Objects.isNull(sysFileInfo)) {
+            return null;
+        }
+        return new ByteArrayInputStream(sysFileInfo.getFileContent());
+    }
+
+    @Override
     public String saveFileInfo(File file) {
         SysFileInfo sysFileInfo = new SysFileInfo();
         sysFileInfo.setStoreType(StoreEnum.DB.name());
@@ -75,7 +85,7 @@ public class DbFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFileInf
     }
 
     @Override
-    public boolean delete(String fileId) {
+    public boolean delete(String fileId) throws Exception {
         final SysFileInfo sysFileInfo = this.getById(fileId);
         if (Objects.isNull(sysFileInfo)) {
             return true;

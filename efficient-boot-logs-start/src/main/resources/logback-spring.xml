@@ -49,7 +49,7 @@
         <!-- 滚动策略，按照时间和大小滚动 SizeAndTimeBasedRollingPolicy -->
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- 文件路径，定义了日志的切分方式 —— 把每一天的日志归档到一个文件中，以防止日志填满整个磁盘空间 -->
-            <FileNamePattern>${logback.logDir}/${logback.appName}_%d{yyyy-MM-dd}_%i.log</FileNamePattern>
+            <FileNamePattern>${logback.logDir}/%d{yyyy-MM-dd}/${logback.appName}_%d{yyyy-MM-dd}_%i.log</FileNamePattern>
             <!-- 只保留最近 90 天的日志 -->
             <maxHistory>90</maxHistory>
             <!-- 单文件最大值 -->
@@ -79,7 +79,7 @@
         <!-- 滚动策略，按照时间滚动 TimeBasedRollingPolicy -->
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- 文件路径，定义了日志的切分方式 —— 把每一天的日志归档到一个文件中，以防止日志填满整个磁盘空间 -->
-            <FileNamePattern>${logback.logDir}/${logback.appName}_error_%d{yyyy-MM-dd}_%i.log</FileNamePattern>
+            <FileNamePattern>${logback.logDir}/%d{yyyy-MM-dd}/${logback.appName}_error_%d{yyyy-MM-dd}_%i.log</FileNamePattern>
             <!-- 只保留最近 90 天的日志 -->
             <maxHistory>90</maxHistory>
             <!-- 单文件最大值 -->
