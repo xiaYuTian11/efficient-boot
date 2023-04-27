@@ -111,7 +111,7 @@
     <root level="${log.level}">
         <!-- appender 将会添加到这个 loger -->
         <appender-ref ref="console"/>
-        <appender-ref ref="infoLog"/>
+<!--        <appender-ref ref="infoLog"/>-->
         <appender-ref ref="errorLog"/>
         <appender-ref ref="asyncLog"/>
     </root>
