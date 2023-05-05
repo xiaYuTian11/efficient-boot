@@ -105,7 +105,7 @@
     </appender>
 
     <!--    <logger name="com.apache.ibatis" level="TRACE"/>-->
-    <logger name="com.efficient" additivity="true" level="${log.level}"/>
+<!--    <logger name="com.efficient" additivity="true" level="${log.level}"/>-->
 
     <!-- 指定最基础的日志输出级别 -->
     <root level="${log.level}">
