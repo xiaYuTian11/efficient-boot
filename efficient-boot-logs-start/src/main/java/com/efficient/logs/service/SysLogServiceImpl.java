@@ -10,6 +10,7 @@ import com.efficient.logs.api.SysLogService;
 import com.efficient.logs.dao.SysLogMapper;
 import com.efficient.logs.model.entity.SysLog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

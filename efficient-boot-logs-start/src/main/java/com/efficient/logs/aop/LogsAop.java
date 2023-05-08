@@ -16,6 +16,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +39,8 @@ public class LogsAop {
     private SysLogService logService;
     @Autowired
     private LogsProperties logsProperties;
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
     public static final TransmittableThreadLocal<Long> START_TIME = new TransmittableThreadLocal<>();
     private static final String REQUEST_NORMAL_FORMAT = "\n=============\nip:%s\nurl:%s\ncontroller:%s\nargs:%s\ntoken:%s\nreturn:%s\ntime:%d\n请求成功\n=============";
@@ -111,6 +114,7 @@ public class LogsAop {
                 // 获取操作
                 Log log = method.getAnnotation(Log.class);
                 if (logsProperties.isDb() && Objects.nonNull(log)) {
+                    publisher.publishEvent(log);
                     logService.saveLog(log, ip, requestUrl, argsStr, resultCode, returnValue, expStr);
                 }
             } catch (Exception e) {
