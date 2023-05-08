@@ -114,7 +114,7 @@ public class LogsAop {
                 // 获取操作
                 Log log = method.getAnnotation(Log.class);
                 if (logsProperties.isDb() && Objects.nonNull(log)) {
-                    publisher.publishEvent(log);
+                    // publisher.publishEvent(log);
                     logService.saveLog(log, ip, requestUrl, argsStr, resultCode, returnValue, expStr);
                 }
             } catch (Exception e) {
