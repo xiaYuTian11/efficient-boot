@@ -85,11 +85,6 @@ public class LogsAop {
                 String className = joinPoint.getTarget().getClass().getName();
                 // 获取切入点所在的方法
                 Method method = signature.getMethod();
-                // 获取操作
-                Log log = method.getAnnotation(Log.class);
-                if (Objects.isNull(log)) {
-                    return;
-                }
                 Object[] args = joinPoint.getArgs();
                 String argsStr = JackSonUtil.toJson(args);
 
@@ -112,7 +107,10 @@ public class LogsAop {
                 } else {
                     LOGGER.info(String.format(REQUEST_NORMAL_FORMAT, ip, requestUrl, className, argsStr, token, returnValue, (endTime - START_TIME.get())));
                 }
-                if (logsProperties.isDb()) {
+
+                // 获取操作
+                Log log = method.getAnnotation(Log.class);
+                if (logsProperties.isDb() && Objects.nonNull(log)) {
                     logService.saveLog(log, ip, requestUrl, argsStr, resultCode, returnValue, expStr);
                 }
             } catch (Exception e) {
