@@ -1,4 +1,4 @@
-package com.efficient.idempotence.annotation;
+package com.efficient.rate.annotation;
 
 import java.lang.annotation.*;
 
@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Idempotence {
+public @interface RateLimit {
     /**
      * 防重复操作过期时间,默认1s
      */

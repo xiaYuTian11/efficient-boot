@@ -1,4 +1,4 @@
-package com.efficient.idempotence.interceptor;
+package com.efficient.rate.interceptor;
 
 import cn.hutool.core.util.StrUtil;
 import com.efficient.cache.api.CacheUtil;
@@ -6,9 +6,9 @@ import com.efficient.common.result.Result;
 import com.efficient.common.result.ResultEnum;
 import com.efficient.common.util.JackSonUtil;
 import com.efficient.common.util.WebUtil;
-import com.efficient.idempotence.annotation.Idempotence;
-import com.efficient.idempotence.constant.IdempotenceConstant;
-import com.efficient.idempotence.properties.IdempotenceProperties;
+import com.efficient.rate.annotation.RateLimit;
+import com.efficient.rate.constant.RateConstant;
+import com.efficient.rate.properties.RateProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -27,16 +27,16 @@ import java.util.Objects;
  * @since 2023/1/16 16:16
  */
 @Component
-public class IdempotenceInterceptor implements HandlerInterceptor {
+public class RateInterceptor implements HandlerInterceptor {
     @Autowired
     private CacheUtil cacheUtil;
     @Autowired
-    private IdempotenceProperties properties;
+    private RateProperties properties;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestURI = request.getRequestURI();
-        String token = request.getHeader(IdempotenceConstant.TOKEN);
+        String token = request.getHeader(RateConstant.TOKEN);
         String ip = WebUtil.getIP(request);
         if (StrUtil.isBlank(token)) {
             token = "not_token";
@@ -51,7 +51,7 @@ public class IdempotenceInterceptor implements HandlerInterceptor {
             return false;
         }
         boolean global = properties.isGlobal();
-        Idempotence idempotence = method.getMethodAnnotation(Idempotence.class);
+        RateLimit idempotence = method.getMethodAnnotation(RateLimit.class);
         long expireTime;
         if (global) {
             expireTime = properties.getExpireTime();
@@ -64,16 +64,16 @@ public class IdempotenceInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        Long obj = cacheUtil.get(IdempotenceConstant.IDEMPOTENCE_CACHE_PRE, str);
+        Long obj = cacheUtil.get(RateConstant.IDEMPOTENCE_CACHE_PRE, str);
         long currentTimeMillis = System.currentTimeMillis();
         if (Objects.nonNull(obj)) {
             if (currentTimeMillis - obj <= expireTime) {
                 this.returnJson(response, ResultEnum.NOT_IDEMPOTENCE);
-                cacheUtil.put(IdempotenceConstant.IDEMPOTENCE_CACHE_PRE, str, currentTimeMillis, (int) (expireTime / 1000));
+                cacheUtil.put(RateConstant.IDEMPOTENCE_CACHE_PRE, str, currentTimeMillis, (int) (expireTime / 1000));
                 return false;
             }
         }
-        cacheUtil.put(IdempotenceConstant.IDEMPOTENCE_CACHE_PRE, str, currentTimeMillis, (int) (expireTime / 1000));
+        cacheUtil.put(RateConstant.IDEMPOTENCE_CACHE_PRE, str, currentTimeMillis, (int) (expireTime / 1000));
 
         return true;
     }

@@ -1,6 +1,6 @@
-package com.efficient.idempotence.config;
+package com.efficient.rate.config;
 
-import com.efficient.idempotence.properties.IdempotenceProperties;
+import com.efficient.rate.properties.RateProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Configuration;
  * @since 2022/9/5 15:02
  */
 @Configuration
-@EnableConfigurationProperties(IdempotenceProperties.class)
-public class IdempotenceConfig {
+@EnableConfigurationProperties(RateProperties.class)
+public class RateConfig {
 
     @Autowired
-    private IdempotenceProperties idempotenceProperties;
+    private RateProperties idempotenceProperties;
 
 }
