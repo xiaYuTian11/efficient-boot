@@ -123,7 +123,8 @@ under the License.
     </server>
     -->
 	<server>
-		<id>sonatype</id>
+<!--		<id>sonatype</id>-->
+		<id>ossrh</id>
 		<username>tanmw.top</username>
 		<password>Tmw@2998662089</password>
 	</server>
