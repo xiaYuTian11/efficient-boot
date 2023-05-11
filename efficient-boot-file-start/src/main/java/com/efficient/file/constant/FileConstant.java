@@ -6,6 +6,7 @@ package com.efficient.file.constant;
  */
 public class FileConstant {
     public static final String POINT = ".";
+    public static final String HORIZONTAL_BAR = "-";
 
     public static final String UPLOAD_LINE = "/upload/";
     public static final String DOWNLOAD_LINE = "/download/";

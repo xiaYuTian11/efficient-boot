@@ -2,6 +2,7 @@ package com.efficient.file.service;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.NumberUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.efficient.common.result.Result;
 import com.efficient.file.api.FileService;
@@ -22,8 +23,7 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.Objects;
 
-import static com.efficient.file.constant.FileConstant.POINT;
-import static com.efficient.file.constant.FileConstant.UPLOAD_LINE;
+import static com.efficient.file.constant.FileConstant.*;
 
 /**
  * 本地 文件操作 服务类
@@ -56,6 +56,9 @@ public class LocalFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFile
             String suffix = originalFilename.substring(originalFilename.lastIndexOf(POINT));
             basePath += PathUtil.getFileUrlFolder(suffix);
         }
+        if (fileProperties.getLocal().isAddDatePrefix()) {
+            basePath += DateUtil.format(new Date(), "/yyyy/MM/dd/");
+        }
 
         // 创建新的文件
         File fileExist = new File(basePath);
@@ -70,7 +73,21 @@ public class LocalFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFile
             if (unique) {
                 FileUtil.del(new File(basePath + File.separator + fileName));
             } else {
-                String name = fileName.substring(0, fileName.lastIndexOf(POINT)) + DateUtil.format(new Date(), "yyyyMMddHHmmssSSS");
+                String name;
+                int lastIndexOf = fileName.lastIndexOf(HORIZONTAL_BAR);
+                int fileNum = 1;
+                String nameDefault = fileName.substring(0, fileName.lastIndexOf(POINT)) + HORIZONTAL_BAR + fileNum;
+                if (lastIndexOf > 0) {
+                    String subStr = fileName.substring(lastIndexOf + 1, fileName.lastIndexOf(POINT));
+                    if (NumberUtil.isNumber(subStr)) {
+                        fileNum = NumberUtil.binaryToInt(subStr) + 1;
+                        name = fileName.substring(0, lastIndexOf) + HORIZONTAL_BAR + fileNum;
+                    } else {
+                        name = nameDefault;
+                    }
+                } else {
+                    name = nameDefault;
+                }
                 fileName = name + Objects.requireNonNull(fileName).substring(fileName.lastIndexOf(POINT));
             }
         }
@@ -105,7 +122,7 @@ public class LocalFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFile
     }
 
     @Override
-    public InputStream getFile(SysFileInfo sysFileInfo) throws Exception{
+    public InputStream getFile(SysFileInfo sysFileInfo) throws Exception {
         if (Objects.isNull(sysFileInfo)) {
             return null;
         }
@@ -129,7 +146,7 @@ public class LocalFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFile
     }
 
     @Override
-    public boolean delete(String fileId)  throws Exception{
+    public boolean delete(String fileId) throws Exception {
         final SysFileInfo sysFileInfo = this.getById(fileId);
         if (Objects.isNull(sysFileInfo)) {
             return true;

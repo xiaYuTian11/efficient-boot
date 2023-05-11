@@ -18,7 +18,7 @@
       "name": "com.efficient.file.tempPath",
       "type": "java.lang.String",
       "description": "临时文件存储路径",
-      "defaultValue": "/efficient/file/",
+      "defaultValue": "/efficient/file/temp/",
       "sourceType": "com.efficient.file.properties.FileProperties"
     },
     {
@@ -26,6 +26,13 @@
       "type": "java.lang.String",
       "description": "文件存储路径",
       "defaultValue": "/efficient/file/",
+      "sourceType": "com.efficient.file.properties.FileProperties.Local"
+    },
+    {
+      "name": "com.efficient.file.local.addDatePrefix",
+      "type": "java.lang.Boolean",
+      "description": "文件存储路径是否添加时间文件,eg:/2022/01/01/demo.sql",
+      "defaultValue": true,
       "sourceType": "com.efficient.file.properties.FileProperties.Local"
     }
   ],
