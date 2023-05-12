@@ -32,7 +32,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <resource.delimiter>@</resource.delimiter>
 
-        <spring-boot.version>2.7.7</spring-boot.version>
+        <spring-boot.version>2.7.11</spring-boot.version>
         <mybatis.plus.version>3.5.1</mybatis.plus.version>
         <mysql.version>8.0.28</mysql.version>
         <pgsql.version>42.4.1</pgsql.version>
