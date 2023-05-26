@@ -28,7 +28,8 @@ CREATE TABLE "public"."sys_file_info" (
   "file_path" text COLLATE "pg_catalog"."default",
   "file_content" bytea,
   "file_size" int8,
-  "create_time" timestamp(6)
+  "create_time" timestamp(6),
+  "remark" text COLLATE "pg_catalog"."default"
 )
 ;
 COMMENT ON COLUMN "public"."sys_file_info"."id" IS '主键';
@@ -39,6 +40,7 @@ COMMENT ON COLUMN "public"."sys_file_info"."file_path" IS '文件类型';
 COMMENT ON COLUMN "public"."sys_file_info"."file_content" IS '文件类型';
 COMMENT ON COLUMN "public"."sys_file_info"."file_size" IS '文件大写，kb单位';
 COMMENT ON COLUMN "public"."sys_file_info"."create_time" IS '创建时间';
+COMMENT ON COLUMN "public"."sys_file_info"."remark" IS '备注';
 COMMENT ON TABLE "public"."sys_file_info" IS '文件信息';
 
 -- ----------------------------

@@ -30,6 +30,7 @@ CREATE TABLE `sys_file_info`  (
   `file_content` longblob NULL COMMENT '文件类型',
   `file_size` bigint(255) NULL DEFAULT NULL COMMENT '文件大写，kb单位',
   `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `remark` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '文件信息' ROW_FORMAT = Dynamic;
 
