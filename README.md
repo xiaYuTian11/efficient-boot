@@ -280,3 +280,34 @@ com:
 ````text
 在通过Get请求时，参数加密完后还需要额外进行一次urlEncode转化，避免一些特殊字符在get请求时传递到后端后发生改变
 ````
+
+### 返回数据脱敏处理
+````java
+/**
+ * 在需要进行脱敏处理的字段上添加注解@Sensitive即可，目前只支持String类型
+ */
+@Data
+public class UserTest {
+    @Sensitive(rule = SensitiveType.USER_ID)
+    private String id;
+    @Sensitive(rule = SensitiveType.CHINESE_NAME)
+    private String name;
+    @Sensitive(rule = SensitiveType.ID_CARD)
+    private String idCard;
+    @Sensitive(rule = SensitiveType.FIXED_PHONE)
+    private String fixedPhone;
+    @Sensitive(rule = SensitiveType.MOBILE_PHONE)
+    private String mobilePhone;
+    @Sensitive(rule = SensitiveType.ADDRESS)
+    private String address;
+    @Sensitive(rule = SensitiveType.EMAIL)
+    private String email;
+    @Sensitive(rule = SensitiveType.PASSWORD)
+    private String password;
+    @Sensitive(rule = SensitiveType.CAR_LICENSE)
+    private String carLicense;
+    @Sensitive(rule = SensitiveType.BANK_CARD)
+    private String bankCard;
+}
+
+````
