@@ -255,3 +255,28 @@ CREATE TABLE `sys_task`  (
 SET FOREIGN_KEY_CHECKS = 1;
 
 ```
+
+## 数据安全模块
+### 请求与返回参数加解密
+#### 依赖
+```xml
+<dependency>
+    <groupId>top.tanmw</groupId>
+    <artifactId>efficient-boot-data-security-start</artifactId>
+    <version>${version}</version>
+</dependency>
+```
+#### 配置
+````yaml
+com:
+  efficient:
+    data:
+      requestEnable: true
+      requestEnableType: node
+      responseEnable: true
+      responseEnableType: node
+````
+#### 注意事项
+````text
+在通过Get请求时，参数加密完后还需要额外进行一次urlEncode转化，避免一些特殊字符在get请求时传递到后端后发生改变
+````
