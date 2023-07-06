@@ -1,10 +1,11 @@
-package com.efficient.param.encrypt.handler;
+package com.efficient.data.security.handler;
 
-import com.efficient.param.encrypt.annotation.ParamDecrypt;
-import com.efficient.param.encrypt.annotation.ParamSkip;
-import com.efficient.param.encrypt.constant.EnableType;
-import com.efficient.param.encrypt.properties.ParamEncryptProperties;
-import com.efficient.param.encrypt.util.AESUtils;
+import com.efficient.common.exception.DataSecurityException;
+import com.efficient.data.security.annotation.RequestDecrypt;
+import com.efficient.data.security.annotation.SecuritySkip;
+import com.efficient.data.security.constant.EnableType;
+import com.efficient.data.security.properties.DataSecurityProperties;
+import com.efficient.data.security.util.AESUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.MethodParameter;
@@ -24,26 +25,28 @@ import java.util.Objects;
  * @author TMW
  * @since 2023/6/8 17:38
  */
-@ConditionalOnProperty(name = "com.efficient.param.requestEnable", havingValue = "true")
+@ConditionalOnProperty(name = "com.efficient.data.requestEnable", havingValue = "true")
 @ControllerAdvice
-public class ParamDecryptRequest extends RequestBodyAdviceAdapter {
+public class RequestDataSecurity extends RequestBodyAdviceAdapter {
     @Autowired
-    private ParamEncryptProperties properties;
+    private DataSecurityProperties properties;
     @Autowired
     private AESUtils aesUtils;
 
     @Override
     public boolean supports(MethodParameter methodParameter, Type targetType, Class<? extends HttpMessageConverter<?>> converterType) {
-        ParamSkip paramSkip = methodParameter.getMethodAnnotation(ParamSkip.class);
-        if (Objects.nonNull(paramSkip) && paramSkip.skipDecrypt()) {
+        SecuritySkip skip = methodParameter.getMethodAnnotation(SecuritySkip.class);
+        if (Objects.nonNull(skip) && skip.skipRequest()) {
             return false;
         }
 
         if (Objects.equals(properties.getRequestEnableType(), EnableType.NEED)) {
-            return methodParameter.hasMethodAnnotation(ParamDecrypt.class);
+            return methodParameter.hasMethodAnnotation(RequestDecrypt.class);
+        } else if (Objects.equals(properties.getRequestEnableType(), EnableType.NODE)) {
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     @Override
@@ -65,8 +68,7 @@ public class ParamDecryptRequest extends RequestBodyAdviceAdapter {
                 }
             };
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new DataSecurityException(e);
         }
-        return super.beforeBodyRead(inputMessage, parameter, targetType, converterType);
     }
 }

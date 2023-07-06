@@ -1,0 +1,46 @@
+{
+  "groups": [
+    {
+      "name": "com.efficient.param",
+      "type": "com.efficient.data.security.properties.DataSecurityProperties",
+      "sourceType": "com.efficient.data.security.config.DataSecurityConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "com.efficient.data.requestEnable",
+      "type": "java.lang.Boolean",
+      "description": "是针对请求参数进行解密",
+      "defaultValue": true,
+      "sourceType": "com.efficient.data.security.properties.DataSecurityProperties"
+    },
+    {
+      "name": "com.efficient.data.requestEnableType",
+      "type": "com.efficient.data.security.constant.EnableType",
+      "description": "加解密是否需要注解配置",
+      "defaultValue": "EnableType.NEED",
+      "sourceType": "com.efficient.data.security.properties.DataSecurityProperties"
+    },
+    {
+      "name": "com.efficient.data.responseEnable",
+      "type": "java.lang.Boolean",
+      "description": "是针对返回值进行加密",
+      "defaultValue": true,
+      "sourceType": "com.efficient.data.security.properties.DataSecurityProperties"
+    },
+    {
+      "name": "com.efficient.data.responseEnableType",
+      "type": "com.efficient.data.security.constant.EnableType",
+      "description": "加解密是否需要注解配置",
+      "defaultValue": "EnableType.NEED",
+      "sourceType": "com.efficient.data.security.properties.DataSecurityProperties"
+    },
+    {
+      "name": "com.efficient.data.encryptKey",
+      "type": "java.lang.String",
+      "description": "加密key",
+      "defaultValue": "http://tanmw.top",
+      "sourceType": "com.efficient.data.security.properties.DataSecurityProperties"
+    }
+  ]
+}

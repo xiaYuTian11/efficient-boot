@@ -17,7 +17,7 @@
         <module>efficient-boot-configs-start</module>
         <module>efficient-boot-auth-start</module>
         <module>efficient-boot-rate-start</module>
-        <module>efficient-boot-parameters-encrypt-start</module>
+        <module>efficient-boot-data-security-start</module>
     </modules>
     <groupId>top.tanmw</groupId>
     <artifactId>efficient-boot</artifactId>
@@ -210,6 +210,11 @@
             <dependency>
                 <groupId>top.tanmw</groupId>
                 <artifactId>efficient-boot-rate-start</artifactId>
+                <version>${efficient-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.tanmw</groupId>
+                <artifactId>efficient-boot-data-security-start</artifactId>
                 <version>${efficient-boot.version}</version>
             </dependency>
 

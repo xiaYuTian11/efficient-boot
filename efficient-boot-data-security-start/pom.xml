@@ -9,7 +9,7 @@
         <version>0.6.1</version>
     </parent>
 
-    <artifactId>efficient-boot-parameters-encrypt-start</artifactId>
+    <artifactId>efficient-boot-data-security-start</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -19,6 +19,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>top.tanmw</groupId>
+            <artifactId>efficient-boot-common</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <scope>provided</scope>
@@ -26,6 +30,10 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
         </dependency>
     </dependencies>
 </project>

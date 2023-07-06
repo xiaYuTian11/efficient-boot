@@ -1,6 +1,6 @@
-package com.efficient.param.encrypt.config;
+package com.efficient.data.security.config;
 
-import com.efficient.param.encrypt.properties.ParamEncryptProperties;
+import com.efficient.data.security.properties.DataSecurityProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 2023/6/8 17:09
  */
 @Configuration
-@EnableConfigurationProperties(ParamEncryptProperties.class)
-public class ParamEncryptConfig {
+@EnableConfigurationProperties(DataSecurityProperties.class)
+public class DataSecurityConfig {
 
 }

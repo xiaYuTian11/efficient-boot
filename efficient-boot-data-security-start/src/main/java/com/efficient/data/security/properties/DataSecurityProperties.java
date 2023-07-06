@@ -1,6 +1,6 @@
-package com.efficient.param.encrypt.properties;
+package com.efficient.data.security.properties;
 
-import com.efficient.param.encrypt.constant.EnableType;
+import com.efficient.data.security.constant.EnableType;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -8,9 +8,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author TMW
  * @since 2023/6/8 16:57
  */
-@ConfigurationProperties("com.efficient.param")
+@ConfigurationProperties("com.efficient.data")
 @Data
-public class ParamEncryptProperties {
+public class DataSecurityProperties {
 
     /**
      * 是否针对请求参数进行解密

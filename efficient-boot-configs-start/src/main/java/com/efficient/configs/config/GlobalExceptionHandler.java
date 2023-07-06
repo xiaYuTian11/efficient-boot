@@ -1,5 +1,6 @@
 package com.efficient.configs.config;
 
+import com.efficient.common.exception.DataSecurityException;
 import com.efficient.common.result.Result;
 import com.efficient.common.result.ResultEnum;
 import org.slf4j.Logger;
@@ -32,18 +33,9 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
     public static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler({Exception.class})
+    @ExceptionHandler({Exception.class,Throwable.class})
     @ResponseBody
     public Result<?> handler(Exception e) {
-        LOGGER.error("error: {}", e.getMessage(), e);
-        StringWriter sw = new StringWriter();
-        e.printStackTrace(new PrintWriter(sw));
-        return Result.build(ResultEnum.ERROR, sw.toString());
-    }
-
-    @ExceptionHandler({Throwable.class})
-    @ResponseBody
-    public Result<?> handler(Throwable e) {
         LOGGER.error("error: {}", e.getMessage(), e);
         StringWriter sw = new StringWriter();
         e.printStackTrace(new PrintWriter(sw));
@@ -59,6 +51,10 @@ public class GlobalExceptionHandler {
     public Result<?> handler(ConstraintViolationException ex) {
         String message = ex.getConstraintViolations().stream().map(ConstraintViolation::getMessage).collect(Collectors.joining());
         return validateResultFormat(message);
+    }
+
+    private <T extends Throwable> Result<?> validateResultFormat(String message) {
+        return Result.build(ResultEnum.PARA_ERROR, message);
     }
 
     /**
@@ -113,8 +109,13 @@ public class GlobalExceptionHandler {
         return Result.build(ResultEnum.ERROR, String.format("参数格式无效:%s", ex));
     }
 
-    private <T extends Throwable> Result<?> validateResultFormat(String message) {
-        return Result.build(ResultEnum.PARA_ERROR, message);
+    /**
+     * Http消息不可读异常返回特定的信息
+     */
+    @ExceptionHandler(DataSecurityException.class)
+    @ResponseBody
+    public Result<?> dataSecurityException(DataSecurityException ex) {
+        return Result.build(ResultEnum.DATA_SECURITY);
     }
 
 }

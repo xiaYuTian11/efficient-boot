@@ -1,4 +1,4 @@
-package com.efficient.param.encrypt.constant;
+package com.efficient.data.security.constant;
 
 /**
  * 加解密生效方式

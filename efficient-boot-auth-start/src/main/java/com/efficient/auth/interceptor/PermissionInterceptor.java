@@ -13,6 +13,7 @@ import com.efficient.common.result.Result;
 import com.efficient.common.result.ResultConstant;
 import com.efficient.common.result.ResultEnum;
 import com.efficient.common.util.JackSonUtil;
+import com.efficient.common.util.RenderJson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -50,7 +51,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
             method = (HandlerMethod) handler;
         } catch (ClassCastException e) {
             // log.error(e.getMessage(), e);
-            this.returnJson(response, AuthResultEnum.REQUEST_PATH_ERROR);
+            RenderJson.returnJson(response, AuthResultEnum.REQUEST_PATH_ERROR);
             return false;
         }
         // 用户权限注解
@@ -65,14 +66,14 @@ public class PermissionInterceptor implements HandlerInterceptor {
         String token = request.getHeader(AuthConstant.TOKEN);
         // header中没有token
         if (StrUtil.isBlank(token)) {
-            this.returnJson(response, AuthResultEnum.NOT_LOGIN);
+            RenderJson.returnJson(response, AuthResultEnum.NOT_LOGIN);
             return false;
         }
         // 根据token查询
         String jwtToken = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token);
         String subject = jwtUtil.validateToken(jwtToken);
         if (StrUtil.isBlank(subject)) {
-            this.returnJson(response, AuthResultEnum.NOT_LOGIN);
+            RenderJson.returnJson(response, AuthResultEnum.NOT_LOGIN);
             return false;
         }
         if (jwtUtil.isNeedUpdate(jwtToken)) {
@@ -81,7 +82,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
         }
         UserTicket userTicket = JackSonUtil.toObject(subject, UserTicket.class);
         if (userTicket == null) {
-            this.returnJson(response, AuthResultEnum.NOT_LOGIN);
+            RenderJson.returnJson(response, AuthResultEnum.NOT_LOGIN);
             return false;
         }
         // 刷新用户信息保留时间
@@ -93,7 +94,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
         }
         final boolean checkPermission = permissionCheck.checkPermission(permission, userTicket);
         if (!checkPermission) {
-            this.returnJson(response, ResultEnum.NOT_PERMISSION);
+            RenderJson.returnJson(response, ResultEnum.NOT_PERMISSION);
             return false;
         }
         // 放入上下文
@@ -125,22 +126,6 @@ public class PermissionInterceptor implements HandlerInterceptor {
     public static void init(PermissionCheck permissionCheck) {
         PermissionInterceptor.permissionCheck = permissionCheck;
     }
-
-    /**
-     * 返回前端信息
-     *
-     * @param response
-     * @param resultEnum
-     * @throws IOException
-     */
-    private void returnJson(HttpServletResponse response, ResultConstant resultEnum) throws IOException {
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json; charset=utf-8");
-        PrintWriter out = response.getWriter();
-        out.append(JackSonUtil.toJson(Result.build(resultEnum)));
-        out.close();
-    }
-
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         RequestHolder.remove();
