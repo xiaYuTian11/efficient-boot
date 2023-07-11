@@ -1,9 +1,59 @@
 # efficient
 
 基于springboot的二次封装框架
-
+```text
 开发使用可以查看demo工程：https://github.com/xiaYuTian11/xxx-project
 配套的代码生成器地址可以查看：https://github.com/xiaYuTian11/efficient-generator
+```
+
+- [efficient](#efficient)
+  - [引入依赖](#%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96)
+  - [安装依赖](#%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96)
+  - [指定maven仓库](#%E6%8C%87%E5%AE%9Amaven%E4%BB%93%E5%BA%93)
+  - [修改版本](#%E4%BF%AE%E6%94%B9%E7%89%88%E6%9C%AC)
+  - [发布](#%E5%8F%91%E5%B8%83)
+  - [权限认证模块](#%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81%E6%A8%A1%E5%9D%97)
+    - [依赖](#%E4%BE%9D%E8%B5%96)
+    - [配置](#%E9%85%8D%E7%BD%AE)
+  - [缓存模块](#%E7%BC%93%E5%AD%98%E6%A8%A1%E5%9D%97)
+    - [依赖](#%E4%BE%9D%E8%B5%96-1)
+    - [配置](#%E9%85%8D%E7%BD%AE-1)
+    - [使用](#%E4%BD%BF%E7%94%A8)
+  - [通用模块](#%E9%80%9A%E7%94%A8%E6%A8%A1%E5%9D%97)
+    - [依赖](#%E4%BE%9D%E8%B5%96-2)
+  - [配置模块](#%E9%85%8D%E7%BD%AE%E6%A8%A1%E5%9D%97)
+    - [依赖](#%E4%BE%9D%E8%B5%96-3)
+  - [文件上传下载模块](#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD%E6%A8%A1%E5%9D%97)
+    - [依赖](#%E4%BE%9D%E8%B5%96-4)
+    - [配置](#%E9%85%8D%E7%BD%AE-2)
+    - [建表语句](#%E5%BB%BA%E8%A1%A8%E8%AF%AD%E5%8F%A5)
+  - [流量控制](#%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6)
+    - [依赖](#%E4%BE%9D%E8%B5%96-5)
+    - [配置](#%E9%85%8D%E7%BD%AE-3)
+  - [日志模块](#%E6%97%A5%E5%BF%97%E6%A8%A1%E5%9D%97)
+    - [依赖](#%E4%BE%9D%E8%B5%96-6)
+    - [配置](#%E9%85%8D%E7%BD%AE-4)
+    - [使用](#%E4%BD%BF%E7%94%A8-1)
+    - [建表sql](#%E5%BB%BA%E8%A1%A8sql)
+  - [swagger模块](#swagger%E6%A8%A1%E5%9D%97)
+    - [依赖](#%E4%BE%9D%E8%B5%96-7)
+    - [配置](#%E9%85%8D%E7%BD%AE-5)
+  - [定时任务模块](#%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A8%A1%E5%9D%97)
+    - [依赖](#%E4%BE%9D%E8%B5%96-8)
+    - [配置](#%E9%85%8D%E7%BD%AE-6)
+    - [使用](#%E4%BD%BF%E7%94%A8-2)
+  - [数据安全模块](#%E6%95%B0%E6%8D%AE%E5%AE%89%E5%85%A8%E6%A8%A1%E5%9D%97)
+    - [依赖](#%E4%BE%9D%E8%B5%96-9)
+    - [Api数据加密](#api%E6%95%B0%E6%8D%AE%E5%8A%A0%E5%AF%86)
+      - [配置](#%E9%85%8D%E7%BD%AE-7)
+    - [Db数据加密](#db%E6%95%B0%E6%8D%AE%E5%8A%A0%E5%AF%86)
+      - [配置](#%E9%85%8D%E7%BD%AE-8)
+      - [注意事项](#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)
+    - [返回数据脱敏处理](#%E8%BF%94%E5%9B%9E%E6%95%B0%E6%8D%AE%E8%84%B1%E6%95%8F%E5%A4%84%E7%90%86)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+
 
 ## 引入依赖
 
