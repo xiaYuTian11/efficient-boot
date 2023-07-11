@@ -15,7 +15,7 @@ public class RateProperties {
      */
     private boolean global = false;
     /**
-     * 全局幂等性校验间隔时间，设置后，com.efficient.idempotence.annotation.Idempotence的过期时间将会失效,最低一秒钟
+     * 全局幂等性校验间隔时间，设置后，com.efficient.rate.annotation.RateLimit的过期时间将会失效,最低一秒钟
      */
     private long expireTime = 1000;
 

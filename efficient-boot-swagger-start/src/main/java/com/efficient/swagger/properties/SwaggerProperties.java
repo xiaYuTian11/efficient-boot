@@ -10,10 +10,25 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("com.efficient.swagger")
 @Data
 public class SwaggerProperties {
-    private Boolean enable;
+    /**
+     * 是否启用
+     */
+    private Boolean enable = false;
+    /**
+     * 标题
+     */
     private String title;
+    /**
+     * 描述
+     */
     private String description;
+    /**
+     * 服务条款网址
+     */
     private String termsOfServiceUrl;
-    private String version;
+    /**
+     * 版本号
+     */
+    private String version = "1.0.0";
 
 }

@@ -2,6 +2,20 @@
 
 基于springboot的二次封装框架
 
+开发使用可以查看demo工程：https://github.com/xiaYuTian11/xxx-project
+配套的代码生成器地址可以查看：https://github.com/xiaYuTian11/efficient-generator
+
+## 引入依赖
+
+```xml
+
+<parent>
+    <groupId>top.tanmw</groupId>
+    <artifactId>efficient-boot</artifactId>
+    <version>0.8.2</version>
+</parent>
+```
+
 ## 安装依赖
 
 ```text
@@ -49,7 +63,88 @@ mvn clean deploy -P oss-release -Dmaven.test.skip=true
 
 ## 权限认证模块
 
+### 依赖
+
+```xml
+
+<dependency>
+    <groupId>top.tanmw</groupId>
+    <artifactId>efficient-boot-auth-start</artifactId>
+    <version>${efficient.version}</version>
+</dependency>
+```
+
+### 配置
+
+```yaml
+com:
+  efficient:
+    auth:
+      ## 是否启用验证码
+      captcha: false
+      ## jwt secret
+      secret: qwertyuiop0987654321
+      ## 重试次数,默认-1，重试次数无限制
+      retryCount: -1
+      ## 锁定时间，分钟
+      lockTime: 30
+      ## 同一账号最大在线人数
+      maxOnline: -1
+      ## 最大允许存活时间
+      tokenLive: 3600
+      ## 密码是否加密传输
+      passwordEncrypt: false
+      ## 密码是否加盐
+      enableSalt: false
+      ## 盐值
+      saltValue: "1809"
+```
+
 ## 缓存模块
+
+### 依赖
+
+```xml
+
+<dependency>
+    <groupId>top.tanmw</groupId>
+    <artifactId>efficient-boot-cache-start</artifactId>
+</dependency>
+        <!-- ehcache 依赖-->
+<dependency>
+<groupId>net.sf.ehcache</groupId>
+<artifactId>ehcache</artifactId>
+</dependency>
+        <!-- redis 依赖-->
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-data-redis</artifactId>
+</dependency>
+```
+
+### 配置
+
+```yaml
+## 配置redis缓存需要额外配置spring的redis配置
+spring:
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+    timeout: 3000
+com:
+  efficient:
+    cache:
+      active: redis
+```
+
+### 使用
+
+````java
+    @Autowired
+private CacheUtil cacheUtil;
+````
 
 ehcache.xml,目前必备的几个缓存配置
 
@@ -124,9 +219,58 @@ ehcache.xml,目前必备的几个缓存配置
 
 ## 通用模块
 
+### 依赖
+
+```xml
+
+<dependency>
+    <groupId>top.tanmw</groupId>
+    <artifactId>efficient-boot-common</artifactId>
+</dependency>
+```
+
 ## 配置模块
 
+### 依赖
+
+```xml
+
+<dependency>
+    <groupId>top.tanmw</groupId>
+    <artifactId>efficient-boot-configs-start</artifactId>
+</dependency>
+```
+
 ## 文件上传下载模块
+
+### 依赖
+
+```xml
+
+<dependency>
+    <groupId>top.tanmw</groupId>
+    <artifactId>efficient-boot-file-start</artifactId>
+</dependency>
+```
+
+### 配置
+
+```yaml
+com:
+  efficient:
+    file:
+      ## 存储方式，local，db，minio
+      active: local
+      ## 临时存储路径
+      tempPath: "/temp"
+      local:
+        ## 本地存储路径
+        localPath: "/upload"
+        ## 是否添加时间戳
+        addDatePrefix: true
+```
+
+### 建表语句
 
 ```sql
 /*
@@ -168,29 +312,71 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 ```
 
-## 幂等性模块
+## 流量控制
 
-## 日志模块
+### 依赖
+
+```xml
+
+<dependency>
+    <groupId>top.tanmw</groupId>
+    <artifactId>efficient-boot-rate-start</artifactId>
+</dependency>
+```
 
 ### 配置
 
-相关配置说明可以点击查看源码注释
+```yaml
+com:
+  efficient:
+    ## 是否启用全局幂等性校验,启用后所有接口都会校验幂等性
+    rate: true
+    ## 全局幂等性校验间隔时间，设置后，com.efficient.rate.annotation.RateLimit的过期时间将会失效,最低一秒钟,单位毫秒，非全局接口限流的情况下，请在相应接口添加@RateLimit注解
+    expireTime: 1000
+```
+
+## 日志模块
+
+### 依赖
+
+```xml
+
+<dependency>
+    <groupId>top.tanmw</groupId>
+    <artifactId>efficient-boot-logs-start</artifactId>
+</dependency>
+```
+
+### 配置
 
 ```yaml
 com:
   efficient:
     logs:
+      ## 日志文件名称
       name: xxx-project
+      ## 日志等级
       level: info
+      ## 日志存储路径
       path: /home/logs/xxx-project/
       sql:
+        ## 是否展示方法名
+        showMethod: false
+        ## 是否展示SQL
         showSql: true
+        ## 是否展示执行耗时
+        showElapsed: false
+        ## 是否展示结果行数
+        showRows: false
+        ## sql日志等级
         level: debug
+        ## dao包的路径
         daoPackage: com.zenith.xxx.dao
+      ## 是否存储数据库
       db: false
 ```
 
-### 注解
+### 使用
 
 ```java
 /**
@@ -253,8 +439,56 @@ SET FOREIGN_KEY_CHECKS = 1;
 ```
 
 ## swagger模块
-
+### 依赖
+```xml
+<dependency>
+    <groupId>top.tanmw</groupId>
+    <artifactId>efficient-boot-swagger-start</artifactId>
+</dependency>
+```
+### 配置
+```yaml
+com:
+  efficient:
+    swagger:
+      enable: true
+      version: 1.0.1
+      description: "描述"
+      title: "标题"
+      termsOfServiceUrl: "服务网址"
+```
 ## 定时任务模块
+### 依赖
+```xml
+<dependency>
+    <groupId>top.tanmw</groupId>
+    <artifactId>efficient-boot-task-start</artifactId>
+</dependency>
+```
+### 配置
+```yaml
+com:
+  efficient:
+    task:
+      enable: true
+```
+### 使用
+```java
+/**
+ * 需要继承QuartzJobBean类，并在数据库中进行配置
+ * INSERT INTO "public"."sys_task" ("id", "task_code", "task_describe", "task_class", "enabled", "cron_expression", "create_time", "task_status") VALUES ('1', 'test', '测试定时任务', 'com.zenith.xxx.service.task.TaskTest', 1, '1 * * * * ?', '2022-08-29 17:04:10', 1);
+
+ */
+@Slf4j
+public class TaskTest extends QuartzJobBean {
+
+    @Override
+    protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
+        log.info("测试定时任务");
+    }
+}
+
+```
 
 ```sql
 /*
@@ -298,9 +532,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 ## 数据安全模块
 
-### 请求与返回参数加解密
-
-#### 依赖
+### 依赖
 
 ```xml
 
@@ -310,23 +542,29 @@ SET FOREIGN_KEY_CHECKS = 1;
     <version>${version}</version>
 </dependency>
 ```
-
+### Api数据加密
 #### 配置
-
 ````yaml
 com:
   efficient:
     security:
-    api:
-      ## 请求及返回相关数据加解密配置
-      requestEnable: true
-      requestEnableType: node
-      responseEnable: true
-      responseEnableType: node
-    db:
-      ## 数据库存储相关数据加解密
-      dbEncryptEnable: true
-      dbEncryptModelPath: com.zenith.xxx.model.entity
+        api:
+          ## 请求及返回相关数据加解密配置
+          requestEnable: true
+          requestEnableType: node
+          responseEnable: true
+          responseEnableType: node
+    
+````
+### Db数据加密
+#### 配置
+````yaml
+com:
+  efficient:
+    security:
+        db:
+          dbEncryptEnable: true
+          dbEncryptModelPath: com.zenith.xxx.model.entity
 ````
 
 #### 注意事项
