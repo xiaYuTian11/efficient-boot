@@ -1,10 +1,8 @@
-package com.efficient.data.security.util;
+package com.efficient.data.security.db.crypt;
 
-import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
-import com.efficient.data.security.properties.DataSecurityProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
@@ -20,23 +18,25 @@ import java.util.Base64;
  */
 @Component
 @Slf4j
-public class AESUtils {
+public class DbAES implements Crypt {
     private static final String AES_ALGORITHM = "AES/ECB/PKCS5Padding";
-    @Autowired
-    private DataSecurityProperties properties;
+    public static String dbEncryptKey;
+    public static boolean dbEncryptEnable;
+    public static String dbEncryptModelPath;
 
     /**
      * AES加密
      */
     public String encrypt(String data) {
-        if (StrUtil.isBlank(data)) {
+        if (!dbEncryptEnable || StrUtil.isBlank(data)) {
             return data;
         }
         try {
-            Cipher cipher = getCipher(properties.getEncryptKey(), Cipher.ENCRYPT_MODE);
+            Cipher cipher = getCipher(dbEncryptKey, Cipher.ENCRYPT_MODE);
             return Base64.getEncoder().encodeToString(cipher.doFinal(data.getBytes(StandardCharsets.UTF_8)));
         } catch (Exception e) {
-            throw new RuntimeException("数据加解密异常:" + data, e);
+            log.error("DB层数据加解密异常:" + data, e);
+            return data;
         }
     }
 
@@ -53,30 +53,31 @@ public class AESUtils {
     /**
      * AES解密
      */
-    public byte[] decrypt(byte[] data) {
-        if (ArrayUtil.isEmpty(data)) {
+    public String decrypt(String data) {
+        if (!dbEncryptEnable || StrUtil.isBlank(data)) {
             return data;
         }
         try {
-            Cipher cipher = getCipher(properties.getEncryptKey(), Cipher.DECRYPT_MODE);
-            return cipher.doFinal(Base64.getDecoder().decode(data));
+            Cipher cipher = getCipher(dbEncryptKey, Cipher.DECRYPT_MODE);
+            return new String(cipher.doFinal(Base64.getDecoder().decode(data.getBytes(StandardCharsets.UTF_8))));
         } catch (Exception e) {
-            throw new RuntimeException("数据加解密异常:" + new String(data), e);
+            log.error("DB层数据加解密异常:" + data, e);
+            return data;
         }
     }
 
-    /**
-     * AES解密
-     */
-    public String decrypt(String data) {
-        if (StrUtil.isBlank(data)) {
-            return data;
-        }
-        try {
-            Cipher cipher = getCipher(properties.getEncryptKey(), Cipher.DECRYPT_MODE);
-            return new String(cipher.doFinal(Base64.getDecoder().decode(data.getBytes(StandardCharsets.UTF_8))));
-        } catch (Exception e) {
-            throw new RuntimeException("数据加解密异常:" + data, e);
-        }
+    @Value("${com.efficient.data.dbEncryptKey:http://tanmw.top}")
+    private void setDbEncryptKey(String dbEncryptKey) {
+        DbAES.dbEncryptKey = dbEncryptKey;
+    }
+
+    @Value("${com.efficient.data.dbEncryptEnable:false}")
+    private void setDbEncryptEnable(boolean dbEncryptEnable) {
+        DbAES.dbEncryptEnable = dbEncryptEnable;
+    }
+
+    @Value("${com.efficient.data.dbEncryptModelPath:top.tanmw.demo.model}")
+    private void setDbEncryptModelPath(String dbEncryptModelPath) {
+        DbAES.dbEncryptModelPath = dbEncryptModelPath;
     }
 }

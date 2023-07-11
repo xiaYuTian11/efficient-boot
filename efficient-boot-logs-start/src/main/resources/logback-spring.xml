@@ -6,6 +6,8 @@
 -->
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
     <springProperty scope="context" name="log.level" source="com.efficient.logs.level" defaultValue="info"/>
+    <springProperty scope="context" name="log.sqlLevel" source="com.efficient.logs.sqlLevel" defaultValue="debug"/>
+    <springProperty scope="context" name="log.daoPackage" source="com.efficient.logs.daoPackage" defaultValue="com.efficient"/>
     <springProperty scope="context" name="logback.logDir" source="com.efficient.logs.path" defaultValue="./logs"/>
     <springProperty scope="context" name="logback.appName" source="com.efficient.logs.name" defaultValue="log"/>
 
@@ -104,8 +106,8 @@
         <appender-ref ref="infoLog"/>
     </appender>
 
-    <!--    <logger name="com.apache.ibatis" level="TRACE"/>-->
-<!--    <logger name="com.efficient" additivity="true" level="${log.level}"/>-->
+    <logger name="com.efficient" additivity="true" level="${log.sqlLevel}"/>
+    <logger name="${log.daoPackage}" additivity="true" level="${log.sqlLevel}"/>
 
     <!-- 指定最基础的日志输出级别 -->
     <root level="${log.level}">

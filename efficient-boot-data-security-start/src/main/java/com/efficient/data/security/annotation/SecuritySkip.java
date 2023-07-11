@@ -1,9 +1,6 @@
 package com.efficient.data.security.annotation;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * 跳过加解密
@@ -13,6 +10,8 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
+@Inherited
+@Documented
 public @interface SecuritySkip {
     /**
      * 跳过返回参数解密

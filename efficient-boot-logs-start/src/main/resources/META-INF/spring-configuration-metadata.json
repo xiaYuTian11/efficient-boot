@@ -22,6 +22,20 @@
       "sourceType": "com.efficient.logs.properties.LogsProperties"
     },
     {
+      "name": "com.efficient.logs.sqlLevel",
+      "type": "java.lang.String",
+      "description": "sql日志等级",
+      "defaultValue": "debug",
+      "sourceType": "com.efficient.logs.properties.LogsProperties"
+    },
+    {
+      "name": "com.efficient.logs.daoPackage",
+      "type": "java.lang.String",
+      "description": "dao包的路径",
+      "defaultValue": "com.efficient",
+      "sourceType": "com.efficient.logs.properties.LogsProperties"
+    },
+    {
       "name": "com.efficient.logs.name",
       "type": "java.lang.String",
       "description": "日志文件名称前缀",

@@ -19,6 +19,14 @@ public class LogsProperties {
      */
     private String level = "info";
     /**
+     * sql日志等级
+     */
+    private String sqlLevel = "debug";
+    /**
+     * dao包的路径
+     */
+    private String daoPackage = "com.efficient";
+    /**
      * 日志名称
      */
     private String name = "log";

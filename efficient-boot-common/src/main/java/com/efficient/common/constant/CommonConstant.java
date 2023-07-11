@@ -7,4 +7,5 @@ package com.efficient.common.constant;
 public class CommonConstant {
     public static final String TOKEN = "token";
     public static final String UNKNOWN = "unknown";
+    public static final String COMMA = ",";
 }

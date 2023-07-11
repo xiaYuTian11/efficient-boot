@@ -60,6 +60,7 @@
         <java-jwt.version>4.3.0</java-jwt.version>
         <ik-analyzer.version>9.0.0</ik-analyzer.version>
         <minio.version>8.2.1</minio.version>
+        <reflections.version>0.10.2</reflections.version>
     </properties>
 
     <!-- 依赖管理 -->
@@ -243,8 +244,12 @@
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections</artifactId>
+                <version>${reflections.version}</version>
+            </dependency>
         </dependencies>
-
     </dependencyManagement>
 
     <profiles>

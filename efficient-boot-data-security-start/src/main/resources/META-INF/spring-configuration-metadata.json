@@ -41,6 +41,27 @@
       "description": "加密key",
       "defaultValue": "http://tanmw.top",
       "sourceType": "com.efficient.data.security.properties.DataSecurityProperties"
+    },
+    {
+      "name": "com.efficient.data.dbEncryptEnable",
+      "type": "java.lang.Boolean",
+      "description": "加密key",
+      "defaultValue": true,
+      "sourceType": "com.efficient.data.security.properties.DataSecurityProperties"
+    },
+    {
+      "name": "com.efficient.data.dbEncryptKey",
+      "type": "java.lang.String",
+      "description": "Db加密key",
+      "defaultValue": "http://tanmw.top",
+      "sourceType": "com.efficient.data.security.properties.DataSecurityProperties"
+    },
+    {
+      "name": "com.efficient.data.dbEncryptModelPath",
+      "type": "java.lang.String",
+      "description": "加解密的实体类全限定名路径，多个用逗号隔开，比如com.zenith.front.model,会自动加载该路径下需要加解密的类",
+      "defaultValue": "top.tanmw.demo.model",
+      "sourceType": "com.efficient.data.security.properties.DataSecurityProperties"
     }
   ]
 }
