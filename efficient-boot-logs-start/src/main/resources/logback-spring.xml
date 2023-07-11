@@ -6,8 +6,8 @@
 -->
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
     <springProperty scope="context" name="log.level" source="com.efficient.logs.level" defaultValue="info"/>
-    <springProperty scope="context" name="log.sqlLevel" source="com.efficient.logs.sqlLevel" defaultValue="debug"/>
-    <springProperty scope="context" name="log.daoPackage" source="com.efficient.logs.daoPackage" defaultValue="com.efficient"/>
+    <springProperty scope="context" name="log.sqlLevel" source="com.efficient.logs.sql.level" defaultValue="debug"/>
+    <springProperty scope="context" name="log.daoPackage" source="com.efficient.logs.sql.daoPackage" defaultValue="com.efficient"/>
     <springProperty scope="context" name="logback.logDir" source="com.efficient.logs.path" defaultValue="./logs"/>
     <springProperty scope="context" name="logback.appName" source="com.efficient.logs.name" defaultValue="log"/>
 

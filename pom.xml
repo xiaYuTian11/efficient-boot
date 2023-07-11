@@ -21,11 +21,11 @@
     </modules>
     <groupId>top.tanmw</groupId>
     <artifactId>efficient-boot</artifactId>
-    <version>0.8.1</version>
+    <version>0.8.2</version>
     <packaging>pom</packaging>
 
     <properties>
-        <efficient-boot.version>0.8.1</efficient-boot.version>
+        <efficient-boot.version>0.8.2</efficient-boot.version>
         <java.version>1.8</java.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -33,33 +33,31 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <resource.delimiter>@</resource.delimiter>
 
-        <spring-boot.version>2.7.11</spring-boot.version>
-        <mybatis.plus.version>3.5.1</mybatis.plus.version>
-        <mysql.version>8.0.28</mysql.version>
-        <pgsql.version>42.4.1</pgsql.version>
-        <oracle.version>21.5.0.0</oracle.version>
+        <spring-boot.version>2.7.13</spring-boot.version>
+        <mysql.version>8.0.33</mysql.version>
+        <pgsql.version>42.6.0</pgsql.version>
+        <oracle.version>23.2.0.0</oracle.version>
         <dm.version>7.18</dm.version>
         <kingbase.version>8.2.0</kingbase.version>
 
         <aspose-cells.version>21.11</aspose-cells.version>
         <aspose-words.version>21.6</aspose-words.version>
-        <poi.version>5.2.2</poi.version>
+        <poi.version>5.2.3</poi.version>
 
-        <lombok.version>1.18.24</lombok.version>
-        <hutool.version>5.7.20</hutool.version>
-        <guava.version>30.1.1-jre</guava.version>
-        <transmittable.version>2.12.6</transmittable.version>
-        <slf4j.version>1.7.36</slf4j.version>
-        <jooq.version>3.14.8</jooq.version>
-        <mapstruct.version>1.4.2.Final</mapstruct.version>
-        <mybatis-plus.version>3.5.1</mybatis-plus.version>
+        <lombok.version>1.18.28</lombok.version>
+        <hutool.version>5.8.20</hutool.version>
+        <guava.version>32.1.1-jre</guava.version>
+        <transmittable.version>2.14.3</transmittable.version>
+        <jooq.version>3.14.16</jooq.version>
+        <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
         <swagger.version>2.9.2</swagger.version>
 
         <analysis-core.version>1.0.0</analysis-core.version>
         <dbsync.version>1.0.0</dbsync.version>
-        <java-jwt.version>4.3.0</java-jwt.version>
+        <java-jwt.version>4.4.0</java-jwt.version>
         <ik-analyzer.version>9.0.0</ik-analyzer.version>
-        <minio.version>8.2.1</minio.version>
+        <minio.version>8.5.4</minio.version>
         <reflections.version>0.10.2</reflections.version>
     </properties>
 
@@ -88,7 +86,7 @@
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>${mybatis.plus.version}</version>
+                <version>${mybatis-plus.version}</version>
             </dependency>
             <dependency>
                 <groupId>mysql</groupId>

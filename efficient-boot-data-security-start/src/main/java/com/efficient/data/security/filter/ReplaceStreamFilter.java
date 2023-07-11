@@ -27,7 +27,7 @@ import java.util.Map;
  * @author TMW
  * @since 2023/7/5 15:39
  */
-@ConditionalOnProperty(name = "com.efficient.data.requestEnable", havingValue = "true")
+@ConditionalOnProperty(name = "com.efficient.security.api.requestEnable", havingValue = "true")
 @Component
 public class ReplaceStreamFilter implements Filter {
     @Autowired

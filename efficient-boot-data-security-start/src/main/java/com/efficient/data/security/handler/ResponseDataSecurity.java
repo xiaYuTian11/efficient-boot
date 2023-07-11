@@ -24,7 +24,7 @@ import java.util.Objects;
  * @author TMW
  * @since 2023/6/8 17:38
  */
-@ConditionalOnProperty(name = "com.efficient.data.responseEnable", havingValue = "true")
+@ConditionalOnProperty(name = "com.efficient.security.api.responseEnable", havingValue = "true")
 @ControllerAdvice
 @Slf4j
 public class ResponseDataSecurity implements ResponseBodyAdvice<Result> {
@@ -40,9 +40,9 @@ public class ResponseDataSecurity implements ResponseBodyAdvice<Result> {
             return false;
         }
 
-        if (Objects.equals(properties.getRequestEnableType(), EnableType.NEED)) {
+        if (Objects.equals(properties.getApi().getResponseEnableType(), EnableType.NEED)) {
             return methodParameter.hasMethodAnnotation(ResponseEncrypt.class);
-        } else if (Objects.equals(properties.getRequestEnableType(), EnableType.NODE)) {
+        } else if (Objects.equals(properties.getApi().getResponseEnableType(), EnableType.NODE)) {
             return true;
         }
 

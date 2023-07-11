@@ -66,17 +66,17 @@ public class DbAES implements Crypt {
         }
     }
 
-    @Value("${com.efficient.data.dbEncryptKey:http://tanmw.top}")
+    @Value("${com.efficient.security.db.dbEncryptKey:http://tanmw.top}")
     private void setDbEncryptKey(String dbEncryptKey) {
         DbAES.dbEncryptKey = dbEncryptKey;
     }
 
-    @Value("${com.efficient.data.dbEncryptEnable:false}")
+    @Value("${com.efficient.security.db.dbEncryptEnable:false}")
     private void setDbEncryptEnable(boolean dbEncryptEnable) {
         DbAES.dbEncryptEnable = dbEncryptEnable;
     }
 
-    @Value("${com.efficient.data.dbEncryptModelPath:top.tanmw.demo.model}")
+    @Value("${com.efficient.security.db.dbEncryptModelPath:top.tanmw.demo.model}")
     private void setDbEncryptModelPath(String dbEncryptModelPath) {
         DbAES.dbEncryptModelPath = dbEncryptModelPath;
     }

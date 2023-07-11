@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author TMW
  * @since 2022/9/5 15:01
  */
-@ConfigurationProperties("com.efficient.log")
+@ConfigurationProperties("com.efficient.logs")
 @Data
 public class LogsProperties {
     /**
@@ -18,14 +18,7 @@ public class LogsProperties {
      * 日志等级
      */
     private String level = "info";
-    /**
-     * sql日志等级
-     */
-    private String sqlLevel = "debug";
-    /**
-     * dao包的路径
-     */
-    private String daoPackage = "com.efficient";
+
     /**
      * 日志名称
      */

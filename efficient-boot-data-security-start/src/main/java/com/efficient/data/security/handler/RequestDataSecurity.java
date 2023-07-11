@@ -25,7 +25,7 @@ import java.util.Objects;
  * @author TMW
  * @since 2023/6/8 17:38
  */
-@ConditionalOnProperty(name = "com.efficient.data.requestEnable", havingValue = "true")
+@ConditionalOnProperty(name = "com.efficient.security.api.requestEnable", havingValue = "true")
 @ControllerAdvice
 public class RequestDataSecurity extends RequestBodyAdviceAdapter {
     @Autowired
@@ -40,9 +40,9 @@ public class RequestDataSecurity extends RequestBodyAdviceAdapter {
             return false;
         }
 
-        if (Objects.equals(properties.getRequestEnableType(), EnableType.NEED)) {
+        if (Objects.equals(properties.getApi().getRequestEnableType(), EnableType.NEED)) {
             return methodParameter.hasMethodAnnotation(RequestDecrypt.class);
-        } else if (Objects.equals(properties.getRequestEnableType(), EnableType.NODE)) {
+        } else if (Objects.equals(properties.getApi().getRequestEnableType(), EnableType.NODE)) {
             return true;
         }
 

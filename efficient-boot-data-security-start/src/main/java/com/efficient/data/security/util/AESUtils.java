@@ -33,7 +33,7 @@ public class AESUtils {
             return data;
         }
         try {
-            Cipher cipher = getCipher(properties.getEncryptKey(), Cipher.ENCRYPT_MODE);
+            Cipher cipher = getCipher(properties.getApi().getEncryptKey(), Cipher.ENCRYPT_MODE);
             return Base64.getEncoder().encodeToString(cipher.doFinal(data.getBytes(StandardCharsets.UTF_8)));
         } catch (Exception e) {
             throw new RuntimeException("数据加解密异常:" + data, e);
@@ -58,7 +58,7 @@ public class AESUtils {
             return data;
         }
         try {
-            Cipher cipher = getCipher(properties.getEncryptKey(), Cipher.DECRYPT_MODE);
+            Cipher cipher = getCipher(properties.getApi().getEncryptKey(), Cipher.DECRYPT_MODE);
             return cipher.doFinal(Base64.getDecoder().decode(data));
         } catch (Exception e) {
             throw new RuntimeException("数据加解密异常:" + new String(data), e);
@@ -73,7 +73,7 @@ public class AESUtils {
             return data;
         }
         try {
-            Cipher cipher = getCipher(properties.getEncryptKey(), Cipher.DECRYPT_MODE);
+            Cipher cipher = getCipher(properties.getApi().getEncryptKey(), Cipher.DECRYPT_MODE);
             return new String(cipher.doFinal(Base64.getDecoder().decode(data.getBytes(StandardCharsets.UTF_8))));
         } catch (Exception e) {
             throw new RuntimeException("数据加解密异常:" + data, e);

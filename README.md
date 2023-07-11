@@ -1,13 +1,17 @@
 # efficient
+
 基于springboot的二次封装框架
 
 ## 安装依赖
+
 ```text
 mvn -Dmaven.test.skip=true install
 mvn install:install-file    -DgroupId=com.aspose -DartifactId=aspose-cells -Dversion=21.11 -Dpackaging=jar   -Dfile=./aspose-cells-21.11.jar
 mvn install:install-file    -DgroupId=com.aspose -DartifactId=aspose-words -Dversion=21.6 -Dpackaging=jar   -Dfile=./aspose-words-21.11.0-jdk17.jar
 ```
+
 ## 指定maven仓库
+
 ```xml
 
 <repositories>
@@ -32,18 +36,23 @@ mvn install:install-file    -DgroupId=com.aspose -DartifactId=aspose-words -Dver
 ```
 
 ## 修改版本
+
 ```text
 mvn versions:set -DnewVersion=
 ```
 
 ## 发布
+
 ```text
 mvn clean deploy -P oss-release -Dmaven.test.skip=true 
 ```
+
 ## 权限认证模块
 
 ## 缓存模块
+
 ehcache.xml,目前必备的几个缓存配置
+
 ```xml
 
 <?xml version="1.0" encoding="UTF-8"?>
@@ -118,6 +127,7 @@ ehcache.xml,目前必备的几个缓存配置
 ## 配置模块
 
 ## 文件上传下载模块
+
 ```sql
 /*
  Navicat Premium Data Transfer
@@ -158,10 +168,40 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 ```
 
-
 ## 幂等性模块
 
 ## 日志模块
+
+### 配置
+
+相关配置说明可以点击查看源码注释
+
+```yaml
+com:
+  efficient:
+    logs:
+      name: xxx-project
+      level: info
+      path: /home/logs/xxx-project/
+      sql:
+        showSql: true
+        level: debug
+        daoPackage: com.zenith.xxx.dao
+      db: false
+```
+
+### 注解
+
+```java
+/**
+ * 需要在controller的方法上添加@Log注解
+ */
+@Log(logOpt = LogEnum.SAVE)
+
+```
+
+### 建表sql
+
 ```sql
 /*
  Navicat Premium Data Transfer
@@ -212,10 +252,10 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 ```
 
-
 ## swagger模块
 
 ## 定时任务模块
+
 ```sql
 /*
  Navicat Premium Data Transfer
@@ -257,31 +297,46 @@ SET FOREIGN_KEY_CHECKS = 1;
 ```
 
 ## 数据安全模块
+
 ### 请求与返回参数加解密
+
 #### 依赖
+
 ```xml
+
 <dependency>
     <groupId>top.tanmw</groupId>
     <artifactId>efficient-boot-data-security-start</artifactId>
     <version>${version}</version>
 </dependency>
 ```
+
 #### 配置
+
 ````yaml
 com:
   efficient:
-    data:
+    security:
+    api:
+      ## 请求及返回相关数据加解密配置
       requestEnable: true
       requestEnableType: node
       responseEnable: true
       responseEnableType: node
+    db:
+      ## 数据库存储相关数据加解密
+      dbEncryptEnable: true
+      dbEncryptModelPath: com.zenith.xxx.model.entity
 ````
+
 #### 注意事项
+
 ````text
 在通过Get请求时，参数加密完后还需要额外进行一次urlEncode转化，避免一些特殊字符在get请求时传递到后端后发生改变
 ````
 
 ### 返回数据脱敏处理
+
 ````java
 /**
  * 在需要进行脱敏处理的字段上添加注解@Sensitive即可，目前只支持String类型

@@ -8,56 +8,56 @@
   ],
   "properties": [
     {
-      "name": "com.efficient.data.requestEnable",
+      "name": "com.efficient.security.api.requestEnable",
       "type": "java.lang.Boolean",
       "description": "是针对请求参数进行解密",
       "defaultValue": true,
       "sourceType": "com.efficient.data.security.properties.DataSecurityProperties"
     },
     {
-      "name": "com.efficient.data.requestEnableType",
+      "name": "com.efficient.security.api.requestEnableType",
       "type": "com.efficient.data.security.constant.EnableType",
       "description": "加解密是否需要注解配置",
       "defaultValue": "EnableType.NEED",
       "sourceType": "com.efficient.data.security.properties.DataSecurityProperties"
     },
     {
-      "name": "com.efficient.data.responseEnable",
+      "name": "com.efficient.security.api.responseEnable",
       "type": "java.lang.Boolean",
       "description": "是针对返回值进行加密",
       "defaultValue": true,
       "sourceType": "com.efficient.data.security.properties.DataSecurityProperties"
     },
     {
-      "name": "com.efficient.data.responseEnableType",
+      "name": "com.efficient.security.api.responseEnableType",
       "type": "com.efficient.data.security.constant.EnableType",
       "description": "加解密是否需要注解配置",
       "defaultValue": "EnableType.NEED",
       "sourceType": "com.efficient.data.security.properties.DataSecurityProperties"
     },
     {
-      "name": "com.efficient.data.encryptKey",
+      "name": "com.efficient.security.api.encryptKey",
       "type": "java.lang.String",
       "description": "加密key",
       "defaultValue": "http://tanmw.top",
       "sourceType": "com.efficient.data.security.properties.DataSecurityProperties"
     },
     {
-      "name": "com.efficient.data.dbEncryptEnable",
+      "name": "com.efficient.security.db.dbEncryptEnable",
       "type": "java.lang.Boolean",
       "description": "加密key",
       "defaultValue": true,
       "sourceType": "com.efficient.data.security.properties.DataSecurityProperties"
     },
     {
-      "name": "com.efficient.data.dbEncryptKey",
+      "name": "com.efficient.security.db.dbEncryptKey",
       "type": "java.lang.String",
       "description": "Db加密key",
       "defaultValue": "http://tanmw.top",
       "sourceType": "com.efficient.data.security.properties.DataSecurityProperties"
     },
     {
-      "name": "com.efficient.data.dbEncryptModelPath",
+      "name": "com.efficient.security.db.dbEncryptModelPath",
       "type": "java.lang.String",
       "description": "加解密的实体类全限定名路径，多个用逗号隔开，比如com.zenith.front.model,会自动加载该路径下需要加解密的类",
       "defaultValue": "top.tanmw.demo.model",

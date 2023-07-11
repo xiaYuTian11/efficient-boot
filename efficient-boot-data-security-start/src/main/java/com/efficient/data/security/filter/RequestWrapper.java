@@ -45,9 +45,9 @@ public class RequestWrapper extends HttpServletRequestWrapper {
                 return;
             }
 
-            if (Objects.equals(properties.getRequestEnableType(), EnableType.NEED) && Objects.nonNull(method.getAnnotation(RequestDecrypt.class))) {
+            if (Objects.equals(properties.getApi().getRequestEnableType(), EnableType.NEED) && Objects.nonNull(method.getAnnotation(RequestDecrypt.class))) {
                 this.decryptParam();
-            } else if (Objects.equals(properties.getRequestEnableType(), EnableType.NODE)) {
+            } else if (Objects.equals(properties.getApi().getRequestEnableType(), EnableType.NODE)) {
                 this.decryptParam();
             }
         }
