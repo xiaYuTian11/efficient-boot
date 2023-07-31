@@ -1,4 +1,4 @@
-package com.efficient.common.entity;
+package com.efficient.cache.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class DataProgressVo {
+public class DataProgressVO {
 
     /**
      * 当前数据描述

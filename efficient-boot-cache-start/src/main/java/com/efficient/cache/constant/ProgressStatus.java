@@ -1,4 +1,4 @@
-package com.efficient.common.constant;
+package com.efficient.cache.constant;
 
 /**
  * 进度条状态说明
