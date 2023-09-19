@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
  */
 public class TreeUtil {
 
-    private static final Long LAST_ORDER = 9999L;
     public static final String[] NXS_STR = {"a", "b", "c", "d"};
+    private static final Long LAST_ORDER = 9999L;
 
     /**
      * 获取书节点集合
@@ -53,8 +53,8 @@ public class TreeUtil {
                 childrenList.add(createChildren(treeNode, nodeList));
             }
         }
-        final List<TreeNode> collect = childrenList.stream().sorted(Comparator.comparing(TreeNode::getOrder)).collect(Collectors.toList());
-        parentNode.setIsLeaf(collect.size() == 0);
+        final List<TreeNode> collect = childrenList.stream().sorted(Comparator.comparing(TreeNode::getOrder, Comparator.nullsLast(Comparator.naturalOrder()))).collect(Collectors.toList());
+        parentNode.setIsLeaf(collect.isEmpty());
         parentNode.setChildren(collect);
         return parentNode;
     }
