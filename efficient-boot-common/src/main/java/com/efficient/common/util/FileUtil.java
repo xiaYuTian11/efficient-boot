@@ -36,4 +36,10 @@ public class FileUtil {
         return fileName.replaceAll(" ", "");
     }
 
+    public static String rename(String title, String suffix) {
+        // 后缀
+        String fileName = title + DateUtil.format(new Date(), DatePattern.PURE_DATETIME_PATTERN) + "." + suffix;
+        return fileName.replaceAll(" ", "");
+    }
+
 }

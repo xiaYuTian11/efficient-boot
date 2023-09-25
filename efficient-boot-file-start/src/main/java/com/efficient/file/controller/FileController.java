@@ -1,14 +1,14 @@
 package com.efficient.file.controller;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.efficient.common.result.Result;
-import com.efficient.common.util.JackSonUtil;
+import com.efficient.common.validate.Common1Group;
+import com.efficient.common.validate.Common2Group;
 import com.efficient.file.api.FileService;
 import com.efficient.file.constant.FileResultEnum;
 import com.efficient.file.model.dto.DownloadVO;
 import com.efficient.file.model.entity.SysFileInfo;
-import com.efficient.file.model.vo.FileVO;
-import io.minio.GetObjectArgs;
 import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -20,10 +20,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+import java.nio.file.Files;
 import java.util.Collections;
 import java.util.Objects;
 
@@ -57,7 +60,8 @@ public class FileController {
     }
 
     @PostMapping("/download")
-    public ResponseEntity<byte[]> download(@Validated @RequestBody DownloadVO downloadVO) throws Exception {
+    public ResponseEntity<byte[]> download(@Validated(value = Common1Group.class)
+                                           @RequestBody DownloadVO downloadVO) throws Exception {
         SysFileInfo sysFileInfo = fileService.getById(downloadVO.getFileId());
         ResponseEntity<byte[]> responseEntity = null;
         if (Objects.isNull(sysFileInfo)) {
@@ -72,6 +76,45 @@ public class FileController {
             byte[] bytes = out.toByteArray();
             HttpHeaders headers = new HttpHeaders();
             headers.add("Content-Disposition", "attachment;filename=" + URLEncoder.encode(sysFileInfo.getFileName(), StandardCharsets.UTF_8.name()));
+            headers.setContentLength(bytes.length);
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setAccessControlExposeHeaders(Collections.singletonList("*"));
+            responseEntity = new ResponseEntity<byte[]>(bytes, headers, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return responseEntity;
+    }
+
+    @PostMapping("/downloadByPath")
+    public ResponseEntity<byte[]> downloadByPath(@Validated(value = Common2Group.class)
+                                                 @RequestBody DownloadVO downloadVO) throws Exception {
+        String filePath = downloadVO.getFilePath();
+        ResponseEntity<byte[]> responseEntity = null;
+        if (StrUtil.isBlank(filePath)) {
+            return responseEntity;
+        }
+        File file = new File(filePath);
+        if (!file.exists()) {
+            return responseEntity;
+        }
+
+        ByteArrayOutputStream out = null;
+        try (InputStream in = Files.newInputStream(file.toPath())) {
+            out = new ByteArrayOutputStream();
+            IOUtils.copy(in, out);
+            // 封装返回值
+            byte[] bytes = out.toByteArray();
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Disposition", "attachment;filename=" + URLEncoder.encode(FileUtil.getName(filePath), StandardCharsets.UTF_8.name()));
             headers.setContentLength(bytes.length);
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
             headers.setAccessControlExposeHeaders(Collections.singletonList("*"));

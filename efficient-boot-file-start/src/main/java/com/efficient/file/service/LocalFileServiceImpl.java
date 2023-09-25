@@ -37,11 +37,6 @@ public class LocalFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFile
     private FileProperties fileProperties;
 
     @Override
-    public FileProperties getProperties() {
-        return fileProperties;
-    }
-
-    @Override
     public Result upload(MultipartFile multipartFile, boolean unique) throws Exception {
         FileVO fileVo = new FileVO();
 
@@ -69,28 +64,30 @@ public class LocalFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFile
 
         // 重名文件重命名
         String fileName = originalFilename.replaceAll(" ", "");
-        if (FileUtil.file(basePath, fileName).exists()) {
-            if (unique) {
-                FileUtil.del(new File(basePath + File.separator + fileName));
-            } else {
-                String name;
-                int lastIndexOf = fileName.lastIndexOf(HORIZONTAL_BAR);
-                int fileNum = 1;
-                String nameDefault = fileName.substring(0, fileName.lastIndexOf(POINT)) + HORIZONTAL_BAR + fileNum;
-                if (lastIndexOf > 0) {
-                    String subStr = fileName.substring(lastIndexOf + 1, fileName.lastIndexOf(POINT));
-                    if (NumberUtil.isNumber(subStr)) {
-                        fileNum = NumberUtil.binaryToInt(subStr) + 1;
-                        name = fileName.substring(0, lastIndexOf) + HORIZONTAL_BAR + fileNum;
-                    } else {
-                        name = nameDefault;
-                    }
+        if (unique) {
+            FileUtil.del(new File(basePath + File.separator + fileName));
+        }
+
+        int pointIndexOf = fileName.lastIndexOf(POINT);
+        String suffix = fileName.substring(pointIndexOf);
+        int fileNum = 1;
+        String nameDefault = fileName.substring(0, fileName.lastIndexOf(POINT)) + HORIZONTAL_BAR + 1 + suffix;
+        String name = fileName;
+        while (FileUtil.file(basePath, name).exists()) {
+            int lastIndexOf = name.lastIndexOf(HORIZONTAL_BAR);
+            if (lastIndexOf > 0) {
+                String subStr = name.substring(lastIndexOf + 1, name.lastIndexOf(POINT));
+                if (NumberUtil.isNumber(subStr)) {
+                    fileNum = Integer.parseInt(subStr) + 1;
+                    name = name.substring(0, lastIndexOf) + HORIZONTAL_BAR + fileNum + suffix;
                 } else {
                     name = nameDefault;
                 }
-                fileName = name + Objects.requireNonNull(fileName).substring(fileName.lastIndexOf(POINT));
+            } else {
+                name = nameDefault;
             }
         }
+        fileName = name;
         // 获取文件对象
         File realFile = new File(basePath, fileName);
         // 完成文件的上传
@@ -131,6 +128,11 @@ public class LocalFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFile
             return null;
         }
         return new ByteArrayInputStream(FileUtil.readBytes(file));
+    }
+
+    @Override
+    public FileProperties getProperties() {
+        return fileProperties;
     }
 
     @Override
