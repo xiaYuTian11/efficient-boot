@@ -35,6 +35,10 @@ public class RateInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        boolean enable = properties.isEnable();
+        if (!enable) {
+            return true;
+        }
         String requestURI = request.getRequestURI();
         String token = request.getHeader(RateConstant.TOKEN);
         String ip = WebUtil.getIP(request);

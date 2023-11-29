@@ -11,6 +11,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 public class RateProperties {
     /**
+     * 是否启用
+     */
+    private boolean enable = true;
+    /**
      * 是否启用全局幂等性校验,启用后所有接口都会校验幂等性
      */
     private boolean global = false;
