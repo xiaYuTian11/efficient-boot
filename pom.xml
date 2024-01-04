@@ -22,11 +22,11 @@
     </modules>
     <groupId>top.tanmw</groupId>
     <artifactId>efficient-boot</artifactId>
-    <version>0.8.4</version>
+    <version>0.8.5</version>
     <packaging>pom</packaging>
 
     <properties>
-        <efficient-boot.version>0.8.3</efficient-boot.version>
+        <efficient-boot.version>0.8.5</efficient-boot.version>
         <java.version>1.8</java.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
