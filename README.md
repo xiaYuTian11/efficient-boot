@@ -67,11 +67,16 @@
 ```
 
 ## 安装依赖
-
+### aspose
 ```text
 mvn -Dmaven.test.skip=true install
 mvn install:install-file    -DgroupId=com.aspose -DartifactId=aspose-cells -Dversion=21.11 -Dpackaging=jar   -Dfile=./aspose-cells-21.11.jar
 mvn install:install-file    -DgroupId=com.aspose -DartifactId=aspose-words -Dversion=21.6 -Dpackaging=jar   -Dfile=./aspose-words-21.11.0-jdk17.jar
+```
+### 渝快政
+```text
+mvn -Dmaven.test.skip=true install
+mvn install:install-file    -DgroupId=com.ykz -DartifactId=dcqc-uc-oauth-sdk -Dversion=3.0.0 -Dpackaging=jar   -Dfile=./dcqc-uc-oauth-sdk-3.0.0-RELEASE.jar
 ```
 
 ## 指定maven仓库

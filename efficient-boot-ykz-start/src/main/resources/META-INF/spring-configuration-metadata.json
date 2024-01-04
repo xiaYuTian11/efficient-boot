@@ -1,0 +1,131 @@
+{
+  "groups": [
+    {
+      "name": "com.efficient.ykz",
+      "type": "com.efficient.ykz.properties.YkzProperties",
+      "sourceType": "com.efficient.ykz.config.YkzConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "com.efficient.ykz.ip",
+      "type": "java.lang.String",
+      "description": "渝快政IP",
+      "defaultValue": "https://uc-openplatform.bigdatacq.com:4403",
+      "sourceType": "com.efficient.ykz.properties.YkzProperties"
+    },
+    {
+      "name": "com.efficient.ykz.appId",
+      "type": "java.lang.String",
+      "description": "渝快政 appId",
+      "defaultValue": "",
+      "sourceType": "com.efficient.ykz.properties.YkzProperties"
+    },
+    {
+      "name": "com.efficient.ykz.appSecret",
+      "type": "java.lang.String",
+      "description": "渝快政 appSecret",
+      "defaultValue": "",
+      "sourceType": "com.efficient.ykz.properties.YkzProperties"
+    },
+    {
+      "name": "com.efficient.ykz.userCenter.db",
+      "type": "java.lang.String",
+      "description": "拉取的数据是否需要入库",
+      "defaultValue": false,
+      "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
+    },
+    {
+      "name": "com.efficient.ykz.userCenter.accessTokenUrl",
+      "type": "java.lang.String",
+      "description": "获取access_token",
+      "defaultValue": "/ykz/access_token",
+      "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
+    },
+    {
+      "name": "com.efficient.ykz.userCenter.orgByCode",
+      "type": "java.lang.String",
+      "description": "根据组织机构code查询详细信息",
+      "defaultValue": "/ykz/org/getByOrganizationCode",
+      "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
+    },
+    {
+      "name": "com.efficient.ykz.userCenter.orgByCodeList",
+      "type": "java.lang.String",
+      "description": "根据组织机构code批量查询详细信息",
+      "defaultValue": "/ykz/org/listByOrganizationCodes",
+      "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
+    },
+    {
+      "name": "com.efficient.ykz.userCenter.orgByParentCode",
+      "type": "java.lang.String",
+      "description": "根据父级组织机构分页查询子级信息",
+      "defaultValue": "/ykz/org/pageByParentOrganizationCode",
+      "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
+    },
+    {
+      "name": "com.efficient.ykz.userCenter.userByMobile",
+      "type": "java.lang.String",
+      "description": "根据父级组织机构分页查询子级信息",
+      "defaultValue": "/ykz/org/pageByParentOrganizationCode",
+      "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
+    },
+    {
+      "name": "com.efficient.ykz.userCenter.userByMobileList",
+      "type": "java.lang.String",
+      "description": "批量根据用户手机号查询用户信息",
+      "defaultValue": "/ykz/user/listByMobiles",
+      "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
+    },
+    {
+      "name": "com.efficient.ykz.userCenter.userByZwddId",
+      "type": "java.lang.String",
+      "description": "根据用户政钉ID查询用户信息",
+      "defaultValue": "/ykz/user/getByAccountId",
+      "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
+    },
+    {
+      "name": "com.efficient.ykz.userCenter.userByZwddIdList",
+      "type": "java.lang.String",
+      "description": "批量根据用户政钉ID查询用户信息",
+      "defaultValue": "/ykz/user/listByAccountIds",
+      "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
+    },
+    {
+      "name": "com.efficient.ykz.userCenter.userPostByZwddId",
+      "type": "java.lang.String",
+      "description": "根据用户ID查询用户职位信息",
+      "defaultValue": "/ykz/user/listUserPostByAccountId",
+      "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
+    },
+    {
+      "name": "com.efficient.ykz.userCenter.userTagByZwddId",
+      "type": "java.lang.String",
+      "description": "根据用户政钉Id查询用户标签信息",
+      "defaultValue": "/ykz/user/getLabelByAccountId",
+      "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
+    },
+    {
+      "name": "com.efficient.ykz.userCenter.userTagByMobile",
+      "type": "java.lang.String",
+      "description": "根据用户手机号查询用户标签信息",
+      "defaultValue": "/ykz/user/getLabelByMobile",
+      "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
+    },
+    {
+      "name": "com.efficient.ykz.userCenter.userTagByZwddIdList",
+      "type": "java.lang.String",
+      "description": "批量根据用户政钉Id查询用户标签信息",
+      "defaultValue": "/ykz/user/listLabelByAccountIds",
+      "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
+    },
+    {
+      "name": "com.efficient.ykz.userCenter.userTagByMobileList",
+      "type": "java.lang.String",
+      "description": "批量根据用户手机号查询用户标签信息",
+      "defaultValue": "/ykz/user/listLabelByMobiles",
+      "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
+    }
+  ],
+  "hints": []
+}
