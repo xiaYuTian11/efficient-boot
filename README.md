@@ -76,7 +76,7 @@ mvn install:install-file    -DgroupId=com.aspose -DartifactId=aspose-words -Dver
 ### 渝快政
 ```text
 mvn -Dmaven.test.skip=true install
-mvn install:install-file    -DgroupId=com.ykz -DartifactId=dcqc-uc-oauth-sdk -Dversion=3.0.0 -Dpackaging=jar   -Dfile=./dcqc-uc-oauth-sdk-3.0.0-RELEASE.jar
+mvn install:install-file    -DgroupId=com.dcqc -DartifactId=dcqc-uc-oauth-sdk -Dversion=3.0.0-RELEASE -Dpackaging=jar   -Dfile=./dcqc-uc-oauth-sdk-3.0.0-RELEASE.jar
 ```
 
 ## 指定maven仓库

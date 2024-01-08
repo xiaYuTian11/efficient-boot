@@ -45,9 +45,11 @@
         </dependency>
         <!--  用户中心对接SDK      -->
         <dependency>
-            <groupId>com.ykz</groupId>
+            <groupId>com.dcqc</groupId>
             <artifactId>dcqc-uc-oauth-sdk</artifactId>
-            <version>3.0.0</version>
+            <version>3.0.0-RELEASE</version>
+<!--            <scope>system</scope>-->
+<!--            <systemPath>${parent.basedir}/other/lib/ykz/dcqc-uc-oauth-sdk-3.0.0-RELEASE.jar</systemPath>-->
         </dependency>
         <!-- jwt -->
         <dependency>
@@ -67,11 +69,11 @@
             <artifactId>bcpkix-jdk15on</artifactId>
             <version>1.65</version>
         </dependency>
-<!--        &lt;!&ndash; fastjson &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>com.alibaba</groupId>-->
-<!--            <artifactId>fastjson</artifactId>-->
-<!--            <version>1.2.73</version>-->
-<!--        </dependency>-->
+        <!--        &lt;!&ndash; fastjson &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.alibaba</groupId>-->
+        <!--            <artifactId>fastjson</artifactId>-->
+        <!--            <version>1.2.73</version>-->
+        <!--        </dependency>-->
     </dependencies>
 </project>

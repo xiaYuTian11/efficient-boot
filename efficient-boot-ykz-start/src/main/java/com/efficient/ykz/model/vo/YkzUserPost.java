@@ -2,12 +2,15 @@ package com.efficient.ykz.model.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 愉快政用户职位信息
  */
 @Data
-public class YkzUserPost {
+public class YkzUserPost implements Serializable {
 
+    private static final long serialVersionUID = 3355733204378658155L;
     /**
      * 职务所在机构code
      */

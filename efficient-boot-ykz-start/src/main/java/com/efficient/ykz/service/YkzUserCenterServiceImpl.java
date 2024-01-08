@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -37,20 +38,20 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
     @Override
     public Result orgByCode(String orgCode) {
         JSONObject jsonObject = JSONUtil.createObj().set("organizationCode", orgCode);
-        YkzOrg ykzOrg = this.sendRequest(ykzProperties.getUserCenter().getOrgByCode(), true, jsonObject, YkzOrg.class);
+        YkzOrg ykzOrg = this.sendRequestOne(ykzProperties.getUserCenter().getOrgByCode(), true, jsonObject, YkzOrg.class);
         return Objects.isNull(ykzOrg) ? Result.fail() : Result.ok(ykzOrg);
     }
 
     @Override
     public YkzUserCenterAccessToken getAccessToken(String appId, String appSecret) {
         if (StrUtil.isBlank(appId)) {
-            appId = ykzProperties.getIp();
+            appId = ykzProperties.getAppId();
         }
         if (StrUtil.isBlank(appSecret)) {
             appSecret = ykzProperties.getAppSecret();
         }
         JSONObject jsonObject = JSONUtil.createObj().set("appId", appId).set("appSecret", SM2ToolUtil.sm2Encode(jwtHelper.getPublicKey(), appSecret));
-        return this.sendRequest(ykzProperties.getUserCenter().getAccessTokenUrl(), false, jsonObject, YkzUserCenterAccessToken.class);
+        return this.sendRequestOne(ykzProperties.getUserCenter().getAccessTokenUrl(), false, jsonObject, YkzUserCenterAccessToken.class);
     }
 
     @Override
@@ -59,27 +60,17 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
     }
 
     @Override
-    public <M> M sendRequest(String url, JSONObject params, Class<M> tClass) {
-        HttpRequest httpRequest = HttpRequest.post(ykzProperties.getIp() + url);
-        httpRequest.contentType(YkzConstant.CONTENT_TYPE);
-        YkzParam ykzParam = YkzParam.builder().requestId(IdUtil.uuid()).data(params.toString()).build();
-        httpRequest.body(JackSonUtil.toJson(ykzParam));
-
-        HttpResponse response = httpRequest.execute();
-        log.info("{} 结果数据： {}", url, response.body());
-        YkzResult ykzResult = JackSonUtil.toObject(response.body(), YkzResult.class);
-        if (Objects.isNull(ykzResult) || Objects.equals(Boolean.FALSE, ykzResult.getSuccess()) || Objects.isNull(ykzResult.getData())) {
-            return null;
-        }
-        return JackSonUtil.toObject(String.valueOf(ykzResult.getData()), tClass);
+    public <M> M sendRequestOne(String url, boolean hasToken, JSONObject params, Class<M> tClass) {
+        YkzResult ykzResult = this.sendRequest(url, hasToken, params);
+        return JackSonUtil.toObject(JackSonUtil.toJson(ykzResult.getData()), tClass);
     }
 
-    @Override
-    public <M> M sendRequest(String url, boolean hasToken, JSONObject params, Class<M> tClass) {
+    public YkzResult sendRequest(String url, boolean hasToken, JSONObject params) {
         HttpRequest httpRequest = HttpRequest.post(ykzProperties.getIp() + url);
         httpRequest.contentType(YkzConstant.CONTENT_TYPE);
-        YkzParam ykzParam = YkzParam.builder().requestId(IdUtil.uuid()).data(params.toString()).build();
+        YkzParam ykzParam = YkzParam.builder().requestId(IdUtil.uuid()).data(params).build();
         httpRequest.body(JackSonUtil.toJson(ykzParam));
+        log.info("sendRequest 请求参数：{}", JackSonUtil.toJson(ykzParam));
         if (hasToken) {
             YkzUserCenterAccessToken centerAccessToken = this.getAccessToken();
             if (Objects.isNull(centerAccessToken)) {
@@ -93,13 +84,36 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
         if (Objects.isNull(ykzResult) || Objects.equals(Boolean.FALSE, ykzResult.getSuccess()) || Objects.isNull(ykzResult.getData())) {
             return null;
         }
-        return JackSonUtil.toObject(String.valueOf(ykzResult.getData()), tClass);
+        return ykzResult;
+    }
+
+    @Override
+    public <M> List<M> sendRequestList(String url, boolean hasToken, JSONObject params, Class<M> tClass) {
+        HttpRequest httpRequest = HttpRequest.post(ykzProperties.getIp() + url);
+        httpRequest.contentType(YkzConstant.CONTENT_TYPE);
+        YkzParam ykzParam = YkzParam.builder().requestId(IdUtil.uuid()).data(params).build();
+        httpRequest.body(JackSonUtil.toJson(ykzParam));
+        log.info("sendRequestList 请求参数：{}", JackSonUtil.toJson(ykzParam));
+        if (hasToken) {
+            YkzUserCenterAccessToken centerAccessToken = this.getAccessToken();
+            if (Objects.isNull(centerAccessToken)) {
+                return null;
+            }
+            httpRequest.header(YkzConstant.HEADER_AUTHORIZATION, YkzConstant.HEADER_TOKEN_BEARER + centerAccessToken.getAccessToken());
+        }
+        HttpResponse response = httpRequest.execute();
+        log.info("{} 结果数据： {}", url, response.body());
+        YkzResult ykzResult = JackSonUtil.toObject(response.body(), YkzResult.class);
+        if (Objects.isNull(ykzResult) || Objects.equals(Boolean.FALSE, ykzResult.getSuccess()) || Objects.isNull(ykzResult.getData())) {
+            return null;
+        }
+        return JackSonUtil.toObjectList(JackSonUtil.toJson(ykzResult.getData()), tClass);
     }
 
     @Override
     public Result userByMobile(String phone) {
         JSONObject jsonObject = JSONUtil.createObj().set("mobile", phone);
-        YkzUser ykzUser = this.sendRequest(ykzProperties.getUserCenter().getUserByMobile(), true, jsonObject, YkzUser.class);
+        YkzUser ykzUser = this.sendRequestOne(ykzProperties.getUserCenter().getUserByMobile(), true, jsonObject, YkzUser.class);
         if (Objects.isNull(ykzUser)) {
             return Result.fail();
         }
@@ -110,7 +124,7 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
     @Override
     public Result userPostByZwddId(String zwddId) {
         JSONObject jsonObject = JSONUtil.createObj().set("accountId", zwddId);
-        YkzUserPost ykzUserPost = this.sendRequest(ykzProperties.getUserCenter().getUserByMobile(), true, jsonObject, YkzUserPost.class);
-        return Objects.isNull(ykzUserPost) ? Result.fail() : Result.ok(ykzUserPost);
+        List<YkzUserPost> ykzUserPostList = this.sendRequestList(ykzProperties.getUserCenter().getUserPostByZwddId(), true, jsonObject, YkzUserPost.class);
+        return Objects.isNull(ykzUserPostList) ? Result.fail() : Result.ok(ykzUserPostList);
     }
 }

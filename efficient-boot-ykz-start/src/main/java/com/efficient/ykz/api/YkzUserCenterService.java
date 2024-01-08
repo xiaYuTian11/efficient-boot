@@ -2,7 +2,11 @@ package com.efficient.ykz.api;
 
 import cn.hutool.json.JSONObject;
 import com.efficient.common.result.Result;
+import com.efficient.ykz.model.vo.YkzResult;
 import com.efficient.ykz.model.vo.YkzUserCenterAccessToken;
+import org.apache.poi.ss.formula.functions.T;
+
+import java.util.List;
 
 /**
  * @author TMW
@@ -15,9 +19,10 @@ public interface YkzUserCenterService {
 
     YkzUserCenterAccessToken getAccessToken();
 
-    <M> M sendRequest(String url, JSONObject params, Class<M> tClass);
+    <M> M sendRequestOne(String url, boolean hasToken, JSONObject params, Class<M> tClass);
 
-    <M> M sendRequest(String url, boolean hasToken, JSONObject params, Class<M> tClass);
+    YkzResult sendRequest(String url, boolean hasToken, JSONObject params);
+    <M> List<M> sendRequestList(String url, boolean hasToken, JSONObject params, Class<M> tClass);
 
     Result userByMobile(String phone);
 

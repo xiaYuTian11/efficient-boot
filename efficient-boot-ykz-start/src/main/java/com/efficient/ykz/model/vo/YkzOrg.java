@@ -1,10 +1,16 @@
 package com.efficient.ykz.model.vo;
 
+import lombok.Data;
+
+import java.io.Serializable;
+
 /**
  * @author TMW
  * @since 2024/1/4 16:21
  */
-public class YkzOrg {
+@Data
+public class YkzOrg implements Serializable {
+    private static final long serialVersionUID = 5852677878994741208L;
     /**
      * 机构id
      */

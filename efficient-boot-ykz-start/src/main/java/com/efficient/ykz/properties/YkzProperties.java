@@ -13,6 +13,6 @@ public class YkzProperties {
     private String ip = "https://uc-openplatform.bigdatacq.com:4403";
     private String appId;
     private String appSecret;
-    private YkzUserCenter userCenter;
+    private YkzUserCenter userCenter = new YkzUserCenter();
 
 }

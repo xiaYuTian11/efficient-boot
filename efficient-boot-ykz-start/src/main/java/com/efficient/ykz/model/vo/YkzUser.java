@@ -2,12 +2,15 @@ package com.efficient.ykz.model.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 愉快政用户信息
  */
 @Data
-public class YkzUser {
+public class YkzUser implements Serializable {
 
+    private static final long serialVersionUID = -4457165167693364330L;
     /**
      * 用户中心id
      */

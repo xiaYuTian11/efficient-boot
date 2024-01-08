@@ -1,5 +1,6 @@
 package com.efficient.common.util;
 
+import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -41,6 +42,9 @@ public class JackSonUtil {
     }
 
     public static <T> T toObject(String str, Class<T> cs) {
+        if (StrUtil.isBlank(str)) {
+            return null;
+        }
         try {
             return JSON.readValue(str, cs);
         } catch (JsonProcessingException e) {
@@ -50,6 +54,9 @@ public class JackSonUtil {
     }
 
     public static <T> List<T> toObjectList(String str, Class<T> clsChild) {
+        if (StrUtil.isBlank(str)) {
+            return null;
+        }
         try {
             JavaType javaType = JSON.getTypeFactory().constructParametricType(List.class, clsChild);
             return JSON.readValue(str, javaType);
@@ -70,6 +77,9 @@ public class JackSonUtil {
      * @return
      */
     public static <T> List<T> toObjectListByType(String str) {
+        if (StrUtil.isBlank(str)) {
+            return null;
+        }
         try {
             TypeReference<List<T>> type = new TypeReference<List<T>>() {
             };
@@ -81,6 +91,9 @@ public class JackSonUtil {
     }
 
     public static <T> Map<String, T> toObjectMap(String str, Class<T> vCls) {
+        if (StrUtil.isBlank(str)) {
+            return null;
+        }
         try {
             JavaType javaType = JSON.getTypeFactory().constructParametricType(Map.class, String.class, vCls);
             return JSON.readValue(str, javaType);
