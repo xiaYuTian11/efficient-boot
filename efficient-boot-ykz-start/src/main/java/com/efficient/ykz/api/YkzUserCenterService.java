@@ -2,9 +2,7 @@ package com.efficient.ykz.api;
 
 import cn.hutool.json.JSONObject;
 import com.efficient.common.result.Result;
-import com.efficient.ykz.model.vo.YkzResult;
-import com.efficient.ykz.model.vo.YkzUserCenterAccessToken;
-import org.apache.poi.ss.formula.functions.T;
+import com.efficient.ykz.model.vo.*;
 
 import java.util.List;
 
@@ -13,7 +11,11 @@ import java.util.List;
  * @since 2024/1/4 15:37
  */
 public interface YkzUserCenterService {
-    Result orgByCode(String orgCode);
+    Result<YkzOrg> orgByCode(String orgCode);
+
+    Result<List<YkzOrg>> orgByCodeList(List<String> orgCodeList);
+
+    Result<List<YkzOrg>> orgByParentCode(String orgCode, Integer pageNum, Integer pageSize, boolean includeTop);
 
     YkzUserCenterAccessToken getAccessToken(String appId, String appSecret);
 
@@ -22,9 +24,11 @@ public interface YkzUserCenterService {
     <M> M sendRequestOne(String url, boolean hasToken, JSONObject params, Class<M> tClass);
 
     YkzResult sendRequest(String url, boolean hasToken, JSONObject params);
+
     <M> List<M> sendRequestList(String url, boolean hasToken, JSONObject params, Class<M> tClass);
 
-    Result userByMobile(String phone);
+    Result<YkzUser> userByMobile(String phone);
 
-    Result userPostByZwddId(String zwddId);
+    Result<List<YkzUserPost>> userPostByZwddId(String zwddId);
+
 }

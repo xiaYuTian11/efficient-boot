@@ -4,12 +4,11 @@ import com.efficient.common.result.Result;
 import com.efficient.ykz.api.YkzUserCenterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * 用户中心
@@ -31,6 +30,29 @@ public class YkzUserCenterController {
     @GetMapping("/org/orgByCode")
     public Result orgByCode(@NotBlank(message = "orgCode 不能为空") @RequestParam(name = "orgCode") String orgCode) throws Exception {
         return ykzUserCenterService.orgByCode(orgCode);
+    }
+
+    /**
+     * 根据机构Code批量拉取机构
+     */
+    @PostMapping("/org/orgByCodeList")
+    public Result orgByCodeList(@RequestBody List<String> orgCodeList) throws Exception {
+        return ykzUserCenterService.orgByCodeList(orgCodeList);
+    }
+
+    @GetMapping("/org/orgByParentCode")
+    public Result orgByParentCode(
+            @NotBlank(message = "orgCode 不能为空") @RequestParam(name = "orgCode") String orgCode,
+            @NotNull(message = "pageNum 不能为空") @RequestParam(name = "pageNum") Integer pageNum,
+            @NotNull(message = "pageSize 不能为空") @RequestParam(name = "pageSize") Integer pageSize,
+            @RequestParam(name = "includeTop", required = false, defaultValue = "true") boolean includeTop) throws Exception {
+        if (pageSize > 100) {
+            pageSize = 100;
+        }
+        if (pageSize < 20) {
+            pageSize = 20;
+        }
+        return ykzUserCenterService.orgByParentCode(orgCode, pageNum, pageSize, includeTop);
     }
 
     /**
