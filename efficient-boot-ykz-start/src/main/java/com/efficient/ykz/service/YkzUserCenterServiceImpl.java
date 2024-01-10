@@ -1,11 +1,15 @@
 package com.efficient.ykz.service;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.date.TimeInterval;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.alibaba.ttl.TransmittableThreadLocal;
 import com.dcqc.uc.oauth.sdk.util.JwtHelper;
 import com.dcqc.uc.oauth.sdk.util.SM2ToolUtil;
 import com.efficient.common.result.Result;
@@ -23,8 +27,10 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author TMW
@@ -33,7 +39,10 @@ import java.util.Objects;
 @Service
 @Slf4j
 public class YkzUserCenterServiceImpl implements YkzUserCenterService {
+    private static final TransmittableThreadLocal<Result> YKZ_ERROR_MSG = new TransmittableThreadLocal<>();
     public static Integer maxPageSize = 100;
+    private static Date expiresInDate = null;
+    private static String accessToken = null;
     @Resource
     JwtHelper jwtHelper;
     @Autowired
@@ -43,7 +52,7 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
     public Result<YkzOrg> orgByCode(String orgCode) {
         JSONObject jsonObject = JSONUtil.createObj().set("organizationCode", orgCode);
         YkzOrg ykzOrg = this.sendRequestOne(ykzProperties.getUserCenter().getOrgByCode(), true, jsonObject, YkzOrg.class);
-        return Objects.isNull(ykzOrg) ? Result.fail() : Result.ok(ykzOrg);
+        return Objects.isNull(ykzOrg) ? YKZ_ERROR_MSG.get() : Result.ok(ykzOrg);
     }
 
     @Override
@@ -56,14 +65,19 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
         for (List<String> list : splitList) {
             JSONObject jsonObject = JSONUtil.createObj().set("organizationCodes", list);
             List<YkzOrg> ykzOrgList = this.sendRequestList(ykzProperties.getUserCenter().getOrgByCodeList(), true, jsonObject, YkzOrg.class);
-            resultList.addAll(ykzOrgList);
+            if (CollUtil.isNotEmpty(ykzOrgList)) {
+                resultList.addAll(ykzOrgList);
+            }
+
         }
         log.info("批量获取机构信息条数：{}", resultList.size());
-        return CollUtil.isEmpty(resultList) ? Result.fail() : Result.ok(resultList);
+        return CollUtil.isEmpty(resultList) ? YKZ_ERROR_MSG.get() : Result.ok(resultList);
     }
 
     @Override
     public Result<List<YkzOrg>> orgByParentCode(String orgCode, Integer pageNum, Integer pageSize, boolean includeTop) {
+        TimeInterval timeInterval = DateUtil.timer();
+        // timeInterval.start();
         List<YkzOrg> resultList = this.childOrg(orgCode, pageNum, pageSize);
         if (includeTop) {
             log.info("查询顶级节点数据：{}", orgCode);
@@ -72,7 +86,8 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
                 resultList.add(result.getData());
             }
         }
-        log.info("总共拉取机构数量：{}", resultList.size());
+
+        log.info("总共拉取机构数量：{},耗时：{} s", resultList.size(), timeInterval.interval() / 1000);
         return CollUtil.isEmpty(resultList) ? Result.fail() : Result.ok(resultList);
     }
 
@@ -84,8 +99,12 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
         if (StrUtil.isBlank(appSecret)) {
             appSecret = ykzProperties.getAppSecret();
         }
+        Date now = new Date();
         JSONObject jsonObject = JSONUtil.createObj().set("appId", appId).set("appSecret", SM2ToolUtil.sm2Encode(jwtHelper.getPublicKey(), appSecret));
-        return this.sendRequestOne(ykzProperties.getUserCenter().getAccessTokenUrl(), false, jsonObject, YkzUserCenterAccessToken.class);
+        YkzUserCenterAccessToken userCenterAccessToken = this.sendRequestOne(ykzProperties.getUserCenter().getAccessTokenUrl(), false, jsonObject, YkzUserCenterAccessToken.class);
+        accessToken = userCenterAccessToken.getAccessToken();
+        expiresInDate = DateUtil.offsetSecond(now, userCenterAccessToken.getExpiresIn() - 30);
+        return userCenterAccessToken;
     }
 
     @Override
@@ -99,6 +118,10 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
         if (Objects.isNull(ykzResult)) {
             return null;
         }
+        if (Objects.equals(Boolean.FALSE, ykzResult.getSuccess()) || Objects.isNull(ykzResult.getData())) {
+            YKZ_ERROR_MSG.set(Result.build(ykzResult.getStatus(), ykzResult.getMessage()));
+            return null;
+        }
         return JackSonUtil.toObject(JackSonUtil.toJson(ykzResult.getData()), tClass);
     }
 
@@ -109,11 +132,8 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
         httpRequest.body(JackSonUtil.toJson(ykzParam));
         log.info("sendRequest 请求参数：{}", JackSonUtil.toJson(ykzParam));
         if (hasToken) {
-            YkzUserCenterAccessToken centerAccessToken = this.getAccessToken();
-            if (Objects.isNull(centerAccessToken)) {
-                return null;
-            }
-            httpRequest.header(YkzConstant.HEADER_AUTHORIZATION, YkzConstant.HEADER_TOKEN_BEARER + centerAccessToken.getAccessToken());
+            String token = this.setRequestHeader();
+            httpRequest.header(YkzConstant.HEADER_AUTHORIZATION, YkzConstant.HEADER_TOKEN_BEARER + token);
         }
         HttpResponse response = httpRequest.execute();
         log.info("{} 结果数据： {}", url, response.body());
@@ -132,18 +152,16 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
         httpRequest.body(JackSonUtil.toJson(ykzParam));
         log.info("sendRequestList 请求参数：{}", JackSonUtil.toJson(ykzParam));
         if (hasToken) {
-            YkzUserCenterAccessToken centerAccessToken = this.getAccessToken();
-            if (Objects.isNull(centerAccessToken)) {
-                return null;
-            }
-            httpRequest.header(YkzConstant.HEADER_AUTHORIZATION, YkzConstant.HEADER_TOKEN_BEARER + centerAccessToken.getAccessToken());
+            String token = this.setRequestHeader();
+            httpRequest.header(YkzConstant.HEADER_AUTHORIZATION, YkzConstant.HEADER_TOKEN_BEARER + token);
         }
         HttpResponse response = httpRequest.execute();
         log.info("{} 结果数据： {}", url, response.body());
         YkzResult ykzResult = JackSonUtil.toObject(response.body(), YkzResult.class);
-        // if (Objects.isNull(ykzResult) || Objects.equals(Boolean.FALSE, ykzResult.getSuccess()) || Objects.isNull(ykzResult.getData())) {
-        //     return null;
-        // }
+        if (Objects.isNull(ykzResult) || Objects.equals(Boolean.FALSE, ykzResult.getSuccess()) || Objects.isNull(ykzResult.getData())) {
+            YKZ_ERROR_MSG.set(Result.build(ykzResult.getStatus(), ykzResult.getMessage()));
+            return null;
+        }
         return JackSonUtil.toObjectList(JackSonUtil.toJson(ykzResult.getData()), tClass);
     }
 
@@ -152,9 +170,9 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
         JSONObject jsonObject = JSONUtil.createObj().set("mobile", phone);
         YkzUser ykzUser = this.sendRequestOne(ykzProperties.getUserCenter().getUserByMobile(), true, jsonObject, YkzUser.class);
         if (Objects.isNull(ykzUser)) {
-            return Result.fail();
+            return YKZ_ERROR_MSG.get();
         }
-        ykzUser.setPhone(phone);
+        ykzUser.setMobile(phone);
         return Result.ok(ykzUser);
     }
 
@@ -163,19 +181,102 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
         JSONObject jsonObject = JSONUtil.createObj().set("accountId", zwddId);
         List<YkzUserPost> ykzUserPostList = this.sendRequestList(ykzProperties.getUserCenter().getUserPostByZwddId(), true, jsonObject, YkzUserPost.class);
         log.info("获取人员职务信息条数：{}", ykzUserPostList.size());
-        return CollUtil.isEmpty(ykzUserPostList) ? Result.fail() : Result.ok(ykzUserPostList);
+        return CollUtil.isEmpty(ykzUserPostList) ? YKZ_ERROR_MSG.get() : Result.ok(ykzUserPostList);
+    }
+
+    @Override
+    public Result<List<YkzUser>> userByMobileList(List<String> phoneList) {
+        JSONObject jsonObject = JSONUtil.createObj().set("mobiles", phoneList);
+        List<YkzUser> ykzUserList = this.sendRequestList(ykzProperties.getUserCenter().getUserByMobileList(), true, jsonObject, YkzUser.class);
+        if (CollUtil.isEmpty(ykzUserList)) {
+            return YKZ_ERROR_MSG.get();
+        }
+
+        return Result.ok(ykzUserList);
+    }
+
+    @Override
+    public Result<YkzUser> userByZwddId(String zwddId) {
+        JSONObject jsonObject = JSONUtil.createObj().set("accountId", zwddId);
+        YkzUser ykzUser = this.sendRequestOne(ykzProperties.getUserCenter().getUserByZwddId(), true, jsonObject, YkzUser.class);
+        if (Objects.isNull(ykzUser)) {
+            return YKZ_ERROR_MSG.get();
+        }
+        return Result.ok(ykzUser);
+    }
+
+    @Override
+    public Result<List<YkzUser>> userByZwddIdList(List<String> zwddIdList) {
+        JSONObject jsonObject = JSONUtil.createObj().set("accountIds", zwddIdList);
+        List<YkzUser> ykzUserList = this.sendRequestList(ykzProperties.getUserCenter().getUserByZwddIdList(), true, jsonObject, YkzUser.class);
+        if (CollUtil.isEmpty(ykzUserList)) {
+            return YKZ_ERROR_MSG.get();
+        }
+        return Result.ok(ykzUserList);
+    }
+
+    @Override
+    public Result<YkzLabel> userTagByZwddId(String zwddId) {
+        JSONObject jsonObject = JSONUtil.createObj().set("accountId", zwddId);
+        YkzLabel ykzLabel = this.sendRequestOne(ykzProperties.getUserCenter().getUserTagByZwddId(), true, jsonObject, YkzLabel.class);
+        if (Objects.isNull(ykzLabel)) {
+            return YKZ_ERROR_MSG.get();
+        }
+        return Result.ok(ykzLabel);
+    }
+
+    @Override
+    public Result<YkzLabel> userTagByMobile(String phone) {
+        JSONObject jsonObject = JSONUtil.createObj().set("mobile", phone);
+        YkzLabel ykzLabel = this.sendRequestOne(ykzProperties.getUserCenter().getUserTagByMobile(), true, jsonObject, YkzLabel.class);
+        if (Objects.isNull(ykzLabel)) {
+            return YKZ_ERROR_MSG.get();
+        }
+        return Result.ok(ykzLabel);
+    }
+
+    @Override
+    public Result<List<YkzLabel>> userTagByZwddIdList(List<String> zwddIdList) {
+        JSONObject jsonObject = JSONUtil.createObj().set("accountIds", zwddIdList);
+        List<YkzLabel> ykzLabelList = this.sendRequestList(ykzProperties.getUserCenter().getUserTagByZwddIdList(), true, jsonObject, YkzLabel.class);
+        if (CollUtil.isEmpty(ykzLabelList)) {
+            return YKZ_ERROR_MSG.get();
+        }
+        return Result.ok(ykzLabelList);
+    }
+
+    @Override
+    public Result<List<YkzLabel>> userTagByMobileList(List<String> phoneList) {
+        JSONObject jsonObject = JSONUtil.createObj().set("mobiles", phoneList);
+        List<YkzLabel> ykzLabelList = this.sendRequestList(ykzProperties.getUserCenter().getUserTagByMobileList(), true, jsonObject, YkzLabel.class);
+        if (CollUtil.isEmpty(ykzLabelList)) {
+            return YKZ_ERROR_MSG.get();
+        }
+        return Result.ok(ykzLabelList);
+    }
+
+    private String setRequestHeader() {
+        log.info("accessToken: {},expiresInDate: {}", accessToken, expiresInDate);
+        if (Objects.nonNull(expiresInDate) && Objects.nonNull(accessToken) && DateUtil.between(new Date(), expiresInDate, DateUnit.SECOND, false) >= 0) {
+            return accessToken;
+        } else {
+            YkzUserCenterAccessToken centerAccessToken = this.getAccessToken();
+            if (Objects.isNull(centerAccessToken)) {
+                return null;
+            }
+            return centerAccessToken.getAccessToken();
+        }
     }
 
     public List<YkzOrg> childOrg(String orgCode, Integer pageNumber, Integer pageSize) {
         JSONObject jsonObject = JSONUtil.createObj().set("organizationCode", orgCode).set("pageNumber", pageNumber).set("pageSize", pageSize);
-        List<YkzOrg> resultList = new ArrayList<>();
         YkzOrgPage ykzOrgPage = this.sendRequestOne(ykzProperties.getUserCenter().getOrgByParentCode(), true, jsonObject, YkzOrgPage.class);
         log.info("orgByParentCode-childOrg 当前页：{},每页数量：{},总数量：{},总页数：{}", ykzOrgPage.getPageNumber(), ykzOrgPage.getPageSize(), ykzOrgPage.getTotal(), ykzOrgPage.getTotalPage());
         List<YkzOrg> list = ykzOrgPage.getList();
         if (CollUtil.isEmpty(list)) {
             return null;
         }
-        resultList.addAll(list);
+        CopyOnWriteArrayList<YkzOrg> resultList = new CopyOnWriteArrayList<>(list);
 
         Integer resultPageNumber = ykzOrgPage.getPageNumber();
         Integer resultTotalPage = ykzOrgPage.getTotalPage();
@@ -187,12 +288,23 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
         }
 
         if (CollUtil.isNotEmpty(list)) {
-            for (YkzOrg ykzOrg : list) {
-                List<YkzOrg> ykzOrgList = this.childOrg(ykzOrg.getOrganizationCode(), 1, pageSize);
+            // list.parallelStream().map(YkzOrg::getOrganizationCode)
+            //         .map(et -> this.childOrg(et, 1, pageSize))
+            //         .forEach(resultList::addAll);
+
+            list.parallelStream().forEach(et -> {
+                List<YkzOrg> ykzOrgList = this.childOrg(et.getOrganizationCode(), 1, pageSize);
                 if (CollUtil.isNotEmpty(ykzOrgList)) {
                     resultList.addAll(ykzOrgList);
                 }
-            }
+            });
+
+            // for (YkzOrg ykzOrg : list) {
+            //     List<YkzOrg> ykzOrgList = this.childOrg(ykzOrg.getOrganizationCode(), 1, pageSize);
+            //     if (CollUtil.isNotEmpty(ykzOrgList)) {
+            //         resultList.addAll(ykzOrgList);
+            //     }
+            // }
         }
         return resultList;
     }

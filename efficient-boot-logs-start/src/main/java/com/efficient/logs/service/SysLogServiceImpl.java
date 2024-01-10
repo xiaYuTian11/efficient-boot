@@ -10,6 +10,8 @@ import com.efficient.logs.api.SysLogService;
 import com.efficient.logs.dao.SysLogMapper;
 import com.efficient.logs.model.entity.SysLog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,7 @@ import java.util.Objects;
  * @date 2022-09-05 16:24:37
  */
 @Service
+@ConditionalOnProperty(name = "com.efficient.logs.db", havingValue = "true")
 public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> implements SysLogService {
 
     @Autowired

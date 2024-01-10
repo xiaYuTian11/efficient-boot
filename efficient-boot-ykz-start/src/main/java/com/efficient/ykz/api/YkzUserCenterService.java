@@ -31,4 +31,18 @@ public interface YkzUserCenterService {
 
     Result<List<YkzUserPost>> userPostByZwddId(String zwddId);
 
+    Result<List<YkzUser>> userByMobileList(List<String> phoneList);
+
+    Result<YkzUser> userByZwddId(String zwddId);
+
+    Result<List<YkzUser>> userByZwddIdList(List<String> zwddIdList);
+
+    Result<YkzLabel> userTagByZwddId(String zwddId);
+
+    Result<YkzLabel> userTagByMobile(String phone);
+
+    Result<List<YkzLabel>> userTagByZwddIdList(List<String> zwddIdList);
+
+    Result<List<YkzLabel>> userTagByMobileList(List<String> phoneList);
+
 }

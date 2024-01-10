@@ -11,7 +11,7 @@
       "name": "com.efficient.logs.db",
       "type": "java.lang.Boolean",
       "description": "是否存储数据库",
-      "defaultValue": true,
+      "defaultValue": false,
       "sourceType": "com.efficient.logs.properties.LogsProperties"
     },
     {

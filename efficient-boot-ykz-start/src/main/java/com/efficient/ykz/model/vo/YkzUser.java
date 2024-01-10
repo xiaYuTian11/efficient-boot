@@ -34,5 +34,5 @@ public class YkzUser implements Serializable {
     /**
      * 电话
      */
-    private String phone;
+    private String mobile;
 }
