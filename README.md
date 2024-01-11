@@ -77,6 +77,8 @@ mvn install:install-file    -DgroupId=com.aspose -DartifactId=aspose-words -Dver
 ```text
 mvn -Dmaven.test.skip=true install
 mvn install:install-file    -DgroupId=com.dcqc -DartifactId=dcqc-uc-oauth-sdk -Dversion=3.0.0-RELEASE -Dpackaging=jar   -Dfile=./dcqc-uc-oauth-sdk-3.0.0-RELEASE.jar
+
+mvn install:install-file    -DgroupId=com.alibaba -DartifactId=zwdd-sdk-java -Dversion=1.2.0 -Dpackaging=jar   -Dfile=./zwdd-sdk-java-1.2.0.jar
 ```
 
 ## 指定maven仓库

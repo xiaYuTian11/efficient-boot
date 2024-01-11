@@ -10,9 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("com.efficient.ykz")
 @Data
 public class YkzProperties {
-    private String ip = "https://uc-openplatform.bigdatacq.com:4403";
-    private String appId;
-    private String appSecret;
     private YkzUserCenter userCenter = new YkzUserCenter();
+    private YkzApi ykzApi = new YkzApi();
 
 }

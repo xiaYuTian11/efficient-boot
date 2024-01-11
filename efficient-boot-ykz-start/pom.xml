@@ -5,7 +5,7 @@
     <parent>
         <groupId>top.tanmw</groupId>
         <artifactId>efficient-boot</artifactId>
-        <version>0.9.5</version>
+        <version>0.9.6</version>
     </parent>
 
     <description>渝快政 start</description>
@@ -69,11 +69,43 @@
             <artifactId>bcpkix-jdk15on</artifactId>
             <version>1.65</version>
         </dependency>
-        <!--        &lt;!&ndash; fastjson &ndash;&gt;-->
-        <!--        <dependency>-->
-        <!--            <groupId>com.alibaba</groupId>-->
-        <!--            <artifactId>fastjson</artifactId>-->
-        <!--            <version>1.2.73</version>-->
-        <!--        </dependency>-->
+
+        <!--政务钉钉 start    -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>zwdd-sdk-java</artifactId>
+            <version>1.2.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.alibaba.openplatform.shared</groupId>
+                    <artifactId>sdk.parent</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.10</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.13</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>4.5.13</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>2.0.45</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <!--政务钉钉 end    -->
     </dependencies>
 </project>

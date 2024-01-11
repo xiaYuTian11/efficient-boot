@@ -17,9 +17,9 @@ public interface YkzUserCenterService {
 
     Result<List<YkzOrg>> orgByParentCode(String orgCode, Integer pageNum, Integer pageSize, boolean includeTop, boolean flattenTree);
 
-    YkzUserCenterAccessToken getAccessToken(String appId, String appSecret);
+    YkzAccessToken getAccessToken(String appId, String appSecret);
 
-    YkzUserCenterAccessToken getAccessToken();
+    YkzAccessToken getAccessToken();
 
     <M> M sendRequestOne(String url, boolean hasToken, JSONObject params, Class<M> tClass);
 

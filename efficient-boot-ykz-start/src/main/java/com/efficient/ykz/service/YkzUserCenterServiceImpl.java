@@ -94,23 +94,23 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
     }
 
     @Override
-    public YkzUserCenterAccessToken getAccessToken(String appId, String appSecret) {
+    public YkzAccessToken getAccessToken(String appId, String appSecret) {
         if (StrUtil.isBlank(appId)) {
-            appId = ykzProperties.getAppId();
+            appId = ykzProperties.getUserCenter().getAppId();
         }
         if (StrUtil.isBlank(appSecret)) {
-            appSecret = ykzProperties.getAppSecret();
+            appSecret = ykzProperties.getUserCenter().getAppSecret();
         }
         Date now = new Date();
         JSONObject jsonObject = JSONUtil.createObj().set("appId", appId).set("appSecret", SM2ToolUtil.sm2Encode(jwtHelper.getPublicKey(), appSecret));
-        YkzUserCenterAccessToken userCenterAccessToken = this.sendRequestOne(ykzProperties.getUserCenter().getAccessTokenUrl(), false, jsonObject, YkzUserCenterAccessToken.class);
+        YkzAccessToken userCenterAccessToken = this.sendRequestOne(ykzProperties.getUserCenter().getAccessTokenUrl(), false, jsonObject, YkzAccessToken.class);
         accessToken = userCenterAccessToken.getAccessToken();
         expiresInDate = DateUtil.offsetSecond(now, userCenterAccessToken.getExpiresIn() - 30);
         return userCenterAccessToken;
     }
 
     @Override
-    public YkzUserCenterAccessToken getAccessToken() {
+    public YkzAccessToken getAccessToken() {
         return this.getAccessToken(null, null);
     }
 
@@ -128,7 +128,7 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
     }
 
     public YkzResult sendRequest(String url, boolean hasToken, JSONObject params) {
-        HttpRequest httpRequest = HttpRequest.post(ykzProperties.getIp() + url);
+        HttpRequest httpRequest = HttpRequest.post(ykzProperties.getUserCenter().getIp() + url);
         httpRequest.contentType(YkzConstant.CONTENT_TYPE);
         YkzParam ykzParam = YkzParam.builder().requestId(IdUtil.uuid()).data(params).build();
         httpRequest.body(JackSonUtil.toJson(ykzParam));
@@ -148,7 +148,7 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
 
     @Override
     public <M> List<M> sendRequestList(String url, boolean hasToken, JSONObject params, Class<M> tClass) {
-        HttpRequest httpRequest = HttpRequest.post(ykzProperties.getIp() + url);
+        HttpRequest httpRequest = HttpRequest.post(ykzProperties.getUserCenter().getIp() + url);
         httpRequest.contentType(YkzConstant.CONTENT_TYPE);
         YkzParam ykzParam = YkzParam.builder().requestId(IdUtil.uuid()).data(params).build();
         httpRequest.body(JackSonUtil.toJson(ykzParam));
@@ -262,7 +262,7 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
         if (Objects.nonNull(expiresInDate) && Objects.nonNull(accessToken) && DateUtil.between(new Date(), expiresInDate, DateUnit.SECOND, false) >= 0) {
             return accessToken;
         } else {
-            YkzUserCenterAccessToken centerAccessToken = this.getAccessToken();
+            YkzAccessToken centerAccessToken = this.getAccessToken();
             if (Objects.isNull(centerAccessToken)) {
                 return null;
             }

@@ -11,6 +11,18 @@ import lombok.Data;
 @Data
 public class YkzUserCenter {
     /**
+     * 用户中心 IP
+     */
+    private String ip = "https://uc-openplatform.bigdatacq.com:4403";
+    /**
+     * 用户中心 appId
+     */
+    private String appId;
+    /**
+     * 用户中心 appSecret
+     */
+    private String appSecret;
+    /**
      * 是否需要入库
      */
     private boolean db = false;

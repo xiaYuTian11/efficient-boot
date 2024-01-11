@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @since 2024/1/4 15:43
  */
 @Data
-public class YkzUserCenterAccessToken implements Serializable {
+public class YkzAccessToken implements Serializable {
     private static final long serialVersionUID = -4821862749961725265L;
     /**
      * 应用access_token
