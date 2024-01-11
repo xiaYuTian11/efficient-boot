@@ -3,6 +3,7 @@ package com.efficient.ykz.model.vo;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author TMW
@@ -35,6 +36,10 @@ public class YkzOrg implements Serializable {
      * 删除标识 1 表示删除，0 表示未删除
      */
     private Integer isDeleted;
+    /**
+     * 是否启用 1-启用，0-停用
+     */
+    private Integer isEnable;
     /**
      * 创建时间戳
      */
@@ -87,4 +92,6 @@ public class YkzOrg implements Serializable {
      *区域级别
      */
     private String areaLevel;
+
+    private List<YkzOrg> children;
 }

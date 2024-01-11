@@ -79,8 +79,8 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
         TimeInterval timeInterval = DateUtil.timer();
         // timeInterval.start();
         List<YkzOrg> resultList = this.childOrg(orgCode, pageNum, pageSize);
-        if (includeTop) {
-            log.info("查询顶级节点数据：{}", orgCode);
+        log.info("查询顶级节点数据：{}", orgCode);
+        if (!StrUtil.equalsAny(orgCode, YkzConstant.YKZ_ORG_TOP_CODE_DEV, YkzConstant.YKZ_ORG_TOP_CODE) && includeTop) {
             Result<YkzOrg> result = this.orgByCode(orgCode);
             if (result.getCode() == ResultEnum.SUCCESS.getCode()) {
                 resultList.add(result.getData());

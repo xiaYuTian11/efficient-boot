@@ -1,11 +1,13 @@
 package com.efficient.ykz.controller;
 
 import com.efficient.common.result.Result;
+import com.efficient.common.result.ResultEnum;
 import com.efficient.ykz.api.YkzUserCenterService;
 import com.efficient.ykz.model.vo.YkzLabel;
 import com.efficient.ykz.model.vo.YkzOrg;
 import com.efficient.ykz.model.vo.YkzUser;
 import com.efficient.ykz.model.vo.YkzUserPost;
+import com.efficient.ykz.util.YkzUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 用户中心
@@ -49,14 +52,20 @@ public class YkzUserCenterController {
             @NotBlank(message = "orgCode 不能为空") @RequestParam(name = "orgCode") String orgCode,
             @NotNull(message = "pageNum 不能为空") @RequestParam(name = "pageNum") Integer pageNum,
             @NotNull(message = "pageSize 不能为空") @RequestParam(name = "pageSize") Integer pageSize,
-            @RequestParam(name = "includeTop", required = false, defaultValue = "true") boolean includeTop) throws Exception {
+            @RequestParam(name = "includeTop", required = false, defaultValue = "true") boolean includeTop,
+            @RequestParam(name = "flattenTree", required = false, defaultValue = "false") boolean flattenTree) throws Exception {
         if (pageSize > 100) {
             pageSize = 100;
         }
         if (pageSize < 20) {
             pageSize = 20;
         }
-        return ykzUserCenterService.orgByParentCode(orgCode, pageNum, pageSize, includeTop);
+        Result<List<YkzOrg>> listResult = ykzUserCenterService.orgByParentCode(orgCode, pageNum, pageSize, includeTop);
+        if (Objects.equals(listResult.getCode(), ResultEnum.SUCCESS.getCode())) {
+            List<YkzOrg> resultData = listResult.getData();
+            YkzUtil.createTree(resultData, flattenTree);
+        }
+        return listResult;
     }
 
     /**

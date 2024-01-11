@@ -5,7 +5,7 @@
     <parent>
         <groupId>top.tanmw</groupId>
         <artifactId>efficient-boot</artifactId>
-        <version>0.9.0</version>
+        <version>0.9.4</version>
     </parent>
 
     <description>渝快政 start</description>

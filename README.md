@@ -101,6 +101,11 @@ mvn install:install-file    -DgroupId=com.dcqc -DartifactId=dcqc-uc-oauth-sdk -D
         <name>aliyun maven</name>
         <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
     </repository>
+    <repository>
+        <id>sonatype</id>
+        <name>sonatype maven</name>
+        <url>https://s01.oss.sonatype.org/content/repositories/releases/</url>
+    </repository>
 </repositories>
 ```
 
