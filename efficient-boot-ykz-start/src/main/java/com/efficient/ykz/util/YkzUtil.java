@@ -1,5 +1,6 @@
 package com.efficient.ykz.util;
 
+import cn.hutool.core.collection.CollUtil;
 import com.efficient.ykz.model.vo.YkzOrg;
 
 import java.util.*;
@@ -11,7 +12,10 @@ import java.util.*;
  */
 public class YkzUtil {
 
-    public static List<YkzOrg> createTree(List<YkzOrg> ykzOrgList,boolean flattenTree) {
+    public static List<YkzOrg> createTree(List<YkzOrg> ykzOrgList, boolean flattenTree) {
+        if (CollUtil.isEmpty(ykzOrgList)) {
+            return ykzOrgList;
+        }
         Map<Long, YkzOrg> idToNodeMap = new HashMap<>();
         List<YkzOrg> roots = new ArrayList<>();
 
@@ -38,7 +42,7 @@ public class YkzUtil {
 
         // 对根节点进行排序
         roots.sort(Comparator.comparing(YkzOrg::getDisplayOrder));
-        if(flattenTree){
+        if (flattenTree) {
             List<YkzOrg> result = new LinkedList<>();
             flattenTree(roots, result);
             return result;

@@ -21,6 +21,7 @@ import com.efficient.ykz.constant.YkzConstant;
 import com.efficient.ykz.model.dto.YkzParam;
 import com.efficient.ykz.model.vo.*;
 import com.efficient.ykz.properties.YkzProperties;
+import com.efficient.ykz.util.YkzUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,7 +76,7 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
     }
 
     @Override
-    public Result<List<YkzOrg>> orgByParentCode(String orgCode, Integer pageNum, Integer pageSize, boolean includeTop) {
+    public Result<List<YkzOrg>> orgByParentCode(String orgCode, Integer pageNum, Integer pageSize, boolean includeTop, boolean flattenTree) {
         TimeInterval timeInterval = DateUtil.timer();
         // timeInterval.start();
         List<YkzOrg> resultList = this.childOrg(orgCode, pageNum, pageSize);
@@ -88,7 +89,8 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
         }
 
         log.info("总共拉取机构数量：{},耗时：{} s", resultList.size(), timeInterval.interval() / 1000);
-        return CollUtil.isEmpty(resultList) ? Result.fail() : Result.ok(resultList);
+        List<YkzOrg> ykzOrgList = YkzUtil.createTree(resultList, flattenTree);
+        return CollUtil.isEmpty(ykzOrgList) ? Result.fail() : Result.ok(ykzOrgList);
     }
 
     @Override

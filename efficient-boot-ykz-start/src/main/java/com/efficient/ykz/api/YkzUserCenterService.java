@@ -15,7 +15,7 @@ public interface YkzUserCenterService {
 
     Result<List<YkzOrg>> orgByCodeList(List<String> orgCodeList);
 
-    Result<List<YkzOrg>> orgByParentCode(String orgCode, Integer pageNum, Integer pageSize, boolean includeTop);
+    Result<List<YkzOrg>> orgByParentCode(String orgCode, Integer pageNum, Integer pageSize, boolean includeTop, boolean flattenTree);
 
     YkzUserCenterAccessToken getAccessToken(String appId, String appSecret);
 

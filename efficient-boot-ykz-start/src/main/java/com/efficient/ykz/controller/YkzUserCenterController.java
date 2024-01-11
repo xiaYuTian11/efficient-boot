@@ -60,12 +60,7 @@ public class YkzUserCenterController {
         if (pageSize < 20) {
             pageSize = 20;
         }
-        Result<List<YkzOrg>> listResult = ykzUserCenterService.orgByParentCode(orgCode, pageNum, pageSize, includeTop);
-        if (Objects.equals(listResult.getCode(), ResultEnum.SUCCESS.getCode())) {
-            List<YkzOrg> resultData = listResult.getData();
-            YkzUtil.createTree(resultData, flattenTree);
-        }
-        return listResult;
+        return ykzUserCenterService.orgByParentCode(orgCode, pageNum, pageSize, includeTop,flattenTree);
     }
 
     /**
