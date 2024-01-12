@@ -19,6 +19,10 @@ public class YkzApi {
      */
     private String protocal = "https";
     /**
+     * 协议
+     */
+    private Long tenantId = 1L;
+    /**
      * 用户中心 appkey
      */
     private String appkey;
@@ -28,5 +32,7 @@ public class YkzApi {
     private String appsecret;
     private String accessToken = "/gettoken.json";
     private String userInfo = "/rpc/oauth2/dingtalk_app_user.json";
+    private String tokenInfo = "/rpc/oauth2/dingtalk_app_token.json";
+    private String sendMsg = "/chat/sendMsg";
 
 }
