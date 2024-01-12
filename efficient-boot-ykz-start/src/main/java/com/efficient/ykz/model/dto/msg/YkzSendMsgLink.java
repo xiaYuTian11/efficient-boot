@@ -1,4 +1,4 @@
-package com.efficient.ykz.model.dto;
+package com.efficient.ykz.model.dto.msg;
 
 import lombok.Data;
 

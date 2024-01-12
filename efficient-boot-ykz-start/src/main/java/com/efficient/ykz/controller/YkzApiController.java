@@ -2,8 +2,9 @@ package com.efficient.ykz.controller;
 
 import com.efficient.common.result.Result;
 import com.efficient.ykz.api.YkzApiService;
-import com.efficient.ykz.model.dto.YkzSendMsg;
-import com.efficient.ykz.model.dto.YkzSendMsgDetail;
+import com.efficient.ykz.model.dto.msg.YkzSendMsg;
+import com.efficient.ykz.model.dto.worknotice.YkzWorkNotice;
+import com.efficient.ykz.model.dto.worknotice.YkzWorkNoticeBackOut;
 import com.efficient.ykz.model.vo.YkzAccessToken;
 import com.efficient.ykz.model.vo.YkzLoginToken;
 import com.efficient.ykz.model.vo.YkzLoginUser;
@@ -54,6 +55,22 @@ public class YkzApiController {
     @PostMapping("/msg/send")
     public Result<String> sendMsg(@RequestBody YkzSendMsg ykzSendMsg) {
         return ykzApiService.sendMsg(ykzSendMsg);
+    }
+
+    /**
+     * 工作通知-发送
+     */
+    @PostMapping("/workNotice/send")
+    public Result<String> sendWorkNotice(@RequestBody YkzWorkNotice ykzWorkNotice) {
+        return ykzApiService.sendWorkNotice(ykzWorkNotice);
+    }
+
+    /**
+     * 工作通知-撤销
+     */
+    @PostMapping("/workNotice/revoke")
+    public Result<String> revokeWorkNotice(@RequestBody YkzWorkNoticeBackOut ykzWorkNotice) {
+        return ykzApiService.revokeWorkNotice(ykzWorkNotice);
     }
 
 }

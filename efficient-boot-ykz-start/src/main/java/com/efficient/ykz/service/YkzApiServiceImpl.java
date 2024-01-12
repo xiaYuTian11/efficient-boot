@@ -1,14 +1,9 @@
 package com.efficient.ykz.service;
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
-import com.alibaba.xxpt.gateway.shared.api.request.OapiChatSendMsgRequest;
-import com.alibaba.xxpt.gateway.shared.api.request.OapiGettokenJsonRequest;
-import com.alibaba.xxpt.gateway.shared.api.request.OapiRpcOauth2DingtalkAppTokenJsonRequest;
-import com.alibaba.xxpt.gateway.shared.api.request.OapiRpcOauth2DingtalkAppUserJsonRequest;
-import com.alibaba.xxpt.gateway.shared.api.response.OapiChatSendMsgResponse;
-import com.alibaba.xxpt.gateway.shared.api.response.OapiGettokenJsonResponse;
-import com.alibaba.xxpt.gateway.shared.api.response.OapiRpcOauth2DingtalkAppTokenJsonResponse;
-import com.alibaba.xxpt.gateway.shared.api.response.OapiRpcOauth2DingtalkAppUserJsonResponse;
+import com.alibaba.xxpt.gateway.shared.api.request.*;
+import com.alibaba.xxpt.gateway.shared.api.response.*;
 import com.alibaba.xxpt.gateway.shared.client.http.IntelligentGetClient;
 import com.alibaba.xxpt.gateway.shared.client.http.IntelligentPostClient;
 import com.alibaba.xxpt.gateway.shared.client.http.api.OapiSpResultContent;
@@ -18,7 +13,8 @@ import com.efficient.common.util.JackSonUtil;
 import com.efficient.ykz.api.YkzApiService;
 import com.efficient.ykz.config.YkzConfig;
 import com.efficient.ykz.constant.YkzSendMsgTypeEnum;
-import com.efficient.ykz.model.dto.*;
+import com.efficient.ykz.model.dto.msg.*;
+import com.efficient.ykz.model.dto.worknotice.*;
 import com.efficient.ykz.model.vo.YkzAccessToken;
 import com.efficient.ykz.model.vo.YkzLoginToken;
 import com.efficient.ykz.model.vo.YkzLoginUser;
@@ -45,14 +41,23 @@ public class YkzApiServiceImpl implements YkzApiService {
 
     private <T> Result<T> getApiResult(String content, Class<T> tClass) {
         JSONObject json = new JSONObject(content);
-        JSONObject contentJson = json.getJSONObject("content");
-        boolean success = contentJson.getBool("success");
+        boolean success = json.getBool("success");
         if (!success) {
+            return Result.build(ResultEnum.FAILED.getCode(),
+                    json.getStr("errorCode") + ": " + json.getStr("errorMsg"));
+        }
+        JSONObject contentJson = json.getJSONObject("content");
+        Boolean success2 = contentJson.getBool("success");
+        if (Objects.nonNull(success2) && !success2) {
             return Result.build(ResultEnum.FAILED.getCode(),
                     contentJson.getStr("responseCode") + ": " + contentJson.getStr("responseMessage"));
         }
-        String userData = contentJson.getStr("data");
-        return Result.ok(JackSonUtil.toObject(userData, tClass));
+        String data = contentJson.getStr("data");
+        if (StrUtil.isBlank(data)) {
+            data = contentJson.getStr("msgId");
+        }
+
+        return Result.ok(JackSonUtil.toObject(data, tClass));
     }
 
     @Override
@@ -66,6 +71,7 @@ public class YkzApiServiceImpl implements YkzApiService {
         oapiGettokenJsonRequest.setAppsecret(ykzApi.getAppsecret());
         //获取结果
         OapiGettokenJsonResponse apiResult = intelligentGetClient.get(oapiGettokenJsonRequest);
+        log.info("accessToken 结果数据： {}",JackSonUtil.toJson(apiResult));
         if (!apiResult.getSuccess()) {
             return Result.build(ResultEnum.FAILED.getCode(), apiResult.getMessage());
         }
@@ -96,6 +102,7 @@ public class YkzApiServiceImpl implements YkzApiService {
         oapiRpcOauth2DingtalkAppUserJsonRequest.setAuth_code(authCode);
         //获取结果
         OapiRpcOauth2DingtalkAppUserJsonResponse apiResult = intelligentPostClient.post(oapiRpcOauth2DingtalkAppUserJsonRequest);
+        log.info("getUserInfo 结果数据： {}",JackSonUtil.toJson(apiResult));
         if (!apiResult.getSuccess()) {
             return Result.build(ResultEnum.FAILED.getCode(), apiResult.getMessage());
         }
@@ -118,6 +125,7 @@ public class YkzApiServiceImpl implements YkzApiService {
         oapiRpcOauth2DingtalkAppTokenJsonRequest.setAuth_code(authCode);
         //获取结果
         OapiRpcOauth2DingtalkAppTokenJsonResponse apiResult = intelligentPostClient.post(oapiRpcOauth2DingtalkAppTokenJsonRequest);
+        log.info("getTokenInfo 结果数据： {}",JackSonUtil.toJson(apiResult));
         if (!apiResult.getSuccess()) {
             return Result.build(ResultEnum.FAILED.getCode(), apiResult.getMessage());
         }
@@ -188,12 +196,95 @@ public class YkzApiServiceImpl implements YkzApiService {
         oapiChatSendMsgRequest.setChatType(ykzSendMsg.getChatType());
         //获取结果
         OapiChatSendMsgResponse apiResult = intelligentGetClient.get(oapiChatSendMsgRequest);
+        log.info("sendMsg 结果数据： {}",JackSonUtil.toJson(apiResult));
         if (!apiResult.getSuccess()) {
             return Result.build(ResultEnum.FAILED.getCode(), apiResult.getMessage());
         }
         String data = apiResult.getContent().getData();
         JSONObject json = new JSONObject(data);
-        String contentJson = json.getJSONObject("data").getStr("messageId");
+        String contentJson = json.getStr("messageId");
         return Result.ok(contentJson);
+    }
+
+    @Override
+    public Result<String> sendWorkNotice(YkzWorkNotice ykzWorkNotice) {
+        // executableClient保证单例
+        IntelligentGetClient intelligentGetClient = ykzConfig.getExecutableClient().newIntelligentGetClient(ykzProperties.getYkzApi().getSendWorkNotice());
+        OapiMessageWorkNotificationRequest oapiMessageWorkNotificationRequest = new OapiMessageWorkNotificationRequest();
+        //接收者的部门id列表
+        oapiMessageWorkNotificationRequest.setOrganizationCodes(ykzWorkNotice.getOrganizationCodes());
+        //接收人用户ID
+        oapiMessageWorkNotificationRequest.setReceiverIds(ykzWorkNotice.getReceiverIds());
+        //租户ID
+        oapiMessageWorkNotificationRequest.setTenantId(String.valueOf(ykzProperties.getYkzApi().getTenantId()));
+        //业务消息id
+        oapiMessageWorkNotificationRequest.setBizMsgId(ykzWorkNotice.getBizMsgId());
+        //消息对象
+        String msg = ykzWorkNotice.getMsg();
+        YkzSendMsgTypeEnum msgType = ykzWorkNotice.getMsgType();
+        JSONObject jsonObject;
+        switch (msgType) {
+            case TEXT:
+                YkzWorkNoticeMsgText workNoticeMsgText = ykzWorkNotice.getMsgText();
+                jsonObject = new JSONObject();
+                jsonObject.set("msgtype", YkzSendMsgTypeEnum.TEXT.getType());
+                jsonObject.set(YkzSendMsgTypeEnum.TEXT.getType(),
+                        new JSONObject().set("content", workNoticeMsgText.getContent())
+                );
+                msg = jsonObject.toString();
+                break;
+            case LINK:
+                YkzWorkNoticeMsgLink workNoticeMsgLink = ykzWorkNotice.getMsgLink();
+                jsonObject = new JSONObject();
+                jsonObject.set("msgtype", YkzSendMsgTypeEnum.LINK.getType());
+                jsonObject.set(YkzSendMsgTypeEnum.LINK.getType(),
+                        new JSONObject().set("messageUrl", workNoticeMsgLink.getMessageUrl())
+                                .set("picUrl", workNoticeMsgLink.getPicUrl())
+                                .set("title", workNoticeMsgLink.getTitle())
+                                .set("text", workNoticeMsgLink.getText())
+                );
+                msg = jsonObject.toString();
+                break;
+            case MARKDOWN:
+                YkzWorkNoticeMsgMarkdown workNoticeMsgMarkdown = ykzWorkNotice.getMsgMarkdown();
+                jsonObject = new JSONObject();
+                jsonObject.set("msgtype", YkzSendMsgTypeEnum.LINK.getType());
+                jsonObject.set(YkzSendMsgTypeEnum.LINK.getType(),
+                        new JSONObject().set("title", workNoticeMsgMarkdown.getTitle())
+                                .set("text", workNoticeMsgMarkdown.getText())
+                );
+                msg = jsonObject.toString();
+                break;
+
+        }
+        oapiMessageWorkNotificationRequest.setMsg(msg);
+        //获取结果
+        OapiMessageWorkNotificationResponse apiResult = intelligentGetClient.get(oapiMessageWorkNotificationRequest);
+        log.info("sendWorkNotice 结果数据： {}",JackSonUtil.toJson(apiResult));
+        String content = apiResult.getContent();
+        return this.getApiResult(content, String.class);
+    }
+
+    @Override
+    public Result<String> revokeWorkNotice(YkzWorkNoticeBackOut ykzWorkNotice) {
+        IntelligentGetClient intelligentGetClient = ykzConfig.getExecutableClient().newIntelligentGetClient(ykzProperties.getYkzApi().getRevokeWorkNotice());
+        OapiMessageRevokeRequest oapiMessageRevokeRequest = new OapiMessageRevokeRequest();
+        //消息类型，固定填写：workNotification
+        oapiMessageRevokeRequest.setMsgType(ykzWorkNotice.getMsgType());
+        //撤回的应用，填写：应用标识
+        oapiMessageRevokeRequest.setMsgApp(ykzWorkNotice.getMsgApp());
+        //租户
+        oapiMessageRevokeRequest.setTenantId(String.valueOf(ykzProperties.getYkzApi().getTenantId()));
+        //消息id
+        oapiMessageRevokeRequest.setBizMsgId(ykzWorkNotice.getBizMsgId());
+        //获取结果
+        OapiMessageRevokeResponse apiResult = intelligentGetClient.get(oapiMessageRevokeRequest);
+        log.info("revokeWorkNotice 结果数据： {}",JackSonUtil.toJson(apiResult));
+        if (!apiResult.getSuccess()) {
+            return Result.build(ResultEnum.FAILED.getCode(), apiResult.getMessage());
+        }
+        String data = apiResult.getContent().getData();
+
+        return StrUtil.equalsIgnoreCase("true", data) ? Result.ok() : Result.fail();
     }
 }

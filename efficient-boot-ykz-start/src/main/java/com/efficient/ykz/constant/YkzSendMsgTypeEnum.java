@@ -9,7 +9,10 @@ public enum YkzSendMsgTypeEnum {
     TEXT("text", "文本"),
     LINK("link", "链接"),
     IMAGE("image", "图片"),
-    FILE("previewFile", "文件");
+    FILE("previewFile", "文件"),
+    MARKDOWN("markdown", "markdown"),
+    OA("oa", "oa消息"),
+    ACTION_CARD("action_card", "卡片消息");
 
     private String type;
     private String name;
