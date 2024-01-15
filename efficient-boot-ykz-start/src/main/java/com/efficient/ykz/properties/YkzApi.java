@@ -35,6 +35,9 @@ public class YkzApi {
     private String tokenInfo = "/rpc/oauth2/dingtalk_app_token.json";
     private String sendMsg = "/chat/sendMsg";
     private String sendWorkNotice = "/message/workNotification";
-    private String revokeWorkNotice ="/message/revoke";
+    private String revokeWorkNotice = "/message/revoke";
+    private String createTodo = "/tc/v2/openapi/task/create.json";
+    private String finishTodo = "/tc/openapi/task/finish.json";
+    private String cancelTodo = "/tc/openapi/task/cancel.json";
 
 }

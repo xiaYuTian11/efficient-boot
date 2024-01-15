@@ -1,5 +1,7 @@
 package com.efficient.ykz.service;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.net.URLEncodeUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import com.alibaba.xxpt.gateway.shared.api.request.*;
@@ -14,10 +16,12 @@ import com.efficient.ykz.api.YkzApiService;
 import com.efficient.ykz.config.YkzConfig;
 import com.efficient.ykz.constant.YkzSendMsgTypeEnum;
 import com.efficient.ykz.model.dto.msg.*;
+import com.efficient.ykz.model.dto.todo.YkzTodoInfo;
 import com.efficient.ykz.model.dto.worknotice.*;
 import com.efficient.ykz.model.vo.YkzAccessToken;
 import com.efficient.ykz.model.vo.YkzLoginToken;
 import com.efficient.ykz.model.vo.YkzLoginUser;
+import com.efficient.ykz.model.vo.YkzTodoInfoVO;
 import com.efficient.ykz.properties.YkzApi;
 import com.efficient.ykz.properties.YkzProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -71,7 +75,7 @@ public class YkzApiServiceImpl implements YkzApiService {
         oapiGettokenJsonRequest.setAppsecret(ykzApi.getAppsecret());
         //获取结果
         OapiGettokenJsonResponse apiResult = intelligentGetClient.get(oapiGettokenJsonRequest);
-        log.info("accessToken 结果数据： {}",JackSonUtil.toJson(apiResult));
+        log.info("accessToken 结果数据： {}", JackSonUtil.toJson(apiResult));
         if (!apiResult.getSuccess()) {
             return Result.build(ResultEnum.FAILED.getCode(), apiResult.getMessage());
         }
@@ -102,7 +106,7 @@ public class YkzApiServiceImpl implements YkzApiService {
         oapiRpcOauth2DingtalkAppUserJsonRequest.setAuth_code(authCode);
         //获取结果
         OapiRpcOauth2DingtalkAppUserJsonResponse apiResult = intelligentPostClient.post(oapiRpcOauth2DingtalkAppUserJsonRequest);
-        log.info("getUserInfo 结果数据： {}",JackSonUtil.toJson(apiResult));
+        log.info("getUserInfo 结果数据： {}", JackSonUtil.toJson(apiResult));
         if (!apiResult.getSuccess()) {
             return Result.build(ResultEnum.FAILED.getCode(), apiResult.getMessage());
         }
@@ -125,7 +129,7 @@ public class YkzApiServiceImpl implements YkzApiService {
         oapiRpcOauth2DingtalkAppTokenJsonRequest.setAuth_code(authCode);
         //获取结果
         OapiRpcOauth2DingtalkAppTokenJsonResponse apiResult = intelligentPostClient.post(oapiRpcOauth2DingtalkAppTokenJsonRequest);
-        log.info("getTokenInfo 结果数据： {}",JackSonUtil.toJson(apiResult));
+        log.info("getTokenInfo 结果数据： {}", JackSonUtil.toJson(apiResult));
         if (!apiResult.getSuccess()) {
             return Result.build(ResultEnum.FAILED.getCode(), apiResult.getMessage());
         }
@@ -196,7 +200,7 @@ public class YkzApiServiceImpl implements YkzApiService {
         oapiChatSendMsgRequest.setChatType(ykzSendMsg.getChatType());
         //获取结果
         OapiChatSendMsgResponse apiResult = intelligentGetClient.get(oapiChatSendMsgRequest);
-        log.info("sendMsg 结果数据： {}",JackSonUtil.toJson(apiResult));
+        log.info("sendMsg 结果数据： {}", JackSonUtil.toJson(apiResult));
         if (!apiResult.getSuccess()) {
             return Result.build(ResultEnum.FAILED.getCode(), apiResult.getMessage());
         }
@@ -260,7 +264,7 @@ public class YkzApiServiceImpl implements YkzApiService {
         oapiMessageWorkNotificationRequest.setMsg(msg);
         //获取结果
         OapiMessageWorkNotificationResponse apiResult = intelligentGetClient.get(oapiMessageWorkNotificationRequest);
-        log.info("sendWorkNotice 结果数据： {}",JackSonUtil.toJson(apiResult));
+        log.info("sendWorkNotice 结果数据： {}", JackSonUtil.toJson(apiResult));
         String content = apiResult.getContent();
         return this.getApiResult(content, String.class);
     }
@@ -279,12 +283,98 @@ public class YkzApiServiceImpl implements YkzApiService {
         oapiMessageRevokeRequest.setBizMsgId(ykzWorkNotice.getBizMsgId());
         //获取结果
         OapiMessageRevokeResponse apiResult = intelligentGetClient.get(oapiMessageRevokeRequest);
-        log.info("revokeWorkNotice 结果数据： {}",JackSonUtil.toJson(apiResult));
+        log.info("revokeWorkNotice 结果数据： {}", JackSonUtil.toJson(apiResult));
         if (!apiResult.getSuccess()) {
             return Result.build(ResultEnum.FAILED.getCode(), apiResult.getMessage());
         }
         String data = apiResult.getContent().getData();
 
         return StrUtil.equalsIgnoreCase("true", data) ? Result.ok() : Result.fail();
+    }
+
+    @Override
+    public Result<YkzTodoInfoVO> createTodo(YkzTodoInfo todoInfo) {
+        //executableClient保证单例
+        IntelligentGetClient intelligentGetClient = ykzConfig.getExecutableClient().newIntelligentGetClient(ykzProperties.getYkzApi().getCreateTodo());
+        OapiTcV2OpenapiTaskCreateJsonRequest oapiTcV2OpenapiTaskCreateJsonRequest = new OapiTcV2OpenapiTaskCreateJsonRequest();
+        //标题
+        oapiTcV2OpenapiTaskCreateJsonRequest.setSubject(todoInfo.getSubject());
+        //创建人ID
+        oapiTcV2OpenapiTaskCreateJsonRequest.setCreatorId(todoInfo.getCreatorId());
+        //租户ID
+        oapiTcV2OpenapiTaskCreateJsonRequest.setTenantId(String.valueOf(ykzProperties.getYkzApi().getTenantId()));
+        //业务系统自定义ID
+        oapiTcV2OpenapiTaskCreateJsonRequest.setBizTaskId(todoInfo.getBizTaskId());
+        //URL
+        Integer openType = todoInfo.getOpenType();
+        String url = todoInfo.getUrl();
+        if (Objects.equals(openType, 2)) {
+            url = "taurusykz://taurusclient/page/link?url=" + URLEncodeUtil.encodeAll(url);
+        }
+        oapiTcV2OpenapiTaskCreateJsonRequest.setUrl(url);
+        //移动端URL
+        oapiTcV2OpenapiTaskCreateJsonRequest.setMobileUrl(todoInfo.getMobileUrl());
+        //模板code
+        oapiTcV2OpenapiTaskCreateJsonRequest.setTemplateCode(todoInfo.getTemplateCode());
+        //待办人ID
+        oapiTcV2OpenapiTaskCreateJsonRequest.setAssigneeId(todoInfo.getAssigneeId());
+        oapiTcV2OpenapiTaskCreateJsonRequest.setIsSendDynamicCard(todoInfo.getIsSendDynamicCard());
+        oapiTcV2OpenapiTaskCreateJsonRequest.setIsSendWindowNotice(todoInfo.getIsSendWindowNotice());
+        oapiTcV2OpenapiTaskCreateJsonRequest.setDueNotifyLevel(todoInfo.getDueNotifyLevel());
+        oapiTcV2OpenapiTaskCreateJsonRequest.setDueNotifyTypeArr(todoInfo.getDueNotifyTypeArr());
+        oapiTcV2OpenapiTaskCreateJsonRequest.setCategory(todoInfo.getCategory());
+        oapiTcV2OpenapiTaskCreateJsonRequest.setPackageUuid(todoInfo.getPackageUuid());
+        if (Objects.nonNull(todoInfo.getDueTime())) {
+            oapiTcV2OpenapiTaskCreateJsonRequest.setDueTime(DateUtil.formatDateTime(todoInfo.getDueTime()));
+        }
+        oapiTcV2OpenapiTaskCreateJsonRequest.setSubTypeCode(todoInfo.getSubTypeCode());
+        //传了模板code的情况下，待办列表展示formValues数据，格式  {     "componentId1":"value1",     "componentId2":"value2"  }  componentId来自与创建模板时的组件ID
+        oapiTcV2OpenapiTaskCreateJsonRequest.setFormValues(todoInfo.getFormValues());
+        //创建人信息
+        oapiTcV2OpenapiTaskCreateJsonRequest.setCreatorInfo(todoInfo.getCreatorInfo());
+        oapiTcV2OpenapiTaskCreateJsonRequest.setActionBindingJson(todoInfo.getActionBindingJson());
+        //获取结果
+        OapiTcV2OpenapiTaskCreateJsonResponse apiResult = intelligentGetClient.get(oapiTcV2OpenapiTaskCreateJsonRequest);
+        String json = JackSonUtil.toJson(apiResult);
+        log.info("createTodo 结果数据： {}", json);
+        // Boolean success = apiResult.getContent().getSuccess();
+        String data = apiResult.getContent().getData();
+        return StrUtil.isNotBlank(data) ? Result.ok(JackSonUtil.toObject(data, YkzTodoInfoVO.class)) : Result.build(ResultEnum.FAILED.getCode(), "请检查bizTaskId是否重复或其他参数是否正确！");
+    }
+
+    @Override
+    public Result<String> finishTodo(String assigneeId, String taskUuid, boolean closePackage) {
+        //executableClient保证单例
+        IntelligentGetClient intelligentGetClient = ykzConfig.getExecutableClient().newIntelligentGetClient(ykzProperties.getYkzApi().getFinishTodo());
+        OapiTcOpenapiTaskFinishJsonRequest oapiTcOpenapiTaskFinishJsonRequest = new OapiTcOpenapiTaskFinishJsonRequest();
+        //同步处理实例
+        oapiTcOpenapiTaskFinishJsonRequest.setClosePackage(closePackage);
+        //用户ID
+        oapiTcOpenapiTaskFinishJsonRequest.setUserId(assigneeId);
+        //任务唯一ID
+        oapiTcOpenapiTaskFinishJsonRequest.setTaskUuid(taskUuid);
+        //获取结果
+        OapiTcOpenapiTaskFinishJsonResponse apiResult = intelligentGetClient.get(oapiTcOpenapiTaskFinishJsonRequest);
+        log.info("finishTodo 结果数据： {}", JackSonUtil.toJson(apiResult));
+        String data = apiResult.getContent().getData();
+        return StrUtil.equals(data, "true") ? Result.ok() : Result.fail();
+    }
+
+    @Override
+    public Result<String> cancelTodo(String assigneeId, String taskUuid, boolean closePackage) {
+        //executableClient保证单例
+        IntelligentGetClient intelligentGetClient = ykzConfig.getExecutableClient().newIntelligentGetClient(ykzProperties.getYkzApi().getCancelTodo());
+        OapiTcOpenapiTaskCancelJsonRequest oapiTcOpenapiTaskCancelJsonRequest = new OapiTcOpenapiTaskCancelJsonRequest();
+        //同步处理实例
+        oapiTcOpenapiTaskCancelJsonRequest.setCancelPakcage(closePackage);
+        //用户ID
+        oapiTcOpenapiTaskCancelJsonRequest.setUserId(assigneeId);
+        //任务唯一ID
+        oapiTcOpenapiTaskCancelJsonRequest.setTaskUuid(taskUuid);
+        //获取结果
+        OapiTcOpenapiTaskCancelJsonResponse apiResult = intelligentGetClient.get(oapiTcOpenapiTaskCancelJsonRequest);
+        log.info("cancelTodo 结果数据： {}", JackSonUtil.toJson(apiResult));
+        String data = apiResult.getContent().getData();
+        return StrUtil.equals(data, "true") ? Result.ok() : Result.fail();
     }
 }

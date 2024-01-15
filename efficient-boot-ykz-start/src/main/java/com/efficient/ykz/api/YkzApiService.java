@@ -2,11 +2,13 @@ package com.efficient.ykz.api;
 
 import com.efficient.common.result.Result;
 import com.efficient.ykz.model.dto.msg.YkzSendMsg;
+import com.efficient.ykz.model.dto.todo.YkzTodoInfo;
 import com.efficient.ykz.model.dto.worknotice.YkzWorkNotice;
 import com.efficient.ykz.model.dto.worknotice.YkzWorkNoticeBackOut;
 import com.efficient.ykz.model.vo.YkzAccessToken;
 import com.efficient.ykz.model.vo.YkzLoginToken;
 import com.efficient.ykz.model.vo.YkzLoginUser;
+import com.efficient.ykz.model.vo.YkzTodoInfoVO;
 
 /**
  * @author TMW
@@ -25,4 +27,12 @@ public interface YkzApiService {
     Result<String> sendWorkNotice(YkzWorkNotice ykzWorkNotice);
 
     Result<String> revokeWorkNotice(YkzWorkNoticeBackOut ykzWorkNotice);
+
+    Result<YkzTodoInfoVO> createTodo(YkzTodoInfo todoInfo);
+
+    Result<String> finishTodo(String assigneeId, String taskUuid, boolean closePackage);
+
+    Result<String> cancelTodo(String assigneeId, String taskUuid, boolean closePackage);
+
+
 }

@@ -3,11 +3,13 @@ package com.efficient.ykz.controller;
 import com.efficient.common.result.Result;
 import com.efficient.ykz.api.YkzApiService;
 import com.efficient.ykz.model.dto.msg.YkzSendMsg;
+import com.efficient.ykz.model.dto.todo.YkzTodoInfo;
 import com.efficient.ykz.model.dto.worknotice.YkzWorkNotice;
 import com.efficient.ykz.model.dto.worknotice.YkzWorkNoticeBackOut;
 import com.efficient.ykz.model.vo.YkzAccessToken;
 import com.efficient.ykz.model.vo.YkzLoginToken;
 import com.efficient.ykz.model.vo.YkzLoginUser;
+import com.efficient.ykz.model.vo.YkzTodoInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -71,6 +73,40 @@ public class YkzApiController {
     @PostMapping("/workNotice/revoke")
     public Result<String> revokeWorkNotice(@RequestBody YkzWorkNoticeBackOut ykzWorkNotice) {
         return ykzApiService.revokeWorkNotice(ykzWorkNotice);
+    }
+
+    /**
+     * 待办-创建
+     */
+    @PostMapping("/todo/create")
+    public Result<YkzTodoInfoVO> createTodo(@RequestBody YkzTodoInfo todoInfo) {
+        return ykzApiService.createTodo(todoInfo);
+    }
+
+    /**
+     * 待办-完成
+     * @param assigneeId 接收人ID
+     * @param taskUuid 任务主键
+     * @param closePackage    是否同步关闭实例，默认false
+     */
+    @GetMapping("/todo/finish")
+    public Result<String> finishTodo(@RequestParam("assigneeId") String assigneeId,
+                                     @RequestParam("taskUuid") String taskUuid,
+                                     @RequestParam(value = "closePackage", required = false, defaultValue = "false") boolean closePackage) {
+        return ykzApiService.finishTodo(assigneeId, taskUuid, closePackage);
+    }
+
+    /**
+     * 待办-取消
+     * @param assigneeId 接收人ID
+     * @param taskUuid 任务主键
+     * @param closePackage    是否同步关闭实例，默认false
+     */
+    @GetMapping("/todo/cancel")
+    public Result<String> cancelTodo(@RequestParam("assigneeId") String assigneeId,
+                                     @RequestParam("taskUuid") String taskUuid,
+                                     @RequestParam(value = "closePackage", required = false, defaultValue = "false") boolean closePackage) {
+        return ykzApiService.cancelTodo(assigneeId, taskUuid, closePackage);
     }
 
 }
