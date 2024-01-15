@@ -1,21 +1,23 @@
 package com.efficient.ykz.controller;
 
+import com.dcqc.uc.oauth.sdk.model.Request;
+import com.dcqc.uc.oauth.sdk.model.v3.SynchronizeV3DTO;
 import com.efficient.common.result.Result;
-import com.efficient.common.result.ResultEnum;
 import com.efficient.ykz.api.YkzUserCenterService;
+import com.efficient.ykz.api.YkzUserCenterSyncService;
 import com.efficient.ykz.model.vo.YkzLabel;
 import com.efficient.ykz.model.vo.YkzOrg;
 import com.efficient.ykz.model.vo.YkzUser;
 import com.efficient.ykz.model.vo.YkzUserPost;
-import com.efficient.ykz.util.YkzUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 用户中心
@@ -26,9 +28,12 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/ykz/userCenter/")
 @Validated
+@Slf4j
 public class YkzUserCenterController {
     @Autowired
     private YkzUserCenterService ykzUserCenterService;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     /**
      * 根据机构Code拉取机构
@@ -60,7 +65,7 @@ public class YkzUserCenterController {
         if (pageSize < 20) {
             pageSize = 20;
         }
-        return ykzUserCenterService.orgByParentCode(orgCode, pageNum, pageSize, includeTop,flattenTree);
+        return ykzUserCenterService.orgByParentCode(orgCode, pageNum, pageSize, includeTop, flattenTree);
     }
 
     /**
@@ -133,6 +138,23 @@ public class YkzUserCenterController {
     @PostMapping("/userTag/userTagByMobileList")
     public Result<List<YkzLabel>> userTagByMobileList(@RequestBody List<String> phoneList) throws Exception {
         return ykzUserCenterService.userTagByMobileList(phoneList);
+    }
+
+    /**
+     * 单个组织用户增量同步接口
+     */
+    @PostMapping("/ykz/sync")
+    public com.dcqc.uc.oauth.sdk.model.Result<Boolean> ykzSync(@RequestBody @Validated Request<SynchronizeV3DTO> request) {
+        final com.dcqc.uc.oauth.sdk.model.Result<Boolean> objectResult = new com.dcqc.uc.oauth.sdk.model.Result<>();
+        try {
+            SynchronizeV3DTO synchronizeV3DTO = request.getData();
+            YkzUserCenterSyncService userCenterSyncService = applicationContext.getBean(YkzUserCenterSyncService.class);
+            userCenterSyncService.ykzSync(synchronizeV3DTO);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            objectResult.setFailed(e.getMessage());
+        }
+        return objectResult;
     }
 
 }

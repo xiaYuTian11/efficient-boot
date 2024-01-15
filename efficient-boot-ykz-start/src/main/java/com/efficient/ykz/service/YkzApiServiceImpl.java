@@ -337,6 +337,9 @@ public class YkzApiServiceImpl implements YkzApiService {
         OapiTcV2OpenapiTaskCreateJsonResponse apiResult = intelligentGetClient.get(oapiTcV2OpenapiTaskCreateJsonRequest);
         String json = JackSonUtil.toJson(apiResult);
         log.info("createTodo 结果数据： {}", json);
+        if (!apiResult.getSuccess()) {
+            return Result.build(ResultEnum.FAILED.getCode(), apiResult.getMessage());
+        }
         // Boolean success = apiResult.getContent().getSuccess();
         String data = apiResult.getContent().getData();
         return StrUtil.isNotBlank(data) ? Result.ok(JackSonUtil.toObject(data, YkzTodoInfoVO.class)) : Result.build(ResultEnum.FAILED.getCode(), "请检查bizTaskId是否重复或其他参数是否正确！");
@@ -356,6 +359,9 @@ public class YkzApiServiceImpl implements YkzApiService {
         //获取结果
         OapiTcOpenapiTaskFinishJsonResponse apiResult = intelligentGetClient.get(oapiTcOpenapiTaskFinishJsonRequest);
         log.info("finishTodo 结果数据： {}", JackSonUtil.toJson(apiResult));
+        if (!apiResult.getSuccess()) {
+            return Result.build(ResultEnum.FAILED.getCode(), apiResult.getMessage());
+        }
         String data = apiResult.getContent().getData();
         return StrUtil.equals(data, "true") ? Result.ok() : Result.fail();
     }
@@ -374,6 +380,9 @@ public class YkzApiServiceImpl implements YkzApiService {
         //获取结果
         OapiTcOpenapiTaskCancelJsonResponse apiResult = intelligentGetClient.get(oapiTcOpenapiTaskCancelJsonRequest);
         log.info("cancelTodo 结果数据： {}", JackSonUtil.toJson(apiResult));
+        if (!apiResult.getSuccess()) {
+            return Result.build(ResultEnum.FAILED.getCode(), apiResult.getMessage());
+        }
         String data = apiResult.getContent().getData();
         return StrUtil.equals(data, "true") ? Result.ok() : Result.fail();
     }

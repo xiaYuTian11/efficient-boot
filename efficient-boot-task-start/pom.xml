@@ -5,7 +5,7 @@
     <parent>
         <artifactId>efficient-boot</artifactId>
         <groupId>top.tanmw</groupId>
-        <version>0.9.9</version>
+        <version>0.9.10</version>
     </parent>
     <description>定时任务 start</description>
     <modelVersion>4.0.0</modelVersion>
