@@ -1,59 +1,58 @@
 # efficient
 
 基于springboot的二次封装框架
+
 ```text
 开发使用可以查看demo工程：https://github.com/xiaYuTian11/xxx-project
 配套的代码生成器地址可以查看：https://github.com/xiaYuTian11/efficient-generator
 ```
-
-- [efficient](#efficient)
-  - [引入依赖](#%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96)
-  - [安装依赖](#%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96)
-  - [指定maven仓库](#%E6%8C%87%E5%AE%9Amaven%E4%BB%93%E5%BA%93)
-  - [修改版本](#%E4%BF%AE%E6%94%B9%E7%89%88%E6%9C%AC)
-  - [发布](#%E5%8F%91%E5%B8%83)
-  - [权限认证模块](#%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81%E6%A8%A1%E5%9D%97)
-    - [依赖](#%E4%BE%9D%E8%B5%96)
-    - [配置](#%E9%85%8D%E7%BD%AE)
-  - [缓存模块](#%E7%BC%93%E5%AD%98%E6%A8%A1%E5%9D%97)
-    - [依赖](#%E4%BE%9D%E8%B5%96-1)
-    - [配置](#%E9%85%8D%E7%BD%AE-1)
-    - [使用](#%E4%BD%BF%E7%94%A8)
-  - [通用模块](#%E9%80%9A%E7%94%A8%E6%A8%A1%E5%9D%97)
-    - [依赖](#%E4%BE%9D%E8%B5%96-2)
-  - [配置模块](#%E9%85%8D%E7%BD%AE%E6%A8%A1%E5%9D%97)
-    - [依赖](#%E4%BE%9D%E8%B5%96-3)
-  - [文件上传下载模块](#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD%E6%A8%A1%E5%9D%97)
-    - [依赖](#%E4%BE%9D%E8%B5%96-4)
-    - [配置](#%E9%85%8D%E7%BD%AE-2)
-    - [建表语句](#%E5%BB%BA%E8%A1%A8%E8%AF%AD%E5%8F%A5)
-  - [流量控制](#%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6)
-    - [依赖](#%E4%BE%9D%E8%B5%96-5)
-    - [配置](#%E9%85%8D%E7%BD%AE-3)
-  - [日志模块](#%E6%97%A5%E5%BF%97%E6%A8%A1%E5%9D%97)
-    - [依赖](#%E4%BE%9D%E8%B5%96-6)
-    - [配置](#%E9%85%8D%E7%BD%AE-4)
-    - [使用](#%E4%BD%BF%E7%94%A8-1)
-    - [建表sql](#%E5%BB%BA%E8%A1%A8sql)
-  - [swagger模块](#swagger%E6%A8%A1%E5%9D%97)
-    - [依赖](#%E4%BE%9D%E8%B5%96-7)
-    - [配置](#%E9%85%8D%E7%BD%AE-5)
-  - [定时任务模块](#%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A8%A1%E5%9D%97)
-    - [依赖](#%E4%BE%9D%E8%B5%96-8)
-    - [配置](#%E9%85%8D%E7%BD%AE-6)
-    - [使用](#%E4%BD%BF%E7%94%A8-2)
-  - [数据安全模块](#%E6%95%B0%E6%8D%AE%E5%AE%89%E5%85%A8%E6%A8%A1%E5%9D%97)
-    - [依赖](#%E4%BE%9D%E8%B5%96-9)
-    - [Api数据加密](#api%E6%95%B0%E6%8D%AE%E5%8A%A0%E5%AF%86)
-      - [配置](#%E9%85%8D%E7%BD%AE-7)
-    - [Db数据加密](#db%E6%95%B0%E6%8D%AE%E5%8A%A0%E5%AF%86)
-      - [配置](#%E9%85%8D%E7%BD%AE-8)
-      - [注意事项](#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)
-    - [返回数据脱敏处理](#%E8%BF%94%E5%9B%9E%E6%95%B0%E6%8D%AE%E8%84%B1%E6%95%8F%E5%A4%84%E7%90%86)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-
+- efficient
+    - [引入依赖](#%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96)
+    - [安装依赖](#%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96)
+        - [aspose](#aspose)
+        - [渝快政](#%E6%B8%9D%E5%BF%AB%E6%94%BF)
+    - [指定maven仓库](#%E6%8C%87%E5%AE%9Amaven%E4%BB%93%E5%BA%93)
+    - [修改版本](#%E4%BF%AE%E6%94%B9%E7%89%88%E6%9C%AC)
+    - [发布](#%E5%8F%91%E5%B8%83)
+    - [权限认证模块](#%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81%E6%A8%A1%E5%9D%97)
+        - [依赖](#%E4%BE%9D%E8%B5%96)
+        - [配置](#%E9%85%8D%E7%BD%AE)
+    - [缓存模块](#%E7%BC%93%E5%AD%98%E6%A8%A1%E5%9D%97)
+        - [依赖](#%E4%BE%9D%E8%B5%96-1)
+        - [配置](#%E9%85%8D%E7%BD%AE-1)
+        - [使用](#%E4%BD%BF%E7%94%A8)
+    - [通用模块](#%E9%80%9A%E7%94%A8%E6%A8%A1%E5%9D%97)
+        - [依赖](#%E4%BE%9D%E8%B5%96-2)
+    - [配置模块](#%E9%85%8D%E7%BD%AE%E6%A8%A1%E5%9D%97)
+        - [依赖](#%E4%BE%9D%E8%B5%96-3)
+    - [文件上传下载模块](#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD%E6%A8%A1%E5%9D%97)
+        - [依赖](#%E4%BE%9D%E8%B5%96-4)
+        - [配置](#%E9%85%8D%E7%BD%AE-2)
+        - [建表语句](#%E5%BB%BA%E8%A1%A8%E8%AF%AD%E5%8F%A5)
+    - [流量控制](#%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6)
+        - [依赖](#%E4%BE%9D%E8%B5%96-5)
+        - [配置](#%E9%85%8D%E7%BD%AE-3)
+    - [日志模块](#%E6%97%A5%E5%BF%97%E6%A8%A1%E5%9D%97)
+        - [依赖](#%E4%BE%9D%E8%B5%96-6)
+        - [配置](#%E9%85%8D%E7%BD%AE-4)
+        - [使用](#%E4%BD%BF%E7%94%A8-1)
+        - [建表sql](#%E5%BB%BA%E8%A1%A8sql)
+    - [swagger模块](#swagger%E6%A8%A1%E5%9D%97)
+        - [依赖](#%E4%BE%9D%E8%B5%96-7)
+        - [配置](#%E9%85%8D%E7%BD%AE-5)
+    - [定时任务模块](#%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A8%A1%E5%9D%97)
+        - [依赖](#%E4%BE%9D%E8%B5%96-8)
+        - [配置](#%E9%85%8D%E7%BD%AE-6)
+        - [使用](#%E4%BD%BF%E7%94%A8-2)
+    - [数据安全模块](#%E6%95%B0%E6%8D%AE%E5%AE%89%E5%85%A8%E6%A8%A1%E5%9D%97)
+        - [依赖](#%E4%BE%9D%E8%B5%96-9)
+        - [Api数据加密](#api%E6%95%B0%E6%8D%AE%E5%8A%A0%E5%AF%86)
+        - [Db数据加密](#db%E6%95%B0%E6%8D%AE%E5%8A%A0%E5%AF%86)
+        - [返回数据脱敏处理](#%E8%BF%94%E5%9B%9E%E6%95%B0%E6%8D%AE%E8%84%B1%E6%95%8F%E5%A4%84%E7%90%86)
+    - [渝快政对接](#%E6%B8%9D%E5%BF%AB%E6%94%BF%E5%AF%B9%E6%8E%A5)
+        - [安装渝快政本地依赖](#%E5%AE%89%E8%A3%85%E6%B8%9D%E5%BF%AB%E6%94%BF%E6%9C%AC%E5%9C%B0%E4%BE%9D%E8%B5%96)
+        - [引入框架依赖](#%E5%BC%95%E5%85%A5%E6%A1%86%E6%9E%B6%E4%BE%9D%E8%B5%96)
+        - [服务地址](#%E6%9C%8D%E5%8A%A1%E5%9C%B0%E5%9D%80)
 
 ## 引入依赖
 
@@ -67,13 +66,17 @@
 ```
 
 ## 安装依赖
+
 ### aspose
+
 ```text
 mvn -Dmaven.test.skip=true install
 mvn install:install-file    -DgroupId=com.aspose -DartifactId=aspose-cells -Dversion=21.11 -Dpackaging=jar   -Dfile=./aspose-cells-21.11.jar
 mvn install:install-file    -DgroupId=com.aspose -DartifactId=aspose-words -Dversion=21.6 -Dpackaging=jar   -Dfile=./aspose-words-21.11.0-jdk17.jar
 ```
+
 ### 渝快政
+
 ```text
 mvn -Dmaven.test.skip=true install
 mvn install:install-file    -DgroupId=com.dcqc -DartifactId=dcqc-uc-oauth-sdk -Dversion=3.0.0-RELEASE -Dpackaging=jar   -Dfile=./dcqc-uc-oauth-sdk-3.0.0-RELEASE.jar
@@ -204,7 +207,8 @@ com:
 ### 使用
 
 ````java
-    @Autowired
+
+@Autowired
 private CacheUtil cacheUtil;
 ````
 
@@ -352,25 +356,28 @@ com:
 */
 
 SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
+SET
+FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
 -- Table structure for sys_file_info
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_file_info`;
-CREATE TABLE `sys_file_info`  (
-  `id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
-  `biz_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '业务主键',
-  `store_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '存储类型',
-  `file_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件名称',
-  `file_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件类型',
-  `file_content` longblob NULL COMMENT '文件内容',
-  `file_size` bigint(0) NULL DEFAULT NULL COMMENT '文件大写，kb单位',
-  `create_time` timestamp(0) NULL DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE
+CREATE TABLE `sys_file_info`
+(
+    `id`           varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
+    `biz_id`       varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '业务主键',
+    `store_type`   varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '存储类型',
+    `file_name`    varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件名称',
+    `file_path`    varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件类型',
+    `file_content` longblob NULL COMMENT '文件内容',
+    `file_size`    bigint(0) NULL DEFAULT NULL COMMENT '文件大写，kb单位',
+    `create_time`  timestamp(0) NULL DEFAULT NULL COMMENT '创建时间',
+    PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '文件信息' ROW_FORMAT = Dynamic;
 
-SET FOREIGN_KEY_CHECKS = 1;
+SET
+FOREIGN_KEY_CHECKS = 1;
 
 ```
 
@@ -468,47 +475,55 @@ com:
 */
 
 SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
+SET
+FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
 -- Table structure for sys_log
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_log`;
-CREATE TABLE `sys_log`  (
-  `id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
-  `module` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '模块',
-  `user_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户ID',
-  `user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户名',
-  `log_ip` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '操作IP',
-  `log_time` timestamp NULL DEFAULT NULL COMMENT '记录日志时间',
-  `request_url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '请求路径',
-  `log_opt` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '操作类型',
-  `log_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '操作内容',
-  `params` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '参数',
-  `result_code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '结果',
-  `result` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '返回值',
-  `exception` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '异常信息',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `sys_log_log_time_index`(`log_time`) USING BTREE
+CREATE TABLE `sys_log`
+(
+    `id`          varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
+    `module`      varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '模块',
+    `user_id`     varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户ID',
+    `user_name`   varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户名',
+    `log_ip`      varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '操作IP',
+    `log_time`    timestamp NULL DEFAULT NULL COMMENT '记录日志时间',
+    `request_url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '请求路径',
+    `log_opt`     varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '操作类型',
+    `log_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '操作内容',
+    `params`      text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '参数',
+    `result_code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '结果',
+    `result`      text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '返回值',
+    `exception`   text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '异常信息',
+    PRIMARY KEY (`id`) USING BTREE,
+    INDEX         `sys_log_log_time_index`(`log_time`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_log
 -- ----------------------------
 
-SET FOREIGN_KEY_CHECKS = 1;
+SET
+FOREIGN_KEY_CHECKS = 1;
 
 ```
 
 ## swagger模块
+
 ### 依赖
+
 ```xml
+
 <dependency>
     <groupId>top.tanmw</groupId>
     <artifactId>efficient-boot-swagger-start</artifactId>
 </dependency>
 ```
+
 ### 配置
+
 ```yaml
 com:
   efficient:
@@ -519,22 +534,30 @@ com:
       title: "标题"
       termsOfServiceUrl: "服务网址"
 ```
+
 ## 定时任务模块
+
 ### 依赖
+
 ```xml
+
 <dependency>
     <groupId>top.tanmw</groupId>
     <artifactId>efficient-boot-task-start</artifactId>
 </dependency>
 ```
+
 ### 配置
+
 ```yaml
 com:
   efficient:
     task:
       enable: true
 ```
+
 ### 使用
+
 ```java
 /**
  * 需要继承QuartzJobBean类，并在数据库中进行配置
@@ -570,25 +593,28 @@ public class TaskTest extends QuartzJobBean {
 */
 
 SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
+SET
+FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
 -- Table structure for sys_task
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_task`;
-CREATE TABLE `sys_task`  (
-                             `id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
-                             `task_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '定时任务code',
-                             `task_describe` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '定时任务描述',
-                             `task_class` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '定时任务全限定名称',
-                             `enabled` int(0) NULL DEFAULT NULL COMMENT '是否启用',
-                             `cron_expression` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '表达式',
-                             `create_time` timestamp(0) NULL DEFAULT NULL COMMENT '创建时间',
-                             `task_status` int(0) NULL DEFAULT NULL COMMENT '当前定时任务状态',
-                             PRIMARY KEY (`id`) USING BTREE
+CREATE TABLE `sys_task`
+(
+    `id`              varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
+    `task_code`       varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '定时任务code',
+    `task_describe`   varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '定时任务描述',
+    `task_class`      varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '定时任务全限定名称',
+    `enabled`         int(0) NULL DEFAULT NULL COMMENT '是否启用',
+    `cron_expression` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '表达式',
+    `create_time`     timestamp(0) NULL DEFAULT NULL COMMENT '创建时间',
+    `task_status`     int(0) NULL DEFAULT NULL COMMENT '当前定时任务状态',
+    PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务表' ROW_FORMAT = Dynamic;
 
-SET FOREIGN_KEY_CHECKS = 1;
+SET
+FOREIGN_KEY_CHECKS = 1;
 
 ```
 
@@ -604,29 +630,35 @@ SET FOREIGN_KEY_CHECKS = 1;
     <version>${version}</version>
 </dependency>
 ```
+
 ### Api数据加密
+
 #### 配置
+
 ````yaml
 com:
   efficient:
     security:
-        api:
-          ## 请求及返回相关数据加解密配置
-          requestEnable: true
-          requestEnableType: node
-          responseEnable: true
-          responseEnableType: node
-    
+      api:
+        ## 请求及返回相关数据加解密配置
+        requestEnable: true
+        requestEnableType: node
+        responseEnable: true
+        responseEnableType: node
+
 ````
+
 ### Db数据加密
+
 #### 配置
+
 ````yaml
 com:
   efficient:
     security:
-        db:
-          dbEncryptEnable: true
-          dbEncryptModelPath: com.zenith.xxx.model.entity
+      db:
+        dbEncryptEnable: true
+        dbEncryptModelPath: com.zenith.xxx.model.entity
 ````
 
 #### 注意事项
@@ -666,3 +698,35 @@ public class UserTest {
 }
 
 ````
+
+## 渝快政对接
+
+### 安装渝快政本地依赖
+```text
+mvn -Dmaven.test.skip=true install
+mvn install:install-file    -DgroupId=com.dcqc -DartifactId=dcqc-uc-oauth-sdk -Dversion=3.0.0-RELEASE -Dpackaging=jar   -Dfile=./dcqc-uc-oauth-sdk-3.0.0-RELEASE.jar
+
+mvn install:install-file    -DgroupId=com.alibaba -DartifactId=zwdd-sdk-java -Dversion=1.2.0 -Dpackaging=jar   -Dfile=./zwdd-sdk-java-1.2.0.jar
+```
+
+### 引入框架依赖
+```xml
+<dependency>
+    <groupId>top.tanmw</groupId>
+    <artifactId>efficient-boot-ykz-start</artifactId>
+    <version>${efficent.version}</version>
+</dependency>
+<dependency>
+<groupId>top.tanmw</groupId>
+<artifactId>efficient-boot-common</artifactId>
+<version>${efficent.version}</version>
+</dependency>
+```
+
+### 服务地址
+```text
+用户中心
+com.efficient.ykz.controller.YkzUserCenterController
+接口对接
+com.efficient.ykz.controller.YkzApiController
+```
