@@ -140,9 +140,6 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
         HttpResponse response = httpRequest.execute();
         log.info("{} 结果数据： {}", url, response.body());
         YkzResult ykzResult = JackSonUtil.toObject(response.body(), YkzResult.class);
-        // if (Objects.isNull(ykzResult) || Objects.equals(Boolean.FALSE, ykzResult.getSuccess()) || Objects.isNull(ykzResult.getData())) {
-        //     return null;
-        // }
         return ykzResult;
     }
 
@@ -161,7 +158,9 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
         log.info("{} 结果数据： {}", url, response.body());
         YkzResult ykzResult = JackSonUtil.toObject(response.body(), YkzResult.class);
         if (Objects.isNull(ykzResult) || Objects.equals(Boolean.FALSE, ykzResult.getSuccess()) || Objects.isNull(ykzResult.getData())) {
-            YKZ_ERROR_MSG.set(Result.build(ykzResult.getStatus(), ykzResult.getMessage()));
+            if (Objects.nonNull(ykzResult)) {
+                YKZ_ERROR_MSG.set(Result.build(ykzResult.getStatus(), ykzResult.getMessage()));
+            }
             return null;
         }
         return JackSonUtil.toObjectList(JackSonUtil.toJson(ykzResult.getData()), tClass);
