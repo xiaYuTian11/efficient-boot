@@ -331,7 +331,7 @@
                             <serverId>oss-rr</serverId>
                             <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
                             <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                            <stagingProgressTimeoutMinutes>30</stagingProgressTimeoutMinutes>
+                            <stagingProgressTimeoutMinutes>90</stagingProgressTimeoutMinutes>
                         </configuration>
                     </plugin>
 
