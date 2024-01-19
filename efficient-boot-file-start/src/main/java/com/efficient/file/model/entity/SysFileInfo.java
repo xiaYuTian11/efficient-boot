@@ -17,7 +17,7 @@ import java.util.Date;
  * @date 2022-08-26 11:21:02
  */
 @Data
-@TableName("sys_file_info")
+@TableName("efficient_sys_file_info")
 public class SysFileInfo implements Serializable {
 
     private static final long serialVersionUID = 5092988968055492155L;

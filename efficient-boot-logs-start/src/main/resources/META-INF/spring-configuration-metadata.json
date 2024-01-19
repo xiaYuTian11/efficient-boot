@@ -40,42 +40,42 @@
       "type": "java.lang.String",
       "description": "sql日志等级",
       "defaultValue": "debug",
-      "sourceType": "com.efficient.logs.properties.LogsProperties"
+      "sourceType": "com.efficient.logs.properties.LogSqlProperties"
     },
     {
       "name": "com.efficient.logs.sql.daoPackage",
       "type": "java.lang.String",
       "description": "dao包的路径",
       "defaultValue": "com.efficient",
-      "sourceType": "com.efficient.logs.properties.LogsProperties"
+      "sourceType": "com.efficient.logs.properties.LogSqlProperties"
     },
     {
       "name": "com.efficient.logs.sql.showMethod",
       "type": "java.lang.Boolean",
       "description": "是否展示方法名",
       "defaultValue": false,
-      "sourceType": "com.efficient.logs.properties.LogsProperties"
+      "sourceType": "com.efficient.logs.properties.LogSqlProperties"
     },
     {
       "name": "com.efficient.logs.sql.showSql",
       "type": "java.lang.Boolean",
       "description": "是否展示SQL",
       "defaultValue": true,
-      "sourceType": "com.efficient.logs.properties.LogsProperties"
+      "sourceType": "com.efficient.logs.properties.LogSqlProperties"
     },
     {
       "name": "com.efficient.logs.sql.showElapsed",
       "type": "java.lang.Boolean",
       "description": "是否展示执行耗时",
       "defaultValue": false,
-      "sourceType": "com.efficient.logs.properties.LogsProperties"
+      "sourceType": "com.efficient.logs.properties.LogSqlProperties"
     },
     {
       "name": "com.efficient.logs.sql.showRows",
       "type": "java.lang.Boolean",
       "description": "是否展示结果行数",
       "defaultValue": false,
-      "sourceType": "com.efficient.logs.properties.LogsProperties"
+      "sourceType": "com.efficient.logs.properties.LogSqlProperties"
     }
   ],
   "hints": [

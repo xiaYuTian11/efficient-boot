@@ -5,7 +5,7 @@
     <parent>
         <artifactId>efficient-boot</artifactId>
         <groupId>top.tanmw</groupId>
-        <version>0.9.11</version>
+        <version>0.9.12</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
@@ -26,6 +26,14 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.hibernate.validator</groupId>
@@ -72,8 +80,8 @@
             <artifactId>jooq</artifactId>
         </dependency>
         <dependency>
-            <groupId>cn.shenyanchao.ik-analyzer</groupId>
-            <artifactId>ik-analyzer</artifactId>
+            <groupId>com.hankcs</groupId>
+            <artifactId>hanlp</artifactId>
         </dependency>
     </dependencies>
 <!--    <build>-->

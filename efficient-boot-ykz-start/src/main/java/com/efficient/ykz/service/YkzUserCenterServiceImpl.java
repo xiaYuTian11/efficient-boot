@@ -16,7 +16,10 @@ import com.efficient.common.result.Result;
 import com.efficient.common.result.ResultEnum;
 import com.efficient.common.util.IdUtil;
 import com.efficient.common.util.JackSonUtil;
+import com.efficient.ykz.api.YkzOrgService;
 import com.efficient.ykz.api.YkzUserCenterService;
+import com.efficient.ykz.api.YkzUserPostService;
+import com.efficient.ykz.api.YkzUserService;
 import com.efficient.ykz.constant.YkzConstant;
 import com.efficient.ykz.model.dto.YkzParam;
 import com.efficient.ykz.model.vo.*;
@@ -24,6 +27,7 @@ import com.efficient.ykz.properties.YkzProperties;
 import com.efficient.ykz.util.YkzUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -48,12 +52,26 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
     JwtHelper jwtHelper;
     @Autowired
     private YkzProperties ykzProperties;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @Override
     public Result<YkzOrg> orgByCode(String orgCode) {
         JSONObject jsonObject = JSONUtil.createObj().set("organizationCode", orgCode);
         YkzOrg ykzOrg = this.sendRequestOne(ykzProperties.getUserCenter().getOrgByCode(), true, jsonObject, YkzOrg.class);
-        return Objects.isNull(ykzOrg) ? YKZ_ERROR_MSG.get() : Result.ok(ykzOrg);
+        if (Objects.isNull(ykzOrg)) {
+            if (ykzProperties.getUserCenter().isDb()) {
+                YkzOrgService ykzOrgService = applicationContext.getBean(YkzOrgService.class);
+                ykzOrgService.saveErrorMsg(JackSonUtil.toJson(YKZ_ERROR_MSG.get()));
+            }
+            return YKZ_ERROR_MSG.get();
+        } else {
+            if (ykzProperties.getUserCenter().isDb()) {
+                YkzOrgService ykzOrgService = applicationContext.getBean(YkzOrgService.class);
+                ykzOrgService.saveOne(ykzOrg);
+            }
+            return Result.ok(ykzOrg);
+        }
     }
 
     @Override
@@ -72,7 +90,21 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
 
         }
         log.info("批量获取机构信息条数：{}", resultList.size());
-        return CollUtil.isEmpty(resultList) ? YKZ_ERROR_MSG.get() : Result.ok(resultList);
+        if (CollUtil.isEmpty(resultList)) {
+            if (ykzProperties.getUserCenter().isDb()) {
+                YkzOrgService ykzOrgService = applicationContext.getBean(YkzOrgService.class);
+                ykzOrgService.saveErrorMsg(JackSonUtil.toJson(YKZ_ERROR_MSG.get()));
+            }
+            return YKZ_ERROR_MSG.get();
+        } else {
+            if (ykzProperties.getUserCenter().isDb()) {
+                YkzOrgService ykzOrgService = applicationContext.getBean(YkzOrgService.class);
+                ykzOrgService.saveBatchDb(resultList);
+            }
+            return Result.ok(resultList);
+        }
+
+        // return CollUtil.isEmpty(resultList) ? YKZ_ERROR_MSG.get() : Result.ok(resultList);
     }
 
     @Override
@@ -90,6 +122,19 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
 
         log.info("总共拉取机构数量：{},耗时：{} s", resultList.size(), timeInterval.interval() / 1000);
         List<YkzOrg> ykzOrgList = YkzUtil.createTree(resultList, flattenTree);
+        if (CollUtil.isEmpty(resultList)) {
+            if (ykzProperties.getUserCenter().isDb()) {
+                YkzOrgService ykzOrgService = applicationContext.getBean(YkzOrgService.class);
+                ykzOrgService.saveErrorMsg(JackSonUtil.toJson(YKZ_ERROR_MSG.get()));
+            }
+            // return YKZ_ERROR_MSG.get();
+        } else {
+            if (ykzProperties.getUserCenter().isDb()) {
+                YkzOrgService ykzOrgService = applicationContext.getBean(YkzOrgService.class);
+                ykzOrgService.saveBatchDb(resultList);
+            }
+            // return Result.ok(resultList);
+        }
         return CollUtil.isEmpty(ykzOrgList) ? Result.fail() : Result.ok(ykzOrgList);
     }
 
@@ -171,9 +216,17 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
         JSONObject jsonObject = JSONUtil.createObj().set("mobile", phone);
         YkzUser ykzUser = this.sendRequestOne(ykzProperties.getUserCenter().getUserByMobile(), true, jsonObject, YkzUser.class);
         if (Objects.isNull(ykzUser)) {
+            if (ykzProperties.getUserCenter().isDb()) {
+                YkzUserService ykzUserService = applicationContext.getBean(YkzUserService.class);
+                ykzUserService.saveErrorMsg(JackSonUtil.toJson(YKZ_ERROR_MSG.get()));
+            }
             return YKZ_ERROR_MSG.get();
         }
         ykzUser.setMobile(phone);
+        if (ykzProperties.getUserCenter().isDb()) {
+            YkzUserService ykzUserService = applicationContext.getBean(YkzUserService.class);
+            ykzUserService.saveOne(ykzUser);
+        }
         return Result.ok(ykzUser);
     }
 
@@ -182,18 +235,26 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
         JSONObject jsonObject = JSONUtil.createObj().set("accountId", zwddId);
         List<YkzUserPost> ykzUserPostList = this.sendRequestList(ykzProperties.getUserCenter().getUserPostByZwddId(), true, jsonObject, YkzUserPost.class);
         log.info("获取人员职务信息条数：{}", ykzUserPostList.size());
-        return CollUtil.isEmpty(ykzUserPostList) ? YKZ_ERROR_MSG.get() : Result.ok(ykzUserPostList);
+        if (CollUtil.isEmpty(ykzUserPostList)) {
+            if (ykzProperties.getUserCenter().isDb()) {
+                YkzUserPostService ykzUserPostService = applicationContext.getBean(YkzUserPostService.class);
+                ykzUserPostService.saveErrorMsg(JackSonUtil.toJson(YKZ_ERROR_MSG.get()));
+            }
+            return YKZ_ERROR_MSG.get();
+        }
+        ykzUserPostList.forEach(et -> et.setAccountId(zwddId));
+        if (ykzProperties.getUserCenter().isDb()) {
+            YkzUserPostService ykzUserPostService = applicationContext.getBean(YkzUserPostService.class);
+            ykzUserPostService.saveBatchDb(ykzUserPostList);
+        }
+        return Result.ok(ykzUserPostList);
     }
 
     @Override
     public Result<List<YkzUser>> userByMobileList(List<String> phoneList) {
         JSONObject jsonObject = JSONUtil.createObj().set("mobiles", phoneList);
         List<YkzUser> ykzUserList = this.sendRequestList(ykzProperties.getUserCenter().getUserByMobileList(), true, jsonObject, YkzUser.class);
-        if (CollUtil.isEmpty(ykzUserList)) {
-            return YKZ_ERROR_MSG.get();
-        }
-
-        return Result.ok(ykzUserList);
+        return getYkzUserListResult(ykzUserList);
     }
 
     @Override
@@ -201,7 +262,15 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
         JSONObject jsonObject = JSONUtil.createObj().set("accountId", zwddId);
         YkzUser ykzUser = this.sendRequestOne(ykzProperties.getUserCenter().getUserByZwddId(), true, jsonObject, YkzUser.class);
         if (Objects.isNull(ykzUser)) {
+            if (ykzProperties.getUserCenter().isDb()) {
+                YkzUserService ykzUserService = applicationContext.getBean(YkzUserService.class);
+                ykzUserService.saveErrorMsg(JackSonUtil.toJson(YKZ_ERROR_MSG.get()));
+            }
             return YKZ_ERROR_MSG.get();
+        }
+        if (ykzProperties.getUserCenter().isDb()) {
+            YkzUserService ykzUserService = applicationContext.getBean(YkzUserService.class);
+            ykzUserService.saveOne(ykzUser);
         }
         return Result.ok(ykzUser);
     }
@@ -210,10 +279,7 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
     public Result<List<YkzUser>> userByZwddIdList(List<String> zwddIdList) {
         JSONObject jsonObject = JSONUtil.createObj().set("accountIds", zwddIdList);
         List<YkzUser> ykzUserList = this.sendRequestList(ykzProperties.getUserCenter().getUserByZwddIdList(), true, jsonObject, YkzUser.class);
-        if (CollUtil.isEmpty(ykzUserList)) {
-            return YKZ_ERROR_MSG.get();
-        }
-        return Result.ok(ykzUserList);
+        return getYkzUserListResult(ykzUserList);
     }
 
     @Override
@@ -254,6 +320,21 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
             return YKZ_ERROR_MSG.get();
         }
         return Result.ok(ykzLabelList);
+    }
+
+    private Result<List<YkzUser>> getYkzUserListResult(List<YkzUser> ykzUserList) {
+        if (CollUtil.isEmpty(ykzUserList)) {
+            if (ykzProperties.getUserCenter().isDb()) {
+                YkzUserService ykzUserService = applicationContext.getBean(YkzUserService.class);
+                ykzUserService.saveErrorMsg(JackSonUtil.toJson(YKZ_ERROR_MSG.get()));
+            }
+            return YKZ_ERROR_MSG.get();
+        }
+        if (ykzProperties.getUserCenter().isDb()) {
+            YkzUserService ykzUserService = applicationContext.getBean(YkzUserService.class);
+            ykzUserService.saveBatchDb(ykzUserList);
+        }
+        return Result.ok(ykzUserList);
     }
 
     private String setRequestHeader() {

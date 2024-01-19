@@ -18,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.PrintWriter;
@@ -32,7 +34,10 @@ import java.util.Objects;
 @Aspect
 @Component
 public class LogsAop {
+    public static final TransmittableThreadLocal<Long> START_TIME = new TransmittableThreadLocal<>();
     private static final Logger LOGGER = LoggerFactory.getLogger(LogsAop.class);
+    private static final String REQUEST_NORMAL_FORMAT = "\n=============\nip:%s\nurl:%s\ncontroller:%s\nargs:%s\ntoken:%s\nreturn:%s\ntime:%d\n请求成功\n=============";
+    private static final String REQUEST_ERROR_FORMAT = "\n=============\nip:%s\nurl:%s\ncontroller:%s\nargs:%s\ntoken:%s\nreturn:%s\nerror:%s\ntime:%d\n请求失败\n=============";
     @Autowired
     private HttpServletRequest request;
     @Autowired
@@ -41,10 +46,6 @@ public class LogsAop {
     private LogsProperties logsProperties;
     @Autowired
     private ApplicationEventPublisher publisher;
-
-    public static final TransmittableThreadLocal<Long> START_TIME = new TransmittableThreadLocal<>();
-    private static final String REQUEST_NORMAL_FORMAT = "\n=============\nip:%s\nurl:%s\ncontroller:%s\nargs:%s\ntoken:%s\nreturn:%s\ntime:%d\n请求成功\n=============";
-    private static final String REQUEST_ERROR_FORMAT = "\n=============\nip:%s\nurl:%s\ncontroller:%s\nargs:%s\ntoken:%s\nreturn:%s\nerror:%s\ntime:%d\n请求失败\n=============";
 
     @Pointcut("@annotation(com.efficient.logs.annotation.Log)")
     public void pointCut() {
@@ -67,15 +68,13 @@ public class LogsAop {
         recordLog(joinPoint, result, null);
     }
 
-    @AfterThrowing(value = "pointCut()", throwing = "exp")
-    public void doAfterThrowing(JoinPoint joinPoint, Exception exp) {
-        recordLog(joinPoint, null, exp);
-    }
-
     private void recordLog(JoinPoint joinPoint, Object resultValue, Exception exp) {
-        // ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         // 设置子线程共享
-        // RequestContextHolder.setRequestAttributes(servletRequestAttributes,true);
+        RequestContextHolder.setRequestAttributes(servletRequestAttributes, true);
+        if (Objects.isNull(RequestHolder.getCurrRequest())) {
+            RequestHolder.set(request);
+        }
         ThreadUtil.EXECUTOR_SERVICE.execute(() -> {
             final HttpServletRequest request = RequestHolder.getCurrRequest();
             final String ip = WebUtil.getIP(request);
@@ -121,6 +120,11 @@ public class LogsAop {
                 LOGGER.error("日志记录异常：", e);
             }
         });
+    }
+
+    @AfterThrowing(value = "pointCut()", throwing = "exp")
+    public void doAfterThrowing(JoinPoint joinPoint, Exception exp) {
+        recordLog(joinPoint, null, exp);
     }
 
 }

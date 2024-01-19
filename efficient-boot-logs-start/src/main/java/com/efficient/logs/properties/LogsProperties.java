@@ -28,4 +28,6 @@ public class LogsProperties {
      */
     private String path = "/efficient/logs/";
 
+    private LogSqlProperties sql = new LogSqlProperties();
+
 }

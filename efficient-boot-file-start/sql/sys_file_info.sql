@@ -1,40 +1,27 @@
-/*
- Navicat Premium Data Transfer
+DROP TABLE IF EXISTS "efficient_sys_file_info";
+CREATE TABLE public.efficient_sys_file_info (
+                                                id varchar(64) NOT NULL, -- 主键
+                                                biz_id varchar(64) NULL, -- 业务主键
+                                                store_type varchar(10) NULL, -- 存储类型
+                                                file_name text NULL, -- 文件名称
+                                                file_path text NULL, -- 文件类型
+                                                file_content bytea NULL, -- 文件类型
+                                                file_size int8 NULL, -- 文件大写，kb单位
+                                                create_time timestamp(6) NULL, -- 创建时间
+                                                remark text NULL, -- 备注
+                                                CONSTRAINT sys_file_info_pkey PRIMARY KEY (id)
+);
+CREATE INDEX index_efficient_sys_file_info_biz_id ON public.efficient_sys_file_info USING hash (biz_id);
+COMMENT ON TABLE public.efficient_sys_file_info IS '文件信息';
 
- Source Server         : 127.0.0.1
- Source Server Type    : MySQL
- Source Server Version : 80022
- Source Host           : localhost:3306
- Source Schema         : demo
+-- Column comments
 
- Target Server Type    : MySQL
- Target Server Version : 80022
- File Encoding         : 65001
-
- Date: 28/08/2022 17:47:57
-*/
-
-SET NAMES utf8mb4;
-SET
-FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
--- Table structure for sys_file_info
--- ----------------------------
-DROP TABLE IF EXISTS `sys_file_info`;
-CREATE TABLE `sys_file_info`
-(
-    `id`           varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
-    `biz_id`       varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '业务主键',
-    `store_type`   varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '存储类型',
-    `file_name`    text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '文件名称',
-    `file_path`    text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '文件类型',
-    `file_content` longblob COMMENT '文件类型',
-    `file_size`    bigint                                                       DEFAULT NULL COMMENT '文件大写，kb单位',
-    `create_time`  timestamp NULL DEFAULT NULL COMMENT '创建时间',
-    `remark`       text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '备注',
-    PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='文件信息';
-
-SET
-FOREIGN_KEY_CHECKS = 1;
+COMMENT ON COLUMN public.efficient_sys_file_info.id IS '主键';
+COMMENT ON COLUMN public.efficient_sys_file_info.biz_id IS '业务主键';
+COMMENT ON COLUMN public.efficient_sys_file_info.store_type IS '存储类型';
+COMMENT ON COLUMN public.efficient_sys_file_info.file_name IS '文件名称';
+COMMENT ON COLUMN public.efficient_sys_file_info.file_path IS '文件类型';
+COMMENT ON COLUMN public.efficient_sys_file_info.file_content IS '文件类型';
+COMMENT ON COLUMN public.efficient_sys_file_info.file_size IS '文件大写，kb单位';
+COMMENT ON COLUMN public.efficient_sys_file_info.create_time IS '创建时间';
+COMMENT ON COLUMN public.efficient_sys_file_info.remark IS '备注';

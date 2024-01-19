@@ -22,11 +22,11 @@
     </modules>
     <groupId>top.tanmw</groupId>
     <artifactId>efficient-boot</artifactId>
-    <version>0.9.11</version>
+    <version>0.9.12</version>
     <packaging>pom</packaging>
 
     <properties>
-        <efficient-boot.version>0.9.11</efficient-boot.version>
+        <efficient-boot.version>0.9.12</efficient-boot.version>
         <java.version>1.8</java.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -34,7 +34,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <resource.delimiter>@</resource.delimiter>
 
-        <spring-boot.version>2.7.13</spring-boot.version>
+        <spring-boot.version>2.7.18</spring-boot.version>
         <mysql.version>8.0.33</mysql.version>
         <pgsql.version>42.6.0</pgsql.version>
         <oracle.version>23.2.0.0</oracle.version>
@@ -43,23 +43,30 @@
 
         <aspose-cells.version>21.11</aspose-cells.version>
         <aspose-words.version>21.6</aspose-words.version>
-        <poi.version>5.2.3</poi.version>
+        <poi.version>5.2.5</poi.version>
 
-        <lombok.version>1.18.28</lombok.version>
-        <hutool.version>5.8.20</hutool.version>
-        <guava.version>32.1.1-jre</guava.version>
-        <transmittable.version>2.14.3</transmittable.version>
+        <lombok.version>1.18.30</lombok.version>
+        <hutool.version>5.8.25</hutool.version>
+        <guava.version>33.0.0-jre</guava.version>
+        <transmittable.version>2.14.5</transmittable.version>
         <jooq.version>3.14.16</jooq.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
-        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
+        <mybatis-plus.version>3.5.5</mybatis-plus.version>
         <swagger.version>2.9.2</swagger.version>
 
         <analysis-core.version>1.0.0</analysis-core.version>
         <dbsync.version>1.0.0</dbsync.version>
         <java-jwt.version>4.4.0</java-jwt.version>
-        <ik-analyzer.version>9.0.0</ik-analyzer.version>
-        <minio.version>8.5.4</minio.version>
+        <hanlp.version>portable-1.8.4</hanlp.version>
+        <minio.version>8.5.7</minio.version>
         <reflections.version>0.10.2</reflections.version>
+
+        <bcprov-jdk15on.version>1.70</bcprov-jdk15on.version>
+        <bcpkix-jdk15on.version>1.70</bcpkix-jdk15on.version>
+        <joda-time.version>2.12.6</joda-time.version>
+        <httpclient.version>4.5.14</httpclient.version>
+        <fastjson.version>2.0.45</fastjson.version>
+        <logback.version>1.4.14</logback.version>
     </properties>
 
     <!-- 依赖管理 -->
@@ -229,10 +236,11 @@
                 <version>${java-jwt.version}</version>
             </dependency>
             <dependency>
-                <groupId>cn.shenyanchao.ik-analyzer</groupId>
-                <artifactId>ik-analyzer</artifactId>
-                <version>${ik-analyzer.version}</version>
+                <groupId>com.hankcs</groupId>
+                <artifactId>hanlp</artifactId>
+                <version>${hanlp.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>io.minio</groupId>
                 <artifactId>minio</artifactId>
@@ -252,6 +260,48 @@
                 <groupId>org.reflections</groupId>
                 <artifactId>reflections</artifactId>
                 <version>${reflections.version}</version>
+            </dependency>
+            <!-- ykz -->
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15on</artifactId>
+                <version>${bcprov-jdk15on.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcpkix-jdk15on</artifactId>
+                <version>${bcpkix-jdk15on.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda-time.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpmime</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <!--  ykz end -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${logback.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

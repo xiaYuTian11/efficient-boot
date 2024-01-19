@@ -5,7 +5,7 @@
     <parent>
         <groupId>top.tanmw</groupId>
         <artifactId>efficient-boot</artifactId>
-        <version>0.9.11</version>
+        <version>0.9.12</version>
     </parent>
 
     <description>渝快政 start</description>
@@ -39,6 +39,21 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>top.tanmw</groupId>
             <artifactId>efficient-boot-common</artifactId>
             <scope>provided</scope>
@@ -48,26 +63,21 @@
             <groupId>com.dcqc</groupId>
             <artifactId>dcqc-uc-oauth-sdk</artifactId>
             <version>3.0.0-RELEASE</version>
-<!--            <scope>system</scope>-->
-<!--            <systemPath>${parent.basedir}/other/lib/ykz/dcqc-uc-oauth-sdk-3.0.0-RELEASE.jar</systemPath>-->
         </dependency>
         <!-- jwt -->
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
-            <version>3.11.0</version>
         </dependency>
         <!-- bc库，BouncyCastle是一款开源的密码包，其中包含了大量的密码算法，使用BouncyCastle的目的就是为了扩充算法支持
         -->
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk15on</artifactId>
-            <version>1.65</version>
         </dependency>
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcpkix-jdk15on</artifactId>
-            <version>1.65</version>
         </dependency>
 
         <!--政务钉钉 start    -->
@@ -85,22 +95,18 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-            <version>2.10</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.13</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpmime</artifactId>
-            <version>4.5.13</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>2.0.45</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

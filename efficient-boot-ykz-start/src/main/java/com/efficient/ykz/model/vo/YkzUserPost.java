@@ -16,8 +16,15 @@ public class YkzUserPost implements Serializable {
      */
     private String organizationCode;
     /**
+     * 渝快政ID
+     */
+    private String accountId;
+    /**
      * 任职类型 1主职、2兼职、3挂职、4借调
      */
     private Integer postType;
+    /**
+     * 职务
+     */
     private String posJob;
 }

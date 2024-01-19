@@ -1,6 +1,7 @@
-package com.efficient.auth.interceptor;
+package com.efficient.logs.interceptor;
 
 import com.efficient.common.auth.RequestHolder;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 

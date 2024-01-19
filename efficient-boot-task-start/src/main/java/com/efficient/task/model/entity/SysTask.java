@@ -15,7 +15,7 @@ import java.util.Date;
  * @date 2022-08-28 18:08:04
  */
 @Data
-@TableName("sys_task")
+@TableName("efficient_sys_task")
 public class SysTask implements Serializable {
 
     private static final long serialVersionUID = 5053091198324685481L;

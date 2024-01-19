@@ -1,36 +1,24 @@
-/*
- Navicat Premium Data Transfer
+DROP TABLE IF EXISTS "efficient_sys_task";
+CREATE TABLE public.efficient_sys_task (
+                                           id varchar(255) NOT NULL, -- 主键
+                                           task_code varchar(255) NULL, -- 定时任务code
+                                           task_describe varchar(255) NULL, -- 定时任务描述
+                                           task_class varchar(255) NULL, -- 定时任务全限定名称
+                                           enabled int4 NULL, -- 是否启用
+                                           cron_expression varchar(255) NULL, -- 表达式
+                                           create_time timestamp(6) NULL, -- 创建时间
+                                           task_status int4 NULL, -- 当前定时任务状态
+                                           CONSTRAINT sys_task_pkey PRIMARY KEY (id)
+);
+COMMENT ON TABLE public.efficient_sys_task IS '定时任务表';
 
- Source Server         : 127.0.0.1
- Source Server Type    : MySQL
- Source Server Version : 80022
- Source Host           : localhost:3306
- Source Schema         : demo
+-- Column comments
 
- Target Server Type    : MySQL
- Target Server Version : 80022
- File Encoding         : 65001
-
- Date: 28/08/2022 22:18:52
-*/
-
-SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
--- Table structure for sys_task
--- ----------------------------
-DROP TABLE IF EXISTS `sys_task`;
-CREATE TABLE `sys_task`  (
-  `id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
-  `task_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '定时任务code',
-  `task_describe` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '定时任务描述',
-  `task_class` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '定时任务全限定名称',
-  `enabled` int(0) NULL DEFAULT NULL COMMENT '是否启用',
-  `cron_expression` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '表达式',
-  `create_time` timestamp(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `task_status` int(0) NULL DEFAULT NULL COMMENT '当前定时任务状态',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务表' ROW_FORMAT = Dynamic;
-
-SET FOREIGN_KEY_CHECKS = 1;
+COMMENT ON COLUMN public.efficient_sys_task.id IS '主键';
+COMMENT ON COLUMN public.efficient_sys_task.task_code IS '定时任务code';
+COMMENT ON COLUMN public.efficient_sys_task.task_describe IS '定时任务描述';
+COMMENT ON COLUMN public.efficient_sys_task.task_class IS '定时任务全限定名称';
+COMMENT ON COLUMN public.efficient_sys_task.enabled IS '是否启用';
+COMMENT ON COLUMN public.efficient_sys_task.cron_expression IS '表达式';
+COMMENT ON COLUMN public.efficient_sys_task.create_time IS '创建时间';
+COMMENT ON COLUMN public.efficient_sys_task.task_status IS '当前定时任务状态';

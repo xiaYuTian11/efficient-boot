@@ -30,7 +30,7 @@
     },
     {
       "name": "com.efficient.ykz.userCenter.db",
-      "type": "java.lang.String",
+      "type": "java.lang.Boolean",
       "description": "拉取的数据是否需要入库",
       "defaultValue": false,
       "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
@@ -167,7 +167,54 @@
       "description": "获取用户信息",
       "defaultValue": "/rpc/oauth2/dingtalk_app_user.json",
       "sourceType": "com.efficient.ykz.properties.YkzApi"
+    },
+    {
+      "name": "com.efficient.ykz.ykzApi.tokenInfo",
+      "type": "java.lang.String",
+      "description": "获取token信息",
+      "defaultValue": "/rpc/oauth2/dingtalk_app_token.json",
+      "sourceType": "com.efficient.ykz.properties.YkzApi"
+    },
+    {
+      "name": "com.efficient.ykz.ykzApi.sendMsg",
+      "type": "java.lang.String",
+      "description": "发送消息",
+      "defaultValue": "/chat/sendMsg",
+      "sourceType": "com.efficient.ykz.properties.YkzApi"
+    },
+    {
+      "name": "com.efficient.ykz.ykzApi.sendWorkNotice",
+      "type": "java.lang.String",
+      "description": "发送工作通知",
+      "defaultValue": "/message/workNotification",
+      "sourceType": "com.efficient.ykz.properties.YkzApi"
+    },
+    {
+      "name": "com.efficient.ykz.ykzApi.revokeWorkNotice",
+      "type": "java.lang.String",
+      "description": "撤销工作通知",
+      "defaultValue": "/message/revoke",
+      "sourceType": "com.efficient.ykz.properties.YkzApi"
+    },
+    {
+      "name": "com.efficient.ykz.ykzApi.createTodo",
+      "type": "java.lang.String",
+      "description": "创建待办",
+      "defaultValue": "/tc/v2/openapi/task/create.json",
+      "sourceType": "com.efficient.ykz.properties.YkzApi"
+    },
+    {
+      "name": "com.efficient.ykz.ykzApi.finishTodo",
+      "type": "java.lang.String",
+      "description": "完成待办",
+      "defaultValue": "/tc/openapi/task/finish.json",
+      "sourceType": "com.efficient.ykz.properties.YkzApi"
+    },
+    {
+      "name": "com.efficient.ykz.ykzApi.cancelTodo",
+      "type": "java.lang.String",
+      "description": "撤销待办",
+      "defaultValue": "/tc/openapi/task/cancel.json",
+      ],
+      "hints": []
     }
-  ],
-  "hints": []
-}

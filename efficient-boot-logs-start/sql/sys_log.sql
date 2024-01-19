@@ -1,46 +1,36 @@
-/*
- Navicat Premium Data Transfer
+DROP TABLE IF EXISTS "efficient_sys_log";
+CREATE TABLE public.efficient_sys_log (
+                                          id varchar(64) NOT NULL, -- 主键
+                                          "module" varchar(255) NULL, -- 模块
+                                          user_id varchar(255) NULL, -- 用户ID
+                                          user_name varchar(255) NULL, -- 用户名
+                                          log_ip varchar(20) NULL, -- 操作IP
+                                          log_time timestamp(6) NULL, -- 记录日志时间
+                                          request_url text NULL, -- 请求路径
+                                          log_opt varchar(10) NULL, -- 操作类型
+                                          log_content text NULL, -- 操作内容
+                                          params text NULL, -- 参数
+                                          result_code varchar(10) NULL, -- 结果
+                                          "result" text NULL, -- 返回值
+                                          "exception" text NULL, -- 异常信息
+                                          CONSTRAINT efficient_sys_log_pkey PRIMARY KEY (id)
+);
+CREATE INDEX index_efficient_sys_log_log_opt ON public.efficient_sys_log USING btree (log_opt);
+CREATE INDEX index_efficient_sys_log_log_time ON public.efficient_sys_log USING btree (log_time);
+COMMENT ON TABLE public.efficient_sys_log IS '日志表';
 
- Source Server         : localhost
- Source Server Type    : MySQL
- Source Server Version : 80012
- Source Host           : localhost:3306
- Source Schema         : demo
+-- Column comments
 
- Target Server Type    : MySQL
- Target Server Version : 80012
- File Encoding         : 65001
-
- Date: 05/09/2022 16:32:26
-*/
-
-SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
--- Table structure for sys_log
--- ----------------------------
-DROP TABLE IF EXISTS `sys_log`;
-CREATE TABLE `sys_log`  (
-  `id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
-  `module` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '模块',
-  `user_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户ID',
-  `user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户名',
-  `log_ip` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '操作IP',
-  `log_time` timestamp NULL DEFAULT NULL COMMENT '记录日志时间',
-  `request_url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '请求路径',
-  `log_opt` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '操作类型',
-  `log_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '操作内容',
-  `params` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '参数',
-  `result_code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '结果',
-  `result` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '返回值',
-  `exception` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '异常信息',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `sys_log_log_time_index`(`log_time`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '日志表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of sys_log
--- ----------------------------
-
-SET FOREIGN_KEY_CHECKS = 1;
+COMMENT ON COLUMN public.efficient_sys_log.id IS '主键';
+COMMENT ON COLUMN public.efficient_sys_log."module" IS '模块';
+COMMENT ON COLUMN public.efficient_sys_log.user_id IS '用户ID';
+COMMENT ON COLUMN public.efficient_sys_log.user_name IS '用户名';
+COMMENT ON COLUMN public.efficient_sys_log.log_ip IS '操作IP';
+COMMENT ON COLUMN public.efficient_sys_log.log_time IS '记录日志时间';
+COMMENT ON COLUMN public.efficient_sys_log.request_url IS '请求路径';
+COMMENT ON COLUMN public.efficient_sys_log.log_opt IS '操作类型';
+COMMENT ON COLUMN public.efficient_sys_log.log_content IS '操作内容';
+COMMENT ON COLUMN public.efficient_sys_log.params IS '参数';
+COMMENT ON COLUMN public.efficient_sys_log.result_code IS '结果';
+COMMENT ON COLUMN public.efficient_sys_log."result" IS '返回值';
+COMMENT ON COLUMN public.efficient_sys_log."exception" IS '异常信息';

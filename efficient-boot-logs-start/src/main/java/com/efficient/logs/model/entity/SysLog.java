@@ -15,7 +15,7 @@ import java.util.Date;
 * @date 2022-09-05 16:24:36
 */
 @Data
-@TableName("sys_log")
+@TableName("efficient_sys_log")
 public class SysLog implements Serializable {
 
     private static final long serialVersionUID = 8313174163871740854L;
