@@ -6,53 +6,58 @@
 开发使用可以查看demo工程：https://github.com/xiaYuTian11/xxx-project
 配套的代码生成器地址可以查看：https://github.com/xiaYuTian11/efficient-generator
 ```
-- efficient
-    - [引入依赖](#%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96)
-    - [安装依赖](#%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96)
-        - [aspose](#aspose)
-        - [渝快政](#%E6%B8%9D%E5%BF%AB%E6%94%BF)
-    - [指定maven仓库](#%E6%8C%87%E5%AE%9Amaven%E4%BB%93%E5%BA%93)
-    - [修改版本](#%E4%BF%AE%E6%94%B9%E7%89%88%E6%9C%AC)
-    - [发布](#%E5%8F%91%E5%B8%83)
-    - [权限认证模块](#%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81%E6%A8%A1%E5%9D%97)
-        - [依赖](#%E4%BE%9D%E8%B5%96)
-        - [配置](#%E9%85%8D%E7%BD%AE)
-    - [缓存模块](#%E7%BC%93%E5%AD%98%E6%A8%A1%E5%9D%97)
-        - [依赖](#%E4%BE%9D%E8%B5%96-1)
-        - [配置](#%E9%85%8D%E7%BD%AE-1)
-        - [使用](#%E4%BD%BF%E7%94%A8)
-    - [通用模块](#%E9%80%9A%E7%94%A8%E6%A8%A1%E5%9D%97)
-        - [依赖](#%E4%BE%9D%E8%B5%96-2)
-    - [配置模块](#%E9%85%8D%E7%BD%AE%E6%A8%A1%E5%9D%97)
-        - [依赖](#%E4%BE%9D%E8%B5%96-3)
-    - [文件上传下载模块](#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD%E6%A8%A1%E5%9D%97)
-        - [依赖](#%E4%BE%9D%E8%B5%96-4)
-        - [配置](#%E9%85%8D%E7%BD%AE-2)
-        - [建表语句](#%E5%BB%BA%E8%A1%A8%E8%AF%AD%E5%8F%A5)
-    - [流量控制](#%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6)
-        - [依赖](#%E4%BE%9D%E8%B5%96-5)
-        - [配置](#%E9%85%8D%E7%BD%AE-3)
-    - [日志模块](#%E6%97%A5%E5%BF%97%E6%A8%A1%E5%9D%97)
-        - [依赖](#%E4%BE%9D%E8%B5%96-6)
-        - [配置](#%E9%85%8D%E7%BD%AE-4)
-        - [使用](#%E4%BD%BF%E7%94%A8-1)
-        - [建表sql](#%E5%BB%BA%E8%A1%A8sql)
-    - [swagger模块](#swagger%E6%A8%A1%E5%9D%97)
-        - [依赖](#%E4%BE%9D%E8%B5%96-7)
-        - [配置](#%E9%85%8D%E7%BD%AE-5)
-    - [定时任务模块](#%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A8%A1%E5%9D%97)
-        - [依赖](#%E4%BE%9D%E8%B5%96-8)
-        - [配置](#%E9%85%8D%E7%BD%AE-6)
-        - [使用](#%E4%BD%BF%E7%94%A8-2)
-    - [数据安全模块](#%E6%95%B0%E6%8D%AE%E5%AE%89%E5%85%A8%E6%A8%A1%E5%9D%97)
-        - [依赖](#%E4%BE%9D%E8%B5%96-9)
-        - [Api数据加密](#api%E6%95%B0%E6%8D%AE%E5%8A%A0%E5%AF%86)
-        - [Db数据加密](#db%E6%95%B0%E6%8D%AE%E5%8A%A0%E5%AF%86)
-        - [返回数据脱敏处理](#%E8%BF%94%E5%9B%9E%E6%95%B0%E6%8D%AE%E8%84%B1%E6%95%8F%E5%A4%84%E7%90%86)
-    - [渝快政对接](#%E6%B8%9D%E5%BF%AB%E6%94%BF%E5%AF%B9%E6%8E%A5)
-        - [安装渝快政本地依赖](#%E5%AE%89%E8%A3%85%E6%B8%9D%E5%BF%AB%E6%94%BF%E6%9C%AC%E5%9C%B0%E4%BE%9D%E8%B5%96)
-        - [引入框架依赖](#%E5%BC%95%E5%85%A5%E6%A1%86%E6%9E%B6%E4%BE%9D%E8%B5%96)
-        - [服务地址](#%E6%9C%8D%E5%8A%A1%E5%9C%B0%E5%9D%80)
+- [efficient](#efficient)
+    * [引入依赖](#%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96)
+        + [说明](#%E8%AF%B4%E6%98%8E)
+    * [安装依赖](#%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96)
+        + [aspose](#aspose)
+        + [渝快政](#%E6%B8%9D%E5%BF%AB%E6%94%BF)
+    * [指定maven仓库](#%E6%8C%87%E5%AE%9Amaven%E4%BB%93%E5%BA%93)
+    * [修改版本](#%E4%BF%AE%E6%94%B9%E7%89%88%E6%9C%AC)
+    * [发布](#%E5%8F%91%E5%B8%83)
+    * [权限认证模块](#%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81%E6%A8%A1%E5%9D%97)
+        + [依赖](#%E4%BE%9D%E8%B5%96)
+        + [配置](#%E9%85%8D%E7%BD%AE)
+    * [缓存模块](#%E7%BC%93%E5%AD%98%E6%A8%A1%E5%9D%97)
+        + [依赖](#%E4%BE%9D%E8%B5%96-1)
+        + [配置](#%E9%85%8D%E7%BD%AE-1)
+        + [使用](#%E4%BD%BF%E7%94%A8)
+    * [通用模块](#%E9%80%9A%E7%94%A8%E6%A8%A1%E5%9D%97)
+        + [依赖](#%E4%BE%9D%E8%B5%96-2)
+    * [配置模块](#%E9%85%8D%E7%BD%AE%E6%A8%A1%E5%9D%97)
+        + [依赖](#%E4%BE%9D%E8%B5%96-3)
+    * [文件上传下载模块](#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD%E6%A8%A1%E5%9D%97)
+        + [依赖](#%E4%BE%9D%E8%B5%96-4)
+        + [配置](#%E9%85%8D%E7%BD%AE-2)
+        + [建表语句](#%E5%BB%BA%E8%A1%A8%E8%AF%AD%E5%8F%A5)
+    * [流量控制](#%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6)
+        + [依赖](#%E4%BE%9D%E8%B5%96-5)
+        + [配置](#%E9%85%8D%E7%BD%AE-3)
+    * [日志模块](#%E6%97%A5%E5%BF%97%E6%A8%A1%E5%9D%97)
+        + [依赖](#%E4%BE%9D%E8%B5%96-6)
+        + [配置](#%E9%85%8D%E7%BD%AE-4)
+        + [使用](#%E4%BD%BF%E7%94%A8-1)
+        + [建表sql](#%E5%BB%BA%E8%A1%A8sql)
+    * [swagger模块](#swagger%E6%A8%A1%E5%9D%97)
+        + [依赖](#%E4%BE%9D%E8%B5%96-7)
+        + [配置](#%E9%85%8D%E7%BD%AE-5)
+    * [定时任务模块](#%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A8%A1%E5%9D%97)
+        + [依赖](#%E4%BE%9D%E8%B5%96-8)
+        + [配置](#%E9%85%8D%E7%BD%AE-6)
+        + [使用](#%E4%BD%BF%E7%94%A8-2)
+    * [数据安全模块](#%E6%95%B0%E6%8D%AE%E5%AE%89%E5%85%A8%E6%A8%A1%E5%9D%97)
+        + [依赖](#%E4%BE%9D%E8%B5%96-9)
+        + [Api数据加密](#api%E6%95%B0%E6%8D%AE%E5%8A%A0%E5%AF%86)
+            - [配置](#%E9%85%8D%E7%BD%AE-7)
+        + [Db数据加密](#db%E6%95%B0%E6%8D%AE%E5%8A%A0%E5%AF%86)
+            - [配置](#%E9%85%8D%E7%BD%AE-8)
+            - [注意事项](#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)
+        + [返回数据脱敏处理](#%E8%BF%94%E5%9B%9E%E6%95%B0%E6%8D%AE%E8%84%B1%E6%95%8F%E5%A4%84%E7%90%86)
+    * [渝快政对接](#%E6%B8%9D%E5%BF%AB%E6%94%BF%E5%AF%B9%E6%8E%A5)
+        + [安装渝快政本地依赖](#%E5%AE%89%E8%A3%85%E6%B8%9D%E5%BF%AB%E6%94%BF%E6%9C%AC%E5%9C%B0%E4%BE%9D%E8%B5%96)
+        + [引入框架依赖](#%E5%BC%95%E5%85%A5%E6%A1%86%E6%9E%B6%E4%BE%9D%E8%B5%96)
+        + [服务地址](#%E6%9C%8D%E5%8A%A1%E5%9C%B0%E5%9D%80)
+        + [建表语句](#%E5%BB%BA%E8%A1%A8%E8%AF%AD%E5%8F%A5-1)
 
 ## 引入依赖
 
@@ -61,8 +66,13 @@
 <parent>
     <groupId>top.tanmw</groupId>
     <artifactId>efficient-boot</artifactId>
-    <version>0.8.2</version>
+    <version>${version}</version>
 </parent>
+```
+
+### 说明
+```text
+下面所有的Sql语句都是以postgresql为基础的，使用其他数据库请自行修改
 ```
 
 ## 安装依赖
@@ -71,7 +81,9 @@
 
 ```text
 mvn -Dmaven.test.skip=true install
+
 mvn install:install-file    -DgroupId=com.aspose -DartifactId=aspose-cells -Dversion=21.11 -Dpackaging=jar   -Dfile=./aspose-cells-21.11.jar
+
 mvn install:install-file    -DgroupId=com.aspose -DartifactId=aspose-words -Dversion=21.6 -Dpackaging=jar   -Dfile=./aspose-words-21.11.0-jdk17.jar
 ```
 
@@ -110,6 +122,11 @@ mvn install:install-file    -DgroupId=com.alibaba -DartifactId=zwdd-sdk-java -Dv
         <id>sonatype</id>
         <name>sonatype maven</name>
         <url>https://s01.oss.sonatype.org/content/repositories/releases/</url>
+    </repository>
+    <repository>
+        <id>sonatype</id>
+        <name>sonatype maven</name>
+        <url>https://oss.sonatype.org/content/repositories/releases/</url>
     </repository>
 </repositories>
 ```
@@ -339,45 +356,33 @@ com:
 ### 建表语句
 
 ```sql
-/*
- Navicat Premium Data Transfer
+DROP TABLE IF EXISTS "efficient_sys_file_info";
+CREATE TABLE public.efficient_sys_file_info (
+                                                id varchar(64) NOT NULL, -- 主键
+                                                biz_id varchar(64) NULL, -- 业务主键
+                                                store_type varchar(10) NULL, -- 存储类型
+                                                file_name text NULL, -- 文件名称
+                                                file_path text NULL, -- 文件类型
+                                                file_content bytea NULL, -- 文件类型
+                                                file_size int8 NULL, -- 文件大写，kb单位
+                                                create_time timestamp(6) NULL, -- 创建时间
+                                                remark text NULL, -- 备注
+                                                CONSTRAINT sys_file_info_pkey PRIMARY KEY (id)
+);
+CREATE INDEX index_efficient_sys_file_info_biz_id ON public.efficient_sys_file_info USING hash (biz_id);
+COMMENT ON TABLE public.efficient_sys_file_info IS '文件信息';
 
- Source Server         : 127.0.0.1
- Source Server Type    : MySQL
- Source Server Version : 80022
- Source Host           : localhost:3306
- Source Schema         : demo
+-- Column comments
 
- Target Server Type    : MySQL
- Target Server Version : 80022
- File Encoding         : 65001
-
- Date: 28/08/2022 17:47:57
-*/
-
-SET NAMES utf8mb4;
-SET
-FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
--- Table structure for sys_file_info
--- ----------------------------
-DROP TABLE IF EXISTS `sys_file_info`;
-CREATE TABLE `sys_file_info`
-(
-    `id`           varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
-    `biz_id`       varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '业务主键',
-    `store_type`   varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '存储类型',
-    `file_name`    varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件名称',
-    `file_path`    varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件类型',
-    `file_content` longblob NULL COMMENT '文件内容',
-    `file_size`    bigint(0) NULL DEFAULT NULL COMMENT '文件大写，kb单位',
-    `create_time`  timestamp(0) NULL DEFAULT NULL COMMENT '创建时间',
-    PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '文件信息' ROW_FORMAT = Dynamic;
-
-SET
-FOREIGN_KEY_CHECKS = 1;
+COMMENT ON COLUMN public.efficient_sys_file_info.id IS '主键';
+COMMENT ON COLUMN public.efficient_sys_file_info.biz_id IS '业务主键';
+COMMENT ON COLUMN public.efficient_sys_file_info.store_type IS '存储类型';
+COMMENT ON COLUMN public.efficient_sys_file_info.file_name IS '文件名称';
+COMMENT ON COLUMN public.efficient_sys_file_info.file_path IS '文件类型';
+COMMENT ON COLUMN public.efficient_sys_file_info.file_content IS '文件类型';
+COMMENT ON COLUMN public.efficient_sys_file_info.file_size IS '文件大写，kb单位';
+COMMENT ON COLUMN public.efficient_sys_file_info.create_time IS '创建时间';
+COMMENT ON COLUMN public.efficient_sys_file_info.remark IS '备注';
 
 ```
 
@@ -458,55 +463,42 @@ com:
 ### 建表sql
 
 ```sql
-/*
- Navicat Premium Data Transfer
+DROP TABLE IF EXISTS "efficient_sys_log";
+CREATE TABLE public.efficient_sys_log (
+                                          id varchar(64) NOT NULL, -- 主键
+                                          "module" varchar(255) NULL, -- 模块
+                                          user_id varchar(255) NULL, -- 用户ID
+                                          user_name varchar(255) NULL, -- 用户名
+                                          log_ip varchar(20) NULL, -- 操作IP
+                                          log_time timestamp(6) NULL, -- 记录日志时间
+                                          request_url text NULL, -- 请求路径
+                                          log_opt varchar(10) NULL, -- 操作类型
+                                          log_content text NULL, -- 操作内容
+                                          params text NULL, -- 参数
+                                          result_code varchar(10) NULL, -- 结果
+                                          "result" text NULL, -- 返回值
+                                          "exception" text NULL, -- 异常信息
+                                          CONSTRAINT efficient_sys_log_pkey PRIMARY KEY (id)
+);
+CREATE INDEX index_efficient_sys_log_log_opt ON public.efficient_sys_log USING btree (log_opt);
+CREATE INDEX index_efficient_sys_log_log_time ON public.efficient_sys_log USING btree (log_time);
+COMMENT ON TABLE public.efficient_sys_log IS '日志表';
 
- Source Server         : localhost
- Source Server Type    : MySQL
- Source Server Version : 80012
- Source Host           : localhost:3306
- Source Schema         : demo
+-- Column comments
 
- Target Server Type    : MySQL
- Target Server Version : 80012
- File Encoding         : 65001
-
- Date: 05/09/2022 16:32:26
-*/
-
-SET NAMES utf8mb4;
-SET
-FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
--- Table structure for sys_log
--- ----------------------------
-DROP TABLE IF EXISTS `sys_log`;
-CREATE TABLE `sys_log`
-(
-    `id`          varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
-    `module`      varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '模块',
-    `user_id`     varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户ID',
-    `user_name`   varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户名',
-    `log_ip`      varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '操作IP',
-    `log_time`    timestamp NULL DEFAULT NULL COMMENT '记录日志时间',
-    `request_url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '请求路径',
-    `log_opt`     varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '操作类型',
-    `log_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '操作内容',
-    `params`      text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '参数',
-    `result_code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '结果',
-    `result`      text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '返回值',
-    `exception`   text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '异常信息',
-    PRIMARY KEY (`id`) USING BTREE,
-    INDEX         `sys_log_log_time_index`(`log_time`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '日志表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of sys_log
--- ----------------------------
-
-SET
-FOREIGN_KEY_CHECKS = 1;
+COMMENT ON COLUMN public.efficient_sys_log.id IS '主键';
+COMMENT ON COLUMN public.efficient_sys_log."module" IS '模块';
+COMMENT ON COLUMN public.efficient_sys_log.user_id IS '用户ID';
+COMMENT ON COLUMN public.efficient_sys_log.user_name IS '用户名';
+COMMENT ON COLUMN public.efficient_sys_log.log_ip IS '操作IP';
+COMMENT ON COLUMN public.efficient_sys_log.log_time IS '记录日志时间';
+COMMENT ON COLUMN public.efficient_sys_log.request_url IS '请求路径';
+COMMENT ON COLUMN public.efficient_sys_log.log_opt IS '操作类型';
+COMMENT ON COLUMN public.efficient_sys_log.log_content IS '操作内容';
+COMMENT ON COLUMN public.efficient_sys_log.params IS '参数';
+COMMENT ON COLUMN public.efficient_sys_log.result_code IS '结果';
+COMMENT ON COLUMN public.efficient_sys_log."result" IS '返回值';
+COMMENT ON COLUMN public.efficient_sys_log."exception" IS '异常信息';
 
 ```
 
@@ -576,46 +568,30 @@ public class TaskTest extends QuartzJobBean {
 ```
 
 ```sql
-/*
- Navicat Premium Data Transfer
+DROP TABLE IF EXISTS "efficient_sys_task";
+CREATE TABLE public.efficient_sys_task (
+                                           id varchar(255) NOT NULL, -- 主键
+                                           task_code varchar(255) NULL, -- 定时任务code
+                                           task_describe varchar(255) NULL, -- 定时任务描述
+                                           task_class varchar(255) NULL, -- 定时任务全限定名称
+                                           enabled int4 NULL, -- 是否启用
+                                           cron_expression varchar(255) NULL, -- 表达式
+                                           create_time timestamp(6) NULL, -- 创建时间
+                                           task_status int4 NULL, -- 当前定时任务状态
+                                           CONSTRAINT sys_task_pkey PRIMARY KEY (id)
+);
+COMMENT ON TABLE public.efficient_sys_task IS '定时任务表';
 
- Source Server         : 127.0.0.1
- Source Server Type    : MySQL
- Source Server Version : 80022
- Source Host           : localhost:3306
- Source Schema         : demo
+-- Column comments
 
- Target Server Type    : MySQL
- Target Server Version : 80022
- File Encoding         : 65001
-
- Date: 28/08/2022 22:18:52
-*/
-
-SET NAMES utf8mb4;
-SET
-FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
--- Table structure for sys_task
--- ----------------------------
-DROP TABLE IF EXISTS `sys_task`;
-CREATE TABLE `sys_task`
-(
-    `id`              varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
-    `task_code`       varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '定时任务code',
-    `task_describe`   varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '定时任务描述',
-    `task_class`      varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '定时任务全限定名称',
-    `enabled`         int(0) NULL DEFAULT NULL COMMENT '是否启用',
-    `cron_expression` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '表达式',
-    `create_time`     timestamp(0) NULL DEFAULT NULL COMMENT '创建时间',
-    `task_status`     int(0) NULL DEFAULT NULL COMMENT '当前定时任务状态',
-    PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '定时任务表' ROW_FORMAT = Dynamic;
-
-SET
-FOREIGN_KEY_CHECKS = 1;
-
+COMMENT ON COLUMN public.efficient_sys_task.id IS '主键';
+COMMENT ON COLUMN public.efficient_sys_task.task_code IS '定时任务code';
+COMMENT ON COLUMN public.efficient_sys_task.task_describe IS '定时任务描述';
+COMMENT ON COLUMN public.efficient_sys_task.task_class IS '定时任务全限定名称';
+COMMENT ON COLUMN public.efficient_sys_task.enabled IS '是否启用';
+COMMENT ON COLUMN public.efficient_sys_task.cron_expression IS '表达式';
+COMMENT ON COLUMN public.efficient_sys_task.create_time IS '创建时间';
+COMMENT ON COLUMN public.efficient_sys_task.task_status IS '当前定时任务状态';
 ```
 
 ## 数据安全模块
@@ -729,4 +705,102 @@ mvn install:install-file    -DgroupId=com.alibaba -DartifactId=zwdd-sdk-java -Dv
 com.efficient.ykz.controller.YkzUserCenterController
 接口对接
 com.efficient.ykz.controller.YkzApiController
+```
+
+### 建表语句
+```sql
+DROP TABLE IF EXISTS "efficient_ykz_org";
+CREATE TABLE efficient_ykz_org (
+                                   id VARCHAR(64) PRIMARY KEY,
+                                   ykz_id BIGINT ,
+                                   name VARCHAR(255),
+                                   org_type VARCHAR(255),
+                                   parent_id BIGINT,
+                                   display_order BIGINT,
+                                   is_deleted INTEGER,
+                                   is_enable INTEGER,
+                                   create_time BIGINT,
+                                   gov_address VARCHAR(255),
+                                   gov_division_code VARCHAR(255),
+                                   gov_business_strip_codes VARCHAR(255),
+                                   gov_institution_level_code VARCHAR(255),
+                                   gov_short_name VARCHAR(255),
+                                   organization_code VARCHAR(255),
+                                   parent_organization_code VARCHAR(255),
+                                   principal VARCHAR(255),
+                                   update_time BIGINT,
+                                   credit_code VARCHAR(255),
+                                   remark VARCHAR(255),
+                                   area_level VARCHAR(255),
+                                   error_info text,
+                                   pull_time timestamp
+);
+COMMENT ON TABLE public.efficient_ykz_org IS '渝快政机构数据';
+COMMENT ON COLUMN efficient_ykz_org.id IS '机构id';
+COMMENT ON COLUMN efficient_ykz_org.name IS '机构全称';
+COMMENT ON COLUMN efficient_ykz_org.org_type IS '机构类型';
+COMMENT ON COLUMN efficient_ykz_org.parent_id IS '机构父级id';
+COMMENT ON COLUMN efficient_ykz_org.display_order IS '同级排序字段';
+COMMENT ON COLUMN efficient_ykz_org.is_deleted IS '删除标识 1 表示删除，0 表示未删除';
+COMMENT ON COLUMN efficient_ykz_org.is_enable IS '是否启用 1-启用，0-停用';
+COMMENT ON COLUMN efficient_ykz_org.create_time IS '创建时间戳';
+COMMENT ON COLUMN efficient_ykz_org.gov_address IS '单位地址';
+COMMENT ON COLUMN efficient_ykz_org.gov_division_code IS '行政区划Code';
+COMMENT ON COLUMN efficient_ykz_org.gov_business_strip_codes IS '条线Code列表';
+COMMENT ON COLUMN efficient_ykz_org.gov_institution_level_code IS '机构/单位级别';
+COMMENT ON COLUMN efficient_ykz_org.gov_short_name IS '机构简称';
+COMMENT ON COLUMN efficient_ykz_org.organization_code IS '政务钉钉组织机构code';
+COMMENT ON COLUMN efficient_ykz_org.parent_organization_code IS '父组织机构code';
+COMMENT ON COLUMN efficient_ykz_org.principal IS '单位负责人userCode';
+COMMENT ON COLUMN efficient_ykz_org.update_time IS '更新时间';
+COMMENT ON COLUMN efficient_ykz_org.credit_code IS '统一信用代码';
+COMMENT ON COLUMN efficient_ykz_org.remark IS '备注';
+COMMENT ON COLUMN efficient_ykz_org.area_level IS '区域级别';
+COMMENT ON COLUMN efficient_ykz_org.pull_time IS '拉取时间';
+COMMENT ON COLUMN efficient_ykz_org.error_info IS '错误信息';
+
+
+DROP TABLE IF EXISTS "efficient_ykz_user";
+CREATE TABLE efficient_ykz_user (
+                                    id VARCHAR(64) PRIMARY KEY,
+                                    ykz_id BIGINT,
+                                    name VARCHAR(255),
+                                    username VARCHAR(255),
+                                    account_id VARCHAR(255),
+                                    employee_code VARCHAR(255),
+                                    mobile VARCHAR(255),
+                                    error_info text,
+                                    pull_time timestamp
+);
+
+COMMENT ON TABLE efficient_ykz_user IS '渝快政用户信息';
+
+COMMENT ON COLUMN efficient_ykz_user.id IS '用户中心 ID';
+COMMENT ON COLUMN efficient_ykz_user.name IS '姓名';
+COMMENT ON COLUMN efficient_ykz_user.username IS '用户名';
+COMMENT ON COLUMN efficient_ykz_user.account_id IS '政务钉钉 ID';
+COMMENT ON COLUMN efficient_ykz_user.employee_code IS '政务钉钉员工编号';
+COMMENT ON COLUMN efficient_ykz_user.mobile IS '电话号码';
+COMMENT ON COLUMN efficient_ykz_user.pull_time IS '拉取时间';
+COMMENT ON COLUMN efficient_ykz_user.error_info IS '错误信息';
+
+DROP TABLE IF EXISTS "efficient_ykz_user_post";
+CREATE TABLE efficient_ykz_user_post (
+                                         id VARCHAR(64) PRIMARY KEY,
+                                         account_id VARCHAR(255),
+                                         organization_code VARCHAR(255),
+                                         post_type INTEGER,
+                                         pos_job VARCHAR(255),
+                                         error_info text,
+                                         pull_time timestamp
+);
+
+COMMENT ON TABLE efficient_ykz_user_post IS '愉快政用户职位信息';
+
+COMMENT ON COLUMN efficient_ykz_user.account_id IS '政务钉钉 ID';
+COMMENT ON COLUMN efficient_ykz_user_post.organization_code IS '职务所在机构code';
+COMMENT ON COLUMN efficient_ykz_user_post.post_type IS '任职类型 1主职、2兼职、3挂职、4借调';
+COMMENT ON COLUMN efficient_ykz_user_post.pos_job IS '职务';
+COMMENT ON COLUMN efficient_ykz_user_post.pull_time IS '拉取时间';
+COMMENT ON COLUMN efficient_ykz_user_post.error_info IS '错误信息';
 ```
