@@ -25,12 +25,12 @@ public class AuthUtil {
      * @return
      */
     public String encrypt(String password) {
-        if (authProperties.isPasswordEncrypt()) {
+        if (authProperties.getLogin().isPasswordEncrypt()) {
             password = new String(Base64.getDecoder().decode(password.getBytes(StandardCharsets.UTF_8)));
         }
-        final boolean enableSalt = authProperties.isEnableSalt();
+        final boolean enableSalt = authProperties.getLogin().isEnableSalt();
         if (enableSalt) {
-            return SecureUtil.md5(password + authProperties.getSaltValue());
+            return SecureUtil.md5(password + authProperties.getLogin().getSaltValue());
         }
         return SecureUtil.md5(password);
     }

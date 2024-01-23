@@ -32,8 +32,8 @@ public class JwtUtil {
     public String createToken(String sub) {
         return JWT.create()
                 .withSubject(sub)
-                .withExpiresAt(DateUtil.offset(new Date(), DateField.SECOND, authProperties.getTokenLive()))
-                .sign(Algorithm.HMAC512(authProperties.getSecret()));
+                .withExpiresAt(DateUtil.offset(new Date(), DateField.SECOND, authProperties.getLogin().getTokenLive()))
+                .sign(Algorithm.HMAC512(authProperties.getLogin().getSecret()));
     }
 
     /**
@@ -43,7 +43,7 @@ public class JwtUtil {
      */
     public String validateToken(String token) {
         try {
-            return JWT.require(Algorithm.HMAC512(authProperties.getSecret()))
+            return JWT.require(Algorithm.HMAC512(authProperties.getLogin().getSecret()))
                     .build()
                     .verify(token)
                     .getSubject();
@@ -63,7 +63,7 @@ public class JwtUtil {
         // 获取token过期时间
         Date expiresAt = null;
         try {
-            expiresAt = JWT.require(Algorithm.HMAC512(authProperties.getSecret()))
+            expiresAt = JWT.require(Algorithm.HMAC512(authProperties.getLogin().getSecret()))
                     .build()
                     .verify(token)
                     .getExpiresAt();
@@ -72,7 +72,7 @@ public class JwtUtil {
             return true;
         }
         // 如果剩余过期时间少于过期时常的一般时 需要更新
-        return (expiresAt.getTime() - System.currentTimeMillis()) < (authProperties.getTokenLive() >> 1);
+        return (expiresAt.getTime() - System.currentTimeMillis()) < (authProperties.getLogin().getTokenLive() >> 1);
     }
 
 }

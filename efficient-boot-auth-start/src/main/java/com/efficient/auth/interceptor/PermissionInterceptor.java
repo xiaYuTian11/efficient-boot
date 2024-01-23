@@ -86,8 +86,8 @@ public class PermissionInterceptor implements HandlerInterceptor {
             return false;
         }
         // 刷新用户信息保留时间
-        cacheUtil.refresh(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token, authProperties.getTokenLive());
-        cacheUtil.refresh(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userTicket.getUserId(), authProperties.getTokenLive());
+        cacheUtil.refresh(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token, authProperties.getLogin().getTokenLive());
+        cacheUtil.refresh(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userTicket.getUserId(), authProperties.getLogin().getTokenLive());
         // 权限校验
         if (Objects.isNull(permissionCheck)) {
             PermissionInterceptor.permissionCheck = new DefaultPermissionCheck();
