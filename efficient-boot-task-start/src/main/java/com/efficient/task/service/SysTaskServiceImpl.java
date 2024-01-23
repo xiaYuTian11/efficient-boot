@@ -3,18 +3,22 @@ package com.efficient.task.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.efficient.common.constant.DbConstant;
+import com.efficient.common.result.Result;
 import com.efficient.task.api.SysTaskService;
-import com.efficient.task.model.converter.SysTaskConverter;
+import com.efficient.task.constant.TaskResultEnum;
 import com.efficient.task.dao.SysTaskMapper;
+import com.efficient.task.model.converter.SysTaskConverter;
 import com.efficient.task.model.dto.SysTaskDTO;
 import com.efficient.task.model.dto.SysTaskListDTO;
 import com.efficient.task.model.entity.SysTask;
 import com.efficient.task.model.vo.SysTaskVO;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>
@@ -33,10 +37,23 @@ public class SysTaskServiceImpl extends ServiceImpl<SysTaskMapper, SysTask> impl
     private SysTaskMapper sysTaskMapper;
 
     @Override
-    public SysTask save(SysTaskDTO dto) {
+    public Result<SysTask> save(SysTaskDTO dto) {
+        String taskCode = dto.getTaskCode();
+        SysTask sysTask = this.findByCode(taskCode);
+        if (Objects.nonNull(sysTask)) {
+            return Result.build(TaskResultEnum.TASK_CODE_EXIST);
+        }
         SysTask entity = sysTaskConverter.dto2Entity(dto);
         boolean flag = this.save(entity);
-        return entity;
+        return Result.ok(entity);
+    }
+
+    @Override
+    public SysTask findByCode(String code) {
+        LambdaQueryWrapper<SysTask> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SysTask::getTaskCode, code);
+        queryWrapper.last(DbConstant.LIMIT_ONE);
+        return sysTaskMapper.selectOne(queryWrapper);
     }
 
     @Override
@@ -46,8 +63,14 @@ public class SysTaskServiceImpl extends ServiceImpl<SysTaskMapper, SysTask> impl
     }
 
     @Override
-    public Boolean update(SysTaskDTO dto) {
-        return this.updateById(sysTaskConverter.dto2Entity(dto));
+    public Result<Boolean> update(SysTaskDTO dto) {
+        SysTask sysTask = sysTaskConverter.dto2Entity(dto);
+        SysTask oldTask = this.findByCode(dto.getTaskCode());
+        if (Objects.nonNull(oldTask) && !Objects.equals(oldTask.getId(), sysTask.getId())) {
+            return Result.build(TaskResultEnum.TASK_CODE_EXIST);
+        }
+        boolean updatedById = this.updateById(sysTask);
+        return updatedById ? Result.ok() : Result.fail();
     }
 
     @Override

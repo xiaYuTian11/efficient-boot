@@ -2,6 +2,10 @@ package com.efficient.task.controller;
 
 import com.efficient.common.result.Result;
 import com.efficient.task.api.TaskExecuteService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +26,7 @@ import javax.validation.constraints.NotBlank;
 @RestController
 @RequestMapping("/sysTask/execute/")
 @Validated
+@Api(tags = "定时任务启停相关")
 public class TaskExecuteController {
 
     @Autowired
@@ -31,6 +36,10 @@ public class TaskExecuteController {
      * 启动定时任务
      */
     @GetMapping("/start")
+    @ApiOperation(value = "启动定时任务", response = Result.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "taskId", value = "数据唯一标识", required = true)
+    })
     public Result start(@NotBlank(message = "taskId 不能为空") @RequestParam(name = "taskId") String taskId) throws Exception {
         return taskExecuteService.start(taskId);
     }
@@ -39,6 +48,10 @@ public class TaskExecuteController {
      * 停止定时任务
      */
     @GetMapping("/stop")
+    @ApiOperation(value = "停止定时任务", response = Result.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "taskId", value = "数据唯一标识", required = true)
+    })
     public Result stop(@NotBlank(message = "taskId 不能为空") @RequestParam(name = "taskId") String taskId) throws Exception {
         return taskExecuteService.stop(taskId);
     }
@@ -47,6 +60,10 @@ public class TaskExecuteController {
      * 重启定时任务
      */
     @GetMapping("/restart")
+    @ApiOperation(value = "重启定时任务", response = Result.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "taskId", value = "数据唯一标识", required = true)
+    })
     public Result restart(@NotBlank(message = "taskId 不能为空") @RequestParam(name = "taskId") String taskId) throws Exception {
         return taskExecuteService.restart(taskId);
     }
@@ -55,6 +72,10 @@ public class TaskExecuteController {
      * 删除定时任务
      */
     @GetMapping("/remove")
+    @ApiOperation(value = "重启定时任务", response = Result.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "taskId", value = "数据唯一标识", required = true)
+    })
     public Result remove(@NotBlank(message = "taskId 不能为空") @RequestParam(name = "taskId") String taskId) throws Exception {
         return taskExecuteService.remove(taskId);
     }

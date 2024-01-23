@@ -8,7 +8,6 @@ import com.efficient.auth.api.LoginService;
 import com.efficient.auth.constant.AuthConstant;
 import com.efficient.auth.constant.AuthResultEnum;
 import com.efficient.auth.model.dto.LoginInfo;
-import com.efficient.common.auth.UserTicket;
 import com.efficient.auth.permission.Permission;
 import com.efficient.auth.properties.AuthProperties;
 import com.efficient.cache.api.CacheUtil;
@@ -16,6 +15,8 @@ import com.efficient.common.result.Result;
 import com.efficient.common.util.WebUtil;
 import com.efficient.logs.annotation.Log;
 import com.efficient.logs.constant.LogEnum;
+import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,8 @@ import java.util.UUID;
  */
 @RestController
 @Validated
+@Api(tags = "用户登录")
+@Slf4j
 public class LoginController {
     @Autowired
     private HttpServletRequest request;
@@ -46,7 +49,7 @@ public class LoginController {
     @Log(logOpt = LogEnum.LOGIN, desc = "系统")
     @PostMapping("/login")
     public Result login(@Validated @RequestBody LoginInfo info) {
-        if (authProperties.isCaptcha()) {
+        if (authProperties.getLogin().isCaptcha()) {
             String captchaCache = cacheUtil.get(AuthConstant.CACHE_CAPTCHA_CODE, info.getCaptchaId());
             if (StrUtil.isBlank(captchaCache) || !StrUtil.equalsIgnoreCase(info.getCaptcha(), captchaCache)) {
                 return Result.build(AuthResultEnum.CAPTCHA_NOT_MATCH);
@@ -76,7 +79,7 @@ public class LoginController {
     public void captcha(HttpServletResponse response) {
         String uuid = UUID.randomUUID().toString() + +System.nanoTime();
         // 自定义验证码，排除0，1，L,I（随机4位，可重复）
-        RandomGenerator randomGenerator = new RandomGenerator("23456789abcdefghjkmnpqrstuvwxyz", 4);
+        RandomGenerator randomGenerator = new RandomGenerator(authProperties.getLogin().getCaptchaRule(), 4);
         CircleCaptcha circleCaptcha = CaptchaUtil.createCircleCaptcha(120, 34, 4, 0);
         circleCaptcha.setGenerator(randomGenerator);
         // 重新生成code
@@ -87,7 +90,7 @@ public class LoginController {
         try (ServletOutputStream out = response.getOutputStream()) {
             circleCaptcha.write(out);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("生成验证码错误", e);
         }
     }
 }

@@ -7,7 +7,8 @@ import com.efficient.common.result.ResultConstant;
  * @since 2022/8/26 10:16
  */
 public enum TaskResultEnum implements ResultConstant {
-    NOT_CHECK_FILE(9600, "定时任务不存在！");
+    NOT_CHECK_FILE(9600, "定时任务不存在！"),
+    TASK_CODE_EXIST(9601, "定时任务Code已经存在！");
 
     TaskResultEnum(int code, String msg) {
         this.code = code;

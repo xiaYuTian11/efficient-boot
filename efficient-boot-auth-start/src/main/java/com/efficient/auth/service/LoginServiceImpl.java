@@ -12,6 +12,7 @@ import com.efficient.auth.constant.AuthResultEnum;
 import com.efficient.auth.model.dto.LoginInfo;
 import com.efficient.auth.model.entity.UserCheck;
 import com.efficient.auth.properties.AuthProperties;
+import com.efficient.auth.properties.LoginProperties;
 import com.efficient.auth.util.AuthUtil;
 import com.efficient.auth.util.JwtUtil;
 import com.efficient.auth.util.TokenUtil;
@@ -62,10 +63,11 @@ public class LoginServiceImpl implements LoginService {
                 return Result.build(AuthResultEnum.ACCOUNT_LOCK);
             }
         }
+        LoginProperties loginProperties = authProperties.getLogin();
         if (!StrUtil.equals(userCheck.getPassword(), authUtil.encrypt(info.getPassword()))) {
             // 密码错误
-            int retryCount = authProperties.getRetryCount();
-            int lockTime = authProperties.getLockTime();
+            int retryCount = loginProperties.getRetryCount();
+            int lockTime = loginProperties.getLockTime();
             if (retryCount == -1) {
                 return Result.build(AuthResultEnum.ACCOUNT_FAIL);
             }
@@ -87,7 +89,7 @@ public class LoginServiceImpl implements LoginService {
             }
         }
 
-        int maxOnline = authProperties.getMaxOnline();
+        int maxOnline = loginProperties.getMaxOnline();
         // 计数
         List<String> userTokenList = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId);
         if (CollUtil.isNotEmpty(userTokenList)) {
@@ -132,7 +134,7 @@ public class LoginServiceImpl implements LoginService {
         cacheUtil.removeCache(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token);
         cacheUtil.removeCache(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_FAIL_CACHE + userId);
         List<String> userTokenList = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId);
-        if (CollUtil.isNotEmpty(userTokenList) && userTokenList.size() >= 1) {
+        if (CollUtil.isNotEmpty(userTokenList) && !userTokenList.isEmpty()) {
             userTokenList.remove(token);
             cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId, userTokenList);
         } else {

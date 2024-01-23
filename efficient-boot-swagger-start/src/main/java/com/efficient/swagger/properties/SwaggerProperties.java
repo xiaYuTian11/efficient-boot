@@ -13,7 +13,7 @@ public class SwaggerProperties {
     /**
      * 是否启用
      */
-    private Boolean enable = false;
+    private Boolean enable = true;
     /**
      * 标题
      */

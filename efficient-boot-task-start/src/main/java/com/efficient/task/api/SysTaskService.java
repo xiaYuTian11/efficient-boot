@@ -1,6 +1,7 @@
 package com.efficient.task.api;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.efficient.common.result.Result;
 import com.efficient.task.model.dto.SysTaskDTO;
 import com.efficient.task.model.dto.SysTaskListDTO;
 import com.efficient.task.model.entity.SysTask;
@@ -21,7 +22,8 @@ public interface SysTaskService extends IService<SysTask> {
     /***
      * 新增
      */
-    SysTask save(SysTaskDTO dto);
+    Result<SysTask> save(SysTaskDTO dto);
+    SysTask findByCode(String code);
 
     /**
      * 详情
@@ -31,7 +33,7 @@ public interface SysTaskService extends IService<SysTask> {
     /**
      * 修改
      */
-    Boolean update(SysTaskDTO dto);
+    Result<Boolean> update(SysTaskDTO dto);
 
     /**
      * 删除

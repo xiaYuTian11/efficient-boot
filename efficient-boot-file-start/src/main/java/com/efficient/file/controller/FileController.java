@@ -9,6 +9,11 @@ import com.efficient.file.api.FileService;
 import com.efficient.file.constant.FileResultEnum;
 import com.efficient.file.model.dto.DownloadVO;
 import com.efficient.file.model.entity.SysFileInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -37,6 +42,8 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/file")
 @Validated
+@Api(tags = "文件操作")
+@Slf4j
 public class FileController {
     @Autowired
     private FileService fileService;
@@ -51,6 +58,11 @@ public class FileController {
      * @return
      */
     @PostMapping(value = "/upload")
+    @ApiOperation(value = "上传", response = Result.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "file", value = "文件标识", required = true),
+            @ApiImplicitParam(name = "unique", value = "是否唯一文件，true标识删除现有同名文件", defaultValue = "false")
+    })
     public Result upload(@RequestParam("file") MultipartFile file,
                          @RequestParam(value = "unique", required = false) boolean unique) throws Exception {
         if (file.isEmpty() || StrUtil.isBlank(file.getOriginalFilename())) {
@@ -60,6 +72,7 @@ public class FileController {
     }
 
     @PostMapping("/download")
+    @ApiOperation(value = "根据Id下载")
     public ResponseEntity<byte[]> download(@Validated(value = Common1Group.class)
                                            @RequestBody DownloadVO downloadVO) throws Exception {
         SysFileInfo sysFileInfo = fileService.getById(downloadVO.getFileId());
@@ -81,20 +94,21 @@ public class FileController {
             headers.setAccessControlExposeHeaders(Collections.singletonList("*"));
             responseEntity = new ResponseEntity<byte[]>(bytes, headers, HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("文件下载异常：", e);
         } finally {
             try {
                 if (out != null) {
                     out.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("文件下载-关闭文件流异常：", e);
             }
         }
         return responseEntity;
     }
 
     @PostMapping("/downloadByPath")
+    @ApiOperation(value = "根据路径下载")
     public ResponseEntity<byte[]> downloadByPath(@Validated(value = Common2Group.class)
                                                  @RequestBody DownloadVO downloadVO) throws Exception {
         String filePath = downloadVO.getFilePath();
@@ -120,14 +134,14 @@ public class FileController {
             headers.setAccessControlExposeHeaders(Collections.singletonList("*"));
             responseEntity = new ResponseEntity<byte[]>(bytes, headers, HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("文件下载异常：", e);
         } finally {
             try {
                 if (out != null) {
                     out.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("文件下载-关闭文件流异常：", e);
             }
         }
         return responseEntity;
