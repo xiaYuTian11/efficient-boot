@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/ykz/api/")
 @Validated
-@Api(tags = "渝快政-用户中心")
+@Api(tags = "渝快政-消息接口")
 public class YkzApiController {
     @Autowired
     private YkzApiService ykzApiService;

@@ -1,3 +1,22 @@
+DROP TABLE IF EXISTS "efficient_sys_system";
+CREATE TABLE efficient_sys_system (
+                                      id VARCHAR(64) PRIMARY KEY,
+                                      sys_code VARCHAR(255) NOT NULL,
+                                      name VARCHAR(255) NOT NULL,
+                                      sort int8,
+                                      enabled int2 NOT NULL DEFAULT 1
+);
+
+COMMENT ON TABLE efficient_sys_system IS '系统明细';
+
+COMMENT ON COLUMN efficient_sys_system.id IS '主键';
+COMMENT ON COLUMN efficient_sys_system.sys_code IS '系统标识';
+COMMENT ON COLUMN efficient_sys_system.name IS '系统名称';
+COMMENT ON COLUMN efficient_sys_system.sort IS '排序';
+COMMENT ON COLUMN efficient_sys_system.enabled IS '是否启用，1-是，0-否';
+
+
+
 DROP TABLE IF EXISTS "efficient_sys_user";
 CREATE TABLE efficient_sys_user (
                                     id VARCHAR(64) PRIMARY KEY,
@@ -25,8 +44,10 @@ CREATE TABLE efficient_sys_user (
                                     sort int8,
                                     create_time timestamp,
                                     create_user varchar(255),
+                                    create_org_user varchar(255),
                                     update_time timestamp,
                                     update_user varchar(255),
+                                    update_org_user varchar(255),
                                     is_delete int2 NOT NULL DEFAULT 0,
                                     remark text,
                                     extend1 text,
@@ -62,6 +83,8 @@ COMMENT ON COLUMN efficient_sys_user.check_status IS '审查状态，1-审查中
 COMMENT ON COLUMN efficient_sys_user.sort IS '排序';
 COMMENT ON COLUMN efficient_sys_user.create_time IS '创建时间';
 COMMENT ON COLUMN efficient_sys_user.create_user IS '创建人';
+COMMENT ON COLUMN efficient_sys_user.create_org_user IS '人员org_user主键';
+COMMENT ON COLUMN efficient_sys_user.update_org_user IS '人员org_user主键';
 COMMENT ON COLUMN efficient_sys_user.update_time IS '修改时间';
 COMMENT ON COLUMN efficient_sys_user.update_user IS '修改人';
 COMMENT ON COLUMN efficient_sys_user.is_delete IS '是否删除，1-是，0-否';
@@ -73,6 +96,18 @@ COMMENT ON COLUMN efficient_sys_user.extend4 IS '扩展字段4';
 COMMENT ON COLUMN efficient_sys_user.extend5 IS '扩展字段5';
 
 
+DROP TABLE IF EXISTS "efficient_sys_system_user";
+CREATE TABLE efficient_sys_system_user (
+                                      id VARCHAR(64) PRIMARY KEY,
+                                      sys_code VARCHAR(255) NOT NULL,
+                                      user_id VARCHAR(255) NOT NULL
+);
+
+COMMENT ON TABLE efficient_sys_system_user IS '系统明细';
+
+COMMENT ON COLUMN efficient_sys_system_user.id IS '主键';
+COMMENT ON COLUMN efficient_sys_system_user.sys_code IS '系统标识';
+COMMENT ON COLUMN efficient_sys_system_user.user_id IS '用户id';
 
 
 DROP TABLE IF EXISTS "efficient_sys_org";
@@ -95,8 +130,10 @@ CREATE TABLE efficient_sys_org (
                                    sort int8,
                                    create_time timestamp,
                                    create_user varchar(255),
+                                   create_org_user varchar(255),
                                    update_time timestamp,
                                    update_user varchar(255),
+                                   update_org_user varchar(255),
                                    is_delete int2 NOT NULL DEFAULT 0,
                                    remark text,
                                    extend1 text,
@@ -126,6 +163,8 @@ COMMENT ON COLUMN efficient_sys_org.secret_level IS '秘密层级，0-非密，2
 COMMENT ON COLUMN efficient_sys_org.sort IS '排序';
 COMMENT ON COLUMN efficient_sys_org.create_time IS '创建时间';
 COMMENT ON COLUMN efficient_sys_org.create_user IS '创建人';
+COMMENT ON COLUMN efficient_sys_org.create_org_user IS '人员org_user主键';
+COMMENT ON COLUMN efficient_sys_org.update_org_user IS '人员org_user主键';
 COMMENT ON COLUMN efficient_sys_org.update_time IS '修改时间';
 COMMENT ON COLUMN efficient_sys_org.update_user IS '修改人';
 COMMENT ON COLUMN efficient_sys_org.is_delete IS '是否删除，1-是，0-否';
@@ -137,8 +176,8 @@ COMMENT ON COLUMN efficient_sys_org.extend4 IS '扩展字段4';
 COMMENT ON COLUMN efficient_sys_org.extend5 IS '扩展字段5';
 
 
-DROP TABLE IF EXISTS "efficient_sys_unit_user";
-CREATE TABLE efficient_sys_unit_user (
+DROP TABLE IF EXISTS "efficient_sys_org_user";
+CREATE TABLE efficient_sys_org_user (
                                          id VARCHAR(64) PRIMARY KEY,
                                          org_dept_id VARCHAR(255) NOT NULL,
                                          org_unit_id VARCHAR(255) NOT NULL,
@@ -152,8 +191,10 @@ CREATE TABLE efficient_sys_unit_user (
                                          sort int8,
                                          create_time timestamp,
                                          create_user varchar(255),
+                                         create_org_user varchar(255),
                                          update_time timestamp,
                                          update_user varchar(255),
+                                         update_org_user varchar(255),
                                          is_delete int2 NOT NULL DEFAULT 0,
                                          remark text,
                                          extend1 text,
@@ -163,30 +204,32 @@ CREATE TABLE efficient_sys_unit_user (
                                          extend5 text
 );
 
-COMMENT ON TABLE efficient_sys_unit_user IS '单位用户表';
+COMMENT ON TABLE efficient_sys_org_user IS '单位用户表';
 
-COMMENT ON COLUMN efficient_sys_unit_user.id IS '主键';
-COMMENT ON COLUMN efficient_sys_unit_user.org_dept_id IS '部门ID';
-COMMENT ON COLUMN efficient_sys_unit_user.org_unit_id IS '单位ID';
-COMMENT ON COLUMN efficient_sys_unit_user.user_id IS '用户id';
-COMMENT ON COLUMN efficient_sys_unit_user.is_main_post IS '是否主职务，1-是，0-否';
-COMMENT ON COLUMN efficient_sys_unit_user.post_info IS '职务信息';
-COMMENT ON COLUMN efficient_sys_unit_user.join_date IS '任职时间';
-COMMENT ON COLUMN efficient_sys_unit_user.enabled IS '是否启用，1-是，0-否';
-COMMENT ON COLUMN efficient_sys_unit_user.leader_type IS '领导类型，自定义';
+COMMENT ON COLUMN efficient_sys_org_user.id IS '主键';
+COMMENT ON COLUMN efficient_sys_org_user.org_dept_id IS '部门ID';
+COMMENT ON COLUMN efficient_sys_org_user.org_unit_id IS '单位ID';
+COMMENT ON COLUMN efficient_sys_org_user.user_id IS '用户id';
+COMMENT ON COLUMN efficient_sys_org_user.is_main_post IS '是否主职务，1-是，0-否';
+COMMENT ON COLUMN efficient_sys_org_user.post_info IS '职务信息';
+COMMENT ON COLUMN efficient_sys_org_user.join_date IS '任职时间';
+COMMENT ON COLUMN efficient_sys_org_user.enabled IS '是否启用，1-是，0-否';
+COMMENT ON COLUMN efficient_sys_org_user.leader_type IS '领导类型，自定义';
 
-COMMENT ON COLUMN efficient_sys_unit_user.sort IS '排序';
-COMMENT ON COLUMN efficient_sys_unit_user.create_time IS '创建时间';
-COMMENT ON COLUMN efficient_sys_unit_user.create_user IS '创建人';
-COMMENT ON COLUMN efficient_sys_unit_user.update_time IS '修改时间';
-COMMENT ON COLUMN efficient_sys_unit_user.update_user IS '修改人';
-COMMENT ON COLUMN efficient_sys_unit_user.is_delete IS '是否删除，1-是，0-否';
-COMMENT ON COLUMN efficient_sys_unit_user.remark IS '备注';
-COMMENT ON COLUMN efficient_sys_unit_user.extend1 IS '扩展字段1';
-COMMENT ON COLUMN efficient_sys_unit_user.extend2 IS '扩展字段2';
-COMMENT ON COLUMN efficient_sys_unit_user.extend3 IS '扩展字段3';
-COMMENT ON COLUMN efficient_sys_unit_user.extend4 IS '扩展字段4';
-COMMENT ON COLUMN efficient_sys_unit_user.extend5 IS '扩展字段5';
+COMMENT ON COLUMN efficient_sys_org_user.sort IS '排序';
+COMMENT ON COLUMN efficient_sys_org_user.create_time IS '创建时间';
+COMMENT ON COLUMN efficient_sys_org_user.create_user IS '创建人';
+COMMENT ON COLUMN efficient_sys_org_user.create_org_user IS '人员org_user主键';
+COMMENT ON COLUMN efficient_sys_org_user.update_org_user IS '人员org_user主键';
+COMMENT ON COLUMN efficient_sys_org_user.update_time IS '修改时间';
+COMMENT ON COLUMN efficient_sys_org_user.update_user IS '修改人';
+COMMENT ON COLUMN efficient_sys_org_user.is_delete IS '是否删除，1-是，0-否';
+COMMENT ON COLUMN efficient_sys_org_user.remark IS '备注';
+COMMENT ON COLUMN efficient_sys_org_user.extend1 IS '扩展字段1';
+COMMENT ON COLUMN efficient_sys_org_user.extend2 IS '扩展字段2';
+COMMENT ON COLUMN efficient_sys_org_user.extend3 IS '扩展字段3';
+COMMENT ON COLUMN efficient_sys_org_user.extend4 IS '扩展字段4';
+COMMENT ON COLUMN efficient_sys_org_user.extend5 IS '扩展字段5';
 
 DROP TABLE IF EXISTS "efficient_sys_menu";
 CREATE TABLE efficient_sys_menu (
@@ -203,8 +246,10 @@ CREATE TABLE efficient_sys_menu (
                                    sort int8,
                                    create_time timestamp,
                                    create_user varchar(255),
+                                   create_org_user varchar(255),
                                    update_time timestamp,
                                    update_user varchar(255),
+                                   update_org_user varchar(255),
                                    is_delete int2 NOT NULL DEFAULT 0,
                                    remark text,
                                    extend1 text,
@@ -229,6 +274,8 @@ COMMENT ON COLUMN efficient_sys_menu.enabled IS '是否启用，1-是，0-否';
 COMMENT ON COLUMN efficient_sys_menu.sort IS '排序';
 COMMENT ON COLUMN efficient_sys_menu.create_time IS '创建时间';
 COMMENT ON COLUMN efficient_sys_menu.create_user IS '创建人';
+COMMENT ON COLUMN efficient_sys_menu.create_org_user IS '人员org_user主键';
+COMMENT ON COLUMN efficient_sys_menu.update_org_user IS '人员org_user主键';
 COMMENT ON COLUMN efficient_sys_menu.update_time IS '修改时间';
 COMMENT ON COLUMN efficient_sys_menu.update_user IS '修改人';
 COMMENT ON COLUMN efficient_sys_menu.is_delete IS '是否删除，1-是，0-否';
@@ -255,8 +302,10 @@ CREATE TABLE efficient_sys_role (
                                     sort int8,
                                     create_time timestamp,
                                     create_user varchar(255),
+                                    create_org_user varchar(255),
                                     update_time timestamp,
                                     update_user varchar(255),
+                                    update_org_user varchar(255),
                                     is_delete int2 NOT NULL DEFAULT 0,
                                     remark text,
                                     extend1 text,
@@ -282,6 +331,8 @@ COMMENT ON COLUMN efficient_sys_role.enabled IS '是否启用，1-是，0-否';
 COMMENT ON COLUMN efficient_sys_role.sort IS '排序';
 COMMENT ON COLUMN efficient_sys_role.create_time IS '创建时间';
 COMMENT ON COLUMN efficient_sys_role.create_user IS '创建人';
+COMMENT ON COLUMN efficient_sys_role.create_org_user IS '人员org_user主键';
+COMMENT ON COLUMN efficient_sys_role.update_org_user IS '人员org_user主键';
 COMMENT ON COLUMN efficient_sys_role.update_time IS '修改时间';
 COMMENT ON COLUMN efficient_sys_role.update_user IS '修改人';
 COMMENT ON COLUMN efficient_sys_role.is_delete IS '是否删除，1-是，0-否';
@@ -311,19 +362,143 @@ COMMENT ON COLUMN efficient_sys_role_menu.data_auth IS '数据权限，1-个人�
 COMMENT ON COLUMN efficient_sys_role_menu.data_auth_json IS '权限数据';
 
 
-DROP TABLE IF EXISTS "efficient_sys_system";
-CREATE TABLE efficient_sys_system (
-                                         id VARCHAR(64) PRIMARY KEY,
-                                         sys_code VARCHAR(255) NOT NULL,
-                                         name VARCHAR(255) NOT NULL,
-                                         sort int8,
-                                         enabled int2 NOT NULL DEFAULT 1
+
+
+DROP TABLE IF EXISTS "efficient_sys_user_manage";
+CREATE TABLE efficient_sys_user_manage (
+                                           id VARCHAR(64) PRIMARY KEY,
+                                           sys_code VARCHAR(64) NOT NULL,
+                                           org_user_id VARCHAR(255) NOT NULL,
+                                           org_id VARCHAR(255) NOT NULL,
+                                           level_type int2 NOT NULL default 1
 );
 
-COMMENT ON TABLE efficient_sys_system IS '系统明细';
+COMMENT ON TABLE efficient_sys_user_manage IS '用户管理单位';
 
-COMMENT ON COLUMN efficient_sys_system.id IS '主键';
-COMMENT ON COLUMN efficient_sys_system.sys_code IS '系统标识';
-COMMENT ON COLUMN efficient_sys_system.name IS '系统名称';
-COMMENT ON COLUMN efficient_sys_system.sort IS '排序';
-COMMENT ON COLUMN efficient_sys_system.enabled IS '是否启用，1-是，0-否';
+COMMENT ON COLUMN efficient_sys_user_manage.id IS '主键';
+COMMENT ON COLUMN efficient_sys_user_manage.sys_code IS '所属系统';
+COMMENT ON COLUMN efficient_sys_user_manage.org_user_id IS '用户单位主键';
+COMMENT ON COLUMN efficient_sys_user_manage.org_id IS '机构ID';
+COMMENT ON COLUMN efficient_sys_user_manage.level_type IS '层级类型，1-包含下级单位，2-只限本级单位';
+
+DROP TABLE IF EXISTS "efficient_sys_user_group";
+CREATE TABLE efficient_sys_user_group (
+                                          id VARCHAR(64) PRIMARY KEY,
+                                          sys_code VARCHAR(64) NOT NULL,
+                                          group_name VARCHAR(255) NOT NULL,
+                                          org_id VARCHAR(255) NOT NULL,
+                                          org_level_code VARCHAR(255) NOT NULL,
+                                          enabled int2 NOT NULL DEFAULT 1,
+                                          sort int8,
+                                          create_time timestamp,
+                                          create_user varchar(255),
+                                          create_org_user varchar(255),
+                                          update_time timestamp,
+                                          update_user varchar(255),
+                                          update_org_user varchar(255),
+                                          is_delete int2 NOT NULL DEFAULT 0,
+                                          remark text
+);
+
+COMMENT ON TABLE efficient_sys_user_group IS '用户组';
+
+COMMENT ON COLUMN efficient_sys_user_group.id IS '主键';
+COMMENT ON COLUMN efficient_sys_user_group.sys_code IS '系统标识，null代表所有系统通用';
+COMMENT ON COLUMN efficient_sys_user_group.group_name IS '组名';
+COMMENT ON COLUMN efficient_sys_user_group.org_id IS '所属单位';
+COMMENT ON COLUMN efficient_sys_user_group.org_level_code IS '所属层级码';
+COMMENT ON COLUMN efficient_sys_user_group.enabled IS '是否启用，1-是，0-否';
+COMMENT ON COLUMN efficient_sys_user_group.sort IS '排序';
+COMMENT ON COLUMN efficient_sys_user_group.create_time IS '创建时间';
+COMMENT ON COLUMN efficient_sys_user_group.create_user IS '创建人';
+COMMENT ON COLUMN efficient_sys_user_group.create_org_user IS '人员org_user主键';
+COMMENT ON COLUMN efficient_sys_user_group.update_org_user IS '人员org_user主键';
+COMMENT ON COLUMN efficient_sys_user_group.update_time IS '修改时间';
+COMMENT ON COLUMN efficient_sys_user_group.update_user IS '修改人';
+COMMENT ON COLUMN efficient_sys_user_group.is_delete IS '是否删除，1-是，0-否';
+COMMENT ON COLUMN efficient_sys_user_group.remark IS '备注';
+
+DROP TABLE IF EXISTS "efficient_sys_user_group_relation";
+CREATE TABLE efficient_sys_user_group_relation (
+                                          id VARCHAR(64) PRIMARY KEY,
+                                          group_id VARCHAR(255) NOT NULL,
+                                          org_user_id VARCHAR(255) NOT NULL
+
+);
+
+COMMENT ON TABLE efficient_sys_user_group_relation IS '用户组关联信息';
+
+COMMENT ON COLUMN efficient_sys_user_group_relation.id IS '主键';
+COMMENT ON COLUMN efficient_sys_user_group_relation.group_id IS '用户组主键';
+COMMENT ON COLUMN efficient_sys_user_group_relation.org_user_id IS '单位人员主键';
+
+DROP TABLE IF EXISTS "efficient_sys_org_role";
+CREATE TABLE efficient_sys_org_role (
+                                                   id VARCHAR(64) PRIMARY KEY,
+                                                   sys_code VARCHAR(255) NOT NULL,
+                                                   org_id VARCHAR(255) NOT NULL,
+                                                   org_level_code VARCHAR(255) NOT NULL,
+                                                   role_id VARCHAR(255) NOT NULL,
+                                                   level_type int2 NOT NULL default 1
+
+);
+
+COMMENT ON TABLE efficient_sys_org_role IS '机构角色表';
+
+COMMENT ON COLUMN efficient_sys_org_role.id IS '主键';
+COMMENT ON COLUMN efficient_sys_org_role.sys_code IS '系统标识';
+COMMENT ON COLUMN efficient_sys_org_role.org_id IS '机构主键';
+COMMENT ON COLUMN efficient_sys_org_role.org_level_code IS '机构层级码';
+COMMENT ON COLUMN efficient_sys_org_role.role_id IS '角色id';
+COMMENT ON COLUMN efficient_sys_org_role.level_type IS '层级类型，1-包含下级单位，2-只限本级单位';
+
+DROP TABLE IF EXISTS "efficient_sys_dict";
+CREATE TABLE efficient_sys_dict (
+                                        id VARCHAR(64) PRIMARY KEY,
+                                        code_type VARCHAR(255) NOT NULL,
+                                        code_value VARCHAR(255) NOT NULL,
+                                        code_name VARCHAR(255) NOT NULL,
+                                        code_full_name VARCHAR(255) NOT NULL,
+                                        code_pinyin VARCHAR(255) NOT NULL,
+                                        parent_code_value VARCHAR(255) NOT NULL ,
+                                        sort int8 NOT NULL ,
+                                        enabled int2 NOT NULL default 1,
+                                        is_leaf int2 NOT NULL default 1
+
+);
+
+COMMENT ON TABLE efficient_sys_dict IS '字典表';
+
+COMMENT ON COLUMN efficient_sys_dict.id IS '主键';
+COMMENT ON COLUMN efficient_sys_dict.code_type IS '字典表类型';
+COMMENT ON COLUMN efficient_sys_dict.code_value IS '值';
+COMMENT ON COLUMN efficient_sys_dict.code_name IS '名称';
+COMMENT ON COLUMN efficient_sys_dict.code_full_name IS '字典表全称';
+COMMENT ON COLUMN efficient_sys_dict.code_pinyin IS '拼音';
+COMMENT ON COLUMN efficient_sys_dict.parent_code_value IS '父级值，-1代表顶级节点';
+COMMENT ON COLUMN efficient_sys_dict.sort IS '排序号';
+COMMENT ON COLUMN efficient_sys_dict.enabled IS '是否启用，1-是，0-否';
+COMMENT ON COLUMN efficient_sys_dict.is_leaf IS '是否叶子节点，1-是，0-否';
+
+
+DROP TABLE IF EXISTS "efficient_sys_config";
+CREATE TABLE efficient_sys_config (
+                                    id VARCHAR(64) PRIMARY KEY,
+                                    config_code VARCHAR(255)   UNIQUE NOT NULL,
+                                    config_name VARCHAR(255) NOT NULL,
+                                    sys_code VARCHAR(255) ,
+                                    config_info text NOT NULL,
+                                    remark text NOT NULL,
+                                    enabled int2 NOT NULL default 1
+
+);
+
+COMMENT ON TABLE efficient_sys_config IS '字典表';
+
+COMMENT ON COLUMN efficient_sys_config.id IS '主键';
+COMMENT ON COLUMN efficient_sys_config.config_code IS '配置标识';
+COMMENT ON COLUMN efficient_sys_config.config_name IS '名称';
+COMMENT ON COLUMN efficient_sys_config.sys_code IS '系统code,null代表全系统通用';
+COMMENT ON COLUMN efficient_sys_config.config_info IS '配置详情';
+COMMENT ON COLUMN efficient_sys_config.remark IS '备注';
+COMMENT ON COLUMN efficient_sys_config.enabled IS '是否启用，1-是，0-否';

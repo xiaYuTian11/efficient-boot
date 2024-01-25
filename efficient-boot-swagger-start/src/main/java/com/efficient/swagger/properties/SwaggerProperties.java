@@ -17,15 +17,15 @@ public class SwaggerProperties {
     /**
      * 标题
      */
-    private String title;
+    private String title = "Efficient Boot";
     /**
      * 描述
      */
-    private String description;
+    private String description = "Efficient Boot";
     /**
      * 服务条款网址
      */
-    private String termsOfServiceUrl;
+    private String termsOfServiceUrl = "https://github.com/xiaYuTian11/efficient-boot";
     /**
      * 版本号
      */
