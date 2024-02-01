@@ -9,6 +9,8 @@ CREATE TABLE public.efficient_sys_file_info (
                                                 file_size int8 NULL, -- 文件大写，kb单位
                                                 create_time timestamp(6) NULL, -- 创建时间
                                                 remark text NULL, -- 备注
+                                                is_intact int2 not null default 1, -- 是否完整
+                                                md5 varchar(200) not null default 1, -- md5值
                                                 CONSTRAINT sys_file_info_pkey PRIMARY KEY (id)
 );
 CREATE INDEX index_efficient_sys_file_info_biz_id ON public.efficient_sys_file_info USING hash (biz_id);
@@ -25,3 +27,5 @@ COMMENT ON COLUMN public.efficient_sys_file_info.file_content IS '文件类型';
 COMMENT ON COLUMN public.efficient_sys_file_info.file_size IS '文件大写，kb单位';
 COMMENT ON COLUMN public.efficient_sys_file_info.create_time IS '创建时间';
 COMMENT ON COLUMN public.efficient_sys_file_info.remark IS '备注';
+COMMENT ON COLUMN public.efficient_sys_file_info.is_intact IS '是否完整';
+COMMENT ON COLUMN public.efficient_sys_file_info.md5 IS 'md5值';

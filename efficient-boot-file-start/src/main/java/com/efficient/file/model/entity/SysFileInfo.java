@@ -63,10 +63,19 @@ public class SysFileInfo implements Serializable {
      */
     @TableField("create_time")
     private Date createTime;
-
+    /**
+     * 是否完整
+     */
+    @TableField("is_intact")
+    private Integer isIntact;
     /**
      * 备注
      */
     @TableField("remark")
     private String remark;
+    /**
+     * md5值
+     */
+    @TableField("md5")
+    private String md5;
 }

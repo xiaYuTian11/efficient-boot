@@ -3,11 +3,11 @@ package com.efficient.file.service;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.NumberUtil;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import cn.hutool.core.util.StrUtil;
 import com.efficient.common.result.Result;
 import com.efficient.file.api.FileService;
+import com.efficient.file.api.SysFileInfoService;
 import com.efficient.file.constant.StoreEnum;
-import com.efficient.file.dao.SysFileInfoMapper;
 import com.efficient.file.model.dto.DownloadVO;
 import com.efficient.file.model.entity.SysFileInfo;
 import com.efficient.file.model.vo.FileVO;
@@ -32,16 +32,20 @@ import static com.efficient.file.constant.FileConstant.*;
  * @since 2022/4/26 9:29
  */
 @Slf4j
-public class LocalFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFileInfo> implements FileService {
+public class LocalFileServiceImpl implements FileService {
     @Autowired
     private FileProperties fileProperties;
+    @Autowired
+    private SysFileInfoService fileInfoService;
 
     @Override
-    public Result upload(MultipartFile multipartFile, boolean unique) throws Exception {
+    public Result upload(MultipartFile multipartFile, boolean unique, String module, String md5) throws Exception {
         FileVO fileVo = new FileVO();
-
+        if (StrUtil.isBlank(module)) {
+            module = "";
+        }
         // 根路径
-        String basePath = fileProperties.getLocal().getLocalPath() + UPLOAD_LINE;
+        String basePath = fileProperties.getLocal().getLocalPath() + UPLOAD_LINE + module;
         // String basePath = "D:\\efficient\\file\\";
         // 获取文件的名称
         String originalFilename = multipartFile.getOriginalFilename();
@@ -97,14 +101,14 @@ public class LocalFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFile
         // fileVo.setFilePath(realFile.getAbsolutePath());
         fileVo.setStoreType(StoreEnum.LOCAL.name());
         // 保存文件信息
-        String fileId = this.saveFileInfo(realFile);
+        String fileId = this.saveFileInfo(realFile, md5);
         fileVo.setFileId(fileId);
         return Result.ok(fileVo);
     }
 
     @Override
     public FileVO getFile(DownloadVO downloadVO) {
-        SysFileInfo sysFileInfo = this.getById(downloadVO.getFileId());
+        SysFileInfo sysFileInfo = fileInfoService.getById(downloadVO.getFileId());
         if (Objects.isNull(sysFileInfo)) {
             return null;
         }
@@ -136,24 +140,25 @@ public class LocalFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFile
     }
 
     @Override
-    public String saveFileInfo(File file) {
+    public String saveFileInfo(File file, String md5) {
         SysFileInfo sysFileInfo = new SysFileInfo();
         sysFileInfo.setStoreType(StoreEnum.LOCAL.name());
         sysFileInfo.setFileName(file.getName());
         sysFileInfo.setFilePath(file.getAbsolutePath());
         sysFileInfo.setFileSize(FileUtil.size(file) / 1024);
         sysFileInfo.setCreateTime(new Date());
-        final boolean save = this.save(sysFileInfo);
+        sysFileInfo.setMd5(md5);
+        final boolean save = fileInfoService.save(sysFileInfo);
         return sysFileInfo.getId();
     }
 
     @Override
     public boolean delete(String fileId) throws Exception {
-        final SysFileInfo sysFileInfo = this.getById(fileId);
+        final SysFileInfo sysFileInfo = fileInfoService.getById(fileId);
         if (Objects.isNull(sysFileInfo)) {
             return true;
         }
         final String filePath = sysFileInfo.getFilePath();
-        return this.removeById(fileId) && FileUtil.del(filePath);
+        return fileInfoService.removeById(fileId) && FileUtil.del(filePath);
     }
 }

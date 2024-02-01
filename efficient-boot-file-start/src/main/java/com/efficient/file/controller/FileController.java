@@ -6,9 +6,11 @@ import com.efficient.common.result.Result;
 import com.efficient.common.validate.Common1Group;
 import com.efficient.common.validate.Common2Group;
 import com.efficient.file.api.FileService;
+import com.efficient.file.api.SysFileInfoService;
 import com.efficient.file.constant.FileResultEnum;
 import com.efficient.file.model.dto.DownloadVO;
 import com.efficient.file.model.entity.SysFileInfo;
+import com.efficient.file.util.FileMd5Util;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -48,6 +50,8 @@ public class FileController {
     @Autowired
     private FileService fileService;
     @Autowired
+    private SysFileInfoService sysFileInfoService;
+    @Autowired
     private HttpServletResponse response;
 
     /**
@@ -61,21 +65,25 @@ public class FileController {
     @ApiOperation(value = "上传", response = Result.class)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "file", value = "文件标识", required = true),
-            @ApiImplicitParam(name = "unique", value = "是否唯一文件，true标识删除现有同名文件", defaultValue = "false")
+            @ApiImplicitParam(name = "unique", value = "是否唯一文件，true标识删除现有同名文件", defaultValue = "false"),
+            @ApiImplicitParam(name = "module", value = "文件所属模块", defaultValue = "false")
     })
     public Result upload(@RequestParam("file") MultipartFile file,
-                         @RequestParam(value = "unique", required = false) boolean unique) throws Exception {
+                         @RequestParam(value = "unique", required = false) boolean unique,
+                         @RequestParam(value = "module", required = false) String module) throws Exception {
         if (file.isEmpty() || StrUtil.isBlank(file.getOriginalFilename())) {
             return Result.build(FileResultEnum.NOT_CHECK_FILE);
         }
-        return fileService.upload(file, unique);
+
+        String md5 = FileMd5Util.getMD5ByApacheCommonsCodec(file);
+        return fileService.upload(file, unique, module,md5);
     }
 
     @PostMapping("/download")
     @ApiOperation(value = "根据Id下载")
     public ResponseEntity<byte[]> download(@Validated(value = Common1Group.class)
                                            @RequestBody DownloadVO downloadVO) throws Exception {
-        SysFileInfo sysFileInfo = fileService.getById(downloadVO.getFileId());
+        SysFileInfo sysFileInfo = sysFileInfoService.getById(downloadVO.getFileId());
         ResponseEntity<byte[]> responseEntity = null;
         if (Objects.isNull(sysFileInfo)) {
             return responseEntity;

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>efficient-boot</artifactId>
         <groupId>top.tanmw</groupId>
-        <version>0.9.14</version>
+        <version>0.9.15</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <description>文件存储 start</description>
@@ -46,6 +46,11 @@
             <artifactId>efficient-boot-common</artifactId>
             <scope>provided</scope>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>top.tanmw</groupId>-->
+<!--            <artifactId>efficient-boot-cache-start</artifactId>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>top.tanmw</groupId>
             <artifactId>efficient-boot-swagger-start</artifactId>

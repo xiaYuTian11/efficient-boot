@@ -1,15 +1,15 @@
 package com.efficient.file.service;
 
 import cn.hutool.core.io.FileUtil;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.efficient.common.result.Result;
 import com.efficient.file.api.FileService;
+import com.efficient.file.api.SysFileInfoService;
 import com.efficient.file.constant.StoreEnum;
-import com.efficient.file.dao.SysFileInfoMapper;
 import com.efficient.file.model.dto.DownloadVO;
 import com.efficient.file.model.entity.SysFileInfo;
 import com.efficient.file.model.vo.FileVO;
 import com.efficient.file.properties.FileProperties;
-import com.efficient.common.result.Result;
+import com.efficient.file.util.FileMd5Util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,25 +25,24 @@ import java.util.Objects;
  * @since 2022/8/26 10:51
  */
 @Slf4j
-public class DbFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFileInfo> implements FileService {
+public class DbFileServiceImpl implements FileService {
 
     @Autowired
     private FileProperties fileProperties;
+    @Autowired
+    private SysFileInfoService fileInfoService;
 
     @Override
-    public FileProperties getProperties() {
-        return fileProperties;
-    }
-
-    @Override
-    public Result upload(MultipartFile file, boolean unique) throws Exception {
+    public Result upload(MultipartFile file, boolean unique, String module, String md5) throws Exception {
         SysFileInfo sysFileInfo = new SysFileInfo();
         sysFileInfo.setStoreType(StoreEnum.DB.name());
         sysFileInfo.setFileName(file.getOriginalFilename());
         sysFileInfo.setFileContent(file.getBytes());
         sysFileInfo.setFileSize(file.getSize() / 1024);
         sysFileInfo.setCreateTime(new Date());
-        this.save(sysFileInfo);
+        sysFileInfo.setMd5(md5);
+        fileInfoService.save(sysFileInfo);
+
 
         FileVO fileVO = new FileVO();
         fileVO.setFileName(sysFileInfo.getFileName());
@@ -54,7 +53,7 @@ public class DbFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFileInf
 
     @Override
     public FileVO getFile(DownloadVO downloadVO) {
-        SysFileInfo sysFileInfo = this.getById(downloadVO.getFileId());
+        SysFileInfo sysFileInfo = fileInfoService.getById(downloadVO.getFileId());
         if (Objects.isNull(sysFileInfo)) {
             return null;
         }
@@ -73,23 +72,28 @@ public class DbFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFileInf
     }
 
     @Override
-    public String saveFileInfo(File file) {
+    public FileProperties getProperties() {
+        return fileProperties;
+    }
+
+    @Override
+    public String saveFileInfo(File file, String md5) {
         SysFileInfo sysFileInfo = new SysFileInfo();
         sysFileInfo.setStoreType(StoreEnum.DB.name());
         sysFileInfo.setFileName(file.getName());
         sysFileInfo.setFileContent(FileUtil.readBytes(file));
         sysFileInfo.setFileSize(FileUtil.size(file) / 1024);
         sysFileInfo.setCreateTime(new Date());
-        this.save(sysFileInfo);
+        fileInfoService.save(sysFileInfo);
         return sysFileInfo.getId();
     }
 
     @Override
     public boolean delete(String fileId) throws Exception {
-        final SysFileInfo sysFileInfo = this.getById(fileId);
+        final SysFileInfo sysFileInfo = fileInfoService.getById(fileId);
         if (Objects.isNull(sysFileInfo)) {
             return true;
         }
-        return this.removeById(fileId);
+        return fileInfoService.removeById(fileId);
     }
 }

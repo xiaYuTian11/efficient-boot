@@ -10,10 +10,12 @@ public class FileConstant {
 
     public static final String UPLOAD_LINE = "/upload/";
     public static final String DOWNLOAD_LINE = "/download/";
+    public static final String VIDEO_LINE = "/video/";
 
     public static final String FOLDER_PIC = "/pic/";
     public static final String FOLDER_FILE = "/file/";
     public static final String FOLDER_WORD = "/word/";
     public static final String FOLDER_EXCEL = "/excel/";
     public static final String FOLDER_PDF = "/pdf/";
+    public static final String CHUNK_FILE = "/chunk/";
 }

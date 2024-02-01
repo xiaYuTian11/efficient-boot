@@ -30,13 +30,13 @@ public class FileUtil {
         return absolutePath.substring(indexOf - 1);
     }
 
-    public static String getFileName(String title, String suffix) {
-        // 后缀
-        String fileName = title + DateUtil.format(new Date(), DatePattern.PURE_DATETIME_PATTERN) + "." + suffix;
-        return fileName.replaceAll(" ", "");
-    }
-
-    public static String rename(String title, String suffix) {
+    /**
+     * 文件名称添加时间戳
+     * @param title
+     * @param suffix
+     * @return
+     */
+    public static String renameDateTime(String title, String suffix) {
         // 后缀
         String fileName = title + DateUtil.format(new Date(), DatePattern.PURE_DATETIME_PATTERN) + "." + suffix;
         return fileName.replaceAll(" ", "");

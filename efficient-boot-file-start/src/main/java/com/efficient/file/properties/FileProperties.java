@@ -10,7 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("com.efficient.file")
 @Data
 public class FileProperties {
-    public static final String DEFAULT_PATH = "/efficient/file/";
+    public static final String DEFAULT_PATH = "/home/efficient/file/";
     private String active = "local";
     private String tempPath = DEFAULT_PATH + "temp/";
     private FileProperties.Local local = new FileProperties.Local();

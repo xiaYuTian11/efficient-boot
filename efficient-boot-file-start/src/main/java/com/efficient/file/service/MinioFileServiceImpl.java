@@ -1,10 +1,9 @@
 package com.efficient.file.service;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.efficient.common.result.Result;
 import com.efficient.file.api.FileService;
+import com.efficient.file.api.SysFileInfoService;
 import com.efficient.file.constant.StoreEnum;
-import com.efficient.file.dao.SysFileInfoMapper;
 import com.efficient.file.model.dto.DownloadVO;
 import com.efficient.file.model.entity.SysFileInfo;
 import com.efficient.file.model.vo.FileVO;
@@ -25,23 +24,21 @@ import java.util.Objects;
  * @since 2022/8/26 10:51
  */
 @Slf4j
-public class MinioFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFileInfo> implements FileService {
+public class MinioFileServiceImpl implements FileService {
 
     @Autowired
     private MinioProperties minioProperties;
     @Autowired
     private MinioUtil minioUtil;
+    @Autowired
+    private SysFileInfoService fileInfoService;
 
     @Override
-    public FileProperties getProperties() {
-        return null;
-    }
-
-    @Override
-    public Result upload(MultipartFile file, boolean unique) throws Exception {
+    public Result upload(MultipartFile file, boolean unique, String module, String md5) throws Exception {
         String fileName = minioUtil.upload(file, minioProperties.getBucketName());
         SysFileInfo sysFileInfo = this.saveFileInfo(file, fileName);
         FileVO fileVO = new FileVO();
+        sysFileInfo.setMd5(md5);
         fileVO.setFileName(sysFileInfo.getFileName());
         fileVO.setFilePath(sysFileInfo.getFilePath());
         fileVO.setStoreType(StoreEnum.MINIO.name());
@@ -51,7 +48,7 @@ public class MinioFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFile
 
     @Override
     public FileVO getFile(DownloadVO downloadVO) {
-        SysFileInfo sysFileInfo = this.getById(downloadVO.getFileId());
+        SysFileInfo sysFileInfo = fileInfoService.getById(downloadVO.getFileId());
         if (Objects.isNull(sysFileInfo)) {
             return null;
         }
@@ -70,8 +67,24 @@ public class MinioFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFile
     }
 
     @Override
-    public String saveFileInfo(File file) {
+    public FileProperties getProperties() {
         return null;
+    }
+
+    @Override
+    public String saveFileInfo(File file, String md5) {
+        return null;
+    }
+
+    @Override
+    public boolean delete(String fileId) throws Exception {
+        final SysFileInfo sysFileInfo = fileInfoService.getById(fileId);
+        if (Objects.isNull(sysFileInfo)) {
+            return true;
+        }
+        minioUtil.removeObject(minioProperties.getBucketName(), sysFileInfo.getFilePath());
+
+        return fileInfoService.removeById(fileId);
     }
 
     public SysFileInfo saveFileInfo(MultipartFile file, String fileName) {
@@ -83,18 +96,7 @@ public class MinioFileServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFile
 
         sysFileInfo.setFileSize(file.getSize() / 1024);
         sysFileInfo.setCreateTime(new Date());
-        this.save(sysFileInfo);
+        fileInfoService.save(sysFileInfo);
         return sysFileInfo;
-    }
-
-    @Override
-    public boolean delete(String fileId) throws Exception {
-        final SysFileInfo sysFileInfo = this.getById(fileId);
-        if (Objects.isNull(sysFileInfo)) {
-            return true;
-        }
-        minioUtil.removeObject(minioProperties.getBucketName(), sysFileInfo.getFilePath());
-
-        return this.removeById(fileId);
     }
 }
