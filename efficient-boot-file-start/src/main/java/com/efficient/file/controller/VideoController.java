@@ -1,7 +1,6 @@
 package com.efficient.file.controller;
 
 import cn.hutool.core.net.URLDecoder;
-import cn.hutool.core.net.URLEncodeUtil;
 import com.efficient.common.result.Result;
 import com.efficient.file.api.SysFileInfoService;
 import com.efficient.file.api.VideoService;
@@ -11,6 +10,7 @@ import com.efficient.file.model.entity.SysFileInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -33,7 +33,7 @@ import java.nio.charset.StandardCharsets;
 @RestController
 @RequestMapping("/video")
 @Validated
-@Api(tags = "视频操作")
+@Api(tags = "视频操作/分片上传")
 @Slf4j
 public class VideoController {
 
@@ -60,6 +60,7 @@ public class VideoController {
      * @throws IOException
      */
     @PostMapping(value = "/chunkUpload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ApiOperation(value = "分片上传", response = Result.class)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "chunkSize", value = "分块大小,字节", required = true),
             @ApiImplicitParam(name = "totalChunk", value = "总块数量", required = true),
@@ -95,12 +96,14 @@ public class VideoController {
      * @throws Exception
      */
     @PostMapping("/checkFile")
+    @ApiOperation(value = "检查分片文件完整性", response = Result.class)
     public Result checkFile(@RequestParam(value = "module", required = false) String module,
                             @RequestParam("md5") String md5) throws Exception {
         return videoService.checkFile(module, md5);
     }
 
     @GetMapping(value = "/play")
+    @ApiOperation(value = "播放视频文件", response = Result.class)
     public void play(@NotBlank(message = "fileId 不能为空") @RequestParam("fileId") String fileId) {
         SysFileInfo sysFileInfo = sysFileInfoService.getById(fileId);
         try {
