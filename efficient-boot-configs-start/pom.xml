@@ -5,7 +5,7 @@
     <parent>
         <artifactId>efficient-boot</artifactId>
         <groupId>top.tanmw</groupId>
-        <version>0.9.16</version>
+        <version>0.9.17</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <description>全局配置：全局异常，参数校验，mybatis-plus分页插件</description>

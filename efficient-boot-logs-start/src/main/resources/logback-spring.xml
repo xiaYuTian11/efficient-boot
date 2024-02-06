@@ -107,6 +107,7 @@
     </appender>
 
     <logger name="com.efficient" additivity="true" level="${log.sqlLevel}"/>
+    <logger name="springfox" additivity="true" level="error"/>
     <logger name="${log.daoPackage}" additivity="true" level="${log.sqlLevel}"/>
 
     <!-- 指定最基础的日志输出级别 -->
