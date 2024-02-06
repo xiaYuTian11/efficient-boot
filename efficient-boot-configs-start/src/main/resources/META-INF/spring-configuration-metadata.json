@@ -7,6 +7,13 @@
     }
   ],
   "properties": [
+    {
+      "name": "com.efficient.configs.cors.enable",
+      "type": "java.lang.String",
+      "description": "是否启用跨越配置",
+      "defaultValue": "true",
+      "sourceType": "com.efficient.configs.properties.CorsProperties"
+    }
   ],
   "hints": [
   ]

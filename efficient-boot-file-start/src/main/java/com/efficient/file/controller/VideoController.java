@@ -50,6 +50,7 @@ public class VideoController {
 
     /**
      * 文件分块上传
+     * FORM-DATA 请求
      * @param chunkSize 分块大小,字节
      * @param totalChunk 总块数量
      * @param currChunk 当前块数
@@ -64,7 +65,7 @@ public class VideoController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "chunkSize", value = "分块大小,字节", required = true),
             @ApiImplicitParam(name = "totalChunk", value = "总块数量", required = true),
-            @ApiImplicitParam(name = "currChunk", value = "当前块数", required = true),
+            @ApiImplicitParam(name = "currChunk", value = "当前块数，从0开始", required = true),
             @ApiImplicitParam(name = "md5", value = "文件MD5值", required = true),
             @ApiImplicitParam(name = "file", value = "文件内容", required = true),
             @ApiImplicitParam(name = "module", value = "文件所属模块", defaultValue = "false")
@@ -90,7 +91,7 @@ public class VideoController {
 
     /**
      * 获取文件分片状态，检测文件MD5合法性
-     *
+     * FORM-DATA 请求
      * @param md5
      * @return
      * @throws Exception

@@ -23,6 +23,17 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
     public SysFileInfo findByPath(String destFile) {
         LambdaQueryWrapper<SysFileInfo> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(SysFileInfo::getFilePath, destFile);
+        queryWrapper.orderByAsc(SysFileInfo::getId);
+        queryWrapper.last(DbConstant.LIMIT_ONE);
+        return fileInfoMapper.selectOne(queryWrapper);
+    }
+
+    @Override
+    public SysFileInfo findByPathAndMd5(String destFile, String md5) {
+        LambdaQueryWrapper<SysFileInfo> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SysFileInfo::getFilePath, destFile);
+        queryWrapper.eq(SysFileInfo::getMd5, md5);
+        queryWrapper.orderByAsc(SysFileInfo::getId);
         queryWrapper.last(DbConstant.LIMIT_ONE);
         return fileInfoMapper.selectOne(queryWrapper);
     }

@@ -67,7 +67,7 @@
         <joda-time.version>2.12.6</joda-time.version>
         <httpclient.version>4.5.14</httpclient.version>
         <fastjson.version>2.0.45</fastjson.version>
-        <logback.version>1.4.14</logback.version>
+        <redisson.version>3.26.0</redisson.version>
     </properties>
 
     <!-- 依赖管理 -->
@@ -295,16 +295,11 @@
             </dependency>
             <!--  ykz end -->
 
-<!--            <dependency>-->
-<!--                <groupId>ch.qos.logback</groupId>-->
-<!--                <artifactId>logback-classic</artifactId>-->
-<!--                <version>${logback.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>ch.qos.logback</groupId>-->
-<!--                <artifactId>logback-core</artifactId>-->
-<!--                <version>${logback.version}</version>-->
-<!--            </dependency>-->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

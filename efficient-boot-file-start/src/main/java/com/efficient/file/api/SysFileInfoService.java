@@ -22,4 +22,6 @@ import static com.efficient.file.constant.FileConstant.POINT;
 public interface SysFileInfoService extends IService<SysFileInfo> {
 
     SysFileInfo findByPath(String destFile);
+
+    SysFileInfo findByPathAndMd5(String destFile, String md5);
 }

@@ -52,6 +52,7 @@ public class SysTaskServiceImpl extends ServiceImpl<SysTaskMapper, SysTask> impl
     public SysTask findByCode(String code) {
         LambdaQueryWrapper<SysTask> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(SysTask::getTaskCode, code);
+        queryWrapper.orderByAsc(SysTask::getId);
         queryWrapper.last(DbConstant.LIMIT_ONE);
         return sysTaskMapper.selectOne(queryWrapper);
     }

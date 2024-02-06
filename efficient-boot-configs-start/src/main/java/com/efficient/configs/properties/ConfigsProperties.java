@@ -10,4 +10,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("com.efficient.configs")
 @Data
 public class ConfigsProperties {
+    private CorsProperties cors = new CorsProperties();
 }

@@ -5,6 +5,7 @@ import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
 import com.efficient.common.constant.CommonConstant;
 import com.efficient.common.result.Result;
+import com.efficient.common.util.RedissonUtil;
 import com.efficient.file.api.SysFileInfoService;
 import com.efficient.file.api.VideoService;
 import com.efficient.file.constant.StoreEnum;
@@ -12,7 +13,10 @@ import com.efficient.file.model.dto.FileChunkDTO;
 import com.efficient.file.model.entity.SysFileInfo;
 import com.efficient.file.properties.FileProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
@@ -40,16 +44,19 @@ import static com.efficient.file.constant.FileConstant.UPLOAD_LINE;
 public class VideoServiceImpl implements VideoService {
     @Autowired
     private FileProperties fileProperties;
-
     @Autowired
     private SysFileInfoService sysFileInfoService;
+    @Value("${com.efficient.cache.active:ehcache}")
+    private String cacheType;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @Override
     public Result<SysFileInfo> chunkUpload(FileChunkDTO fileChunkDTO) throws Exception {
-        String filename = fileChunkDTO.getFilename();
         String md5 = fileChunkDTO.getMd5();
         Integer totalChunk = fileChunkDTO.getTotalChunk();
         MultipartFile file = fileChunkDTO.getFile();
+        String filename = file.getOriginalFilename();
         Integer currChunk = fileChunkDTO.getCurrChunk();
         Long chunkSize = fileChunkDTO.getChunkSize();
         String basePath = fileProperties.getLocal().getLocalPath() + UPLOAD_LINE + CHUNK_FILE + fileChunkDTO.getModule();
@@ -81,27 +88,57 @@ public class VideoServiceImpl implements VideoService {
             // 设置当前分片上传状态为1
             randomAccessConfFile.write(1);
         }
-        SysFileInfo sysFileInfo = sysFileInfoService.findByPath(destFile);
-        if (Objects.isNull(sysFileInfo)) {
-            sysFileInfo = new SysFileInfo();
+        SysFileInfo sysFileInfo = null;
+        if (StrUtil.equals(cacheType, "redis")) {
+            RedissonClient redissonClient = applicationContext.getBean(RedissonClient.class);
+            String lockName = "chunkUpload:" + md5;
+            sysFileInfo = RedissonUtil.execute(redissonClient, lockName, null, (param) -> {
+                SysFileInfo sysFileInfoNew = sysFileInfoService.findByPathAndMd5(destFile, md5);
+                if (Objects.isNull(sysFileInfoNew)) {
+                    sysFileInfoNew = new SysFileInfo();
+                    sysFileInfoNew.setStoreType(StoreEnum.LOCAL.name());
+                    sysFileInfoNew.setFileName(file.getName());
+                    sysFileInfoNew.setFilePath(destFile);
+                    sysFileInfoNew.setFileSize(totalChunk * chunkSize / 1024);
+                    sysFileInfoNew.setCreateTime(new Date());
+                    sysFileInfoNew.setMd5(md5);
+                    sysFileInfoNew.setIsIntact(CommonConstant.FALSE_INT);
+                    sysFileInfoService.save(sysFileInfoNew);
+                }
+                return sysFileInfoNew;
+            }, (param) -> sysFileInfoService.findByPathAndMd5(destFile, md5));
+        } else {
+            sysFileInfo = this.getFileInfo(fileChunkDTO, destFile);
         }
 
-        sysFileInfo.setStoreType(StoreEnum.LOCAL.name());
-        sysFileInfo.setFileName(file.getName());
-        sysFileInfo.setFilePath(destFile);
-        sysFileInfo.setFileSize(totalChunk * chunkSize / 1024);
-        sysFileInfo.setCreateTime(new Date());
-        sysFileInfo.setMd5(md5);
         Result<String> stringResult = this.checkFile(fileChunkDTO.getModule(), fileChunkDTO.getMd5());
         String data = stringResult.getData();
-        if (StrUtil.isNotBlank(data) && !data.contains("0")) {
+        if (Objects.nonNull(sysFileInfo) && StrUtil.isNotBlank(data) && !data.contains("0")) {
             sysFileInfo.setIsIntact(CommonConstant.TRUE_INT);
-        } else {
-            sysFileInfo.setIsIntact(CommonConstant.FALSE_INT);
+            sysFileInfoService.updateById(sysFileInfo);
         }
-        sysFileInfoService.saveOrUpdate(sysFileInfo);
 
         return Result.ok(sysFileInfo);
+    }
+
+    public synchronized SysFileInfo getFileInfo(FileChunkDTO fileChunkDTO, String destFile) {
+        String md5 = fileChunkDTO.getMd5();
+        Integer totalChunk = fileChunkDTO.getTotalChunk();
+        MultipartFile file = fileChunkDTO.getFile();
+        Long chunkSize = fileChunkDTO.getChunkSize();
+        SysFileInfo sysFileInfo = sysFileInfoService.findByPathAndMd5(destFile, md5);
+        if (Objects.isNull(sysFileInfo)) {
+            sysFileInfo = new SysFileInfo();
+            sysFileInfo.setStoreType(StoreEnum.LOCAL.name());
+            sysFileInfo.setFileName(file.getName());
+            sysFileInfo.setFilePath(destFile);
+            sysFileInfo.setFileSize(totalChunk * chunkSize / 1024);
+            sysFileInfo.setCreateTime(new Date());
+            sysFileInfo.setMd5(md5);
+            sysFileInfo.setIsIntact(CommonConstant.FALSE_INT);
+            sysFileInfoService.save(sysFileInfo);
+        }
+        return sysFileInfo;
     }
 
     @Override
