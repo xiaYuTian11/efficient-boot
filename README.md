@@ -102,31 +102,16 @@ mvn install:install-file    -DgroupId=com.alibaba -DartifactId=zwdd-sdk-java -Dv
 
 <repositories>
     <repository>
-        <id>maven-public</id>
-        <name>maven-public</name>
+        <id>sonatype</id>
+        <name>sonatype maven</name>
         <url>https://repo.maven.apache.org/maven2/</url>
+<!--        <url>https://maven.aliyun.com/repository/central/</url>-->
         <layout>default</layout>
-        <releases>
-            <enabled>true</enabled>
-        </releases>
-        <snapshots>
-            <enabled>true</enabled>
-        </snapshots>
     </repository>
     <repository>
         <id>alimaven</id>
         <name>aliyun maven</name>
         <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-    </repository>
-    <repository>
-        <id>sonatype</id>
-        <name>sonatype maven</name>
-        <url>https://s01.oss.sonatype.org/content/repositories/releases/</url>
-    </repository>
-    <repository>
-        <id>sonatype</id>
-        <name>sonatype maven</name>
-        <url>https://oss.sonatype.org/content/repositories/releases/</url>
     </repository>
 </repositories>
 ```
