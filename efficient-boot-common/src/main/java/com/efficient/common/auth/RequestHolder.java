@@ -12,6 +12,7 @@ public class RequestHolder {
 
     private static final TransmittableThreadLocal<UserTicket> USER_INFO_THREAD_LOCAL = new TransmittableThreadLocal<>();
     private static final TransmittableThreadLocal<HttpServletRequest> HTTP_SERVLET_REQUEST_THREAD_LOCAL = new TransmittableThreadLocal<>();
+    private static final TransmittableThreadLocal<String> SYSTEM_ID_THREAD_LOCAL = new TransmittableThreadLocal<>();
 
     public static void set(UserTicket userTicket) {
         USER_INFO_THREAD_LOCAL.set(userTicket);
@@ -27,6 +28,14 @@ public class RequestHolder {
 
     public static HttpServletRequest getCurrRequest() {
         return HTTP_SERVLET_REQUEST_THREAD_LOCAL.get();
+    }
+
+    public static String getCurrSystemId() {
+        return SYSTEM_ID_THREAD_LOCAL.get();
+    }
+
+    public static void setCurrSystemId(String systemId) {
+        SYSTEM_ID_THREAD_LOCAL.set(systemId);
     }
 
     public static void remove() {

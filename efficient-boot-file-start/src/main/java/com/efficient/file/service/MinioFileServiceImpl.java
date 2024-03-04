@@ -34,9 +34,9 @@ public class MinioFileServiceImpl implements FileService {
     private SysFileInfoService fileInfoService;
 
     @Override
-    public Result upload(MultipartFile file, boolean unique, String module, String md5) throws Exception {
+    public Result<FileVO> upload(MultipartFile file, boolean unique, String module, String md5, String remark) throws Exception {
         String fileName = minioUtil.upload(file, minioProperties.getBucketName());
-        SysFileInfo sysFileInfo = this.saveFileInfo(file, fileName);
+        SysFileInfo sysFileInfo = this.saveFileInfo(file, fileName, remark);
         FileVO fileVO = new FileVO();
         sysFileInfo.setMd5(md5);
         fileVO.setFileName(sysFileInfo.getFileName());
@@ -72,7 +72,7 @@ public class MinioFileServiceImpl implements FileService {
     }
 
     @Override
-    public String saveFileInfo(File file, String md5) {
+    public String saveFileInfo(File file, String md5, String remark) {
         return null;
     }
 
@@ -87,7 +87,7 @@ public class MinioFileServiceImpl implements FileService {
         return fileInfoService.removeById(fileId);
     }
 
-    public SysFileInfo saveFileInfo(MultipartFile file, String fileName) {
+    public SysFileInfo saveFileInfo(MultipartFile file, String fileName, String remark) {
         SysFileInfo sysFileInfo = new SysFileInfo();
         sysFileInfo.setStoreType(StoreEnum.MINIO.name());
         sysFileInfo.setFileName(file.getOriginalFilename());
@@ -96,6 +96,7 @@ public class MinioFileServiceImpl implements FileService {
 
         sysFileInfo.setFileSize(file.getSize() / 1024);
         sysFileInfo.setCreateTime(new Date());
+        sysFileInfo.setRemark(remark);
         fileInfoService.save(sysFileInfo);
         return sysFileInfo;
     }

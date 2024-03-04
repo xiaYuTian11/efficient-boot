@@ -18,4 +18,7 @@ public class FileConstant {
     public static final String FOLDER_EXCEL = "/excel/";
     public static final String FOLDER_PDF = "/pdf/";
     public static final String CHUNK_FILE = "/chunk/";
+
+    public static final String FILE_ID_LIST = "fileIdList";
+    public static final String BIZ_ID = "bizId";
 }

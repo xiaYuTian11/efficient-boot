@@ -9,11 +9,12 @@ import java.util.Date;
  * @since 2022/10/28 15:21
  */
 @Data
-public class UserCheck {
+public class UserAuthInfo {
     private String account;
     private String password;
     private String username;
     private String userId;
+    private String zwddId;
     /**
      * 用户是否锁定
      */
@@ -22,4 +23,6 @@ public class UserCheck {
      * 解锁时间
      */
     private Date unLockTime;
+    private Object userInfo;
+
 }

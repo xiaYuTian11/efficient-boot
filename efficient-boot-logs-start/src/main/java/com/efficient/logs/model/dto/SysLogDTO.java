@@ -1,5 +1,6 @@
 package com.efficient.logs.model.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 import java.util.Date;
@@ -20,6 +21,10 @@ public class SysLogDTO {
      * 主键
      */
     private String id;
+    /**
+     *系统ID
+     */
+    private String systemId;
     /**
      * 模块
      */

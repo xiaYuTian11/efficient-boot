@@ -26,6 +26,11 @@ public class SysLog implements Serializable {
     @TableId("id")
     private String id;
     /**
+     *系统ID
+     */
+    @TableField("system_id")
+    private String systemId;
+    /**
     *模块
     */
     @TableField("module")

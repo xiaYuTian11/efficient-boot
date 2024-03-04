@@ -1,5 +1,6 @@
 package com.efficient.auth.model.dto;
 
+import com.efficient.auth.constant.LoginTypeEnum;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -17,6 +18,8 @@ public class LoginInfo {
     @NotBlank(message = "password 不能为空")
     private String password;
     private String loginIp;
+    private String authCode;
+    private Integer loginType;
     /**
      * 验证码
      */

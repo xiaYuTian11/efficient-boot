@@ -11,4 +11,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 public class AuthProperties {
     private LoginProperties login = new LoginProperties();
+    /**
+     * 系统ID字段
+     */
+    private String systemIdField = "systemId";
+    private String permissionCheckType = "default";
+
 }

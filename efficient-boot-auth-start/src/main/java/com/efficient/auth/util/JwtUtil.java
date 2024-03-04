@@ -4,13 +4,14 @@ import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateUtil;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.efficient.auth.properties.AuthProperties;
+import com.efficient.common.util.JackSonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author TMW
@@ -29,9 +30,9 @@ public class JwtUtil {
      * @param sub
      * @return
      */
-    public String createToken(String sub) {
+    public String createToken(Object sub) {
         return JWT.create()
-                .withSubject(sub)
+                .withSubject(JackSonUtil.toJson(sub))
                 .withExpiresAt(DateUtil.offset(new Date(), DateField.SECOND, authProperties.getLogin().getTokenLive()))
                 .sign(Algorithm.HMAC512(authProperties.getLogin().getSecret()));
     }
@@ -41,12 +42,13 @@ public class JwtUtil {
      *
      * @param token
      */
-    public String validateToken(String token) {
+    public <T> T validateToken(String token, Class<T> tClass) {
         try {
-            return JWT.require(Algorithm.HMAC512(authProperties.getLogin().getSecret()))
+            String subject = JWT.require(Algorithm.HMAC512(authProperties.getLogin().getSecret()))
                     .build()
                     .verify(token)
                     .getSubject();
+            return JackSonUtil.toObject(subject, tClass);
         } catch (Exception e) {
             log.error("jwt validateToken error", e);
             return null;

@@ -75,6 +75,7 @@ public class VideoController {
                               @RequestParam Integer currChunk,
                               @RequestParam String md5,
                               @RequestParam(value = "module", required = false) String module,
+                              @RequestParam(value = "remark", required = false) String remark,
                               @RequestParam MultipartFile file) throws Exception {
         FileChunkDTO fileChunkDTO = new FileChunkDTO();
         fileChunkDTO.setMd5(md5);
@@ -84,9 +85,25 @@ public class VideoController {
         fileChunkDTO.setChunkSize(chunkSize);
         fileChunkDTO.setTotalSize(totalChunk * chunkSize);
         fileChunkDTO.setTotalChunk(totalChunk);
+        fileChunkDTO.setRemark(remark);
         fileChunkDTO.setFilename(file.getOriginalFilename());
         return videoService.chunkUpload(fileChunkDTO);
 
+    }
+
+    /**
+     *秒传
+     *
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/quickUpload")
+    @ApiOperation(value = "检查分片文件完整性", response = Result.class)
+    public Result quickUpload(@RequestParam(value = "module", required = false) String module,
+                              @RequestParam(value = "remark", required = false) String remark,
+                              @RequestParam("md5") String md5,
+                              @RequestParam("fileName") String fileName) throws Exception {
+        return videoService.quickUpload(module, md5, fileName, remark);
     }
 
     /**

@@ -26,6 +26,10 @@ public class LoginProperties {
      */
     private int retryCount = -1;
     /**
+     * 重试时间，分钟
+     */
+    private int retryTime = 30;
+    /**
      * 锁定时间，分钟
      */
     private int lockTime = 30;

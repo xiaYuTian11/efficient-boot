@@ -27,9 +27,10 @@ public interface FileService {
      * @param unique 是否唯一
      * @param module
      * @param md5
+     * @param remark
      * @return 返回文件信息
      */
-    Result upload(MultipartFile file, boolean unique, String module, String md5) throws Exception;
+    Result<FileVO> upload(MultipartFile file, boolean unique, String module, String md5, String remark) throws Exception;
 
     /**
      * 获取服务器上的文件
@@ -78,7 +79,7 @@ public interface FileService {
      * @param md5
      * @return 主键
      */
-    String saveFileInfo(File file, String md5);
+    String saveFileInfo(File file, String md5, String remark);
 
     /**
      * 根据文件ID删除文件

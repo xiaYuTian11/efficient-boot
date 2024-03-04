@@ -39,7 +39,7 @@ public class LocalFileServiceImpl implements FileService {
     private SysFileInfoService fileInfoService;
 
     @Override
-    public Result upload(MultipartFile multipartFile, boolean unique, String module, String md5) throws Exception {
+    public Result<FileVO> upload(MultipartFile multipartFile, boolean unique, String module, String md5, String remark) throws Exception {
         FileVO fileVo = new FileVO();
         if (StrUtil.isBlank(module)) {
             module = "";
@@ -101,7 +101,7 @@ public class LocalFileServiceImpl implements FileService {
         // fileVo.setFilePath(realFile.getAbsolutePath());
         fileVo.setStoreType(StoreEnum.LOCAL.name());
         // 保存文件信息
-        String fileId = this.saveFileInfo(realFile, md5);
+        String fileId = this.saveFileInfo(realFile, md5, remark);
         fileVo.setFileId(fileId);
         return Result.ok(fileVo);
     }
@@ -140,19 +140,6 @@ public class LocalFileServiceImpl implements FileService {
     }
 
     @Override
-    public String saveFileInfo(File file, String md5) {
-        SysFileInfo sysFileInfo = new SysFileInfo();
-        sysFileInfo.setStoreType(StoreEnum.LOCAL.name());
-        sysFileInfo.setFileName(file.getName());
-        sysFileInfo.setFilePath(file.getAbsolutePath());
-        sysFileInfo.setFileSize(FileUtil.size(file) / 1024);
-        sysFileInfo.setCreateTime(new Date());
-        sysFileInfo.setMd5(md5);
-        final boolean save = fileInfoService.save(sysFileInfo);
-        return sysFileInfo.getId();
-    }
-
-    @Override
     public boolean delete(String fileId) throws Exception {
         final SysFileInfo sysFileInfo = fileInfoService.getById(fileId);
         if (Objects.isNull(sysFileInfo)) {
@@ -160,5 +147,19 @@ public class LocalFileServiceImpl implements FileService {
         }
         final String filePath = sysFileInfo.getFilePath();
         return fileInfoService.removeById(fileId) && FileUtil.del(filePath);
+    }
+
+    @Override
+    public String saveFileInfo(File file, String md5, String remark) {
+        SysFileInfo sysFileInfo = new SysFileInfo();
+        sysFileInfo.setStoreType(StoreEnum.LOCAL.name());
+        sysFileInfo.setFileName(file.getName());
+        sysFileInfo.setFilePath(file.getAbsolutePath());
+        sysFileInfo.setFileSize(FileUtil.size(file) / 1024);
+        sysFileInfo.setCreateTime(new Date());
+        sysFileInfo.setMd5(md5);
+        sysFileInfo.setRemark(remark);
+        final boolean save = fileInfoService.save(sysFileInfo);
+        return sysFileInfo.getId();
     }
 }

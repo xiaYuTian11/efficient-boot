@@ -21,6 +21,12 @@ public @interface Permission {
     String[] value() default {};
 
     /**
+     * 系统标识
+     * @return
+     */
+    String systemId() default "";
+
+    /**
      * 菜单之间的权限
      */
     MenuRelation relation() default MenuRelation.OR;

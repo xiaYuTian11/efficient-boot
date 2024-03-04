@@ -9,7 +9,6 @@ import com.efficient.file.model.dto.DownloadVO;
 import com.efficient.file.model.entity.SysFileInfo;
 import com.efficient.file.model.vo.FileVO;
 import com.efficient.file.properties.FileProperties;
-import com.efficient.file.util.FileMd5Util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,7 +32,7 @@ public class DbFileServiceImpl implements FileService {
     private SysFileInfoService fileInfoService;
 
     @Override
-    public Result upload(MultipartFile file, boolean unique, String module, String md5) throws Exception {
+    public Result<FileVO> upload(MultipartFile file, boolean unique, String module, String md5, String remark) throws Exception {
         SysFileInfo sysFileInfo = new SysFileInfo();
         sysFileInfo.setStoreType(StoreEnum.DB.name());
         sysFileInfo.setFileName(file.getOriginalFilename());
@@ -41,6 +40,7 @@ public class DbFileServiceImpl implements FileService {
         sysFileInfo.setFileSize(file.getSize() / 1024);
         sysFileInfo.setCreateTime(new Date());
         sysFileInfo.setMd5(md5);
+        sysFileInfo.setRemark(remark);
         fileInfoService.save(sysFileInfo);
 
 
@@ -77,13 +77,14 @@ public class DbFileServiceImpl implements FileService {
     }
 
     @Override
-    public String saveFileInfo(File file, String md5) {
+    public String saveFileInfo(File file, String md5, String remark) {
         SysFileInfo sysFileInfo = new SysFileInfo();
         sysFileInfo.setStoreType(StoreEnum.DB.name());
         sysFileInfo.setFileName(file.getName());
         sysFileInfo.setFileContent(FileUtil.readBytes(file));
         sysFileInfo.setFileSize(FileUtil.size(file) / 1024);
         sysFileInfo.setCreateTime(new Date());
+        sysFileInfo.setRemark(remark);
         fileInfoService.save(sysFileInfo);
         return sysFileInfo.getId();
     }

@@ -8,6 +8,20 @@
   ],
   "properties": [
     {
+      "name": "com.efficient.auth.systemIdField",
+      "type": "java.lang.String",
+      "description": "系统标识字段",
+      "defaultValue": "systemId",
+      "sourceType": "com.efficient.auth.properties.AuthProperties"
+    },
+    {
+      "name": "com.efficient.auth.permissionCheckType",
+      "type": "java.lang.String",
+      "description": "菜单权限校验实现类",
+      "defaultValue": "default",
+      "sourceType": "com.efficient.auth.properties.AuthProperties"
+    },
+    {
       "name": "com.efficient.auth.login.captcha",
       "type": "java.lang.Boolean",
       "description": "是否需要验证码",
@@ -33,6 +47,13 @@
       "type": "java.lang.Integer",
       "description": "重试次数",
       "defaultValue": -1,
+      "sourceType": "com.efficient.auth.properties.LoginProperties"
+    },
+    {
+      "name": "com.efficient.auth.login.retry-time",
+      "type": "java.lang.Integer",
+      "description": "重试间隔时间",
+      "defaultValue": 30,
       "sourceType": "com.efficient.auth.properties.LoginProperties"
     },
     {
@@ -79,5 +100,18 @@
     }
   ],
   "hints": [
+    {
+      "name": "com.efficient.auth.permissionCheckType",
+      "values": [
+        {
+          "value": "default",
+          "description": "默认实现"
+        },
+        {
+          "value": "custom",
+          "description": "自定义实现，请先实现类 com.efficient.auth.interceptor.PermissionCheck"
+        }
+      ]
+    }
   ]
 }

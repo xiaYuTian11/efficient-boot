@@ -22,6 +22,10 @@ public class SysLogVO {
     */
     private String id;
     /**
+     *系统ID
+     */
+    private String systemId;
+    /**
     *模块
     */
     private String module;

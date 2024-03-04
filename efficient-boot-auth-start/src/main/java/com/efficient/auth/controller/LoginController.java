@@ -11,6 +11,7 @@ import com.efficient.auth.model.dto.LoginInfo;
 import com.efficient.auth.permission.Permission;
 import com.efficient.auth.properties.AuthProperties;
 import com.efficient.cache.api.CacheUtil;
+import com.efficient.common.auth.UserTicket;
 import com.efficient.common.result.Result;
 import com.efficient.common.util.WebUtil;
 import com.efficient.logs.annotation.Log;
@@ -48,14 +49,13 @@ public class LoginController {
 
     @Log(logOpt = LogEnum.LOGIN, desc = "系统")
     @PostMapping("/login")
-    public Result login(@Validated @RequestBody LoginInfo info) {
+    public Result<UserTicket> login(@Validated @RequestBody LoginInfo info) {
         if (authProperties.getLogin().isCaptcha()) {
             String captchaCache = cacheUtil.get(AuthConstant.CACHE_CAPTCHA_CODE, info.getCaptchaId());
             if (StrUtil.isBlank(captchaCache) || !StrUtil.equalsIgnoreCase(info.getCaptcha(), captchaCache)) {
                 return Result.build(AuthResultEnum.CAPTCHA_NOT_MATCH);
             }
         }
-
         String loginIp = WebUtil.getIP(request);
         info.setLoginIp(loginIp);
         return loginService.login(info);

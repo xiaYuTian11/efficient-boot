@@ -29,6 +29,13 @@
       "sourceType": "com.efficient.logs.properties.LogsProperties"
     },
     {
+      "name": "com.efficient.logs.systemIdField",
+      "type": "java.lang.String",
+      "description": "系统ID字段",
+      "defaultValue": "systemId",
+      "sourceType": "com.efficient.logs.properties.LogsProperties"
+    },
+    {
       "name": "com.efficient.logs.path",
       "type": "java.lang.String",
       "description": "日志存储路径",

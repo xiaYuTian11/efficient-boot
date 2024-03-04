@@ -1,7 +1,10 @@
 package com.efficient.auth.util;
 
 import cn.hutool.crypto.digest.DigestUtil;
+import com.efficient.common.util.WebUtil;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * token 生成校验工具
@@ -16,8 +19,9 @@ public class TokenUtil {
     /***
      * 创建token
      * */
-    public static String createToken(String userId, long createTime) {
-        String data = userId + SEPARATOR + createTime;
+    public static String createToken(String userId, long createTime, HttpServletRequest request) {
+        String ip = WebUtil.getIP(request);
+        String data = userId + SEPARATOR + ip + SEPARATOR + createTime;
         return DigestUtil.md5Hex(data);
     }
 

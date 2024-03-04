@@ -44,6 +44,7 @@ public class FileChunkDTO {
      * 文件名
      */
     private String filename;
+    private String remark;
 
     public String getModule() {
         if (StrUtil.isBlank(this.module)) {

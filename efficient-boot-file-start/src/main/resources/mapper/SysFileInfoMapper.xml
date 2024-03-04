@@ -2,6 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.efficient.file.dao.SysFileInfoMapper">
+    <update id="setBizIdWithFileIdList">
+        update efficient_sys_file_info set biz_id = #{bizId} where
+        id in
+        <foreach collection="fileIdList" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </update>
 
+    <delete id="deleteByFIleIdListAndBizId">
+        delete from efficient_sys_file_info where biz_id = #{bizId}
+        <if test="fileIdList != null and fileIdList.size() > 0">
+            and id not in
+            <foreach collection="fileIdList" item="id" separator="," open="(" close=")">
+                #{id}
+            </foreach>
+        </if>
+    </delete>
 </mapper>
 

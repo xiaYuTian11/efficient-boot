@@ -14,4 +14,6 @@ public interface VideoService {
     Result<SysFileInfo> chunkUpload(FileChunkDTO fileChunkDTO) throws Exception;
 
     Result checkFile(String module, String md5) throws Exception;
+
+    Result quickUpload(String module, String md5, String fileName, String remark);
 }

@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS "efficient_sys_log";
 CREATE TABLE public.efficient_sys_log (
                                           id varchar(64) NOT NULL, -- 主键
+                                          "system_id" varchar(255) NULL, -- 系统
                                           "module" varchar(255) NULL, -- 模块
                                           user_id varchar(255) NULL, -- 用户ID
                                           user_name varchar(255) NULL, -- 用户名
@@ -22,6 +23,7 @@ COMMENT ON TABLE public.efficient_sys_log IS '日志表';
 -- Column comments
 
 COMMENT ON COLUMN public.efficient_sys_log.id IS '主键';
+COMMENT ON COLUMN public.efficient_sys_log."system_id" IS '系统ID';
 COMMENT ON COLUMN public.efficient_sys_log."module" IS '模块';
 COMMENT ON COLUMN public.efficient_sys_log.user_id IS '用户ID';
 COMMENT ON COLUMN public.efficient_sys_log.user_name IS '用户名';

@@ -24,6 +24,10 @@ public class LogsProperties {
      */
     private String name = "log";
     /**
+     * 系统ID字段
+     */
+    private String systemIdField = "systemId";
+    /**
      * 日志存储路径
      */
     private String path = "/efficient/logs/";

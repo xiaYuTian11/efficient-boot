@@ -70,13 +70,14 @@ public class FileController {
     })
     public Result upload(@RequestParam("file") MultipartFile file,
                          @RequestParam(value = "unique", required = false) boolean unique,
-                         @RequestParam(value = "module", required = false) String module) throws Exception {
+                         @RequestParam(value = "module", required = false) String module,
+                         @RequestParam(value = "remark", required = false) String remark) throws Exception {
         if (file.isEmpty() || StrUtil.isBlank(file.getOriginalFilename())) {
             return Result.build(FileResultEnum.NOT_CHECK_FILE);
         }
 
         String md5 = FileMd5Util.getMD5ByApacheCommonsCodec(file);
-        return fileService.upload(file, unique, module,md5);
+        return fileService.upload(file, unique, module,md5,remark);
     }
 
     @PostMapping("/download")

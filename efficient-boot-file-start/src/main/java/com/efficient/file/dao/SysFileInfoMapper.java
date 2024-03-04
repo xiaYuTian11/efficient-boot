@@ -3,6 +3,9 @@ package com.efficient.file.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.efficient.file.model.entity.SysFileInfo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -15,4 +18,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface SysFileInfoMapper extends BaseMapper<SysFileInfo> {
 
+    void deleteByFIleIdListAndBizId(@Param("fileIdList") List<String> fileIdList,@Param("bizId") String bizId);
+
+    void setBizIdWithFileIdList(@Param("fileIdList") List<String> fileIdList,@Param("bizId") String bizId);
 }

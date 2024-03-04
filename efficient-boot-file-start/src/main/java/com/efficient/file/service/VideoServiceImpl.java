@@ -1,6 +1,7 @@
 package com.efficient.file.service;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
 import com.efficient.common.constant.CommonConstant;
@@ -63,12 +64,13 @@ public class VideoServiceImpl implements VideoService {
         if (fileProperties.getLocal().isAddDatePrefix()) {
             basePath += DateUtil.format(new Date(), "/yyyy/MM/dd/");
         }
-        String destFile = String.format("%s\\%s\\%s.%s", basePath, md5, md5, StringUtils.getFilenameExtension(filename));
+        String destFilePath = String.format("%s\\%s\\%s.%s", basePath, md5, md5, StringUtils.getFilenameExtension(filename));
+        File destFile = new File(destFilePath);
         // 上传分片信息存放位置
         String confFile = String.format("%s\\%s\\%s.conf", basePath, md5, md5);
         // 第一次创建分片记录文件
         // 创建目录
-        File dir = new File(destFile).getParentFile();
+        File dir = new File(destFilePath).getParentFile();
         if (!dir.exists()) {
             dir.mkdirs();
             // 所有分片状态设置为0
@@ -93,12 +95,12 @@ public class VideoServiceImpl implements VideoService {
             RedissonClient redissonClient = applicationContext.getBean(RedissonClient.class);
             String lockName = "chunkUpload:" + md5;
             sysFileInfo = RedissonUtil.execute(redissonClient, lockName, null, (param) -> {
-                SysFileInfo sysFileInfoNew = sysFileInfoService.findByPathAndMd5(destFile, md5);
+                SysFileInfo sysFileInfoNew = sysFileInfoService.findByPathAndMd5(destFile.getAbsolutePath(), md5);
                 if (Objects.isNull(sysFileInfoNew)) {
                     sysFileInfoNew = new SysFileInfo();
                     sysFileInfoNew.setStoreType(StoreEnum.LOCAL.name());
                     sysFileInfoNew.setFileName(file.getName());
-                    sysFileInfoNew.setFilePath(destFile);
+                    sysFileInfoNew.setFilePath(destFile.getAbsolutePath());
                     sysFileInfoNew.setFileSize(totalChunk * chunkSize / 1024);
                     sysFileInfoNew.setCreateTime(new Date());
                     sysFileInfoNew.setMd5(md5);
@@ -106,9 +108,9 @@ public class VideoServiceImpl implements VideoService {
                     sysFileInfoService.save(sysFileInfoNew);
                 }
                 return sysFileInfoNew;
-            }, (param) -> sysFileInfoService.findByPathAndMd5(destFile, md5));
+            }, (param) -> sysFileInfoService.findByPathAndMd5(destFile.getAbsolutePath(), md5));
         } else {
-            sysFileInfo = this.getFileInfo(fileChunkDTO, destFile);
+            sysFileInfo = this.getFileInfo(fileChunkDTO, destFile.getAbsolutePath());
         }
 
         Result<String> stringResult = this.checkFile(fileChunkDTO.getModule(), fileChunkDTO.getMd5());
@@ -182,5 +184,23 @@ public class VideoServiceImpl implements VideoService {
 
         // 文件未上传完成，反回每个分片状态，前端将未上传的分片继续上传
         return Result.ok(stringBuilder.toString());
+    }
+
+    @Override
+    public Result<SysFileInfo> quickUpload(String module, String md5, String fileName, String remark) {
+        String basePath = fileProperties.getLocal().getLocalPath() + UPLOAD_LINE + CHUNK_FILE + module;
+        if (fileProperties.getLocal().isAddDatePrefix()) {
+            basePath += DateUtil.format(new Date(), "/yyyy/MM/dd/");
+        }
+        String suffix = FileUtil.getSuffix(fileName);
+        String uploadPath = String.format("%s\\%s\\%s.%s", basePath, md5, md5, suffix);
+        File destFile = new File(uploadPath);
+        String path = destFile.getPath();
+        SysFileInfo byPathAndMd5 = sysFileInfoService.findByPathAndMd5(path, md5);
+        byPathAndMd5.setId(null);
+        byPathAndMd5.setBizId(null);
+        byPathAndMd5.setRemark(remark);
+        sysFileInfoService.save(byPathAndMd5);
+        return Result.ok(byPathAndMd5);
     }
 }

@@ -1,10 +1,11 @@
 package com.efficient.auth.api;
 
 import com.efficient.auth.model.dto.LoginInfo;
-import com.efficient.auth.model.entity.UserCheck;
+import com.efficient.auth.model.entity.UserAuthInfo;
+import com.efficient.common.auth.UserTicket;
+import com.efficient.common.result.Result;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * 需要自定义实现处逻辑
@@ -19,33 +20,15 @@ public interface AuthService {
      * @param info
      * @return
      */
-    UserCheck getUserInfo(LoginInfo info);
+    UserAuthInfo getUserByAccount(LoginInfo info);
 
-    /**
-     * 获取用户按钮权限
-     *
-     * @param userId
-     * @return
-     */
-    List<String> getUserOperationList(String userId);
+    UserAuthInfo getUserByZwddId(String zwddId);
 
-    /**
-     * 获取用户菜单权限
-     *
-     * @param userId
-     * @return
-     */
-    List<String> getUserPermissionList(String userId);
-
-    /**
-     * 获取用户扩展信息
-     *
-     * @param userId
-     * @return
-     */
-    Object getUserExtendInfo(String userId);
+    UserAuthInfo getUserByOtherAuthCode(String authCode);
 
     boolean unLockUser(String userId);
 
     boolean lockUser(String userId, Date unLockTime);
+
+    Result<UserTicket> getUserTicket(UserAuthInfo userAuthInfo);
 }

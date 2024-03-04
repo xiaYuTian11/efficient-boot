@@ -1,19 +1,9 @@
 package com.efficient.file.api;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.efficient.common.result.Result;
-import com.efficient.file.model.dto.DownloadVO;
 import com.efficient.file.model.entity.SysFileInfo;
-import com.efficient.file.model.vo.FileVO;
-import com.efficient.file.properties.FileProperties;
-import com.efficient.file.util.PathUtil;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.InputStream;
-
-import static com.efficient.file.constant.FileConstant.DOWNLOAD_LINE;
-import static com.efficient.file.constant.FileConstant.POINT;
+import java.util.List;
 
 /**
  * @author TMW
@@ -24,4 +14,8 @@ public interface SysFileInfoService extends IService<SysFileInfo> {
     SysFileInfo findByPath(String destFile);
 
     SysFileInfo findByPathAndMd5(String destFile, String md5);
+
+    boolean saveListByBizId(List<String> fileIdList, String bizId);
+
+    List<SysFileInfo> findByBizId(String bizId);
 }

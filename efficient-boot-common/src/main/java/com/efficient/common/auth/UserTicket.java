@@ -14,6 +14,7 @@ import java.util.List;
 public class UserTicket {
     private String token;
     private String userId;
+    private String zwddId;
     private String account;
     private String username;
     /**
@@ -37,4 +38,6 @@ public class UserTicket {
      * 扩展信息
      */
     private Object extendInfo;
+
+
 }
