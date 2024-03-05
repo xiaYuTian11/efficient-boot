@@ -195,7 +195,7 @@ public class VideoServiceImpl implements VideoService {
         String suffix = FileUtil.getSuffix(fileName);
         String uploadPath = String.format("%s\\%s\\%s.%s", basePath, md5, md5, suffix);
         File destFile = new File(uploadPath);
-        String path = destFile.getPath();
+        String path = destFile.getAbsolutePath();
         SysFileInfo byPathAndMd5 = sysFileInfoService.findByPathAndMd5(path, md5);
         byPathAndMd5.setId(null);
         byPathAndMd5.setBizId(null);
