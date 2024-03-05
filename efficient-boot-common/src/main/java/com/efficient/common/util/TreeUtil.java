@@ -22,7 +22,7 @@ public class TreeUtil {
 
     /**
      * 获取书节点集合
-     *
+     * 请先设置顶级节点
      * @param nodeList 节点集合
      * @return 树
      */
@@ -36,7 +36,7 @@ public class TreeUtil {
             createChildren(rootNode, nodeList);
             resultList.add(rootNode);
         }
-        return resultList.stream().sorted(Comparator.comparing(TreeNode::getOrder)).collect(Collectors.toList());
+        return resultList.stream().sorted(Comparator.comparing(TreeNode::getOrder, Comparator.nullsLast(Comparator.naturalOrder())).thenComparing(TreeNode::getCode)).collect(Collectors.toList());
     }
 
     /**
@@ -53,7 +53,7 @@ public class TreeUtil {
                 childrenList.add(createChildren(treeNode, nodeList));
             }
         }
-        final List<TreeNode> collect = childrenList.stream().sorted(Comparator.comparing(TreeNode::getOrder, Comparator.nullsLast(Comparator.naturalOrder()))).collect(Collectors.toList());
+        final List<TreeNode> collect = childrenList.stream().sorted(Comparator.comparing(TreeNode::getOrder, Comparator.nullsLast(Comparator.naturalOrder())).thenComparing(TreeNode::getCode)).collect(Collectors.toList());
         parentNode.setIsLeaf(collect.isEmpty());
         parentNode.setChildren(collect);
         return parentNode;
