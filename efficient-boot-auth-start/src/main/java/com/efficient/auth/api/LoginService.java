@@ -12,6 +12,10 @@ import com.efficient.common.result.Result;
 public interface LoginService {
     Result<UserTicket> login(LoginInfo info);
 
+    void putCacheUser(String token, UserTicket userTicket);
+
+    UserTicket getCacheUser(String token);
+
     /**
      * 清理过期用户
      * @param userId

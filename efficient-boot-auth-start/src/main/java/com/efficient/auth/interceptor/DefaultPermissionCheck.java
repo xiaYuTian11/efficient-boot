@@ -1,7 +1,7 @@
 package com.efficient.auth.interceptor;
 
 import cn.hutool.core.collection.CollUtil;
-import com.efficient.auth.permission.Permission;
+import com.efficient.common.permission.Permission;
 import com.efficient.common.auth.UserTicket;
 import com.efficient.common.constant.MenuRelation;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

@@ -1,6 +1,6 @@
 package com.efficient.auth.interceptor;
 
-import com.efficient.auth.permission.Permission;
+import com.efficient.common.permission.Permission;
 import com.efficient.common.auth.UserTicket;
 
 /**

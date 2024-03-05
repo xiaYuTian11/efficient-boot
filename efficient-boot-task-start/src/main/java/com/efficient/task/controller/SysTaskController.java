@@ -1,6 +1,7 @@
 package com.efficient.task.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.efficient.common.permission.Permission;
 import com.efficient.common.result.Result;
 import com.efficient.task.api.SysTaskService;
 import com.efficient.task.model.dto.SysTaskDTO;
@@ -29,6 +30,7 @@ import javax.validation.constraints.NotBlank;
 @RequestMapping("/sysTask")
 @Validated
 @Api(tags = "定时任务信息")
+@Permission
 public class SysTaskController {
 
     @Autowired

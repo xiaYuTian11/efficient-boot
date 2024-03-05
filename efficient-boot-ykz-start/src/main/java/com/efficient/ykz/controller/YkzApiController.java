@@ -1,5 +1,6 @@
 package com.efficient.ykz.controller;
 
+import com.efficient.common.permission.Permission;
 import com.efficient.common.result.Result;
 import com.efficient.ykz.api.YkzApiService;
 import com.efficient.ykz.model.dto.msg.YkzSendMsg;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/ykz/api/")
 @Validated
 @Api(tags = "渝快政-消息接口")
+@Permission
 public class YkzApiController {
     @Autowired
     private YkzApiService ykzApiService;

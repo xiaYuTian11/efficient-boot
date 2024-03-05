@@ -1,5 +1,6 @@
 package com.efficient.file.controller;
 
+import com.efficient.common.permission.Permission;
 import com.efficient.common.result.Result;
 import com.efficient.file.api.SysFileInfoService;
 import com.efficient.file.model.dto.FileBizRelation;
@@ -24,6 +25,7 @@ import java.util.List;
 @Validated
 @Api(tags = "文件信息操作")
 @Slf4j
+@Permission
 public class SysFileInfoController {
 
     @Autowired

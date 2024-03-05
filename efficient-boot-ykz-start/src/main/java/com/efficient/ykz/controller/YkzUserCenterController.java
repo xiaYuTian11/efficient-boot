@@ -2,6 +2,7 @@ package com.efficient.ykz.controller;
 
 import com.dcqc.uc.oauth.sdk.model.Request;
 import com.dcqc.uc.oauth.sdk.model.v3.SynchronizeV3DTO;
+import com.efficient.common.permission.Permission;
 import com.efficient.common.result.Result;
 import com.efficient.ykz.api.YkzUserCenterService;
 import com.efficient.ykz.api.YkzUserCenterSyncService;
@@ -34,6 +35,7 @@ import java.util.List;
 @Validated
 @Slf4j
 @Api(tags = "渝快政-用户中心")
+@Permission
 public class YkzUserCenterController {
     @Autowired
     private YkzUserCenterService ykzUserCenterService;

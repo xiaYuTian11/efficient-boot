@@ -22,6 +22,20 @@
       "sourceType": "com.efficient.auth.properties.AuthProperties"
     },
     {
+      "name": "com.efficient.auth.userTicketClassName",
+      "type": "java.lang.String",
+      "description": "用户缓存类全限定名称，需要继承 com.efficient.common.auth.UserTicket",
+      "defaultValue": "com.efficient.common.auth.UserTicket",
+      "sourceType": "com.efficient.auth.properties.AuthProperties"
+    },
+    {
+      "name": "com.efficient.auth.whiteList",
+      "type": "java.util.List",
+      "description": "白名单",
+      "defaultValue": "**swagger-resources**、/login、/captcha",
+      "sourceType": "com.efficient.auth.properties.AuthProperties"
+    },
+    {
       "name": "com.efficient.auth.login.captcha",
       "type": "java.lang.Boolean",
       "description": "是否需要验证码",

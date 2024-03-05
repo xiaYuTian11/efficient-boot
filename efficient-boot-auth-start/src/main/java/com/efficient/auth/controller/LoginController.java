@@ -8,7 +8,7 @@ import com.efficient.auth.api.LoginService;
 import com.efficient.auth.constant.AuthConstant;
 import com.efficient.auth.constant.AuthResultEnum;
 import com.efficient.auth.model.dto.LoginInfo;
-import com.efficient.auth.permission.Permission;
+import com.efficient.common.permission.Permission;
 import com.efficient.auth.properties.AuthProperties;
 import com.efficient.cache.api.CacheUtil;
 import com.efficient.common.auth.UserTicket;

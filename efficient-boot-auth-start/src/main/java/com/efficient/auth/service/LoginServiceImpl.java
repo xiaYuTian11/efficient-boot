@@ -138,6 +138,18 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
+    public void putCacheUser(String token, UserTicket userTicket) {
+        String jwtToken = jwtUtil.createToken(userTicket);
+        cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token, jwtToken);
+    }
+
+    @Override
+    public UserTicket getCacheUser(String token) {
+        String jwtToken = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token);
+        return jwtUtil.validateToken(jwtToken, authProperties.getUserTicketClass());
+    }
+
+    @Override
     public boolean checkUserTokens(String userId) {
         List<String> userTokenList = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId);
         if (CollUtil.isNotEmpty(userTokenList)) {

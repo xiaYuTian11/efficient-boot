@@ -1,6 +1,7 @@
 package com.efficient.file.controller;
 
 import cn.hutool.core.net.URLDecoder;
+import com.efficient.common.permission.Permission;
 import com.efficient.common.result.Result;
 import com.efficient.file.api.SysFileInfoService;
 import com.efficient.file.api.VideoService;
@@ -35,6 +36,7 @@ import java.nio.charset.StandardCharsets;
 @Validated
 @Api(tags = "视频操作/分片上传")
 @Slf4j
+@Permission
 public class VideoController {
 
     @Autowired

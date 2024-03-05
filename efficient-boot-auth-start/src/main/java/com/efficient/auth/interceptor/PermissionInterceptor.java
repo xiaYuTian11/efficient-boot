@@ -3,7 +3,7 @@ package com.efficient.auth.interceptor;
 import cn.hutool.core.util.StrUtil;
 import com.efficient.auth.constant.AuthConstant;
 import com.efficient.auth.constant.AuthResultEnum;
-import com.efficient.auth.permission.Permission;
+import com.efficient.common.permission.Permission;
 import com.efficient.auth.properties.AuthProperties;
 import com.efficient.auth.util.JwtUtil;
 import com.efficient.cache.api.CacheUtil;
@@ -41,11 +41,15 @@ public class PermissionInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String servletPath = request.getServletPath();
+
         HandlerMethod method;
         try {
             method = (HandlerMethod) handler;
         } catch (ClassCastException e) {
-            // log.error(e.getMessage(), e);
+            if (Objects.nonNull(servletPath) && StrUtil.startWithAny(servletPath, "/")) {
+                return true;
+            }
             RenderJson.returnJson(response, AuthResultEnum.REQUEST_PATH_ERROR);
             return false;
         }
@@ -66,7 +70,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
         }
         // 根据token查询
         String jwtToken = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token);
-        UserTicket userTicket = jwtUtil.validateToken(jwtToken, UserTicket.class);
+        UserTicket userTicket = jwtUtil.validateToken(jwtToken, authProperties.getUserTicketClass());
         if (Objects.isNull(userTicket)) {
             RenderJson.returnJson(response, AuthResultEnum.NOT_LOGIN);
             return false;

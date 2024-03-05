@@ -2,6 +2,7 @@ package com.efficient.file.controller;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
+import com.efficient.common.permission.Permission;
 import com.efficient.common.result.Result;
 import com.efficient.common.validate.Common1Group;
 import com.efficient.common.validate.Common2Group;
@@ -46,6 +47,7 @@ import java.util.Objects;
 @Validated
 @Api(tags = "文件操作")
 @Slf4j
+@Permission
 public class FileController {
     @Autowired
     private FileService fileService;
