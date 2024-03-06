@@ -51,13 +51,13 @@ public class RedisConfig {
         return template;
     }
 
-    // @Autowired
-    // private RedisTemplate<String, Object> redisTemplate;
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Bean
     public CacheUtil redis() {
         RedisUtil cacheUtil = new RedisUtil();
-        // cacheUtil.init(redisTemplate);
+        cacheUtil.init(redisTemplate);
         return cacheUtil;
     }
 }

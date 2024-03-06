@@ -17,10 +17,10 @@ public class RedisUtil implements CacheUtil {
 
     private RedisTemplate<String, Object> redisTemplate;
     private final static String CONNECTOR_STR = "-";
-    @PostConstruct
-    public void postConstruct() {
-        init(redisTemplate);
-    }
+    // @PostConstruct
+    // public void postConstruct() {
+    //     init(redisTemplate);
+    // }
     public void init(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }

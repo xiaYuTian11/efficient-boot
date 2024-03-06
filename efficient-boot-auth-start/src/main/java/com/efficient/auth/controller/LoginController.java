@@ -47,7 +47,7 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
-    @Log(logOpt = LogEnum.LOGIN, desc = "系统")
+    @Log(logOpt = LogEnum.LOGIN, desc = "登录系统")
     @PostMapping("/login")
     public Result<UserTicket> login(@Validated @RequestBody LoginInfo info) {
         if (authProperties.getLogin().isCaptcha()) {
@@ -65,6 +65,7 @@ public class LoginController {
      * 登录
      */
     @Permission
+    @Log(logOpt = LogEnum.LOGOUT, desc = "登出系统")
     @GetMapping("/logout")
     public Result logout(@NotBlank(message = "token 不能为空") @RequestParam("token") String token,
                          @NotBlank(message = "userId 不能为空") @RequestParam("token") String userId) {
