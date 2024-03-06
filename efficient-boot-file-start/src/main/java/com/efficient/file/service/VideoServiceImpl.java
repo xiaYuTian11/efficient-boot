@@ -32,8 +32,7 @@ import java.nio.file.Paths;
 import java.util.Date;
 import java.util.Objects;
 
-import static com.efficient.file.constant.FileConstant.CHUNK_FILE;
-import static com.efficient.file.constant.FileConstant.UPLOAD_LINE;
+import static com.efficient.file.constant.FileConstant.*;
 
 /**
  *
@@ -99,9 +98,9 @@ public class VideoServiceImpl implements VideoService {
                 if (Objects.isNull(sysFileInfoNew)) {
                     sysFileInfoNew = new SysFileInfo();
                     sysFileInfoNew.setStoreType(StoreEnum.LOCAL.name());
-                    sysFileInfoNew.setFileName(file.getName());
+                    sysFileInfoNew.setFileName(file.getOriginalFilename());
                     sysFileInfoNew.setFilePath(destFile.getAbsolutePath());
-                    sysFileInfoNew.setFileSize(totalChunk * chunkSize / 1024);
+                    sysFileInfoNew.setFileSize(totalChunk * chunkSize / KB);
                     sysFileInfoNew.setCreateTime(new Date());
                     sysFileInfoNew.setMd5(md5);
                     sysFileInfoNew.setIsIntact(CommonConstant.FALSE_INT);
@@ -134,7 +133,7 @@ public class VideoServiceImpl implements VideoService {
             sysFileInfo.setStoreType(StoreEnum.LOCAL.name());
             sysFileInfo.setFileName(file.getName());
             sysFileInfo.setFilePath(destFile);
-            sysFileInfo.setFileSize(totalChunk * chunkSize / 1024);
+            sysFileInfo.setFileSize(totalChunk * chunkSize / KB);
             sysFileInfo.setCreateTime(new Date());
             sysFileInfo.setMd5(md5);
             sysFileInfo.setIsIntact(CommonConstant.FALSE_INT);
@@ -197,9 +196,24 @@ public class VideoServiceImpl implements VideoService {
         File destFile = new File(uploadPath);
         String path = destFile.getAbsolutePath();
         SysFileInfo byPathAndMd5 = sysFileInfoService.findByPathAndMd5(path, md5);
-        byPathAndMd5.setId(null);
-        byPathAndMd5.setBizId(null);
-        byPathAndMd5.setRemark(remark);
+        if (Objects.isNull(byPathAndMd5)) {
+            byPathAndMd5 = new SysFileInfo();
+            byPathAndMd5.setStoreType(StoreEnum.LOCAL.name());
+            byPathAndMd5.setFileName(fileName);
+            byPathAndMd5.setFilePath(destFile.getAbsolutePath());
+            byPathAndMd5.setFileSize(destFile.length() / KB);
+            byPathAndMd5.setCreateTime(new Date());
+            byPathAndMd5.setIsIntact(1);
+            byPathAndMd5.setRemark(remark);
+            byPathAndMd5.setMd5(md5);
+        } else {
+            byPathAndMd5.setId(null);
+            byPathAndMd5.setBizId(null);
+            byPathAndMd5.setRemark(remark);
+            byPathAndMd5.setCreateTime(new Date());
+            byPathAndMd5.setFileName(fileName);
+        }
+
         sysFileInfoService.save(byPathAndMd5);
         return Result.ok(byPathAndMd5);
     }

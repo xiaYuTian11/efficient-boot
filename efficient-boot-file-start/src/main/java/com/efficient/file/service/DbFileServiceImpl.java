@@ -19,6 +19,8 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.Objects;
 
+import static com.efficient.file.constant.FileConstant.KB;
+
 /**
  * @author TMW
  * @since 2022/8/26 10:51
@@ -37,7 +39,7 @@ public class DbFileServiceImpl implements FileService {
         sysFileInfo.setStoreType(StoreEnum.DB.name());
         sysFileInfo.setFileName(file.getOriginalFilename());
         sysFileInfo.setFileContent(file.getBytes());
-        sysFileInfo.setFileSize(file.getSize() / 1024);
+        sysFileInfo.setFileSize(file.getSize() / KB);
         sysFileInfo.setCreateTime(new Date());
         sysFileInfo.setMd5(md5);
         sysFileInfo.setRemark(remark);
@@ -82,7 +84,7 @@ public class DbFileServiceImpl implements FileService {
         sysFileInfo.setStoreType(StoreEnum.DB.name());
         sysFileInfo.setFileName(file.getName());
         sysFileInfo.setFileContent(FileUtil.readBytes(file));
-        sysFileInfo.setFileSize(FileUtil.size(file) / 1024);
+        sysFileInfo.setFileSize(FileUtil.size(file) / KB);
         sysFileInfo.setCreateTime(new Date());
         sysFileInfo.setRemark(remark);
         fileInfoService.save(sysFileInfo);

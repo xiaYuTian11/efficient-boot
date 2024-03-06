@@ -26,4 +26,6 @@ public interface LoginService {
     UserAuthInfo getUserAuthByLogin(LoginInfo info);
 
     void logout(String token, String userId);
+
+    boolean checkCaptcha(String captchaId, String captcha);
 }

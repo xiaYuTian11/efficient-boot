@@ -3,15 +3,14 @@ package com.efficient.auth.controller;
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.CircleCaptcha;
 import cn.hutool.captcha.generator.RandomGenerator;
-import cn.hutool.core.util.StrUtil;
 import com.efficient.auth.api.LoginService;
 import com.efficient.auth.constant.AuthConstant;
 import com.efficient.auth.constant.AuthResultEnum;
 import com.efficient.auth.model.dto.LoginInfo;
-import com.efficient.common.permission.Permission;
 import com.efficient.auth.properties.AuthProperties;
 import com.efficient.cache.api.CacheUtil;
 import com.efficient.common.auth.UserTicket;
+import com.efficient.common.permission.Permission;
 import com.efficient.common.result.Result;
 import com.efficient.common.util.WebUtil;
 import com.efficient.logs.annotation.Log;
@@ -51,8 +50,8 @@ public class LoginController {
     @PostMapping("/login")
     public Result<UserTicket> login(@Validated @RequestBody LoginInfo info) {
         if (authProperties.getLogin().isCaptcha()) {
-            String captchaCache = cacheUtil.get(AuthConstant.CACHE_CAPTCHA_CODE, info.getCaptchaId());
-            if (StrUtil.isBlank(captchaCache) || !StrUtil.equalsIgnoreCase(info.getCaptcha(), captchaCache)) {
+            boolean flag = loginService.checkCaptcha(info.getCaptchaId(), info.getCaptcha());
+            if (!flag) {
                 return Result.build(AuthResultEnum.CAPTCHA_NOT_MATCH);
             }
         }
@@ -93,5 +92,15 @@ public class LoginController {
         } catch (IOException e) {
             log.error("生成验证码错误", e);
         }
+    }
+
+    /***
+     * 校验渲染验证码
+     * */
+    @GetMapping("/checkCaptcha")
+    public Result<Boolean> checkCaptcha(@NotBlank(message = "captchaId 不能为空") @RequestParam("captchaId") String captchaId,
+                                        @NotBlank(message = "captcha 不能为空") @RequestParam("captcha") String captcha) {
+        boolean flag = loginService.checkCaptcha(captchaId, captcha);
+        return Result.ok(flag);
     }
 }

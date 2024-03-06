@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 import com.efficient.auth.api.AuthService;
 import com.efficient.auth.api.LoginService;
 import com.efficient.auth.constant.AuthConstant;
@@ -201,5 +202,14 @@ public class LoginServiceImpl implements LoginService {
         } else {
             cacheUtil.removeCache(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId);
         }
+    }
+
+    @Override
+    public boolean checkCaptcha(String captchaId, String captcha) {
+        String captchaCache = cacheUtil.get(AuthConstant.CACHE_CAPTCHA_CODE, captchaId);
+        if (StrUtil.isBlank(captchaCache) || !StrUtil.equalsIgnoreCase(captcha, captchaCache)) {
+            return false;
+        }
+        return true;
     }
 }

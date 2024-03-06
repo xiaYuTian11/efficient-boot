@@ -2,6 +2,7 @@ package com.efficient.file.aop;
 
 import com.efficient.common.result.Result;
 import com.efficient.file.api.SysFileInfoService;
+import com.efficient.file.model.dto.FileBizRelation;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -54,13 +55,15 @@ public class AutoSaveFileInfoAspect {
 
                 // 如果有参数
                 if (args.length > 0) {
-                    Object firstArg = args[0];
+                    FileBizRelation firstArg = (FileBizRelation) args[0];
 
                     // 判断参数是否是预期的类型（这里简单地以 YourRequestObject 为例）
                     if (Objects.nonNull(firstArg)) {
                         // 使用反射获取字段值
-                        String bizId = getField(firstArg, "bizId");
-                        List<String> fileIdList = getField(firstArg, "fileIdList");
+                        // String bizId = getField(firstArg, "bizId");
+                        String bizId = firstArg.getBizId();
+                        // List<String> fileIdList = getField(firstArg, "fileIdList");
+                        List<String> fileIdList = firstArg.getFileIdList();
 
                         // 进一步处理，注意判断空
                         if (bizId != null && fileIdList != null) {
@@ -80,8 +83,17 @@ public class AutoSaveFileInfoAspect {
 
     // 通过反射获取字段值
     private <T> T getField(Object object, String fieldName) throws NoSuchFieldException, IllegalAccessException {
-        Field field = object.getClass().getDeclaredField(fieldName);
-        field.setAccessible(true);
-        return (T) field.get(object);
+        Class<?> current = object.getClass();
+        while (current != Object.class) {
+            try {
+                Field field = current.getDeclaredField(fieldName);
+                field.setAccessible(true);
+                return (T) field.get(object);
+            } catch (NoSuchFieldException e) {
+                // 如果当前类中没有该字段，继续在父类中查找
+                current = current.getSuperclass();
+            }
+        }
+        throw new NoSuchFieldException("The field '" + fieldName + "' was not found in " + object.getClass() + " or its superclasses.");
     }
 }

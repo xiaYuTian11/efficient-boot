@@ -21,4 +21,5 @@ public class FileConstant {
 
     public static final String FILE_ID_LIST = "fileIdList";
     public static final String BIZ_ID = "bizId";
+    public static final Integer KB = 1024;
 }

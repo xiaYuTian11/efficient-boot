@@ -155,7 +155,7 @@ public class LocalFileServiceImpl implements FileService {
         sysFileInfo.setStoreType(StoreEnum.LOCAL.name());
         sysFileInfo.setFileName(file.getName());
         sysFileInfo.setFilePath(file.getAbsolutePath());
-        sysFileInfo.setFileSize(FileUtil.size(file) / 1024);
+        sysFileInfo.setFileSize(FileUtil.size(file) / KB);
         sysFileInfo.setCreateTime(new Date());
         sysFileInfo.setMd5(md5);
         sysFileInfo.setRemark(remark);
