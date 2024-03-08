@@ -8,6 +8,8 @@ package com.efficient.common.exception;
  */
 public class DataSecurityException extends RuntimeException {
 
+    private static final long serialVersionUID = -4393574737559253141L;
+
     public DataSecurityException(Throwable cause) {
         super(cause);
     }
