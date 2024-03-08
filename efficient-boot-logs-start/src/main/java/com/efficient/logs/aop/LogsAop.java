@@ -9,6 +9,7 @@ import com.efficient.common.util.ThreadUtil;
 import com.efficient.common.util.WebUtil;
 import com.efficient.logs.annotation.Log;
 import com.efficient.logs.api.SysLogService;
+import com.efficient.logs.constant.LogEnum;
 import com.efficient.logs.properties.LogsProperties;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -20,6 +21,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.PrintWriter;
@@ -87,8 +89,15 @@ public class LogsAop {
                 String className = joinPoint.getTarget().getClass().getName();
                 // 获取切入点所在的方法
                 Method method = signature.getMethod();
+                Log log = method.getAnnotation(Log.class);
+                String argsStr = null;
                 Object[] args = joinPoint.getArgs();
-                String argsStr = JackSonUtil.toJson(args);
+                if (Objects.equals(log.logOpt(), LogEnum.IMPORT) && args.length > 0 && args[0] instanceof MultipartFile) {
+                    MultipartFile multipartFile = (MultipartFile) args[0];
+                    argsStr = multipartFile.getOriginalFilename();
+                } else {
+                    argsStr = JackSonUtil.toJson(args);
+                }
 
                 long endTime = System.currentTimeMillis();
                 String resultCode = "-1";
@@ -111,7 +120,7 @@ public class LogsAop {
                 }
 
                 // 获取操作
-                Log log = method.getAnnotation(Log.class);
+
                 if (logsProperties.isDb() && Objects.nonNull(log)) {
                     // publisher.publishEvent(log);
                     logService.saveLog(log, ip, requestUrl, argsStr, resultCode, returnValue, expStr);

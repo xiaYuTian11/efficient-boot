@@ -53,6 +53,10 @@ public class ProgressUtil {
         return num;
     }
 
+    public void success(String currDataName, String key) {
+        this.success(currDataName, key, null);
+    }
+
     public void success(String currDataName, String key, Object object) {
         String result = getNumFormat().format(100);
         DataProgressVO progressVo = new DataProgressVO();
@@ -63,6 +67,14 @@ public class ProgressUtil {
         }
         progressVo.setCode(ProgressStatus.SUCCESS.getCode());
         cacheUtil.put(CacheConstant.CACHE_PROGRESS_BAR, key, progressVo);
+    }
+
+    public DataProgressVO getByKey(String key) {
+        return cacheUtil.get(CacheConstant.CACHE_PROGRESS_BAR, key);
+    }
+
+    public void fail(String currDataName, String key) {
+        this.fail(currDataName, key, null);
     }
 
     public void fail(String currDataName, String key, Object object) {
@@ -76,4 +88,5 @@ public class ProgressUtil {
         progressVo.setCode(ProgressStatus.FAIL.getCode());
         cacheUtil.put(CacheConstant.CACHE_PROGRESS_BAR, key, progressVo);
     }
+
 }
