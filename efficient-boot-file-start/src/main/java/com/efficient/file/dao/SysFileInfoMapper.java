@@ -21,4 +21,6 @@ public interface SysFileInfoMapper extends BaseMapper<SysFileInfo> {
     void deleteByFIleIdListAndBizId(@Param("fileIdList") List<String> fileIdList,@Param("bizId") String bizId);
 
     void setBizIdWithFileIdList(@Param("fileIdList") List<String> fileIdList,@Param("bizId") String bizId);
+
+    void deleteByBizId(@Param("bizId") String bizId);
 }

@@ -24,7 +24,7 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
     private SysFileInfoMapper fileInfoMapper;
 
     @Override
-    public SysFileInfo findByPath(String destFile) {
+    public SysFileInfo findByPathFirst(String destFile) {
         LambdaQueryWrapper<SysFileInfo> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(SysFileInfo::getFilePath, destFile);
         queryWrapper.orderByAsc(SysFileInfo::getId);
@@ -59,5 +59,26 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
         queryWrapper.eq(SysFileInfo::getBizId, bizId);
         queryWrapper.orderByAsc(SysFileInfo::getCreateTime);
         return this.list(queryWrapper);
+    }
+
+    @Override
+    public List<SysFileInfo> findByBizIdList(List<String> bizIdList) {
+        LambdaQueryWrapper<SysFileInfo> queryWrapper = new LambdaQueryWrapper<>(SysFileInfo.class);
+        queryWrapper.select(SysFileInfo::getId, SysFileInfo::getBizId, SysFileInfo::getFileName, SysFileInfo::getFileSize, SysFileInfo::getRemark);
+        queryWrapper.in(SysFileInfo::getBizId, bizIdList);
+        queryWrapper.orderByAsc(SysFileInfo::getCreateTime);
+        return this.list(queryWrapper);
+    }
+
+    @Override
+    public void deleteByBizId(String bizId) {
+        fileInfoMapper.deleteByBizId(bizId);
+    }
+
+    @Override
+    public List<SysFileInfo> findAllByPath(String filePath) {
+        LambdaQueryWrapper<SysFileInfo> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SysFileInfo::getFilePath, filePath);
+        return fileInfoMapper.selectList(queryWrapper);
     }
 }

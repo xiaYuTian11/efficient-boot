@@ -56,6 +56,7 @@ public class VideoServiceImpl implements VideoService {
         String md5 = fileChunkDTO.getMd5();
         Integer totalChunk = fileChunkDTO.getTotalChunk();
         MultipartFile file = fileChunkDTO.getFile();
+        String contentType = file.getContentType();
         String filename = file.getOriginalFilename();
         Integer currChunk = fileChunkDTO.getCurrChunk();
         Long chunkSize = fileChunkDTO.getChunkSize();
@@ -104,11 +105,13 @@ public class VideoServiceImpl implements VideoService {
                     sysFileInfoNew.setCreateTime(new Date());
                     sysFileInfoNew.setMd5(md5);
                     sysFileInfoNew.setIsIntact(CommonConstant.FALSE_INT);
+                    sysFileInfoNew.setContentType(contentType);
                     sysFileInfoService.save(sysFileInfoNew);
                 }
                 return sysFileInfoNew;
             }, (param) -> sysFileInfoService.findByPathAndMd5(destFile.getAbsolutePath(), md5));
         } else {
+            fileChunkDTO.setContentType(contentType);
             sysFileInfo = this.getFileInfo(fileChunkDTO, destFile.getAbsolutePath());
         }
 
@@ -136,6 +139,7 @@ public class VideoServiceImpl implements VideoService {
             sysFileInfo.setFileSize(totalChunk * chunkSize / KB);
             sysFileInfo.setCreateTime(new Date());
             sysFileInfo.setMd5(md5);
+            sysFileInfo.setContentType(fileChunkDTO.getContentType());
             sysFileInfo.setIsIntact(CommonConstant.FALSE_INT);
             sysFileInfoService.save(sysFileInfo);
         }
@@ -206,6 +210,7 @@ public class VideoServiceImpl implements VideoService {
             byPathAndMd5.setIsIntact(1);
             byPathAndMd5.setRemark(remark);
             byPathAndMd5.setMd5(md5);
+            byPathAndMd5.setContentType(FileUtil.getMimeType(destFile.getPath()));
         } else {
             byPathAndMd5.setId(null);
             byPathAndMd5.setBizId(null);

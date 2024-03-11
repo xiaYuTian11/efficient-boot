@@ -78,4 +78,9 @@ public class SysFileInfo implements Serializable {
      */
     @TableField("md5")
     private String md5;
+    /**
+     * 文件类型
+     */
+    @TableField("content_type")
+    private String contentType;
 }

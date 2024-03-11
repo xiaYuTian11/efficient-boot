@@ -11,11 +11,16 @@ import java.util.List;
  */
 public interface SysFileInfoService extends IService<SysFileInfo> {
 
-    SysFileInfo findByPath(String destFile);
+    SysFileInfo findByPathFirst(String destFile);
 
     SysFileInfo findByPathAndMd5(String destFile, String md5);
 
     boolean saveListByBizId(List<String> fileIdList, String bizId);
 
     List<SysFileInfo> findByBizId(String bizId);
+    List<SysFileInfo> findByBizIdList(List<String> bizIdList);
+
+    void deleteByBizId(String bizId);
+
+    List<SysFileInfo> findAllByPath(String filePath);
 }

@@ -21,6 +21,12 @@ public @interface Log {
     LogEnum logOpt() default LogEnum.CUSTOM;
 
     /**
+     * 自定义操作，当logOpt为CUSTOM时生效
+     * @return
+     */
+    String customOpt() default "";
+
+    /**
      * 模块
      */
     String module() default "";

@@ -21,6 +21,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import static com.efficient.file.constant.FileConstant.*;
@@ -140,16 +141,6 @@ public class LocalFileServiceImpl implements FileService {
     }
 
     @Override
-    public boolean delete(String fileId) throws Exception {
-        final SysFileInfo sysFileInfo = fileInfoService.getById(fileId);
-        if (Objects.isNull(sysFileInfo)) {
-            return true;
-        }
-        final String filePath = sysFileInfo.getFilePath();
-        return fileInfoService.removeById(fileId) && FileUtil.del(filePath);
-    }
-
-    @Override
     public String saveFileInfo(File file, String md5, String remark) {
         SysFileInfo sysFileInfo = new SysFileInfo();
         sysFileInfo.setStoreType(StoreEnum.LOCAL.name());
@@ -159,7 +150,30 @@ public class LocalFileServiceImpl implements FileService {
         sysFileInfo.setCreateTime(new Date());
         sysFileInfo.setMd5(md5);
         sysFileInfo.setRemark(remark);
+        sysFileInfo.setContentType(FileUtil.getMimeType(file.getPath()));
         final boolean save = fileInfoService.save(sysFileInfo);
         return sysFileInfo.getId();
+    }
+
+    @Override
+    public boolean delete(String fileId) {
+        final SysFileInfo sysFileInfo = fileInfoService.getById(fileId);
+        if (Objects.isNull(sysFileInfo)) {
+            return true;
+        }
+        final String filePath = sysFileInfo.getFilePath();
+        List<SysFileInfo> fileInfoList = fileInfoService.findAllByPath(filePath);
+        boolean delFlag = true;
+        if (fileInfoList.size() <= 1) {
+            delFlag = FileUtil.del(filePath);
+        }
+        return fileInfoService.removeById(fileId) && delFlag;
+    }
+
+    @Override
+    public boolean deleteByBizId(String bizId) {
+        List<SysFileInfo> sysFileInfos = fileInfoService.findByBizId(bizId);
+        sysFileInfos.forEach(et -> this.delete(et.getId()));
+        return true;
     }
 }

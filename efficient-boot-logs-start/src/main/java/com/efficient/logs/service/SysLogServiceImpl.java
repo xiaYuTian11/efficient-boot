@@ -8,6 +8,7 @@ import com.efficient.common.constant.CommonConstant;
 import com.efficient.common.util.ThreadUtil;
 import com.efficient.logs.annotation.Log;
 import com.efficient.logs.api.SysLogService;
+import com.efficient.logs.constant.LogEnum;
 import com.efficient.logs.dao.SysLogMapper;
 import com.efficient.logs.model.entity.SysLog;
 import com.efficient.logs.properties.LogsProperties;
@@ -53,7 +54,11 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
         sysLog.setLogIp(ip);
         sysLog.setLogTime(new Date());
         sysLog.setRequestUrl(url);
-        String optText = log.logOpt().getOpt();
+        LogEnum logEnum = log.logOpt();
+        String optText = logEnum.getOpt();
+        if (Objects.equals(logEnum, LogEnum.CUSTOM)) {
+            optText = log.customOpt();
+        }
         sysLog.setLogOpt(optText);
         String account = userTicket.getAccount();
         String desc = log.desc();

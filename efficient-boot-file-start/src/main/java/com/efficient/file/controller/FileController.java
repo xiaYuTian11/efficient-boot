@@ -79,7 +79,7 @@ public class FileController {
         }
 
         String md5 = FileMd5Util.getMD5ByApacheCommonsCodec(file);
-        return fileService.upload(file, unique, module,md5,remark);
+        return fileService.upload(file, unique, module, md5, remark);
     }
 
     @PostMapping("/download")
@@ -159,8 +159,16 @@ public class FileController {
     }
 
     @PostMapping("/delete")
+    @ApiOperation(value = "根据文件id删除文件")
     public Result delete(@Validated @RequestBody DownloadVO downloadVO) throws Exception {
         boolean flag = fileService.delete(downloadVO.getFileId());
+        return flag ? Result.ok() : Result.fail();
+    }
+
+    @PostMapping("/deleteByBizId")
+    @ApiOperation(value = "根据业务ID删除文件")
+    public Result deleteByBizId(@Validated @RequestBody DownloadVO downloadVO) throws Exception {
+        boolean flag = fileService.deleteByBizId(downloadVO.getBizId());
         return flag ? Result.ok() : Result.fail();
     }
 }

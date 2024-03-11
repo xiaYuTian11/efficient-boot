@@ -3,12 +3,12 @@ package com.efficient.auth.interceptor;
 import cn.hutool.core.util.StrUtil;
 import com.efficient.auth.constant.AuthConstant;
 import com.efficient.auth.constant.AuthResultEnum;
-import com.efficient.common.permission.Permission;
 import com.efficient.auth.properties.AuthProperties;
 import com.efficient.auth.util.JwtUtil;
 import com.efficient.cache.api.CacheUtil;
 import com.efficient.common.auth.RequestHolder;
 import com.efficient.common.auth.UserTicket;
+import com.efficient.common.permission.Permission;
 import com.efficient.common.result.ResultEnum;
 import com.efficient.common.util.RenderJson;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +50,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
             if (Objects.nonNull(servletPath) && StrUtil.startWithAny(servletPath, "/")) {
                 return true;
             }
+            log.warn(AuthResultEnum.REQUEST_PATH_ERROR.getMsg());
             RenderJson.returnJson(response, AuthResultEnum.REQUEST_PATH_ERROR);
             return false;
         }
@@ -65,6 +66,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
         String token = request.getHeader(AuthConstant.TOKEN);
         // header中没有token
         if (StrUtil.isBlank(token)) {
+            log.warn(AuthResultEnum.NOT_LOGIN.getMsg());
             RenderJson.returnJson(response, AuthResultEnum.NOT_LOGIN);
             return false;
         }
@@ -72,6 +74,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
         String jwtToken = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token);
         UserTicket userTicket = jwtUtil.validateToken(jwtToken, authProperties.getUserTicketClass());
         if (Objects.isNull(userTicket)) {
+            log.warn(AuthResultEnum.NOT_LOGIN.getMsg());
             RenderJson.returnJson(response, AuthResultEnum.NOT_LOGIN);
             return false;
         }
@@ -86,6 +89,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
         // 权限校验
         final boolean checkPermission = permissionCheck.checkPermission(permission, userTicket);
         if (!checkPermission) {
+            log.warn(ResultEnum.NOT_PERMISSION.getMsg());
             RenderJson.returnJson(response, ResultEnum.NOT_PERMISSION);
             return false;
         }

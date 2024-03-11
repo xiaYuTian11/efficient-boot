@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import static com.efficient.file.constant.FileConstant.KB;
@@ -89,6 +90,19 @@ public class MinioFileServiceImpl implements FileService {
         return fileInfoService.removeById(fileId);
     }
 
+    @Override
+    public boolean deleteByBizId(String bizId) {
+        List<SysFileInfo> sysFileInfos = fileInfoService.findByBizId(bizId);
+        sysFileInfos.forEach(et -> {
+            try {
+                this.delete(et.getId());
+            } catch (Exception e) {
+                log.error("删除minio文件失败：", e);
+            }
+        });
+        return true;
+    }
+
     public SysFileInfo saveFileInfo(MultipartFile file, String fileName, String remark) {
         SysFileInfo sysFileInfo = new SysFileInfo();
         sysFileInfo.setStoreType(StoreEnum.MINIO.name());
@@ -99,6 +113,7 @@ public class MinioFileServiceImpl implements FileService {
         sysFileInfo.setFileSize(file.getSize() / KB);
         sysFileInfo.setCreateTime(new Date());
         sysFileInfo.setRemark(remark);
+        sysFileInfo.setContentType(file.getContentType());
         fileInfoService.save(sysFileInfo);
         return sysFileInfo;
     }

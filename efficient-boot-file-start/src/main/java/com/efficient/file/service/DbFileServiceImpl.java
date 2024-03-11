@@ -43,6 +43,7 @@ public class DbFileServiceImpl implements FileService {
         sysFileInfo.setCreateTime(new Date());
         sysFileInfo.setMd5(md5);
         sysFileInfo.setRemark(remark);
+        sysFileInfo.setContentType(file.getContentType());
         fileInfoService.save(sysFileInfo);
 
 
@@ -98,5 +99,11 @@ public class DbFileServiceImpl implements FileService {
             return true;
         }
         return fileInfoService.removeById(fileId);
+    }
+
+    @Override
+    public boolean deleteByBizId(String bizId) {
+        fileInfoService.deleteByBizId(bizId);
+        return true;
     }
 }

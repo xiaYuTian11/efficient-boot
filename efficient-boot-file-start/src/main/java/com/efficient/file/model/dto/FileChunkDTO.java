@@ -45,6 +45,7 @@ public class FileChunkDTO {
      */
     private String filename;
     private String remark;
+    private String contentType;
 
     public String getModule() {
         if (StrUtil.isBlank(this.module)) {

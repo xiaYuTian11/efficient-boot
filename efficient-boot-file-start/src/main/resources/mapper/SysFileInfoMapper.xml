@@ -19,5 +19,8 @@
             </foreach>
         </if>
     </delete>
+    <delete id="deleteByBizId">
+        delete from efficient_sys_file_info where biz_id = #{bizId}
+    </delete>
 </mapper>
 

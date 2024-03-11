@@ -25,4 +25,6 @@ public class DownloadVO {
     private String fileId;
     @ApiModelProperty(value = "存储类型")
     private String storeType;
+    @ApiModelProperty(value = "业务主键")
+    private String bizId;
 }

@@ -20,6 +20,7 @@ public enum LogEnum {
     IMPORT(70, "导入"),
     EXPORT(80, "导出"),
     CHECK(90, "审核"),
+    ROLLBACK(91, "回滚"),
     LOGIN(100, "登录"),
     LOGOUT(110, "退出");
 
