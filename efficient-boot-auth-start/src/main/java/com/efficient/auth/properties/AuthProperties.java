@@ -38,6 +38,22 @@ public class AuthProperties {
         }
     };
 
+    /**
+     *  get方式传递token
+     */
+    private List<String> tokenGet = new ArrayList<String>() {
+        private static final long serialVersionUID = -6831198909191678412L;
+
+        {
+            add("/video/play");
+        }
+    };
+    /**
+     *  post方式传递token
+     */
+    @Deprecated
+    private List<String> tokenPost = new ArrayList<>();
+
     public Class<? extends UserTicket> getUserTicketClass() {
         if (userTicketClassInstance == null) {
             synchronized (AuthProperties.class) {

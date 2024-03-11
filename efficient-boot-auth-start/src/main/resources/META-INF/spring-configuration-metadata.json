@@ -36,6 +36,20 @@
       "sourceType": "com.efficient.auth.properties.AuthProperties"
     },
     {
+      "name": "com.efficient.auth.tokenGet",
+      "type": "java.util.List",
+      "description": "get方式传递token",
+      "defaultValue": "/video/play",
+      "sourceType": "com.efficient.auth.properties.AuthProperties"
+    },
+    {
+      "name": "com.efficient.auth.tokenGetPost",
+      "type": "java.util.List",
+      "description": "post方式传递token",
+      "defaultValue": null,
+      "sourceType": "com.efficient.auth.properties.AuthProperties"
+    },
+    {
       "name": "com.efficient.auth.login.captcha",
       "type": "java.lang.Boolean",
       "description": "是否需要验证码",

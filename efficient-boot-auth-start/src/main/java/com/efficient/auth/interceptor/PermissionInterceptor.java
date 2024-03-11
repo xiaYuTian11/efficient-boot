@@ -19,6 +19,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -63,7 +64,14 @@ public class PermissionInterceptor implements HandlerInterceptor {
         if (Objects.isNull(permission)) {
             return true;
         }
-        String token = request.getHeader(AuthConstant.TOKEN);
+        List<String> tokenGet = authProperties.getTokenGet();
+        String token = null;
+        if (StrUtil.startWithAny(servletPath, tokenGet.toArray(new String[0]))) {
+            token = request.getParameter(AuthConstant.TOKEN);
+        } else {
+            token = request.getHeader(AuthConstant.TOKEN);
+        }
+
         // header中没有token
         if (StrUtil.isBlank(token)) {
             log.warn(AuthResultEnum.NOT_LOGIN.getMsg());
