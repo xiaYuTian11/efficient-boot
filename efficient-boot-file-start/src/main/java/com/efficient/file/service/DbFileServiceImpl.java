@@ -1,6 +1,7 @@
 package com.efficient.file.service;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.StrUtil;
 import com.efficient.common.result.Result;
 import com.efficient.file.api.FileService;
 import com.efficient.file.api.SysFileInfoService;
@@ -9,6 +10,7 @@ import com.efficient.file.model.dto.DownloadVO;
 import com.efficient.file.model.entity.SysFileInfo;
 import com.efficient.file.model.vo.FileVO;
 import com.efficient.file.properties.FileProperties;
+import com.efficient.file.util.FileMd5Util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,16 +43,19 @@ public class DbFileServiceImpl implements FileService {
         sysFileInfo.setFileContent(file.getBytes());
         sysFileInfo.setFileSize(file.getSize() / KB);
         sysFileInfo.setCreateTime(new Date());
-        sysFileInfo.setMd5(md5);
+        if (StrUtil.isBlank(md5)) {
+            sysFileInfo.setMd5(FileMd5Util.calculateMD5(file));
+        }
+
         sysFileInfo.setRemark(remark);
         sysFileInfo.setContentType(file.getContentType());
         fileInfoService.save(sysFileInfo);
-
 
         FileVO fileVO = new FileVO();
         fileVO.setFileName(sysFileInfo.getFileName());
         fileVO.setStoreType(StoreEnum.DB.name());
         fileVO.setFileId(sysFileInfo.getId());
+        fileVO.setContentType(sysFileInfo.getContentType());
         return Result.ok(fileVO);
     }
 
@@ -80,7 +85,7 @@ public class DbFileServiceImpl implements FileService {
     }
 
     @Override
-    public String saveFileInfo(File file, String md5, String remark) {
+    public SysFileInfo saveFileInfo(File file, String md5, String remark) {
         SysFileInfo sysFileInfo = new SysFileInfo();
         sysFileInfo.setStoreType(StoreEnum.DB.name());
         sysFileInfo.setFileName(file.getName());
@@ -89,7 +94,7 @@ public class DbFileServiceImpl implements FileService {
         sysFileInfo.setCreateTime(new Date());
         sysFileInfo.setRemark(remark);
         fileInfoService.save(sysFileInfo);
-        return sysFileInfo.getId();
+        return sysFileInfo;
     }
 
     @Override

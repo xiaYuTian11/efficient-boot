@@ -12,6 +12,7 @@ import com.efficient.file.model.dto.DownloadVO;
 import com.efficient.file.model.entity.SysFileInfo;
 import com.efficient.file.model.vo.FileVO;
 import com.efficient.file.properties.FileProperties;
+import com.efficient.file.util.FileMd5Util;
 import com.efficient.file.util.PathUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,14 +97,13 @@ public class LocalFileServiceImpl implements FileService {
         // 获取文件对象
         File realFile = new File(basePath, fileName);
         // 完成文件的上传
-        // multipartFile.transferTo(realFile);
         FileUtil.writeBytes(multipartFile.getBytes(), realFile);
         fileVo.setFileName(realFile.getName());
-        // fileVo.setFilePath(realFile.getAbsolutePath());
         fileVo.setStoreType(StoreEnum.LOCAL.name());
         // 保存文件信息
-        String fileId = this.saveFileInfo(realFile, md5, remark);
-        fileVo.setFileId(fileId);
+        SysFileInfo sysFileInfo = this.saveFileInfo(realFile, md5, remark);
+        fileVo.setFileId(sysFileInfo.getId());
+        fileVo.setContentType(sysFileInfo.getContentType());
         return Result.ok(fileVo);
     }
 
@@ -141,18 +141,20 @@ public class LocalFileServiceImpl implements FileService {
     }
 
     @Override
-    public String saveFileInfo(File file, String md5, String remark) {
+    public SysFileInfo saveFileInfo(File file, String md5, String remark) {
         SysFileInfo sysFileInfo = new SysFileInfo();
         sysFileInfo.setStoreType(StoreEnum.LOCAL.name());
         sysFileInfo.setFileName(file.getName());
         sysFileInfo.setFilePath(file.getAbsolutePath());
         sysFileInfo.setFileSize(FileUtil.size(file) / KB);
         sysFileInfo.setCreateTime(new Date());
-        sysFileInfo.setMd5(md5);
+        if (StrUtil.isBlank(md5)) {
+            sysFileInfo.setMd5(FileMd5Util.calculateMD5(file));
+        }
         sysFileInfo.setRemark(remark);
         sysFileInfo.setContentType(FileUtil.getMimeType(file.getPath()));
         final boolean save = fileInfoService.save(sysFileInfo);
-        return sysFileInfo.getId();
+        return sysFileInfo;
     }
 
     @Override

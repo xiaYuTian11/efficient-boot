@@ -51,6 +51,30 @@ public class FileMd5Util {
         }
     }
 
+    public static String calculateMD5(File file) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            try (InputStream is = Files.newInputStream(file.toPath())) {
+                byte[] buffer = new byte[8192];
+                int read;
+                while ((read = is.read(buffer)) > 0) {
+                    md.update(buffer, 0, read);
+                }
+            }
+            byte[] md5 = md.digest();
+
+            StringBuilder result = new StringBuilder();
+            for (byte b : md5) {
+                result.append(String.format("%02x", b));
+            }
+
+            return result.toString();
+        } catch (NoSuchAlgorithmException | IOException e) {
+            log.error("计算文件md5异常", e);
+            return null;
+        }
+    }
+
     /**
      * 使用Java标准库的MessageDigest类获取MD5值
      * @return 文件的md5值

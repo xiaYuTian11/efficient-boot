@@ -11,6 +11,7 @@ public class FileConstant {
     public static final String UPLOAD_LINE = "/upload/";
     public static final String DOWNLOAD_LINE = "/download/";
     public static final String VIDEO_LINE = "/video/";
+    public static final String TEMP_LINE = "/temp/";
 
     public static final String FOLDER_PIC = "/pic/";
     public static final String FOLDER_FILE = "/file/";

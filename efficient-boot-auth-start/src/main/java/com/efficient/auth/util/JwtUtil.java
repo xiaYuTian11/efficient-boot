@@ -2,6 +2,7 @@ package com.efficient.auth.util;
 
 import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.efficient.auth.properties.AuthProperties;
@@ -11,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.Objects;
 
 /**
  * @author TMW
@@ -43,6 +43,10 @@ public class JwtUtil {
      * @param token
      */
     public <T> T validateToken(String token, Class<T> tClass) {
+        if (StrUtil.isBlank(token)) {
+            log.error("token is null");
+            return null;
+        }
         try {
             String subject = JWT.require(Algorithm.HMAC512(authProperties.getLogin().getSecret()))
                     .build()

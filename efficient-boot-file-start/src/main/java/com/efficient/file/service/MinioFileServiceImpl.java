@@ -1,5 +1,6 @@
 package com.efficient.file.service;
 
+import cn.hutool.core.util.StrUtil;
 import com.efficient.common.result.Result;
 import com.efficient.file.api.FileService;
 import com.efficient.file.api.SysFileInfoService;
@@ -9,6 +10,7 @@ import com.efficient.file.model.entity.SysFileInfo;
 import com.efficient.file.model.vo.FileVO;
 import com.efficient.file.properties.FileProperties;
 import com.efficient.file.properties.MinioProperties;
+import com.efficient.file.util.FileMd5Util;
 import com.efficient.file.util.MinioUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +41,13 @@ public class MinioFileServiceImpl implements FileService {
     @Override
     public Result<FileVO> upload(MultipartFile file, boolean unique, String module, String md5, String remark) throws Exception {
         String fileName = minioUtil.upload(file, minioProperties.getBucketName());
-        SysFileInfo sysFileInfo = this.saveFileInfo(file, fileName, remark);
+        SysFileInfo sysFileInfo = this.saveFileInfo(file, fileName, remark, md5);
         FileVO fileVO = new FileVO();
-        sysFileInfo.setMd5(md5);
         fileVO.setFileName(sysFileInfo.getFileName());
         fileVO.setFilePath(sysFileInfo.getFilePath());
         fileVO.setStoreType(StoreEnum.MINIO.name());
         fileVO.setFileId(sysFileInfo.getId());
+        fileVO.setContentType(sysFileInfo.getContentType());
         return Result.ok(fileVO);
     }
 
@@ -75,7 +77,7 @@ public class MinioFileServiceImpl implements FileService {
     }
 
     @Override
-    public String saveFileInfo(File file, String md5, String remark) {
+    public SysFileInfo saveFileInfo(File file, String md5, String remark) {
         return null;
     }
 
@@ -103,17 +105,19 @@ public class MinioFileServiceImpl implements FileService {
         return true;
     }
 
-    public SysFileInfo saveFileInfo(MultipartFile file, String fileName, String remark) {
+    public SysFileInfo saveFileInfo(MultipartFile file, String fileName, String remark, String md5) {
         SysFileInfo sysFileInfo = new SysFileInfo();
         sysFileInfo.setStoreType(StoreEnum.MINIO.name());
         sysFileInfo.setFileName(file.getOriginalFilename());
         sysFileInfo.setFilePath(fileName);
         sysFileInfo.setRemark(minioProperties.getEndpoint() + "/" + minioProperties.getBucketName() + "/" + fileName);
-
         sysFileInfo.setFileSize(file.getSize() / KB);
         sysFileInfo.setCreateTime(new Date());
         sysFileInfo.setRemark(remark);
         sysFileInfo.setContentType(file.getContentType());
+        if (StrUtil.isBlank(md5)) {
+            sysFileInfo.setMd5(FileMd5Util.calculateMD5(file));
+        }
         fileInfoService.save(sysFileInfo);
         return sysFileInfo;
     }

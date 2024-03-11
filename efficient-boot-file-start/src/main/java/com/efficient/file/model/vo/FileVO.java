@@ -35,4 +35,5 @@ public class FileVO {
      * 备注
      */
     private String  remark;
+    private String  contentType;
 }

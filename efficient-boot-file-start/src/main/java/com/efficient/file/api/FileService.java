@@ -79,7 +79,7 @@ public interface FileService {
      * @param md5
      * @return 主键
      */
-    String saveFileInfo(File file, String md5, String remark);
+    SysFileInfo saveFileInfo(File file, String md5, String remark);
 
     /**
      * 根据文件ID删除文件
