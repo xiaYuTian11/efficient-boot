@@ -3,7 +3,7 @@ CREATE TABLE public.efficient_sys_file_info (
                                                 id varchar(64) NOT NULL, -- 主键
                                                 biz_id varchar(64) NULL, -- 业务主键
                                                 store_type varchar(10) NULL, -- 存储类型
-                                                content_type varchar(10) NULL, -- 文件类型
+                                                content_type varchar(100) NULL, -- 文件类型
                                                 file_name text NULL, -- 文件名称
                                                 file_path text NULL, -- 文件类型
                                                 file_content bytea NULL, -- 文件类型

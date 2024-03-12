@@ -178,4 +178,14 @@ public class LocalFileServiceImpl implements FileService {
         sysFileInfos.forEach(et -> this.delete(et.getId()));
         return true;
     }
+
+    @Override
+    public File getById(String fileId) {
+        final SysFileInfo sysFileInfo = fileInfoService.getById(fileId);
+        if (Objects.isNull(sysFileInfo)) {
+            return null;
+        }
+        File file = new File(sysFileInfo.getFilePath());
+        return file;
+    }
 }

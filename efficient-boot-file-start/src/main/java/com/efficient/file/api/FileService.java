@@ -90,4 +90,5 @@ public interface FileService {
     boolean delete(String fileId) throws Exception;
 
     boolean deleteByBizId(String bizId);
+    File getById(String fileId);
 }

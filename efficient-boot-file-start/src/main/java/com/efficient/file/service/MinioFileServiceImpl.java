@@ -1,5 +1,7 @@
 package com.efficient.file.service;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.efficient.common.result.Result;
 import com.efficient.file.api.FileService;
@@ -37,6 +39,8 @@ public class MinioFileServiceImpl implements FileService {
     private MinioUtil minioUtil;
     @Autowired
     private SysFileInfoService fileInfoService;
+    @Autowired
+    private FileProperties fileProperties;
 
     @Override
     public Result<FileVO> upload(MultipartFile file, boolean unique, String module, String md5, String remark) throws Exception {
@@ -103,6 +107,23 @@ public class MinioFileServiceImpl implements FileService {
             }
         });
         return true;
+    }
+
+    @Override
+    public File getById(String fileId) {
+        final SysFileInfo sysFileInfo = fileInfoService.getById(fileId);
+        if (Objects.isNull(sysFileInfo)) {
+            return null;
+        }
+        try {
+            InputStream inputStream = minioUtil.getObject(minioProperties.getBucketName(), sysFileInfo.getFilePath());
+            File file = new File(fileProperties.getTempPath() + DateUtil.format(new Date(), "/yyyy/MM/dd/") + sysFileInfo.getFileName());
+            FileUtil.writeFromStream(inputStream, file);
+        } catch (Exception e) {
+            log.error("获取文件失败", e);
+            return null;
+        }
+        return null;
     }
 
     public SysFileInfo saveFileInfo(MultipartFile file, String fileName, String remark, String md5) {

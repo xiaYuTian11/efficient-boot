@@ -47,7 +47,8 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
             userTicket.setAccount(CommonConstant.UNKNOWN);
         }
         SysLog sysLog = new SysLog();
-        sysLog.setSystemId(request.getHeader(logsProperties.getSystemIdField()));
+        // sysLog.setSystemId(request.getHeader(logsProperties.getSystemIdField()));
+        sysLog.setSystemId(RequestHolder.getCurrSystemId());
         sysLog.setModule(log.module());
         sysLog.setUserId(userTicket.getUserId());
         sysLog.setUserName(userTicket.getUsername());

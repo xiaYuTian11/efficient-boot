@@ -1,5 +1,6 @@
 package com.efficient.file.service;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.efficient.common.result.Result;
@@ -110,5 +111,17 @@ public class DbFileServiceImpl implements FileService {
     public boolean deleteByBizId(String bizId) {
         fileInfoService.deleteByBizId(bizId);
         return true;
+    }
+
+    @Override
+    public File getById(String fileId) {
+        SysFileInfo sysFileInfo = fileInfoService.getById(fileId);
+        if(Objects.isNull(sysFileInfo)){
+            return null;
+        }
+        byte[] fileContent = sysFileInfo.getFileContent();
+        File file = new File(fileProperties.getTempPath() + DateUtil.format(new Date(), "/yyyy/MM/dd/") + sysFileInfo.getFileName());
+        FileUtil.writeBytes(fileContent, file);
+        return file;
     }
 }
