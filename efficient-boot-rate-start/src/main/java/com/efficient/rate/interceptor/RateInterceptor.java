@@ -2,13 +2,13 @@ package com.efficient.rate.interceptor;
 
 import cn.hutool.core.util.StrUtil;
 import com.efficient.cache.api.CacheUtil;
-import com.efficient.common.result.Result;
 import com.efficient.common.result.ResultEnum;
-import com.efficient.common.util.JackSonUtil;
+import com.efficient.common.util.RenderJson;
 import com.efficient.common.util.WebUtil;
 import com.efficient.rate.annotation.RateLimit;
 import com.efficient.rate.constant.RateConstant;
 import com.efficient.rate.properties.RateProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -16,8 +16,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Objects;
 
 /**
@@ -27,6 +25,7 @@ import java.util.Objects;
  * @since 2023/1/16 16:16
  */
 @Component
+@Slf4j
 public class RateInterceptor implements HandlerInterceptor {
     @Autowired
     private CacheUtil cacheUtil;
@@ -39,19 +38,20 @@ public class RateInterceptor implements HandlerInterceptor {
         if (!enable) {
             return true;
         }
-        String requestURI = request.getRequestURI();
+        String servletPath = request.getServletPath();
+        log.info(servletPath);
         String token = request.getHeader(RateConstant.TOKEN);
         String ip = WebUtil.getIP(request);
         if (StrUtil.isBlank(token)) {
             token = "not_token";
         }
         StringBuilder sb = new StringBuilder(token);
-        String str = sb.append("_").append(ip).append("_").append(requestURI).toString();
+        String str = sb.append("_").append(ip).append("_").append(servletPath).toString();
         HandlerMethod method;
         try {
             method = (HandlerMethod) handler;
         } catch (ClassCastException e) {
-            this.returnJson(response, ResultEnum.ERROR_PATH);
+            RenderJson.returnJson(response, ResultEnum.ERROR_PATH);
             return false;
         }
         boolean global = properties.isGlobal();
@@ -71,22 +71,14 @@ public class RateInterceptor implements HandlerInterceptor {
         Long obj = cacheUtil.get(RateConstant.IDEMPOTENCE_CACHE_PRE, str);
         long currentTimeMillis = System.currentTimeMillis();
         if (Objects.nonNull(obj)) {
-            if (currentTimeMillis - obj <= expireTime) {
-                this.returnJson(response, ResultEnum.NOT_IDEMPOTENCE);
-                cacheUtil.put(RateConstant.IDEMPOTENCE_CACHE_PRE, str, currentTimeMillis, (int) (expireTime / 1000));
+            if (currentTimeMillis - obj <= (expireTime * 1000)) {
+                cacheUtil.put(RateConstant.IDEMPOTENCE_CACHE_PRE, str, currentTimeMillis, (int) (expireTime));
+                RenderJson.returnJson(response, ResultEnum.NOT_IDEMPOTENCE);
                 return false;
             }
         }
-        cacheUtil.put(RateConstant.IDEMPOTENCE_CACHE_PRE, str, currentTimeMillis, (int) (expireTime / 1000));
-
+        cacheUtil.put(RateConstant.IDEMPOTENCE_CACHE_PRE, str, currentTimeMillis, (int) (expireTime));
         return true;
     }
 
-    private void returnJson(HttpServletResponse response, ResultEnum resultEnum) throws IOException {
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json; charset=utf-8");
-        PrintWriter out = response.getWriter();
-        out.append(JackSonUtil.toJson(Result.build(resultEnum)));
-        out.close();
-    }
 }

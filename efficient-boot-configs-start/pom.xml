@@ -5,7 +5,7 @@
     <parent>
         <artifactId>efficient-boot</artifactId>
         <groupId>top.tanmw</groupId>
-        <version>0.9.38</version>
+        <version>0.9.39</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <description>全局配置：全局异常，参数校验，mybatis-plus分页插件</description>
@@ -42,9 +42,17 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>top.tanmw</groupId>-->
+<!--            <artifactId>efficient-boot-common</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>top.tanmw</groupId>
-            <artifactId>efficient-boot-common</artifactId>
+            <artifactId>efficient-boot-auth-start</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>top.tanmw</groupId>
+            <artifactId>efficient-boot-rate-start</artifactId>
         </dependency>
     </dependencies>
 </project>

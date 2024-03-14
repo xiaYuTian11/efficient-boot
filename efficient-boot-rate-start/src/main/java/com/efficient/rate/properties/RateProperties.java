@@ -3,6 +3,9 @@ package com.efficient.rate.properties;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author TMW
  * @since 2022/9/5 15:01
@@ -21,6 +24,18 @@ public class RateProperties {
     /**
      * 全局幂等性校验间隔时间，设置后，com.efficient.rate.annotation.RateLimit的过期时间将会失效,最低一秒钟
      */
-    private long expireTime = 1000;
+    private long expireTime = 1;
+    /**
+     *  拦截方法名称
+     */
+    private List<String> methodList = new ArrayList<String>() {
 
+        private static final long serialVersionUID = -1943289260107007315L;
+
+        {
+            add("/**/save*");
+            add("/**/add*");
+            add("/**/insert*");
+        }
+    };
 }

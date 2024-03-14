@@ -28,7 +28,7 @@ public class MyBatisPlusConfig {
     /**
      * 分页插件 3.5.X
      *
-     * @author zhengkai.blog.csdn.net
+     * @author TMW
      */
     @Bean
     public PaginationInnerInterceptor paginationInnerInterceptor() {

@@ -15,5 +15,5 @@ public @interface RateLimit {
     /**
      * 防重复操作过期时间,默认1s
      */
-    long expireTime() default 1000;
+    long expireTime() default 1;
 }

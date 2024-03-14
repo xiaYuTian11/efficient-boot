@@ -15,7 +15,7 @@ import java.util.List;
  * 定时任务表 服务Api
  * </p>
  *
- * @author code generator
+ * @author TMW
  * @date 2022-08-28 18:08:05
  */
 public interface SysTaskService extends IService<SysTask> {
