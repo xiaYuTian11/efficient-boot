@@ -78,7 +78,7 @@ public class JwtUtil {
             return true;
         }
         // 如果剩余过期时间少于过期时常的一般时 需要更新
-        return (expiresAt.getTime() - System.currentTimeMillis()) < (authProperties.getLogin().getTokenLive() >> 1);
+        return ((expiresAt.getTime() - System.currentTimeMillis()) / 1000) < (authProperties.getLogin().getTokenLive() >> 1);
     }
 
 }

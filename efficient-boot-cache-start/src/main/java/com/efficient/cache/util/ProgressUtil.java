@@ -44,7 +44,7 @@ public class ProgressUtil {
         progressVo.setRatio(result);
 
         progressVo.setCode(ProgressStatus.RUNNING.getCode());
-        cacheUtil.put(CacheConstant.CACHE_PROGRESS_BAR, key, progressVo);
+        cacheUtil.put(CacheConstant.CACHE_PROGRESS_BAR, key, progressVo, CacheConstant.CACHE_SHORT_TIME);
     }
 
     public static NumberFormat getNumFormat() {
@@ -66,7 +66,7 @@ public class ProgressUtil {
             progressVo.setData(object);
         }
         progressVo.setCode(ProgressStatus.SUCCESS.getCode());
-        cacheUtil.put(CacheConstant.CACHE_PROGRESS_BAR, key, progressVo);
+        cacheUtil.put(CacheConstant.CACHE_PROGRESS_BAR, key, progressVo, CacheConstant.CACHE_SHORT_TIME);
     }
 
     public DataProgressVO getByKey(String key) {
@@ -86,7 +86,7 @@ public class ProgressUtil {
             progressVo.setData(object);
         }
         progressVo.setCode(ProgressStatus.FAIL.getCode());
-        cacheUtil.put(CacheConstant.CACHE_PROGRESS_BAR, key, progressVo);
+        cacheUtil.put(CacheConstant.CACHE_PROGRESS_BAR, key, progressVo, CacheConstant.CACHE_SHORT_TIME);
     }
 
 }

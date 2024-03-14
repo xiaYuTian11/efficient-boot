@@ -9,6 +9,7 @@ import com.efficient.auth.constant.AuthResultEnum;
 import com.efficient.auth.model.dto.LoginInfo;
 import com.efficient.auth.properties.AuthProperties;
 import com.efficient.cache.api.CacheUtil;
+import com.efficient.cache.constant.CacheConstant;
 import com.efficient.common.auth.UserTicket;
 import com.efficient.common.permission.Permission;
 import com.efficient.common.result.Result;
@@ -84,7 +85,7 @@ public class LoginController {
         circleCaptcha.setGenerator(randomGenerator);
         // 重新生成code
         circleCaptcha.createCode();
-        cacheUtil.put(AuthConstant.CACHE_CAPTCHA_CODE, uuid, circleCaptcha.getCode());
+        cacheUtil.put(AuthConstant.CACHE_CAPTCHA_CODE, uuid, circleCaptcha.getCode(), CacheConstant.CACHE_SHORT_TIME);
         // 自定义响应头，存放uuid
         response.setHeader("captchaId", uuid);
         try (ServletOutputStream out = response.getOutputStream()) {

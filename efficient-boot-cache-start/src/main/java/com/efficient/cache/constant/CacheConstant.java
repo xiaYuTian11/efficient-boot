@@ -37,5 +37,13 @@ public class CacheConstant {
      * 验证码缓存
      */
     public static final String CACHE_AUTH_CODE = "auth-code-cache";
+    /**
+     * 短时间存活
+     */
+    public static final Integer CACHE_SHORT_TIME = 60;
+    /**
+     * 长时间存活
+     */
+    public static final Integer CACHE_LONG_TIME = 86400;
 
 }

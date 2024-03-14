@@ -86,14 +86,15 @@ public class PermissionInterceptor implements HandlerInterceptor {
             RenderJson.returnJson(response, AuthResultEnum.NOT_LOGIN);
             return false;
         }
+        int tokenLive = authProperties.getLogin().getTokenLive();
         if (jwtUtil.isNeedUpdate(jwtToken)) {
             jwtToken = jwtUtil.createToken(userTicket);
-            cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token, jwtToken);
+            cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token, jwtToken, tokenLive);
         }
 
         // 刷新用户信息保留时间
-        cacheUtil.refresh(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token, authProperties.getLogin().getTokenLive());
-        cacheUtil.refresh(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userTicket.getUserId(), authProperties.getLogin().getTokenLive());
+        cacheUtil.refresh(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token, tokenLive);
+        cacheUtil.refresh(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userTicket.getUserId(), tokenLive);
         // 权限校验
         final boolean checkPermission = permissionCheck.checkPermission(permission, userTicket);
         if (!checkPermission) {

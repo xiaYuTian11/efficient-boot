@@ -4,7 +4,6 @@ import cn.hutool.core.collection.CollUtil;
 import com.efficient.cache.api.CacheUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import javax.annotation.PostConstruct;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.Set;
@@ -15,8 +14,9 @@ import java.util.Set;
  */
 public class RedisUtil implements CacheUtil {
 
-    private RedisTemplate<String, Object> redisTemplate;
     private final static String CONNECTOR_STR = "-";
+    private RedisTemplate<String, Object> redisTemplate;
+
     // @PostConstruct
     // public void postConstruct() {
     //     init(redisTemplate);

@@ -130,18 +130,20 @@ public class LoginServiceImpl implements LoginService {
         String jwtToken = jwtUtil.createToken(userTicket);
         userTicket.setCreateTime(timeMillis);
         RequestHolder.set(userTicket);
+        int tokenLive = authProperties.getLogin().getTokenLive();
         // 存入缓存
-        cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token, jwtToken);
+        cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token, jwtToken, tokenLive);
         // 当前同账号登录了几人
         userTokenList.add(token);
-        cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId, userTokenList);
+        cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId, userTokenList, tokenLive);
         return Result.ok(userTicket);
     }
 
     @Override
     public void putCacheUser(String token, UserTicket userTicket) {
+        int tokenLive = authProperties.getLogin().getTokenLive();
         String jwtToken = jwtUtil.createToken(userTicket);
-        cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token, jwtToken);
+        cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token, jwtToken, tokenLive);
     }
 
     @Override
@@ -152,6 +154,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public boolean checkUserTokens(String userId) {
+        int tokenLive = authProperties.getLogin().getTokenLive();
         List<String> userTokenList = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId);
         if (CollUtil.isNotEmpty(userTokenList)) {
             Iterator<String> iterator = userTokenList.iterator();
@@ -166,7 +169,7 @@ public class LoginServiceImpl implements LoginService {
                 }
             }
             // 更新用户在线列表
-            cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId, userTokenList);
+            cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId, userTokenList, tokenLive);
         }
         return true;
     }
@@ -198,7 +201,8 @@ public class LoginServiceImpl implements LoginService {
         List<String> userTokenList = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId);
         if (CollUtil.isNotEmpty(userTokenList) && !userTokenList.isEmpty()) {
             userTokenList.remove(token);
-            cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId, userTokenList);
+            int tokenLive = authProperties.getLogin().getTokenLive();
+            cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId, userTokenList, tokenLive);
         } else {
             cacheUtil.removeCache(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userId);
         }
