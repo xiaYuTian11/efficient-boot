@@ -45,8 +45,7 @@ public class RateInterceptor implements HandlerInterceptor {
         if (StrUtil.isBlank(token)) {
             token = "not_token";
         }
-        StringBuilder sb = new StringBuilder(token);
-        String str = sb.append("_").append(ip).append("_").append(servletPath).toString();
+        String str = token + "_" + ip + "_" + servletPath;
         HandlerMethod method;
         try {
             method = (HandlerMethod) handler;

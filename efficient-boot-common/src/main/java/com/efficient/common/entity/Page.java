@@ -103,11 +103,10 @@ public class Page<T> implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder msg = new StringBuilder();
-        msg.append("pageNumber : ").append(pageNum);
-        msg.append("\npageSize : ").append(pageSize);
-        msg.append("\ntotalPage : ").append(totalPage);
-        msg.append("\ntotalRow : ").append(totalRow);
-        return msg.toString();
+        String msg = "pageNumber : " + pageNum +
+                "\npageSize : " + pageSize +
+                "\ntotalPage : " + totalPage +
+                "\ntotalRow : " + totalRow;
+        return msg;
     }
 }

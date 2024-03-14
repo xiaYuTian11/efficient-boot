@@ -10,14 +10,14 @@ public interface CacheUtil {
     /**
      * 获取缓存
      */
-    public <T> T get(String cacheName, String key);
+    <T> T get(String cacheName, String key);
 
     /**
      * 保存缓存
      */
-    public void put(String cacheName, String key, Object obj);
+    void put(String cacheName, String key, Object obj);
 
-    public void put(String cacheName, String key, Object obj, int timeToIdleSeconds);
+    void put(String cacheName, String key, Object obj, int timeToIdleSeconds);
 
     /**
      * 刷新用户缓存
@@ -26,17 +26,17 @@ public interface CacheUtil {
      * @param key               数据对象key
      * @param timeToIdleSeconds 闲置秒数
      */
-    public void refresh(String cacheName, String key, int timeToIdleSeconds);
+    void refresh(String cacheName, String key, int timeToIdleSeconds);
 
-    public int getTimeToIdleSeconds(String cacheName, String key);
-
-    /**
-     * 移除缓存
-     */
-    public void removeCache(String cacheName, String key);
+    int getTimeToIdleSeconds(String cacheName, String key);
 
     /**
      * 移除缓存
      */
-    public void removeCache(String cacheName);
+    void removeCache(String cacheName, String key);
+
+    /**
+     * 移除缓存
+     */
+    void removeCache(String cacheName);
 }

@@ -9,6 +9,6 @@ import com.efficient.common.auth.UserTicket;
  */
 public interface PermissionCheck {
 
-    public boolean checkPermission(Permission permission, UserTicket userTicket);
+    boolean checkPermission(Permission permission, UserTicket userTicket);
 
 }

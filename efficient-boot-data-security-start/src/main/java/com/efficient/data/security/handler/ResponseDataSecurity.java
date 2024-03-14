@@ -42,11 +42,7 @@ public class ResponseDataSecurity implements ResponseBodyAdvice<Result> {
 
         if (Objects.equals(properties.getApi().getResponseEnableType(), EnableType.NEED)) {
             return methodParameter.hasMethodAnnotation(ResponseEncrypt.class);
-        } else if (Objects.equals(properties.getApi().getResponseEnableType(), EnableType.NODE)) {
-            return true;
-        }
-
-        return false;
+        } else return Objects.equals(properties.getApi().getResponseEnableType(), EnableType.NODE);
     }
 
     @Override

@@ -42,11 +42,7 @@ public class RequestDataSecurity extends RequestBodyAdviceAdapter {
 
         if (Objects.equals(properties.getApi().getRequestEnableType(), EnableType.NEED)) {
             return methodParameter.hasMethodAnnotation(RequestDecrypt.class);
-        } else if (Objects.equals(properties.getApi().getRequestEnableType(), EnableType.NODE)) {
-            return true;
-        }
-
-        return false;
+        } else return Objects.equals(properties.getApi().getRequestEnableType(), EnableType.NODE);
     }
 
     @Override

@@ -27,7 +27,7 @@ public enum LogEnum {
     private Integer code;
     private String opt;
 
-    private LogEnum(Integer code, String opt) {
+    LogEnum(Integer code, String opt) {
         this.code = code;
         this.opt = opt;
     }

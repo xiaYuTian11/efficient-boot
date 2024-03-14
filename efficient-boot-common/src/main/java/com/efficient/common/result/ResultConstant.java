@@ -7,11 +7,11 @@ package com.efficient.common.result;
  * @since 2022/7/5 14:50
  */
 public interface ResultConstant {
-    public int getCode() ;
+    int getCode() ;
 
-    public void setCode(int code);
+    void setCode(int code);
 
-    public String getMsg();
+    String getMsg();
 
-    public void setMsg(String msg);
+    void setMsg(String msg);
 }

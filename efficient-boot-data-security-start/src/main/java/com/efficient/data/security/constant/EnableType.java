@@ -14,6 +14,6 @@ public enum EnableType {
     /**
      * 需要注解才能生效
      */
-    NEED;
+    NEED
 
 }

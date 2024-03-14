@@ -30,7 +30,7 @@ public class ThreadUtil {
                             .setUncaughtExceptionHandler((t, e) -> {
                                 StringWriter sw = new StringWriter();
                                 e.printStackTrace(new PrintWriter(sw));
-                                LOGGER.info("任务处理异常!" + sw.toString());
+                                LOGGER.info("任务处理异常!" + sw);
                             })
                             .setThreadFactory(Thread::new).build()
             ))

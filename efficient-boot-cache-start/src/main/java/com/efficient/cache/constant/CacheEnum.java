@@ -5,5 +5,5 @@ package com.efficient.cache.constant;
  * @since 2022/9/2 14:31
  */
 public enum CacheEnum {
-    EHCACHE,REDIS;
+    EHCACHE,REDIS
 }

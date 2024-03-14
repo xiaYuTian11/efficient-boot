@@ -32,6 +32,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -203,7 +204,7 @@ public class MinioUtil {
             headers.add("Content-Disposition", "attachment;filename=" + URLEncoder.encode(objectName, StandardCharsets.UTF_8.name()));
             headers.setContentLength(bytes.length);
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-            headers.setAccessControlExposeHeaders(Arrays.asList("*"));
+            headers.setAccessControlExposeHeaders(Collections.singletonList("*"));
             responseEntity = new ResponseEntity<byte[]>(bytes, headers, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

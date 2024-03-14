@@ -211,9 +211,6 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public boolean checkCaptcha(String captchaId, String captcha) {
         String captchaCache = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.CAPTCHA_CACHE + captchaId);
-        if (StrUtil.isBlank(captchaCache) || !StrUtil.equalsIgnoreCase(captcha, captchaCache)) {
-            return false;
-        }
-        return true;
+        return !StrUtil.isBlank(captchaCache) && StrUtil.equalsIgnoreCase(captcha, captchaCache);
     }
 }
