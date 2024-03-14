@@ -85,7 +85,7 @@ public class LoginController {
         circleCaptcha.setGenerator(randomGenerator);
         // 重新生成code
         circleCaptcha.createCode();
-        cacheUtil.put(AuthConstant.CACHE_CAPTCHA_CODE, uuid, circleCaptcha.getCode(), CacheConstant.CACHE_SHORT_TIME);
+        cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CAPTCHA_CACHE + uuid, circleCaptcha.getCode(), CacheConstant.CACHE_SHORT_TIME);
         // 自定义响应头，存放uuid
         response.setHeader("captchaId", uuid);
         try (ServletOutputStream out = response.getOutputStream()) {

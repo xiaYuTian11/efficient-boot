@@ -2,6 +2,7 @@ package com.efficient.rate.interceptor;
 
 import cn.hutool.core.util.StrUtil;
 import com.efficient.cache.api.CacheUtil;
+import com.efficient.common.constant.CommonConstant;
 import com.efficient.common.result.ResultEnum;
 import com.efficient.common.util.RenderJson;
 import com.efficient.common.util.WebUtil;
@@ -40,7 +41,7 @@ public class RateInterceptor implements HandlerInterceptor {
         }
         String servletPath = request.getServletPath();
         log.info(servletPath);
-        String token = request.getHeader(RateConstant.TOKEN);
+        String token = request.getHeader(CommonConstant.TOKEN);
         String ip = WebUtil.getIP(request);
         if (StrUtil.isBlank(token)) {
             token = "not_token";
@@ -68,16 +69,16 @@ public class RateInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        Long obj = cacheUtil.get(RateConstant.IDEMPOTENCE_CACHE_PRE, str);
+        Long obj = cacheUtil.get(RateConstant.RATE_CACHE, str);
         long currentTimeMillis = System.currentTimeMillis();
         if (Objects.nonNull(obj)) {
             if (currentTimeMillis - obj <= (expireTime * 1000)) {
-                cacheUtil.put(RateConstant.IDEMPOTENCE_CACHE_PRE, str, currentTimeMillis, (int) (expireTime));
+                cacheUtil.put(RateConstant.RATE_CACHE, str, currentTimeMillis, (int) (expireTime));
                 RenderJson.returnJson(response, ResultEnum.NOT_IDEMPOTENCE);
                 return false;
             }
         }
-        cacheUtil.put(RateConstant.IDEMPOTENCE_CACHE_PRE, str, currentTimeMillis, (int) (expireTime));
+        cacheUtil.put(RateConstant.RATE_CACHE, str, currentTimeMillis, (int) (expireTime));
         return true;
     }
 

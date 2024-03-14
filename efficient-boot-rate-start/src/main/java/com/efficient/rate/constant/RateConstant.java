@@ -6,6 +6,6 @@ package com.efficient.rate.constant;
  */
 public class RateConstant {
 
-    public static final String TOKEN = "token";
-    public static final String IDEMPOTENCE_CACHE_PRE = "idempotence_cache_";
+
+    public static final String RATE_CACHE = "rate_cache";
 }

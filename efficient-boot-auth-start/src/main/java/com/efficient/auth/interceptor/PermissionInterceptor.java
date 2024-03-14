@@ -8,6 +8,7 @@ import com.efficient.auth.util.JwtUtil;
 import com.efficient.cache.api.CacheUtil;
 import com.efficient.common.auth.RequestHolder;
 import com.efficient.common.auth.UserTicket;
+import com.efficient.common.constant.CommonConstant;
 import com.efficient.common.permission.Permission;
 import com.efficient.common.result.ResultEnum;
 import com.efficient.common.util.RenderJson;
@@ -67,9 +68,9 @@ public class PermissionInterceptor implements HandlerInterceptor {
         List<String> tokenGet = authProperties.getTokenGet();
         String token = null;
         if (StrUtil.startWithAny(servletPath, tokenGet.toArray(new String[0]))) {
-            token = request.getParameter(AuthConstant.TOKEN);
+            token = request.getParameter(CommonConstant.TOKEN);
         } else {
-            token = request.getHeader(AuthConstant.TOKEN);
+            token = request.getHeader(CommonConstant.TOKEN);
         }
 
         // header中没有token
@@ -79,7 +80,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
             return false;
         }
         // 根据token查询
-        String jwtToken = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token);
+        String jwtToken = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.TOKEN_CACHE + token);
         UserTicket userTicket = jwtUtil.validateToken(jwtToken, authProperties.getUserTicketClass());
         if (Objects.isNull(userTicket)) {
             log.warn(AuthResultEnum.NOT_LOGIN.getMsg());
@@ -89,12 +90,12 @@ public class PermissionInterceptor implements HandlerInterceptor {
         int tokenLive = authProperties.getLogin().getTokenLive();
         if (jwtUtil.isNeedUpdate(jwtToken)) {
             jwtToken = jwtUtil.createToken(userTicket);
-            cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token, jwtToken, tokenLive);
+            cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.TOKEN_CACHE + token, jwtToken, tokenLive);
         }
 
         // 刷新用户信息保留时间
-        cacheUtil.refresh(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_TOKEN_CACHE + token, tokenLive);
-        cacheUtil.refresh(AuthConstant.AUTH_CACHE, AuthConstant.CACHE_USER_CACHE + userTicket.getUserId(), tokenLive);
+        cacheUtil.refresh(AuthConstant.AUTH_CACHE, AuthConstant.TOKEN_CACHE + token, tokenLive);
+        cacheUtil.refresh(AuthConstant.AUTH_CACHE, AuthConstant.ON_LINE_USER_CACHE + userTicket.getUserId(), tokenLive);
         // 权限校验
         final boolean checkPermission = permissionCheck.checkPermission(permission, userTicket);
         if (!checkPermission) {
