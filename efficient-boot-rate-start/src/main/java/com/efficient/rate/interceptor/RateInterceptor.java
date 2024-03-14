@@ -40,7 +40,6 @@ public class RateInterceptor implements HandlerInterceptor {
             return true;
         }
         String servletPath = request.getServletPath();
-        log.info(servletPath);
         String token = request.getHeader(CommonConstant.TOKEN);
         String ip = WebUtil.getIP(request);
         if (StrUtil.isBlank(token)) {

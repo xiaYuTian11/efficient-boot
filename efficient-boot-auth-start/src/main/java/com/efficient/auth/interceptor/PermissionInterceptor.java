@@ -44,7 +44,6 @@ public class PermissionInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String servletPath = request.getServletPath();
-        log.info(servletPath);
         HandlerMethod method;
         try {
             method = (HandlerMethod) handler;
