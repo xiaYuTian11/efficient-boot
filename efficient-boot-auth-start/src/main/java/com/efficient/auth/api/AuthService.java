@@ -31,4 +31,7 @@ public interface AuthService {
     boolean lockUser(String userId, Date unLockTime);
 
     Result<UserTicket> getUserTicket(UserAuthInfo userAuthInfo);
+
+    UserAuthInfo getUserByUserId(String userId);
+    String getJwtByUserId(String userId);
 }

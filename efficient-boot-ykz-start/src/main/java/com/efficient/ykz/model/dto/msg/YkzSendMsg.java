@@ -14,6 +14,8 @@ public class YkzSendMsg {
      * 消息体
      */
     private String msg;
+    private String bizId;
+    private String systemId;
     /**
      * 发送者用户id
      */

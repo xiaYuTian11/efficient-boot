@@ -25,6 +25,10 @@ public class UserTicket {
      * 登录IP
      */
     private String loginIp;
+    /**
+     * 登录类型
+     */
+    private Integer loginType;
 
     /**
      * 菜单权限
@@ -38,6 +42,5 @@ public class UserTicket {
      * 扩展信息
      */
     private Object extendInfo;
-
 
 }

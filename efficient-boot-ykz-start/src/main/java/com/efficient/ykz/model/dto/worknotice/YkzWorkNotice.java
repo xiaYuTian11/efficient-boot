@@ -27,6 +27,11 @@ public class YkzWorkNotice {
      */
     private String bizMsgId;
     /**
+     * 自定义参数
+     */
+    private String bizId;
+    private String createUserId;
+    /**
      * json对象 必须,http://ykz-jrxt-client.bigdatacq.com:18080/document?id=19
      */
     private String msg;

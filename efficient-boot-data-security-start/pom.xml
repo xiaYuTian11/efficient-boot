@@ -6,7 +6,7 @@
     <parent>
         <groupId>top.tanmw</groupId>
         <artifactId>efficient-boot</artifactId>
-        <version>0.9.40</version>
+        <version>0.10.1</version>
     </parent>
 
     <artifactId>efficient-boot-data-security-start</artifactId>

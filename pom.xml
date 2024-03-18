@@ -23,11 +23,11 @@
     </modules>
     <groupId>top.tanmw</groupId>
     <artifactId>efficient-boot</artifactId>
-    <version>0.9.40</version>
+    <version>0.10.1</version>
     <packaging>pom</packaging>
 
     <properties>
-        <efficient-boot.version>0.9.40</efficient-boot.version>
+        <efficient-boot.version>0.10.1</efficient-boot.version>
         <java.version>1.8</java.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -228,6 +228,11 @@
             <dependency>
                 <groupId>top.tanmw</groupId>
                 <artifactId>efficient-boot-ykz-start</artifactId>
+                <version>${efficient-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.tanmw</groupId>
+                <artifactId>efficient-boot-system-start</artifactId>
                 <version>${efficient-boot.version}</version>
             </dependency>
 

@@ -92,7 +92,3 @@ COMMENT ON COLUMN efficient_ykz_user_post.post_type IS '任职类型 1主职、2
 COMMENT ON COLUMN efficient_ykz_user_post.pos_job IS '职务';
 COMMENT ON COLUMN efficient_ykz_user_post.pull_time IS '拉取时间';
 COMMENT ON COLUMN efficient_ykz_user_post.error_info IS '错误信息';
-
-
-
-

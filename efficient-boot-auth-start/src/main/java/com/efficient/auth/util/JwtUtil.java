@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author TMW
@@ -34,6 +35,18 @@ public class JwtUtil {
         return JWT.create()
                 .withSubject(JackSonUtil.toJson(sub))
                 .withExpiresAt(DateUtil.offset(new Date(), DateField.SECOND, authProperties.getLogin().getTokenLive()))
+                .sign(Algorithm.HMAC512(authProperties.getLogin().getSecret()));
+    }
+
+    /**
+     * 创建TOKEN,永不过期，试用于渝快政消息通知类型
+     *
+     * @param sub
+     * @return
+     */
+    public String createAuthCode(Object sub) {
+        return JWT.create()
+                .withSubject(JackSonUtil.toJson(sub))
                 .sign(Algorithm.HMAC512(authProperties.getLogin().getSecret()));
     }
 
@@ -76,6 +89,10 @@ public class JwtUtil {
         } catch (Exception e) {
             log.error("jwt validateToken error", e);
             return true;
+        }
+        if (Objects.isNull(expiresAt)) {
+            log.info("jwt未设置过期时间");
+            return false;
         }
         // 如果剩余过期时间少于过期时常的一般时 需要更新
         return ((expiresAt.getTime() - System.currentTimeMillis()) / 1000) < (authProperties.getLogin().getTokenLive() >> 1);

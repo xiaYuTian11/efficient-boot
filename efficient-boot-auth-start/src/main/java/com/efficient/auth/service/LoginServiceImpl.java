@@ -51,7 +51,7 @@ public class LoginServiceImpl implements LoginService {
     public Result<UserTicket> login(LoginInfo info) {
         UserAuthInfo userAuthInfo = this.getUserAuthByLogin(info);
         if (Objects.isNull(userAuthInfo)) {
-            return Result.build(AuthResultEnum.USER_NOT_EXIST);
+            return Result.build(AuthResultEnum.ACCOUNT_FAIL);
         }
 
         LoginProperties loginProperties = authProperties.getLogin();
@@ -71,33 +71,35 @@ public class LoginServiceImpl implements LoginService {
         }
 
         // 判断是否需要锁定用户
-        if (!authUtil.checkEncrypt(userAuthInfo.getPassword(), info.getPassword())) {
-            // 密码错误
-            int retryCount = loginProperties.getRetryCount();
-            int retryTime = loginProperties.getRetryTime();
-            int lockTime = loginProperties.getLockTime();
-            if (retryCount == -1) {
-                return Result.build(AuthResultEnum.ACCOUNT_FAIL);
-            }
+        if (Objects.equals(info.getLoginType(), LoginTypeEnum.LOGIN.getCode())) {
+            if (!authUtil.checkEncrypt(userAuthInfo.getPassword(), info.getPassword())) {
+                // 密码错误
+                int retryCount = loginProperties.getRetryCount();
+                int retryTime = loginProperties.getRetryTime();
+                int lockTime = loginProperties.getLockTime();
+                if (retryCount == -1) {
+                    return Result.build(AuthResultEnum.ACCOUNT_FAIL);
+                }
 
-            int count = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.LOGIN_FAIL_CACHE + userId);
-            count += 1;
-            if (count > retryCount) {
-                // 用户已被锁定
-                return Result.build(AuthResultEnum.ACCOUNT_LOCK);
-            } else if (count < retryCount) {
-                cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.LOGIN_FAIL_CACHE + userId, count, retryTime * 60);
-                return Result.build(AuthResultEnum.ACCOUNT_LOCK_COUNT.getCode(), String.format(AuthResultEnum.ACCOUNT_LOCK_COUNT.getMsg(), retryCount - count));
+                int count = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.LOGIN_FAIL_CACHE + userId);
+                count += 1;
+                if (count > retryCount) {
+                    // 用户已被锁定
+                    return Result.build(AuthResultEnum.ACCOUNT_LOCK);
+                } else if (count < retryCount) {
+                    cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.LOGIN_FAIL_CACHE + userId, count, retryTime * 60);
+                    return Result.build(AuthResultEnum.ACCOUNT_LOCK_COUNT.getCode(), String.format(AuthResultEnum.ACCOUNT_LOCK_COUNT.getMsg(), retryCount - count));
+                } else {
+                    unLockTime = DateUtil.offset(new Date(), DateField.MINUTE, lockTime);
+                    cacheUtil.removeCache(AuthConstant.AUTH_CACHE, AuthConstant.LOGIN_FAIL_CACHE + userId);
+                    // 锁定用户
+                    authService.lockUser(userId, unLockTime);
+                    return Result.build(AuthResultEnum.ACCOUNT_LOCK);
+                }
             } else {
-                unLockTime = DateUtil.offset(new Date(), DateField.MINUTE, lockTime);
                 cacheUtil.removeCache(AuthConstant.AUTH_CACHE, AuthConstant.LOGIN_FAIL_CACHE + userId);
-                // 锁定用户
                 authService.lockUser(userId, unLockTime);
-                return Result.build(AuthResultEnum.ACCOUNT_LOCK);
             }
-        } else {
-            cacheUtil.removeCache(AuthConstant.AUTH_CACHE, AuthConstant.LOGIN_FAIL_CACHE + userId);
-            authService.lockUser(userId, unLockTime);
         }
 
         int maxOnline = loginProperties.getMaxOnline();
@@ -120,6 +122,7 @@ public class LoginServiceImpl implements LoginService {
         }
         UserTicket userTicket = result.getData();
         userTicket.setUserId(userId);
+        userTicket.setLoginType(info.getLoginType());
         userTicket.setAccount(userAuthInfo.getAccount());
         userTicket.setUsername(userAuthInfo.getUsername());
         userTicket.setLoginIp(info.getLoginIp());
@@ -137,6 +140,16 @@ public class LoginServiceImpl implements LoginService {
         userTokenList.add(token);
         cacheUtil.put(AuthConstant.AUTH_CACHE, AuthConstant.ON_LINE_USER_CACHE + userId, userTokenList, tokenLive);
         return Result.ok(userTicket);
+    }
+
+    @Override
+    public String createAuthCode(String userId) {
+        UserAuthInfo userAuthInfo = authService.getUserByUserId(userId);
+        UserTicket userTicket = new UserTicket();
+        userTicket.setUserId(userAuthInfo.getUserId());
+        userTicket.setAccount(userAuthInfo.getAccount());
+        userTicket.setCreateTime(new Date().getTime());
+        return jwtUtil.createAuthCode(userTicket);
     }
 
     @Override
@@ -187,6 +200,19 @@ public class LoginServiceImpl implements LoginService {
             }
             Long accountId = result.getData().getAccountId();
             return authService.getUserByZwddId(String.valueOf(accountId));
+        } else if (Objects.equals(loginType, LoginTypeEnum.OWN_LOGIN.getCode())) {
+            String authCode = info.getAuthCode();
+            UserAuthInfo userAuthInfo = jwtUtil.validateToken(authCode, UserAuthInfo.class);
+            if (Objects.isNull(userAuthInfo)) {
+                return null;
+            }
+            info.setUserId(userAuthInfo.getUserId());
+            info.setAccount(userAuthInfo.getAccount());
+            UserAuthInfo userByAccount = authService.getUserByAccount(info);
+            if (!StrUtil.equals(userAuthInfo.getUserId(), userByAccount.getUserId())) {
+                return null;
+            }
+            return userByAccount;
         } else {
             String authCode = info.getAuthCode();
             return authService.getUserByOtherAuthCode(authCode);

@@ -13,6 +13,7 @@ import lombok.Getter;
 public enum LoginTypeEnum {
     LOGIN(1, "正常登录"),
     YKZ_LOGIN(2, "渝快政登录"),
+    OWN_LOGIN(3, "本系统单点登录"),
     SSO_LOGIN(9, "单点登录");
     private final int code;
 
