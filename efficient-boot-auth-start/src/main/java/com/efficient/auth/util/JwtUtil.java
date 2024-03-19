@@ -67,7 +67,7 @@ public class JwtUtil {
                     .getSubject();
             return JackSonUtil.toObject(subject, tClass);
         } catch (Exception e) {
-            log.error("jwt validateToken error", e);
+            log.error(e.getMessage());
             return null;
         }
     }
