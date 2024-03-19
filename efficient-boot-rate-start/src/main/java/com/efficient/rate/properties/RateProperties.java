@@ -38,4 +38,9 @@ public class RateProperties {
             add("/**/insert*");
         }
     };
+
+    /**
+     *  排除拦截方法名称，针对特定包含在methodList中能匹配到的
+     */
+    private List<String> excludeApiList;
 }

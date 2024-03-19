@@ -50,6 +50,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Result<?> handler(ConstraintViolationException ex) {
         String message = ex.getConstraintViolations().stream().map(ConstraintViolation::getMessage).collect(Collectors.joining());
+        LOGGER.error("error: {}", message);
         return validateResultFormat(message);
     }
 
@@ -65,6 +66,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Result<?> handler(BindException ex) {
         String message = ex.getBindingResult().getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining());
+        LOGGER.error("error: {}", message);
         return validateResultFormat(message);
     }
 
@@ -76,6 +78,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Result<?> handler(HttpRequestMethodNotSupportedException ex) {
         String message = ex.getMessage();
+        LOGGER.error("error: {}", message);
         return validateResultFormat(message);
     }
 
@@ -86,6 +89,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Result<?> handler(MissingServletRequestParameterException ex) {
         final String parameterName = ex.getParameterName();
+        LOGGER.error("参数缺失: {}", parameterName);
         return validateResultFormat("参数缺失：" + parameterName);
     }
 
@@ -97,6 +101,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Result<?> handler(MethodArgumentNotValidException ex) {
         String message = ex.getBindingResult().getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining());
+        LOGGER.error("error: {}", message);
         return validateResultFormat(message);
     }
 
@@ -106,7 +111,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseBody
     public Result<?> httpMessageNotReadableException(HttpMessageNotReadableException ex) {
-        return Result.build(ResultEnum.ERROR, String.format("参数格式无效:%s", ex));
+        String errorInfo = String.format("参数格式无效:%s", ex);
+        LOGGER.error("error: {}", errorInfo);
+        return Result.build(ResultEnum.ERROR, errorInfo);
     }
 
     /**
@@ -115,6 +122,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataSecurityException.class)
     @ResponseBody
     public Result<?> dataSecurityException(DataSecurityException ex) {
+        LOGGER.error("error: {}", ResultEnum.DATA_SECURITY.getMsg());
         return Result.build(ResultEnum.DATA_SECURITY);
     }
 

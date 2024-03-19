@@ -20,13 +20,19 @@
       "description": "全局幂等性校验间隔时间，设置后，com.efficient.rate.annotation.rate的过期时间将会失效，最小1秒",
       "defaultValue": 1,
       "sourceType": "com.efficient.rate.properties.RateProperties"
-    }
-  ,
+    },
     {
       "name": "com.efficient.rate.methodList",
       "type": "java.util.List",
       "description": "拦截方法名称",
       "defaultValue": "**/save**,**/add**,**/insert**",
+      "sourceType": "com.efficient.rate.properties.RateProperties"
+    },
+    {
+      "name": "com.efficient.rate.excludeApiList",
+      "type": "java.util.List",
+      "description": "排除拦截方法名称，针对特定包含在methodList中能匹配到的",
+      "defaultValue": "",
       "sourceType": "com.efficient.rate.properties.RateProperties"
     }
   ]

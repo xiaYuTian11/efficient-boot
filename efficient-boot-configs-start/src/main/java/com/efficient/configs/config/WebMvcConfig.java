@@ -1,5 +1,6 @@
 package com.efficient.configs.config;
 
+import cn.hutool.core.collection.CollUtil;
 import com.efficient.auth.interceptor.PermissionInterceptor;
 import com.efficient.auth.properties.AuthProperties;
 import com.efficient.logs.interceptor.RequestHolderInterceptor;
@@ -40,7 +41,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(permissionInterceptor).addPathPatterns("/**")
                 .excludePathPatterns(whiteList);
         List<String> methodList = rateProperties.getMethodList();
-        registry.addInterceptor(rateInterceptor).addPathPatterns(methodList);
+        List<String> excludeApiList = rateProperties.getExcludeApiList();
+        if (CollUtil.isEmpty(excludeApiList)) {
+            registry.addInterceptor(rateInterceptor).addPathPatterns(methodList);
+        } else {
+            registry.addInterceptor(rateInterceptor).addPathPatterns(methodList)
+                    .excludePathPatterns(excludeApiList);
+        }
     }
 
     @Override
