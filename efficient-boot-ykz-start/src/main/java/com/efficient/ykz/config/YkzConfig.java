@@ -1,6 +1,8 @@
 package com.efficient.ykz.config;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.xxpt.gateway.shared.client.http.ExecutableClient;
+import com.efficient.ykz.exception.YkzException;
 import com.efficient.ykz.properties.YkzApi;
 import com.efficient.ykz.properties.YkzProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -46,9 +48,17 @@ public class YkzConfig {
         executableClient.setDomainName(ykzApi.getDomainName());
         executableClient.setProtocal(ykzApi.getProtocal());
         //应用App Key
-        executableClient.setAccessKey(ykzApi.getAppkey());
+        String appkey = ykzApi.getAppkey();
+        if (StrUtil.isBlank(appkey)) {
+            throw new YkzException("请检查渝快政配置是否正确");
+        }
+        executableClient.setAccessKey(appkey);
         //应用App Secret
-        executableClient.setSecretKey(ykzApi.getAppsecret());
+        String appsecret = ykzApi.getAppsecret();
+        if (StrUtil.isBlank(appsecret)) {
+            throw new YkzException("请检查渝快政配置是否正确");
+        }
+        executableClient.setSecretKey(appsecret);
         executableClient.init();
         return executableClient;
     }

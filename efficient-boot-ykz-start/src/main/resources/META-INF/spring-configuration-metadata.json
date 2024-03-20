@@ -12,21 +12,21 @@
       "type": "java.lang.String",
       "description": "渝快政IP",
       "defaultValue": "https://uc-openplatform.bigdatacq.com:4403",
-      "sourceType": "com.efficient.ykz.properties.YkzProperties"
+      "sourceType": "zzzz"
     },
     {
       "name": "com.efficient.ykz.userCenter.appId",
       "type": "java.lang.String",
       "description": "渝快政 appId",
       "defaultValue": "",
-      "sourceType": "com.efficient.ykz.properties.YkzProperties"
+      "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
     },
     {
       "name": "com.efficient.ykz.userCenter.appSecret",
       "type": "java.lang.String",
       "description": "渝快政 appSecret",
       "defaultValue": "",
-      "sourceType": "com.efficient.ykz.properties.YkzProperties"
+      "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
     },
     {
       "name": "com.efficient.ykz.userCenter.db",
@@ -214,7 +214,8 @@
       "name": "com.efficient.ykz.ykzApi.cancelTodo",
       "type": "java.lang.String",
       "description": "撤销待办",
-      "defaultValue": "/tc/openapi/task/cancel.json",
-      ],
-      "hints": []
+      "defaultValue": "/tc/openapi/task/cancel.json"
     }
+  ],
+  "hints": []
+}

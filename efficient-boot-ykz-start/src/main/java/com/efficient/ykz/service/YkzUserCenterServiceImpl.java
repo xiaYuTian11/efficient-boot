@@ -21,6 +21,7 @@ import com.efficient.ykz.api.YkzUserCenterService;
 import com.efficient.ykz.api.YkzUserPostService;
 import com.efficient.ykz.api.YkzUserService;
 import com.efficient.ykz.constant.YkzConstant;
+import com.efficient.ykz.exception.YkzException;
 import com.efficient.ykz.model.dto.YkzParam;
 import com.efficient.ykz.model.vo.*;
 import com.efficient.ykz.properties.YkzProperties;
@@ -145,6 +146,9 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
         }
         if (StrUtil.isBlank(appSecret)) {
             appSecret = ykzProperties.getUserCenter().getAppSecret();
+        }
+        if (StrUtil.isBlank(appId) || StrUtil.isBlank(appSecret)) {
+            throw new YkzException("请检查渝快政配置是否正确");
         }
         Date now = new Date();
         JSONObject jsonObject = JSONUtil.createObj().set("appId", appId).set("appSecret", SM2ToolUtil.sm2Encode(jwtHelper.getPublicKey(), appSecret));
