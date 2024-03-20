@@ -128,13 +128,12 @@ public class VideoServiceImpl implements VideoService {
     public synchronized SysFileInfo getFileInfo(FileChunkDTO fileChunkDTO, String destFile) {
         String md5 = fileChunkDTO.getMd5();
         Integer totalChunk = fileChunkDTO.getTotalChunk();
-        MultipartFile file = fileChunkDTO.getFile();
         Long chunkSize = fileChunkDTO.getChunkSize();
         SysFileInfo sysFileInfo = sysFileInfoService.findByPathAndMd5(destFile, md5);
         if (Objects.isNull(sysFileInfo)) {
             sysFileInfo = new SysFileInfo();
             sysFileInfo.setStoreType(StoreEnum.LOCAL.name());
-            sysFileInfo.setFileName(file.getName());
+            sysFileInfo.setFileName(fileChunkDTO.getFilename());
             sysFileInfo.setFilePath(destFile);
             sysFileInfo.setFileSize(totalChunk * chunkSize / KB);
             sysFileInfo.setCreateTime(new Date());
