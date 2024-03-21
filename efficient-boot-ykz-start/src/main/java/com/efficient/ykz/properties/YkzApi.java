@@ -31,6 +31,10 @@ public class YkzApi {
      */
     private String appsecret;
     /**
+     * 用浏览器打开，不加默认用,只针对pc端
+     */
+    private Boolean winOpen = true;
+    /**
      * 获取accessToken
      */
     private String accessToken = "/gettoken.json";

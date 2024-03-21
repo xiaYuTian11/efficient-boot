@@ -155,6 +155,13 @@
       "sourceType": "com.efficient.ykz.properties.YkzApi"
     },
     {
+      "name": "com.efficient.ykz.ykzApi.winOpen",
+      "type": "java.lang.Boolean",
+      "description": "跳转方式，默认外部浏览器打开，目前只针对pc端",
+      "defaultValue": true,
+      "sourceType": "com.efficient.ykz.properties.YkzApi"
+    },
+    {
       "name": "com.efficient.ykz.ykzApi.accessToken",
       "type": "java.lang.String",
       "description": "获取 accessToken",

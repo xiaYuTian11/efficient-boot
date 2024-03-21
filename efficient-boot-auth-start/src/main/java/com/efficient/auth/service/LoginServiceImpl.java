@@ -21,6 +21,8 @@ import com.efficient.cache.api.CacheUtil;
 import com.efficient.common.auth.RequestHolder;
 import com.efficient.common.auth.UserTicket;
 import com.efficient.common.result.Result;
+import com.efficient.common.util.AESUtils;
+import com.efficient.common.util.JackSonUtil;
 import com.efficient.ykz.api.YkzApiService;
 import com.efficient.ykz.model.vo.YkzLoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,16 +145,6 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public String createAuthCode(String userId) {
-        UserAuthInfo userAuthInfo = authService.getUserByUserId(userId);
-        UserTicket userTicket = new UserTicket();
-        userTicket.setUserId(userAuthInfo.getUserId());
-        userTicket.setAccount(userAuthInfo.getAccount());
-        userTicket.setCreateTime(new Date().getTime());
-        return jwtUtil.createAuthCode(userTicket);
-    }
-
-    @Override
     public void putCacheUser(String token, UserTicket userTicket) {
         int tokenLive = authProperties.getLogin().getTokenLive();
         String jwtToken = jwtUtil.createToken(userTicket);
@@ -200,16 +192,14 @@ public class LoginServiceImpl implements LoginService {
             }
             Long accountId = result.getData().getAccountId();
             return authService.getUserByZwddId(String.valueOf(accountId));
-        } else if (Objects.equals(loginType, LoginTypeEnum.OWN_LOGIN.getCode())) {
+        } else if (Objects.equals(loginType, LoginTypeEnum.YKZ_TODO_LOGIN.getCode())) {
             String authCode = info.getAuthCode();
-            UserAuthInfo userAuthInfo = jwtUtil.validateToken(authCode, UserAuthInfo.class);
-            if (Objects.isNull(userAuthInfo)) {
+            UserTicket userTicket = JackSonUtil.toObject(AESUtils.decrypt(authCode), UserTicket.class);
+            if (Objects.isNull(userTicket)) {
                 return null;
             }
-            info.setUserId(userAuthInfo.getUserId());
-            info.setAccount(userAuthInfo.getAccount());
-            UserAuthInfo userByAccount = authService.getUserByAccount(info);
-            if (!StrUtil.equals(userAuthInfo.getUserId(), userByAccount.getUserId())) {
+            UserAuthInfo userByAccount = authService.getUserByZwddId(userTicket.getZwddId());
+            if (!StrUtil.equals(userTicket.getZwddId(), userByAccount.getZwddId())) {
                 return null;
             }
             return userByAccount;

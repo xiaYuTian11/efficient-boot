@@ -9,12 +9,16 @@ import com.alibaba.xxpt.gateway.shared.api.response.*;
 import com.alibaba.xxpt.gateway.shared.client.http.IntelligentGetClient;
 import com.alibaba.xxpt.gateway.shared.client.http.IntelligentPostClient;
 import com.alibaba.xxpt.gateway.shared.client.http.api.OapiSpResultContent;
+import com.efficient.common.auth.UserTicket;
 import com.efficient.common.result.Result;
 import com.efficient.common.result.ResultEnum;
+import com.efficient.common.util.AESUtils;
 import com.efficient.common.util.JackSonUtil;
 import com.efficient.ykz.api.YkzApiService;
 import com.efficient.ykz.config.YkzConfig;
+import com.efficient.ykz.constant.YkzConstant;
 import com.efficient.ykz.constant.YkzSendMsgTypeEnum;
+import com.efficient.ykz.exception.YkzException;
 import com.efficient.ykz.model.dto.msg.*;
 import com.efficient.ykz.model.dto.todo.YkzTodoInfo;
 import com.efficient.ykz.model.dto.worknotice.*;
@@ -28,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -145,7 +150,12 @@ public class YkzApiServiceImpl implements YkzApiService {
         //消息体
         String msg = "";
         JSONObject jsonObject;
-        switch (ykzSendMsg.getMsgType()) {
+        Boolean winOpen = ykzProperties.getYkzApi().getWinOpen();
+        YkzSendMsgTypeEnum msgType = ykzSendMsg.getMsgType();
+        if (Objects.isNull(msgType)) {
+            throw new YkzException("msgType 参数错误！");
+        }
+        switch (msgType) {
             case TEXT:
                 YkzSendMsgText sendMsgText = ykzSendMsg.getTextDetail();
                 jsonObject = new JSONObject();
@@ -157,8 +167,12 @@ public class YkzApiServiceImpl implements YkzApiService {
                 YkzSendMsgLink sendMsgLink = ykzSendMsg.getLinkDetail();
                 jsonObject = new JSONObject();
                 jsonObject.set("msgtype", YkzSendMsgTypeEnum.LINK.getType());
+                String messageUrl = sendMsgLink.getMessageUrl();
+                if (Objects.equals(winOpen, Boolean.TRUE)) {
+                    messageUrl = YkzConstant.WIN_OPEN + messageUrl;
+                }
                 jsonObject.set("link", new JSONObject().set("title", sendMsgLink.getTitle())
-                        .set("messageUrl", sendMsgLink.getMessageUrl())
+                        .set("messageUrl", messageUrl)
                         .set("text", sendMsgLink.getText())
                         .set("picMediaId", sendMsgLink.getPicMediaId())
                         .set("sourceUrl", sendMsgLink.getSourceUrl())
@@ -227,6 +241,10 @@ public class YkzApiServiceImpl implements YkzApiService {
         String msg = ykzWorkNotice.getMsg();
         YkzSendMsgTypeEnum msgType = ykzWorkNotice.getMsgType();
         JSONObject jsonObject;
+        Boolean winOpen = ykzProperties.getYkzApi().getWinOpen();
+        if (Objects.isNull(msgType)) {
+            throw new YkzException("msgType 参数错误！");
+        }
         switch (msgType) {
             case TEXT:
                 YkzWorkNoticeMsgText workNoticeMsgText = ykzWorkNotice.getMsgText();
@@ -241,8 +259,12 @@ public class YkzApiServiceImpl implements YkzApiService {
                 YkzWorkNoticeMsgLink workNoticeMsgLink = ykzWorkNotice.getMsgLink();
                 jsonObject = new JSONObject();
                 jsonObject.set("msgtype", YkzSendMsgTypeEnum.LINK.getType());
+                String messageUrl = workNoticeMsgLink.getMessageUrl();
+                if (Objects.equals(winOpen, Boolean.TRUE)) {
+                    messageUrl = YkzConstant.WIN_OPEN + messageUrl;
+                }
                 jsonObject.set(YkzSendMsgTypeEnum.LINK.getType(),
-                        new JSONObject().set("messageUrl", workNoticeMsgLink.getMessageUrl())
+                        new JSONObject().set("messageUrl", messageUrl)
                                 .set("picUrl", workNoticeMsgLink.getPicUrl())
                                 .set("title", workNoticeMsgLink.getTitle())
                                 .set("text", workNoticeMsgLink.getText())
@@ -259,7 +281,8 @@ public class YkzApiServiceImpl implements YkzApiService {
                 );
                 msg = jsonObject.toString();
                 break;
-
+            default:
+                throw new YkzException("msgType 参数错误！");
         }
         oapiMessageWorkNotificationRequest.setMsg(msg);
         //获取结果
@@ -306,14 +329,28 @@ public class YkzApiServiceImpl implements YkzApiService {
         //业务系统自定义ID
         oapiTcV2OpenapiTaskCreateJsonRequest.setBizTaskId(todoInfo.getBizTaskId());
         //URL
-        Integer openType = todoInfo.getOpenType();
+        Boolean winOpen = ykzProperties.getYkzApi().getWinOpen();
         String url = todoInfo.getUrl();
-        if (Objects.equals(openType, 2)) {
-            url = "taurusykz://taurusclient/page/link?url=" + URLEncodeUtil.encodeAll(url);
+        UserTicket userTicket = new UserTicket();
+        userTicket.setZwddId(todoInfo.getAssigneeId());
+        userTicket.setCreateTime(new Date().getTime());
+        String token = URLEncodeUtil.encodeAll(AESUtils.encrypt(JackSonUtil.toJson(userTicket)));
+        String bizTaskId = todoInfo.getBizTaskId();
+        if (StrUtil.isNotBlank(url)) {
+            url = url + "&authCode=" + token + "&bizTaskId=" + bizTaskId;
         }
+        String mobileUrl = todoInfo.getMobileUrl();
+        if (StrUtil.isNotBlank(mobileUrl)) {
+            mobileUrl = mobileUrl + "&authCode=" + token + "&bizTaskId=" + bizTaskId;
+        }
+
+        if (Objects.equals(winOpen, Boolean.TRUE)) {
+            url = YkzConstant.WIN_OPEN + URLEncodeUtil.encodeAll(url);
+        }
+
         oapiTcV2OpenapiTaskCreateJsonRequest.setUrl(url);
         //移动端URL
-        oapiTcV2OpenapiTaskCreateJsonRequest.setMobileUrl(todoInfo.getMobileUrl());
+        oapiTcV2OpenapiTaskCreateJsonRequest.setMobileUrl(mobileUrl);
         //模板code
         oapiTcV2OpenapiTaskCreateJsonRequest.setTemplateCode(todoInfo.getTemplateCode());
         //待办人ID

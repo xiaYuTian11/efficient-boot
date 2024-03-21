@@ -23,10 +23,10 @@ public class YkzTodoInfo {
      */
     private String subject;
     /**
-     * 1-渝快政内部打开，2-外部浏览器打开
-     * 必填
-     */
-    private Integer openType = 1;
+    //  * 1-渝快政内部打开，2-外部浏览器打开
+    //  * 必填
+    //  */
+    // private Integer openType = 1;
     /**
      * 创建人信息，示例：{“imgId”:"",“name”:“张三”}不传的话创建人缺少名称与头像信息
      * 不必填
@@ -42,11 +42,11 @@ public class YkzTodoInfo {
      * 不必填
      */
     private Date dueTime;
-    /**
-     * 标题（上限200字符）
-     * 必填
-     */
-    private String tenantId;
+    // /**
+    //  * 租户ID
+    //  * 必填
+    //  */
+    // private String tenantId;
     /**
      * 模板code
      * 不必填

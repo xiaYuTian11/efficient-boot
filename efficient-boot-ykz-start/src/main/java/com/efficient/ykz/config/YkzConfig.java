@@ -6,6 +6,7 @@ import com.efficient.ykz.exception.YkzException;
 import com.efficient.ykz.properties.YkzApi;
 import com.efficient.ykz.properties.YkzProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,7 @@ import java.util.concurrent.atomic.AtomicReference;
 @Configuration
 @EnableConfigurationProperties(YkzProperties.class)
 @Slf4j
+@MapperScan(basePackages = {"com.efficient.ykz.dao"})
 public class YkzConfig {
     private final AtomicReference<ExecutableClient> executableClientRef = new AtomicReference<>();
     @Autowired

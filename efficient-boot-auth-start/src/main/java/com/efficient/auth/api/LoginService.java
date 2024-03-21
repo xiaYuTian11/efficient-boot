@@ -11,9 +11,7 @@ import com.efficient.common.result.Result;
  */
 public interface LoginService {
     Result<UserTicket> login(LoginInfo info);
-
-    String createAuthCode(String userId);
-
+    
     void putCacheUser(String token, UserTicket userTicket);
 
     UserTicket getCacheUser(String token);

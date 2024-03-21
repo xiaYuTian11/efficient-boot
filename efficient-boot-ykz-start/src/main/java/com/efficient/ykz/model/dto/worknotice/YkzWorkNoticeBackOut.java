@@ -14,7 +14,7 @@ public class YkzWorkNoticeBackOut {
      */
     private String msgType = "workNotification";
     /**
-     * 撤回应用工作通知的应用标识。请填写：应用标识。
+     * 撤回应用工作通知的应用标识。请填写：应用标识。一般是appkey的前面两部分
      */
     private String msgApp;
     /**
