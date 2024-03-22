@@ -111,6 +111,8 @@
     <logger name="${log.daoPackage}" additivity="true" level="${log.sqlLevel}"/>
 
     <!-- 指定最基础的日志输出级别 -->
+
+
     <root level="${log.level}">
         <!-- appender 将会添加到这个 loger -->
         <appender-ref ref="console"/>

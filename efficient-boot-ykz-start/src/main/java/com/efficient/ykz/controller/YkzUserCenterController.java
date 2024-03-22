@@ -4,6 +4,7 @@ import com.dcqc.uc.oauth.sdk.model.Request;
 import com.dcqc.uc.oauth.sdk.model.v3.SynchronizeV3DTO;
 import com.efficient.common.permission.Permission;
 import com.efficient.common.result.Result;
+import com.efficient.ykz.api.YkzUserCenterHandleService;
 import com.efficient.ykz.api.YkzUserCenterService;
 import com.efficient.ykz.api.YkzUserCenterSyncService;
 import com.efficient.ykz.model.vo.YkzLabel;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 用户中心
@@ -41,6 +43,8 @@ public class YkzUserCenterController {
     private YkzUserCenterService ykzUserCenterService;
     @Autowired
     private ApplicationContext applicationContext;
+    @Autowired
+    private YkzUserCenterHandleService handleService;
 
     /**
      * 根据机构Code拉取机构
@@ -52,7 +56,12 @@ public class YkzUserCenterController {
             @ApiImplicitParam(name = "orgCode", value = "拉取顶级机构organizationCode正式环境传575324d0-2257-4f53-8e5f-ca72d992abe9，测试环境传GO_1065d20ebe964b4d9da264cfe5e5d240", required = true)
     })
     public Result<YkzOrg> orgByCode(@NotBlank(message = "orgCode 不能为空") @RequestParam(name = "orgCode") String orgCode) throws Exception {
-        return ykzUserCenterService.orgByCode(orgCode);
+        Result<YkzOrg> result = ykzUserCenterService.orgByCode(orgCode);
+        if (Objects.equals(result.getCode(), Result.ok().getCode())) {
+            log.info("开始处理入库逻辑");
+            return handleService.handleOrgByCode(result.getData());
+        }
+        return result;
     }
 
     /**
@@ -61,7 +70,12 @@ public class YkzUserCenterController {
     @PostMapping("/org/orgByCodeList")
     @ApiOperation(value = "根据机构Code批量拉取机构", response = YkzOrg.class)
     public Result<List<YkzOrg>> orgByCodeList(@RequestBody List<String> orgCodeList) throws Exception {
-        return ykzUserCenterService.orgByCodeList(orgCodeList);
+        Result<List<YkzOrg>> result = ykzUserCenterService.orgByCodeList(orgCodeList);
+        if (Objects.equals(result.getCode(), Result.ok().getCode())) {
+            log.info("开始处理入库逻辑");
+            return handleService.handleOrgByCodeList(result.getData());
+        }
+        return result;
     }
 
     /**
@@ -80,8 +94,8 @@ public class YkzUserCenterController {
             @ApiImplicitParam(name = "orgCode", value = "渝快政orgCode", required = true),
             @ApiImplicitParam(name = "pageNum", value = "pageNum", required = true),
             @ApiImplicitParam(name = "pageSize", value = "pageSize 最大 100", required = true),
-            @ApiImplicitParam(name = "includeTop", value = "是否包含当前机构", required = false,defaultValue = "true"),
-            @ApiImplicitParam(name = "flattenTree", value = "是否扁平化机构", required = false,defaultValue = "false"),
+            @ApiImplicitParam(name = "includeTop", value = "是否包含当前机构", required = false, defaultValue = "true"),
+            @ApiImplicitParam(name = "flattenTree", value = "是否扁平化机构", required = false, defaultValue = "false"),
     })
     public Result<List<YkzOrg>> orgByParentCode(
             @NotBlank(message = "orgCode 不能为空") @RequestParam(name = "orgCode") String orgCode,
@@ -95,7 +109,13 @@ public class YkzUserCenterController {
         if (pageSize < 20) {
             pageSize = 20;
         }
-        return ykzUserCenterService.orgByParentCode(orgCode, pageNum, pageSize, includeTop, flattenTree);
+
+        Result<List<YkzOrg>> result = ykzUserCenterService.orgByParentCode(orgCode, pageNum, pageSize, includeTop, flattenTree);
+        if (Objects.equals(result.getCode(), Result.ok().getCode())) {
+            log.info("开始处理入库逻辑");
+            return handleService.handleOrgByParentCode(orgCode, includeTop, flattenTree, result.getData());
+        }
+        return result;
     }
 
     /**
@@ -107,7 +127,12 @@ public class YkzUserCenterController {
             @ApiImplicitParam(name = "phone", value = "手机号", required = true)
     })
     public Result<YkzUser> userByMobile(@NotBlank(message = "phone 不能为空") @RequestParam(name = "phone") String phone) throws Exception {
-        return ykzUserCenterService.userByMobile(phone);
+        Result<YkzUser> result = ykzUserCenterService.userByMobile(phone);
+        if (Objects.equals(result.getCode(), Result.ok().getCode())) {
+            log.info("开始处理入库逻辑");
+            return handleService.handleUserByMobile(result.getData());
+        }
+        return result;
     }
 
     /**
@@ -116,7 +141,12 @@ public class YkzUserCenterController {
     @PostMapping("/user/userByMobileList")
     @ApiOperation(value = "批量根据用户手机号查询用户信息", response = YkzUser.class)
     public Result<List<YkzUser>> userByMobileList(@RequestBody List<String> phoneList) throws Exception {
-        return ykzUserCenterService.userByMobileList(phoneList);
+        Result<List<YkzUser>> result = ykzUserCenterService.userByMobileList(phoneList);
+        if (Objects.equals(result.getCode(), Result.ok().getCode())) {
+            log.info("开始处理入库逻辑");
+            return handleService.handleUserByMobileList(result.getData());
+        }
+        return result;
     }
 
     /**
@@ -128,7 +158,12 @@ public class YkzUserCenterController {
             @ApiImplicitParam(name = "zwddId", value = "政务钉钉ID", required = true)
     })
     public Result<YkzUser> userByZwddId(@NotBlank(message = "zwddId 不能为空") @RequestParam(name = "zwddId") String zwddId) throws Exception {
-        return ykzUserCenterService.userByZwddId(zwddId);
+        Result<YkzUser> result = ykzUserCenterService.userByZwddId(zwddId);
+        if (Objects.equals(result.getCode(), Result.ok().getCode())) {
+            log.info("开始处理入库逻辑");
+            return handleService.handleUserByZwddId(result.getData());
+        }
+        return result;
     }
 
     /**
@@ -137,7 +172,12 @@ public class YkzUserCenterController {
     @PostMapping("/user/userByZwddIdList")
     @ApiOperation(value = "批量根据用户政钉ID查询用户信息", response = YkzUser.class)
     public Result<List<YkzUser>> userByZwddIdList(@RequestBody List<String> zwddIdList) throws Exception {
-        return ykzUserCenterService.userByZwddIdList(zwddIdList);
+        Result<List<YkzUser>> result = ykzUserCenterService.userByZwddIdList(zwddIdList);
+        if (Objects.equals(result.getCode(), Result.ok().getCode())) {
+            log.info("开始处理入库逻辑");
+            return handleService.handleUserByZwddIdList(result.getData());
+        }
+        return result;
     }
 
     /**
@@ -149,7 +189,12 @@ public class YkzUserCenterController {
             @ApiImplicitParam(name = "zwddId", value = "政务钉钉ID", required = true)
     })
     public Result<List<YkzUserPost>> userPostByZwddId(@NotBlank(message = "zwddId 不能为空") @RequestParam(name = "zwddId") String zwddId) throws Exception {
-        return ykzUserCenterService.userPostByZwddId(zwddId);
+        Result<List<YkzUserPost>> result = ykzUserCenterService.userPostByZwddId(zwddId);
+        if (Objects.equals(result.getCode(), Result.ok().getCode())) {
+            log.info("开始处理入库逻辑");
+            return handleService.handleUserPostByZwddId(result.getData());
+        }
+        return result;
     }
 
     /**

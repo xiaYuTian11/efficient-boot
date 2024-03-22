@@ -15,7 +15,6 @@ import java.util.Base64;
  */
 @Component
 public class AuthUtil {
-    private final static String SALT = "1089";
     @Autowired
     private AuthProperties authProperties;
 

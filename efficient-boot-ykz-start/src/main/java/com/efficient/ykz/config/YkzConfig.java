@@ -2,13 +2,18 @@ package com.efficient.ykz.config;
 
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.xxpt.gateway.shared.client.http.ExecutableClient;
+import com.efficient.ykz.api.YkzUserCenterHandleService;
 import com.efficient.ykz.exception.YkzException;
 import com.efficient.ykz.properties.YkzApi;
 import com.efficient.ykz.properties.YkzProperties;
+import com.efficient.ykz.service.YkzUserCenterHandleDefaultService;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Objects;
@@ -63,5 +68,28 @@ public class YkzConfig {
         executableClient.setSecretKey(appsecret);
         executableClient.init();
         return executableClient;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(name = "com.efficient.ykz.userCenter.handle", havingValue = "default", matchIfMissing = true)
+    public YkzUserCenterHandleService defaultHandle() {
+        return new YkzUserCenterHandleDefaultService();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(name = "com.efficient.ykz.userCenter.handle", havingValue = "custom", matchIfMissing = true)
+    public YkzUserCenterHandleService customHandle() throws Exception {
+        String handleClassName = ykzProperties.getUserCenter().getHandleClassName();
+        if (StrUtil.isBlank(handleClassName)) {
+            throw new YkzException("当com.efficient.ykz.userCenter.handle配置为custom，handleClassName 必填");
+        }
+        Class<?> aClass = Class.forName(handleClassName);
+        Object object = aClass.newInstance();
+        if (object instanceof YkzUserCenterHandleService) {
+            return (YkzUserCenterHandleService) object;
+        }
+        throw new YkzException("com.efficient.ykz.userCenter.handleClassName 必须实现YkzUserCenterHandleService");
     }
 }

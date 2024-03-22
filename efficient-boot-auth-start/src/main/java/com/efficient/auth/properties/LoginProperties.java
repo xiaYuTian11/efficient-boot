@@ -48,7 +48,7 @@ public class LoginProperties {
     /**
      * 密码是否加盐
      */
-    private boolean enableSalt = false;
+    private boolean enableSalt = true;
     /**
      * 盐值
      */

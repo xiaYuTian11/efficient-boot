@@ -11,6 +11,14 @@ import lombok.Data;
 @Data
 public class YkzUserCenter {
     /**
+     * 用户中心数据处理逻辑，default，custom，需要实现类com.efficient.ykz.api.YkzUserCenterHandleService
+     */
+    private String handle = "default";
+    /**
+     * handle 为 custom时必填，全限定名称
+     */
+    private String handleClassName;
+    /**
      * 用户中心 IP
      */
     private String ip = "https://uc-openplatform.bigdatacq.com:4403";
@@ -79,5 +87,12 @@ public class YkzUserCenter {
      * 批量根据用户手机号查询用户标签信息
      */
     private String userTagByMobileList = "/ykz/user/listLabelByMobiles";
-
+    /**
+     * 密码是否加盐
+     */
+    private boolean enableSalt = true;
+    /**
+     * 盐值
+     */
+    private String saltValue = "1809";
 }

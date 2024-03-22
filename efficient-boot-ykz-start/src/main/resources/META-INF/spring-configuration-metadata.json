@@ -8,11 +8,25 @@
   ],
   "properties": [
     {
+      "name": "com.efficient.ykz.userCenter.handle",
+      "type": "java.lang.String",
+      "description": "用户中心数据处理逻辑，default，custom",
+      "defaultValue": "default",
+      "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
+    },
+    {
+      "name": "com.efficient.ykz.userCenter.handleClassName",
+      "type": "java.lang.String",
+      "description": "handle 为 custom时必填，全限定名称",
+      "defaultValue": "",
+      "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
+    },
+    {
       "name": "com.efficient.ykz.userCenter.ip",
       "type": "java.lang.String",
       "description": "渝快政IP",
       "defaultValue": "https://uc-openplatform.bigdatacq.com:4403",
-      "sourceType": "zzzz"
+      "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
     },
     {
       "name": "com.efficient.ykz.userCenter.appId",
@@ -127,6 +141,20 @@
       "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
     },
     {
+      "name": "com.efficient.ykz.userCenter..enable-salt",
+      "type": "java.lang.Boolean",
+      "description": "密码是否加盐",
+      "defaultValue": true,
+      "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
+    },
+    {
+      "name": "com.efficient.ykz.userCenter..salt-value",
+      "type": "java.lang.String",
+      "description": "密码盐值",
+      "defaultValue": "1809",
+      "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
+    },
+    {
       "name": "com.efficient.ykz.ykzApi.domainName",
       "type": "java.lang.String",
       "description": "用户中心 IP",
@@ -224,5 +252,19 @@
       "defaultValue": "/tc/openapi/task/cancel.json"
     }
   ],
-  "hints": []
+  "hints": [
+    {
+      "name": "com.efficient.ykz.userCenter.handle",
+      "values": [
+        {
+          "value": "default",
+          "description": "默认"
+        },
+        {
+          "value": "custom",
+          "description": "自定义"
+        }
+      ]
+    }
+  ]
 }

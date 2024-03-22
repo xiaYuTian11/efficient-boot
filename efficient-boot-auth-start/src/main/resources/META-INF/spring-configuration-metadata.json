@@ -116,7 +116,7 @@
       "name": "com.efficient.auth.login.enable-salt",
       "type": "java.lang.Boolean",
       "description": "密码是否加盐",
-      "defaultValue": false,
+      "defaultValue": true,
       "sourceType": "com.efficient.auth.properties.LoginProperties"
     },
     {

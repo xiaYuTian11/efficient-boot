@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.efficient.system.dao.SysUnitMapper">
+
+
+    <select id="findLastUnitByLength" resultType="com.efficient.system.model.entity.SysUnit">
+        select * from efficient_sys_unit where length(level_code) = #{unitLevelCount} order by level_code desc limit 1
+    </select>
+    <select id="findLastUnitByParentId" resultType="com.efficient.system.model.entity.SysUnit">
+        select * from efficient_sys_unit where parent_id = #{parentId} order by level_code desc limit 1
+    </select>
+    <select id="getBelongById" resultType="java.lang.String">
+        WITH RECURSIVE org_path AS (
+            SELECT id, parent_id, name, CAST(name AS TEXT) AS path
+            FROM efficient_sys_unit
+            WHERE id = #{id}
+            UNION ALL
+            SELECT o.id, o.parent_id, o.name, CONCAT(o.name, '-', op.path)
+            FROM efficient_sys_unit o
+                     JOIN org_path op ON o.id = op.parent_id
+        )
+        SELECT path
+        FROM org_path
+        WHERE id = (
+            SELECT id
+            FROM org_path
+            ORDER BY length(path) DESC
+            LIMIT 1
+            );
+    </select>
+    <select id="getByOrgCode" resultType="com.efficient.system.model.entity.SysUnit">
+        select * from  efficient_sys_unit where org_code = #{organizationCode} limit 1
+    </select>
+    <select id="getUnitByDeptId" resultType="com.efficient.system.model.entity.SysUnit">
+        WITH RECURSIVE UnitHierarchy AS (
+            SELECT id, parent_id, unit_type,level_code,1 as depth
+            FROM efficient_sys_unit
+            WHERE id = #{deptId}
+            UNION
+            SELECT su.id, su.parent_id, su.unit_type,su.level_code,uh.depth + 1
+            FROM efficient_sys_unit su
+                     JOIN UnitHierarchy uh ON su.id = uh.parent_id
+        )
+        SELECT id, parent_id, unit_type,level_code
+        FROM UnitHierarchy
+        WHERE unit_type = '2'
+        ORDER BY depth ASC
+        LIMIT 1;
+    </select>
+</mapper>
+

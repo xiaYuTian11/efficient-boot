@@ -105,19 +105,26 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
             return Result.ok(resultList);
         }
 
-        // return CollUtil.isEmpty(resultList) ? YKZ_ERROR_MSG.get() : Result.ok(resultList);
     }
 
     @Override
     public Result<List<YkzOrg>> orgByParentCode(String orgCode, Integer pageNum, Integer pageSize, boolean includeTop, boolean flattenTree) {
         TimeInterval timeInterval = DateUtil.timer();
-        // timeInterval.start();
         List<YkzOrg> resultList = this.childOrg(orgCode, pageNum, pageSize);
         log.info("查询顶级节点数据：{}", orgCode);
-        if (!StrUtil.equalsAny(orgCode, YkzConstant.YKZ_ORG_TOP_CODE_DEV, YkzConstant.YKZ_ORG_TOP_CODE) && includeTop) {
-            Result<YkzOrg> result = this.orgByCode(orgCode);
-            if (result.getCode() == ResultEnum.SUCCESS.getCode()) {
-                resultList.add(result.getData());
+        if (includeTop) {
+            if (!StrUtil.equalsAny(orgCode, YkzConstant.YKZ_ORG_TOP_CODE_DEV, YkzConstant.YKZ_ORG_TOP_CODE)) {
+                Result<YkzOrg> result = this.orgByCode(orgCode);
+                if (result.getCode() == ResultEnum.SUCCESS.getCode()) {
+                    resultList.add(result.getData());
+                }
+            } else {
+                YkzOrg ykzOrg = new YkzOrg();
+                ykzOrg.setId(0L);
+                ykzOrg.setName("虚拟顶级节点");
+                ykzOrg.setOrganizationCode(orgCode);
+                ykzOrg.setParentId(-1L);
+                resultList.add(ykzOrg);
             }
         }
 
@@ -128,13 +135,12 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
                 YkzOrgService ykzOrgService = applicationContext.getBean(YkzOrgService.class);
                 ykzOrgService.saveErrorMsg(JackSonUtil.toJson(YKZ_ERROR_MSG.get()));
             }
-            // return YKZ_ERROR_MSG.get();
+
         } else {
             if (ykzProperties.getUserCenter().isDb()) {
                 YkzOrgService ykzOrgService = applicationContext.getBean(YkzOrgService.class);
                 ykzOrgService.saveBatchDb(resultList);
             }
-            // return Result.ok(resultList);
         }
         return CollUtil.isEmpty(ykzOrgList) ? Result.fail() : Result.ok(ykzOrgList);
     }
@@ -153,6 +159,9 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
         Date now = new Date();
         JSONObject jsonObject = JSONUtil.createObj().set("appId", appId).set("appSecret", SM2ToolUtil.sm2Encode(jwtHelper.getPublicKey(), appSecret));
         YkzAccessToken userCenterAccessToken = this.sendRequestOne(ykzProperties.getUserCenter().getAccessTokenUrl(), false, jsonObject, YkzAccessToken.class);
+        if (Objects.isNull(userCenterAccessToken)) {
+            return null;
+        }
         accessToken = userCenterAccessToken.getAccessToken();
         expiresInDate = DateUtil.offsetSecond(now, userCenterAccessToken.getExpiresIn() - 30);
         return userCenterAccessToken;
@@ -360,8 +369,9 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
         log.info("orgByParentCode-childOrg 当前页：{},每页数量：{},总数量：{},总页数：{}", ykzOrgPage.getPageNumber(), ykzOrgPage.getPageSize(), ykzOrgPage.getTotal(), ykzOrgPage.getTotalPage());
         List<YkzOrg> list = ykzOrgPage.getList();
         if (CollUtil.isEmpty(list)) {
-            return null;
+            return new ArrayList<>();
         }
+
         CopyOnWriteArrayList<YkzOrg> resultList = new CopyOnWriteArrayList<>(list);
 
         Integer resultPageNumber = ykzOrgPage.getPageNumber();
