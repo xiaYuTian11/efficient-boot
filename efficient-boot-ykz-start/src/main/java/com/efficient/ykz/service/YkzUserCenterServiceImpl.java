@@ -384,23 +384,12 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
         }
 
         if (CollUtil.isNotEmpty(list)) {
-            // list.parallelStream().map(YkzOrg::getOrganizationCode)
-            //         .map(et -> this.childOrg(et, 1, pageSize))
-            //         .forEach(resultList::addAll);
-
             list.parallelStream().forEach(et -> {
                 List<YkzOrg> ykzOrgList = this.childOrg(et.getOrganizationCode(), 1, pageSize);
                 if (CollUtil.isNotEmpty(ykzOrgList)) {
                     resultList.addAll(ykzOrgList);
                 }
             });
-
-            // for (YkzOrg ykzOrg : list) {
-            //     List<YkzOrg> ykzOrgList = this.childOrg(ykzOrg.getOrganizationCode(), 1, pageSize);
-            //     if (CollUtil.isNotEmpty(ykzOrgList)) {
-            //         resultList.addAll(ykzOrgList);
-            //     }
-            // }
         }
         return resultList;
     }
