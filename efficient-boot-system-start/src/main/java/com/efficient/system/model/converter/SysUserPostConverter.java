@@ -8,13 +8,13 @@ import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 /**
-* <p>
-* 用户职位信息 模型转换器
-* </p>
-*
-* @author TMW
-* @date 2024-03-21 14:25:28
-*/
+ * <p>
+ * 用户职位信息 模型转换器
+ * </p>
+ *
+ * @author TMW
+ * @date 2024-03-21 14:25:28
+ */
 @Mapper(componentModel = "spring")
 public interface SysUserPostConverter {
 

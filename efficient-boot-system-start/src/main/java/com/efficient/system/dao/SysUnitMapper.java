@@ -6,13 +6,13 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 /**
-* <p>
-* 机构数据 持久层
-* </p>
-*
-* @author TMW
-* @date 2024-03-21 14:25:28
-*/
+ * <p>
+ * 机构数据 持久层
+ * </p>
+ *
+ * @author TMW
+ * @date 2024-03-21 14:25:28
+ */
 @Mapper
 public interface SysUnitMapper extends BaseMapper<SysUnit> {
 
