@@ -60,6 +60,7 @@ public class YkzUserCenterController {
         if (Objects.equals(result.getCode(), Result.ok().getCode())) {
             log.info("开始处理入库逻辑");
             return handleService.handleOrgByCode(result.getData());
+            log.info("处理入库逻辑结束");
         }
         return result;
     }
@@ -74,6 +75,7 @@ public class YkzUserCenterController {
         if (Objects.equals(result.getCode(), Result.ok().getCode())) {
             log.info("开始处理入库逻辑");
             return handleService.handleOrgByCodeList(result.getData());
+            log.info("处理入库逻辑结束");
         }
         return result;
     }
@@ -114,6 +116,7 @@ public class YkzUserCenterController {
         if (Objects.equals(result.getCode(), Result.ok().getCode())) {
             log.info("开始处理入库逻辑");
             return handleService.handleOrgByParentCode(orgCode, includeTop, flattenTree, result.getData());
+            log.info("处理入库逻辑结束");
         }
         return result;
     }
@@ -131,6 +134,7 @@ public class YkzUserCenterController {
         if (Objects.equals(result.getCode(), Result.ok().getCode())) {
             log.info("开始处理入库逻辑");
             return handleService.handleUserByMobile(result.getData());
+            log.info("处理入库逻辑结束");
         }
         return result;
     }
@@ -145,6 +149,7 @@ public class YkzUserCenterController {
         if (Objects.equals(result.getCode(), Result.ok().getCode())) {
             log.info("开始处理入库逻辑");
             return handleService.handleUserByMobileList(result.getData());
+            log.info("处理入库逻辑结束");
         }
         return result;
     }
@@ -162,6 +167,7 @@ public class YkzUserCenterController {
         if (Objects.equals(result.getCode(), Result.ok().getCode())) {
             log.info("开始处理入库逻辑");
             return handleService.handleUserByZwddId(result.getData());
+            log.info("处理入库逻辑结束");
         }
         return result;
     }
@@ -176,6 +182,7 @@ public class YkzUserCenterController {
         if (Objects.equals(result.getCode(), Result.ok().getCode())) {
             log.info("开始处理入库逻辑");
             return handleService.handleUserByZwddIdList(result.getData());
+            log.info("处理入库逻辑结束");
         }
         return result;
     }
@@ -193,6 +200,7 @@ public class YkzUserCenterController {
         if (Objects.equals(result.getCode(), Result.ok().getCode())) {
             log.info("开始处理入库逻辑");
             return handleService.handleUserPostByZwddId(result.getData());
+            log.info("处理入库逻辑结束");
         }
         return result;
     }
