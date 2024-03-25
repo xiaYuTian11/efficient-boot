@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- *
  * @author TMW
  * @since 2024/3/21 11:05
  */
@@ -203,7 +202,13 @@ public class YkzUserCenterHandleDefaultService implements YkzUserCenterHandleSer
         sysUnit.setCreditCode(data.getCreditCode());
         sysUnit.setAreaLevel(data.getAreaLevel());
         sysUnit.setPrincipal(data.getPrincipal());
-        sysUnit.setBelong(sysUnitService.getBelongById(sysUnit.getId()));
+        String belong = sysUnitService.getBelongById(sysUnit.getParentId());
+        if (StrUtil.isBlank(belong)) {
+            belong = sysUnit.getName();
+        } else {
+            belong = belong + "-" + sysUnit.getName();
+        }
+        sysUnit.setBelong(belong);
         sysUnit.setRemark(data.getRemark());
         sysUnit.setIsEnable(data.getIsEnable());
         sysUnit.setCreateTime(new Date(data.getCreateTime()));
