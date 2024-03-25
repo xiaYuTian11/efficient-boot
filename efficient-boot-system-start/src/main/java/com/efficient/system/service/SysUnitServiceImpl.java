@@ -38,8 +38,7 @@ public class SysUnitServiceImpl extends ServiceImpl<SysUnitMapper, SysUnit> impl
                 return SystemConstant.UNIT_TOP_LEVEL;
             } else {
                 String levelCode = sysUnitLast.getLevelCode();
-                Long lastLevelCode = Long.parseLong(levelCode) + 1L;
-                return String.valueOf(lastLevelCode);
+                return getNextLevelCode(levelCode);
             }
         } else {
             SysUnit sysUnitLast = sysUnitMapper.findLastUnitByParentId(parentId);
@@ -47,10 +46,15 @@ public class SysUnitServiceImpl extends ServiceImpl<SysUnitMapper, SysUnit> impl
                 return sysUnit.getLevelCode() + SystemConstant.UNIT_SUB_LEVEL;
             } else {
                 String levelCode = sysUnitLast.getLevelCode();
-                Long lastLevelCode = Long.parseLong(levelCode) + 1;
-                return String.valueOf(lastLevelCode);
+                return getNextLevelCode(levelCode);
             }
         }
+    }
+    private String getNextLevelCode(String levelCode){
+        String substring = levelCode.substring(levelCode.length() - 3);
+        int next = Integer.parseInt(substring) + 1;
+        String format = String.format("%03d", next);
+        return levelCode.substring(0, levelCode.length() - 3) + format;
     }
 
     @Override
