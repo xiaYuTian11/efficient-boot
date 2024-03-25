@@ -74,7 +74,7 @@ public class YkzUserCenterHandleDefaultService implements YkzUserCenterHandleSer
             this.setSysUnit(sysUnit, data);
             sysUnitService.save(sysUnit);
         }
-
+        log.info("处理入库逻辑结束");
         return Result.ok(data);
     }
 
@@ -83,6 +83,7 @@ public class YkzUserCenterHandleDefaultService implements YkzUserCenterHandleSer
         for (YkzOrg ykzOrg : data) {
             this.handleOrgByCode(ykzOrg);
         }
+        log.info("处理入库逻辑结束");
         return Result.ok(data);
     }
 
@@ -100,7 +101,7 @@ public class YkzUserCenterHandleDefaultService implements YkzUserCenterHandleSer
                 this.setChild(ykzOrg);
             }
         }
-
+        log.info("处理入库逻辑结束");
         return Result.ok(data);
     }
 
@@ -114,6 +115,7 @@ public class YkzUserCenterHandleDefaultService implements YkzUserCenterHandleSer
             this.setSysUser(sysUser, data);
             sysUserService.save(sysUser);
         }
+        log.info("处理入库逻辑结束");
         return Result.ok(data);
     }
 
@@ -122,6 +124,7 @@ public class YkzUserCenterHandleDefaultService implements YkzUserCenterHandleSer
         for (YkzUser ykzUser : data) {
             this.handleUserByMobile(ykzUser);
         }
+        log.info("处理入库逻辑结束");
         return Result.ok(data);
     }
 
@@ -183,6 +186,7 @@ public class YkzUserCenterHandleDefaultService implements YkzUserCenterHandleSer
             }
             sysUserPostService.saveOrUpdateBatch(sysUserPostList);
         }
+        log.info("处理入库逻辑结束");
         return Result.ok(data);
     }
 
