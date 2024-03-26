@@ -8,6 +8,7 @@ import com.efficient.system.api.SysUnitService;
 import com.efficient.system.api.SysUserPostService;
 import com.efficient.system.api.SysUserService;
 import com.efficient.system.constant.SystemConstant;
+import com.efficient.system.constant.UnitTypeEnum;
 import com.efficient.system.model.entity.SysUnit;
 import com.efficient.system.model.entity.SysUser;
 import com.efficient.system.model.entity.SysUserPost;
@@ -164,11 +165,17 @@ public class YkzUserCenterHandleDefaultService implements YkzUserCenterHandleSer
                 sysUserPost.setUserId(sysUser.getId());
                 sysUserPost.setDeptId(sysUnit.getId());
                 sysUserPost.setDeptLevelCode(sysUnit.getLevelCode());
-                SysUnit unitInfo = sysUnitService.getUnitByDeptId(sysUnit.getId());
-                if (Objects.nonNull(unitInfo)) {
-                    sysUserPost.setUnitId(unitInfo.getId());
-                    sysUserPost.setUnitLevelCode(unitInfo.getLevelCode());
+                if (StrUtil.equals(sysUnit.getUnitType(), UnitTypeEnum.NBJG.getCode())) {
+                    SysUnit unitInfo = sysUnitService.getUnitByDeptId(sysUnit.getId());
+                    if (Objects.nonNull(unitInfo)) {
+                        sysUserPost.setUnitId(unitInfo.getId());
+                        sysUserPost.setUnitLevelCode(unitInfo.getLevelCode());
+                    }
+                } else {
+                    sysUserPost.setUnitId(sysUserPost.getDeptId());
+                    sysUserPost.setUnitLevelCode(sysUserPost.getDeptLevelCode());
                 }
+
                 sysUserPost.setPermissionType("1");
                 Integer postType = ykzUserPost.getPostType();
                 sysUserPost.setMainJob(Objects.equals(postType, 1) ? 1 : 0);

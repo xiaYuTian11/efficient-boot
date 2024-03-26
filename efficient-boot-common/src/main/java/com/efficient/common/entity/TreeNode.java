@@ -13,13 +13,17 @@ import java.util.List;
 @Builder
 public class TreeNode {
     /**
-     * 本级code
+     * 本级id
+     */
+    private String id;
+    /**
+     * 父级id
+     */
+    private String parentId;
+    /**
+     * code
      */
     private String code;
-    /**
-     * 父级code
-     */
-    private String parentCode;
     /**
      * 名称
      */

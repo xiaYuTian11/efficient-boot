@@ -36,7 +36,7 @@ public class TreeUtil {
             createChildren(rootNode, nodeList);
             resultList.add(rootNode);
         }
-        return resultList.stream().sorted(Comparator.comparing(TreeNode::getOrder, Comparator.nullsLast(Comparator.naturalOrder())).thenComparing(TreeNode::getCode)).collect(Collectors.toList());
+        return resultList.stream().sorted(Comparator.comparing(TreeNode::getOrder, Comparator.nullsLast(Comparator.naturalOrder())).thenComparing(TreeNode::getId)).collect(Collectors.toList());
     }
 
     /**
@@ -49,11 +49,11 @@ public class TreeUtil {
     public static TreeNode createChildren(TreeNode parentNode, List<TreeNode> nodeList) {
         List<TreeNode> childrenList = new ArrayList<>();
         for (TreeNode treeNode : nodeList) {
-            if (StrUtil.equals(treeNode.getParentCode(), parentNode.getCode())) {
+            if (StrUtil.equals(treeNode.getParentId(), parentNode.getId())) {
                 childrenList.add(createChildren(treeNode, nodeList));
             }
         }
-        final List<TreeNode> collect = childrenList.stream().sorted(Comparator.comparing(TreeNode::getOrder, Comparator.nullsLast(Comparator.naturalOrder())).thenComparing(TreeNode::getCode)).collect(Collectors.toList());
+        final List<TreeNode> collect = childrenList.stream().sorted(Comparator.comparing(TreeNode::getOrder, Comparator.nullsLast(Comparator.naturalOrder())).thenComparing(TreeNode::getId)).collect(Collectors.toList());
         parentNode.setIsLeaf(collect.isEmpty());
         parentNode.setChildren(collect);
         return parentNode;

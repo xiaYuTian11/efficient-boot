@@ -27,7 +27,7 @@
             FROM org_path
             ORDER BY length(path) DESC
             LIMIT 1
-            );
+            )
     </select>
     <select id="getByOrgCode" resultType="com.efficient.system.model.entity.SysUnit">
         select * from  efficient_sys_unit where org_code = #{organizationCode} limit 1
@@ -46,7 +46,7 @@
         FROM UnitHierarchy
         WHERE unit_type = '2'
         ORDER BY depth ASC
-        LIMIT 1;
+        LIMIT 1
     </select>
 </mapper>
 
