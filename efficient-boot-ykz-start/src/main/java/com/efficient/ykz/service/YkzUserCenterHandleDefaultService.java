@@ -180,10 +180,10 @@ public class YkzUserCenterHandleDefaultService implements YkzUserCenterHandleSer
             }
         }
         if (CollUtil.isNotEmpty(sysUserPostList)) {
-            SysUserPost userPost = sysUserPostService.getMainByUserId(sysUser.getId());
-            if (Objects.isNull(userPost)) {
-                sysUserPostList.get(0).setMainJob(CommonConstant.TRUE_INT);
-            }
+//            SysUserPost userPost = sysUserPostService.getMainByUserId(sysUser.getId());
+//            if (Objects.isNull(userPost)) {
+//                sysUserPostList.get(0).setMainJob(CommonConstant.TRUE_INT);
+//            }
             sysUserPostService.saveOrUpdateBatch(sysUserPostList);
         }
         log.info("处理入库逻辑结束");
@@ -194,7 +194,7 @@ public class YkzUserCenterHandleDefaultService implements YkzUserCenterHandleSer
         sysUnit.setId(String.valueOf(data.getId()));
         sysUnit.setParentId(String.valueOf(data.getParentId()));
         sysUnit.setName(data.getName());
-        sysUnit.setSortName(data.getGovShortName());
+        sysUnit.setShortName(data.getGovShortName());
         String levelCode = sysUnitService.createLevelCode(String.valueOf(data.getParentId()));
         sysUnit.setLevelCode(levelCode);
         sysUnit.setUnitType(YkzUserCenterHandleService.getUnitType(data.getOrgType()));

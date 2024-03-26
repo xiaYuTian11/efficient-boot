@@ -8,7 +8,7 @@ CREATE TABLE efficient_sys_notify (
                                       menu_id VARCHAR(64),
                                       notify_type VARCHAR(10) not null ,
                                       recipient_system_type VARCHAR(10) not null,
-                                      creat_user_id VARCHAR(255) not null,
+                                      create_user_id VARCHAR(255) not null,
                                       title text not null,
                                       content text,
                                       remark text,
@@ -34,7 +34,7 @@ COMMENT ON COLUMN efficient_sys_notify.system_id IS '系统标识';
 COMMENT ON COLUMN efficient_sys_notify.menu_id IS '菜单ID';
 COMMENT ON COLUMN efficient_sys_notify.notify_type IS '通知类型，1-普通消息，2-短信，3-邮件，4-待办，5-工作通知，6-ding消息，7-公告，9-其他';
 COMMENT ON COLUMN efficient_sys_notify.recipient_system_type IS '接收系统，1-本系统，2-渝快政，9-其他系统';
-COMMENT ON COLUMN efficient_sys_notify.creat_user_id IS '创建用户id';
+COMMENT ON COLUMN efficient_sys_notify.create_user_id IS '创建用户id';
 COMMENT ON COLUMN efficient_sys_notify.title IS '标题';
 COMMENT ON COLUMN efficient_sys_notify.content IS '内容';
 COMMENT ON COLUMN efficient_sys_notify.remark IS '备注';
@@ -56,7 +56,7 @@ CREATE TABLE efficient_sys_unit (
                                     id VARCHAR(64) PRIMARY KEY,
                                     parent_id VARCHAR(64) ,
                                     name VARCHAR(255),
-                                    sort_name VARCHAR(255),
+                                    short_name VARCHAR(255),
                                     level_code VARCHAR(255),
                                     unit_type VARCHAR(255),
                                     sort BIGINT,
@@ -84,7 +84,7 @@ COMMENT ON TABLE public.efficient_sys_unit IS '机构数据';
 COMMENT ON COLUMN efficient_sys_unit.id IS '机构id';
 COMMENT ON COLUMN efficient_sys_unit.parent_id IS '父级机构ID';
 COMMENT ON COLUMN efficient_sys_unit.name IS '机构全称';
-COMMENT ON COLUMN efficient_sys_unit.sort_name IS '机构简称';
+COMMENT ON COLUMN efficient_sys_unit.short_name IS '机构简称';
 COMMENT ON COLUMN efficient_sys_unit.level_code IS '机构层级码';
 COMMENT ON COLUMN efficient_sys_unit.unit_type IS '机构类型,1-分类，2-单位，3-内部机构';
 COMMENT ON COLUMN efficient_sys_unit.sort IS '同级排序字段';
@@ -178,3 +178,20 @@ COMMENT ON COLUMN efficient_sys_user_post.pull_time IS '拉取时间';
 COMMENT ON COLUMN efficient_sys_user_post.join_date IS '加入时间';
 
 
+
+DROP TABLE IF EXISTS "efficient_sys_config";
+CREATE TABLE efficient_sys_config (
+                                         id VARCHAR(64) PRIMARY KEY,
+                                         code VARCHAR(255),
+                                         config text,
+                                         remark VARCHAR(255),
+                                         is_enable int2 default 0
+);
+
+COMMENT ON TABLE efficient_sys_config IS '系统配置';
+
+COMMENT ON COLUMN efficient_sys_config.id IS '主键';
+COMMENT ON COLUMN efficient_sys_config.code IS 'code';
+COMMENT ON COLUMN efficient_sys_config.config IS '配置';
+COMMENT ON COLUMN efficient_sys_config.remark IS '备注';
+COMMENT ON COLUMN efficient_sys_config.is_enable IS '是否启用';

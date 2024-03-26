@@ -47,8 +47,8 @@ public class SysUnit implements Serializable {
      *机构简称
      */
     @ApiModelProperty(value = "机构简称")
-    @TableField("sort_name")
-    private String sortName;
+    @TableField("short_name")
+    private String shortName;
     /**
      *机构层级码
      */

@@ -39,7 +39,7 @@ public class SysUnitDTO implements Serializable {
      *机构简称
      */
     @ApiModelProperty(value = "机构简称")
-    private String sortName;
+    private String shortName;
     /**
      *机构层级码
      */
