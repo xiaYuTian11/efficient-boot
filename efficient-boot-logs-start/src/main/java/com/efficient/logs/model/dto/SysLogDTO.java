@@ -34,6 +34,10 @@ public class SysLogDTO {
      */
     private String userId;
     /**
+     *用户单位ID
+     */
+    private String userUnitId;
+    /**
      * 用户名
      */
     private String userName;

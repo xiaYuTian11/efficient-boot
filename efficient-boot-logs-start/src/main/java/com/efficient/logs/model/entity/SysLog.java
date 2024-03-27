@@ -41,6 +41,11 @@ public class SysLog implements Serializable {
     @TableField("user_id")
     private String userId;
     /**
+     *用户单位ID
+     */
+    @TableField("user_unit_id")
+    private String userUnitId;
+    /**
     *用户名
     */
     @TableField("user_name")

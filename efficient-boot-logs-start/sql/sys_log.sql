@@ -4,6 +4,7 @@ CREATE TABLE public.efficient_sys_log (
                                           "system_id" varchar(255) NULL, -- 系统
                                           "module" varchar(255) NULL, -- 模块
                                           user_id varchar(255) NULL, -- 用户ID
+                                          user_unit_id varchar(255) NULL, -- 用户单位ID
                                           user_name varchar(255) NULL, -- 用户名
                                           log_ip varchar(20) NULL, -- 操作IP
                                           log_time timestamp(6) NULL, -- 记录日志时间
@@ -26,6 +27,7 @@ COMMENT ON COLUMN public.efficient_sys_log.id IS '主键';
 COMMENT ON COLUMN public.efficient_sys_log."system_id" IS '系统ID';
 COMMENT ON COLUMN public.efficient_sys_log."module" IS '模块';
 COMMENT ON COLUMN public.efficient_sys_log.user_id IS '用户ID';
+COMMENT ON COLUMN public.efficient_sys_log.user_unit_id IS '用户单位ID';
 COMMENT ON COLUMN public.efficient_sys_log.user_name IS '用户名';
 COMMENT ON COLUMN public.efficient_sys_log.log_ip IS '操作IP';
 COMMENT ON COLUMN public.efficient_sys_log.log_time IS '记录日志时间';

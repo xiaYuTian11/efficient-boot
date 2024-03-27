@@ -14,6 +14,10 @@ import java.util.List;
 public class UserTicket {
     private String token;
     private String userId;
+    /**
+     * 用户单位ID，针对用户多部门任职
+     */
+    private String userUnitId;
     private String zwddId;
     private String account;
     private String username;

@@ -14,6 +14,7 @@ public class UserAuthInfo {
     private String password;
     private String username;
     private String userId;
+    private String userUnitId;
     private String zwddId;
     /**
      * 用户是否锁定

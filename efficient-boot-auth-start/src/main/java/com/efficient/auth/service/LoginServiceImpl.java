@@ -125,9 +125,9 @@ public class LoginServiceImpl implements LoginService {
         UserTicket userTicket = result.getData();
         userTicket.setUserId(userId);
         userTicket.setLoginType(info.getLoginType());
+        userTicket.setLoginIp(info.getLoginIp());
         userTicket.setAccount(userAuthInfo.getAccount());
         userTicket.setUsername(userAuthInfo.getUsername());
-        userTicket.setLoginIp(info.getLoginIp());
         userTicket.setZwddId(userAuthInfo.getZwddId());
         long timeMillis = System.currentTimeMillis();
         String token = TokenUtil.createToken(userTicket.getUserId(), timeMillis, RequestHolder.getCurrRequest());
