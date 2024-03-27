@@ -36,7 +36,7 @@ import java.util.Objects;
 @RequestMapping("/ykz/userCenter/")
 @Validated
 @Slf4j
-@Api(tags = "渝快政-用户中心")
+@Api(tags = "YKZ -用户中心")
 @Permission
 public class YkzUserCenterController {
     @Autowired
@@ -91,7 +91,7 @@ public class YkzUserCenterController {
     @GetMapping("/org/orgByParentCode")
     @ApiOperation(value = "根据机构Code拉取机构", response = YkzOrg.class)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "orgCode", value = "渝快政orgCode", required = true),
+            @ApiImplicitParam(name = "orgCode", value = "YKZ orgCode", required = true),
             @ApiImplicitParam(name = "pageNum", value = "pageNum", required = true),
             @ApiImplicitParam(name = "pageSize", value = "pageSize 最大 100", required = true),
             @ApiImplicitParam(name = "includeTop", value = "是否包含当前机构", required = false, defaultValue = "true"),

@@ -33,7 +33,7 @@ COMMENT ON COLUMN efficient_sys_notify.batch_num IS '批次号';
 COMMENT ON COLUMN efficient_sys_notify.system_id IS '系统标识';
 COMMENT ON COLUMN efficient_sys_notify.menu_id IS '菜单ID';
 COMMENT ON COLUMN efficient_sys_notify.notify_type IS '通知类型，1-普通消息，2-短信，3-邮件，4-待办，5-工作通知，6-ding消息，7-公告，9-其他';
-COMMENT ON COLUMN efficient_sys_notify.recipient_system_type IS '接收系统，1-本系统，2-渝快政，9-其他系统';
+COMMENT ON COLUMN efficient_sys_notify.recipient_system_type IS '接收系统，1-本系统，2-YKZ ，9-其他系统';
 COMMENT ON COLUMN efficient_sys_notify.create_user_id IS '创建用户id';
 COMMENT ON COLUMN efficient_sys_notify.title IS '标题';
 COMMENT ON COLUMN efficient_sys_notify.content IS '内容';

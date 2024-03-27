@@ -23,7 +23,7 @@ public class YkzTodoInfo {
      */
     private String subject;
     /**
-    //  * 1-渝快政内部打开，2-外部浏览器打开
+    //  * 1-YKZ 内部打开，2-外部浏览器打开
     //  * 必填
     //  */
     // private Integer openType = 1;

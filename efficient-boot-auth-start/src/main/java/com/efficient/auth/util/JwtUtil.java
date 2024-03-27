@@ -39,7 +39,7 @@ public class JwtUtil {
     }
 
     /**
-     * 创建TOKEN,永不过期，试用于渝快政消息通知类型
+     * 创建TOKEN,永不过期，试用于YKZ 消息通知类型
      *
      * @param sub
      * @return

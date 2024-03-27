@@ -3,7 +3,7 @@ package com.efficient.ykz.properties;
 import lombok.Data;
 
 /**
- * 渝快政用户中心
+ * YKZ 用户中心
  *
  * @author TMW
  * @since 2024/1/4 11:52

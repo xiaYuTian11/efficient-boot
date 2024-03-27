@@ -24,21 +24,21 @@
     {
       "name": "com.efficient.ykz.userCenter.ip",
       "type": "java.lang.String",
-      "description": "渝快政IP",
+      "description": "YKZ IP",
       "defaultValue": "https://uc-openplatform.bigdatacq.com:4403",
       "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
     },
     {
       "name": "com.efficient.ykz.userCenter.appId",
       "type": "java.lang.String",
-      "description": "渝快政 appId",
+      "description": "YKZ  appId",
       "defaultValue": "",
       "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
     },
     {
       "name": "com.efficient.ykz.userCenter.appSecret",
       "type": "java.lang.String",
-      "description": "渝快政 appSecret",
+      "description": "YKZ  appSecret",
       "defaultValue": "",
       "sourceType": "com.efficient.ykz.properties.YkzUserCenter"
     },

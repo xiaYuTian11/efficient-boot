@@ -16,7 +16,7 @@ public class YkzUserPost implements Serializable {
      */
     private String organizationCode;
     /**
-     * 渝快政ID
+     * YKZ ID
      */
     private String accountId;
     /**

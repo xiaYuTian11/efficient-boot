@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
- * 渝快政用户信息 持久层
+ * YKZ 用户信息 持久层
  * </p>
  *
  * @author TMW

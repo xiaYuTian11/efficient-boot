@@ -154,7 +154,7 @@ public class YkzUserCenterServiceImpl implements YkzUserCenterService {
             appSecret = ykzProperties.getUserCenter().getAppSecret();
         }
         if (StrUtil.isBlank(appId) || StrUtil.isBlank(appSecret)) {
-            throw new YkzException("请检查渝快政配置是否正确");
+            throw new YkzException("请检查YKZ 配置是否正确");
         }
         Date now = new Date();
         JSONObject jsonObject = JSONUtil.createObj().set("appId", appId).set("appSecret", SM2ToolUtil.sm2Encode(jwtHelper.getPublicKey(), appSecret));

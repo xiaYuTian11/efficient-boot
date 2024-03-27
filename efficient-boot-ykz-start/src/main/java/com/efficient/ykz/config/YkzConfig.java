@@ -48,7 +48,7 @@ public class YkzConfig {
 
     public ExecutableClient init() {
         ExecutableClient executableClient;
-        log.info("初始化渝快政 executableClient");
+        log.info("初始化YKZ  executableClient");
         executableClient = ExecutableClient.getInstance();
         YkzApi ykzApi = ykzProperties.getYkzApi();
         // DomainName不同环境对应不同域名，示例为sass域名
@@ -57,13 +57,13 @@ public class YkzConfig {
         //应用App Key
         String appkey = ykzApi.getAppkey();
         if (StrUtil.isBlank(appkey)) {
-            throw new YkzException("请检查渝快政配置是否正确");
+            throw new YkzException("请检查YKZ 配置是否正确");
         }
         executableClient.setAccessKey(appkey);
         //应用App Secret
         String appsecret = ykzApi.getAppsecret();
         if (StrUtil.isBlank(appsecret)) {
-            throw new YkzException("请检查渝快政配置是否正确");
+            throw new YkzException("请检查YKZ 配置是否正确");
         }
         executableClient.setSecretKey(appsecret);
         executableClient.init();

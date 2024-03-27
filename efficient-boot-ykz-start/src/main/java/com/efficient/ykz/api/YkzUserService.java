@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * <p>
- * 渝快政用户信息 服务Api
+ * YKZ 用户信息 服务Api
  * </p>
  *
  * @author TMW

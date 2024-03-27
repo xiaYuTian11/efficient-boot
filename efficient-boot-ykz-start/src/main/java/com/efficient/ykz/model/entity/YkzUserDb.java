@@ -11,7 +11,7 @@ import java.util.Date;
 
 /**
  * <p>
- * 渝快政用户信息 实体类
+ * YKZ 用户信息 实体类
  * </p>
  *
  * @author TMW

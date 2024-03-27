@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/ykz/api/")
 @Validated
-@Api(tags = "渝快政-消息接口")
+@Api(tags = "YKZ -消息接口")
 @Permission
 public class YkzApiController {
     @Autowired
@@ -49,7 +49,7 @@ public class YkzApiController {
     @GetMapping("/login/getUserInfo")
     @ApiOperation(value = "获取用户信息", response = YkzLoginUser.class)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "authCode", value = "渝快政authCode", required = true)
+            @ApiImplicitParam(name = "authCode", value = "YKZ authCode", required = true)
     })
     public Result<YkzLoginUser> getUserInfo(@RequestParam("authCode") String authCode) {
         return ykzApiService.getUserInfo(authCode);
@@ -61,7 +61,7 @@ public class YkzApiController {
     @GetMapping("/login/getTokenInfo")
     @ApiOperation(value = "根据authCode获取登录token", response = YkzLoginToken.class)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "authCode", value = "渝快政authCode", required = true)
+            @ApiImplicitParam(name = "authCode", value = "YKZ authCode", required = true)
     })
     public Result<YkzLoginToken> getTokenInfo(@RequestParam("authCode") String authCode) {
         return ykzApiService.getTokenInfo(authCode);

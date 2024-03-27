@@ -8,7 +8,7 @@ import org.mapstruct.factory.Mappers;
 
 /**
  * <p>
- * 渝快政用户信息 模型转换器
+ * YKZ 用户信息 模型转换器
  * </p>
  *
  * @author TMW

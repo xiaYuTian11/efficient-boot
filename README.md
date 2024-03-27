@@ -11,7 +11,7 @@
         + [说明](#%E8%AF%B4%E6%98%8E)
     * [安装依赖](#%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96)
         + [aspose](#aspose)
-        + [渝快政](#%E6%B8%9D%E5%BF%AB%E6%94%BF)
+        + [YKZ ](#%E6%B8%9D%E5%BF%AB%E6%94%BF)
     * [指定maven仓库](#%E6%8C%87%E5%AE%9Amaven%E4%BB%93%E5%BA%93)
     * [修改版本](#%E4%BF%AE%E6%94%B9%E7%89%88%E6%9C%AC)
     * [发布](#%E5%8F%91%E5%B8%83)
@@ -53,8 +53,8 @@
             - [配置](#%E9%85%8D%E7%BD%AE-8)
             - [注意事项](#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)
         + [返回数据脱敏处理](#%E8%BF%94%E5%9B%9E%E6%95%B0%E6%8D%AE%E8%84%B1%E6%95%8F%E5%A4%84%E7%90%86)
-    * [渝快政对接](#%E6%B8%9D%E5%BF%AB%E6%94%BF%E5%AF%B9%E6%8E%A5)
-        + [安装渝快政本地依赖](#%E5%AE%89%E8%A3%85%E6%B8%9D%E5%BF%AB%E6%94%BF%E6%9C%AC%E5%9C%B0%E4%BE%9D%E8%B5%96)
+    * [YKZ 对接](#%E6%B8%9D%E5%BF%AB%E6%94%BF%E5%AF%B9%E6%8E%A5)
+        + [安装YKZ 本地依赖](#%E5%AE%89%E8%A3%85%E6%B8%9D%E5%BF%AB%E6%94%BF%E6%9C%AC%E5%9C%B0%E4%BE%9D%E8%B5%96)
         + [引入框架依赖](#%E5%BC%95%E5%85%A5%E6%A1%86%E6%9E%B6%E4%BE%9D%E8%B5%96)
         + [服务地址](#%E6%9C%8D%E5%8A%A1%E5%9C%B0%E5%9D%80)
         + [建表语句](#%E5%BB%BA%E8%A1%A8%E8%AF%AD%E5%8F%A5-1)
@@ -87,7 +87,7 @@ mvn install:install-file    -DgroupId=com.aspose -DartifactId=aspose-cells -Dver
 mvn install:install-file    -DgroupId=com.aspose -DartifactId=aspose-words -Dversion=21.6 -Dpackaging=jar   -Dfile=./aspose-words-21.11.0-jdk17.jar
 ```
 
-### 渝快政
+### YKZ 
 
 ```text
 mvn -Dmaven.test.skip=true install
@@ -660,9 +660,9 @@ public class UserTest {
 
 ````
 
-## 渝快政对接
+## YKZ 对接
 
-### 安装渝快政本地依赖
+### 安装YKZ 本地依赖
 ```text
 mvn -Dmaven.test.skip=true install
 mvn install:install-file    -DgroupId=com.dcqc -DartifactId=dcqc-uc-oauth-sdk -Dversion=3.0.0-RELEASE -Dpackaging=jar   -Dfile=./dcqc-uc-oauth-sdk-3.0.0-RELEASE.jar
@@ -720,7 +720,7 @@ CREATE TABLE efficient_ykz_org (
                                    error_info text,
                                    pull_time timestamp
 );
-COMMENT ON TABLE public.efficient_ykz_org IS '渝快政机构数据';
+COMMENT ON TABLE public.efficient_ykz_org IS 'YKZ 机构数据';
 COMMENT ON COLUMN efficient_ykz_org.id IS '机构id';
 COMMENT ON COLUMN efficient_ykz_org.name IS '机构全称';
 COMMENT ON COLUMN efficient_ykz_org.org_type IS '机构类型';
@@ -758,7 +758,7 @@ CREATE TABLE efficient_ykz_user (
                                     pull_time timestamp
 );
 
-COMMENT ON TABLE efficient_ykz_user IS '渝快政用户信息';
+COMMENT ON TABLE efficient_ykz_user IS 'YKZ 用户信息';
 
 COMMENT ON COLUMN efficient_ykz_user.id IS '用户中心 ID';
 COMMENT ON COLUMN efficient_ykz_user.name IS '姓名';

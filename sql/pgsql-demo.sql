@@ -92,7 +92,7 @@ COMMENT ON COLUMN public.efficient_sys_task.cron_expression IS '表达式';
 COMMENT ON COLUMN public.efficient_sys_task.create_time IS '创建时间';
 COMMENT ON COLUMN public.efficient_sys_task.task_status IS '当前定时任务状态';
 
--- 渝快政相关
+-- YKZ 相关
 DROP TABLE IF EXISTS "efficient_ykz_org";
 CREATE TABLE efficient_ykz_org (
                                    id VARCHAR(64) PRIMARY KEY,
@@ -119,7 +119,7 @@ CREATE TABLE efficient_ykz_org (
                                    error_info text,
                                    pull_time timestamp
 );
-COMMENT ON TABLE public.efficient_ykz_org IS '渝快政机构数据';
+COMMENT ON TABLE public.efficient_ykz_org IS 'YKZ 机构数据';
 COMMENT ON COLUMN efficient_ykz_org.id IS '机构id';
 COMMENT ON COLUMN efficient_ykz_org.name IS '机构全称';
 COMMENT ON COLUMN efficient_ykz_org.org_type IS '机构类型';
@@ -157,7 +157,7 @@ CREATE TABLE efficient_ykz_user (
                                     pull_time timestamp
 );
 
-COMMENT ON TABLE efficient_ykz_user IS '渝快政用户信息';
+COMMENT ON TABLE efficient_ykz_user IS 'YKZ 用户信息';
 
 COMMENT ON COLUMN efficient_ykz_user.id IS '用户中心 ID';
 COMMENT ON COLUMN efficient_ykz_user.name IS '姓名';

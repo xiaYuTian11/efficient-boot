@@ -1,12 +1,8 @@
 package com.efficient.common.util;
 
-import cn.hutool.core.util.StrUtil;
 import com.efficient.common.entity.TreeNode;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -17,46 +13,61 @@ import java.util.stream.Collectors;
  */
 public class TreeUtil {
 
-    public static final String[] NXS_STR = {"a", "b", "c", "d"};
     private static final Long LAST_ORDER = 9999L;
 
     /**
-     * 获取书节点集合
-     * 请先设置顶级节点
+     * 获取树形节点集合
+     *
      * @param nodeList 节点集合
-     * @return 树
+     * @return 树形节点集合
      */
     public static List<TreeNode> createListTree(List<TreeNode> nodeList) {
-        List<TreeNode> rootNodes = nodeList.stream().filter(node -> Objects.nonNull(node.getIsRoot()) && node.getIsRoot()).collect(Collectors.toList());
-        List<TreeNode> resultList = new ArrayList<>(4);
-        for (TreeNode rootNode : rootNodes) {
-            if (Objects.isNull(rootNode.getOrder())) {
-                rootNode.setOrder(LAST_ORDER);
+        // 使用Map来存储节点，以id为key，节点为value
+        Map<String, TreeNode> nodeMap = new HashMap<>();
+        Map<String, List<TreeNode>> childrenMap = new HashMap<>();
+        List<TreeNode> rootNodes = new ArrayList<>();
+
+        // 第一次遍历，构建nodeMap和childrenMap
+        for (TreeNode node : nodeList) {
+            nodeMap.put(node.getId(), node);
+            String parentId = node.getParentId();
+
+            // 找出所有的根节点
+            if (node.getIsRoot() != null && node.getIsRoot()) {
+                rootNodes.add(node);
+            } else {
+                childrenMap.computeIfAbsent(parentId, k -> new ArrayList<>()).add(node);
             }
-            createChildren(rootNode, nodeList);
-            resultList.add(rootNode);
         }
-        return resultList.stream().sorted(Comparator.comparing(TreeNode::getOrder, Comparator.nullsLast(Comparator.naturalOrder())).thenComparing(TreeNode::getId)).collect(Collectors.toList());
+
+        rootNodes = rootNodes.stream().sorted(Comparator.comparing(TreeNode::getOrder, Comparator.nullsLast(Comparator.naturalOrder())).thenComparing(TreeNode::getId)).collect(Collectors.toList());
+        Stack<TreeNode> stack = new Stack<>();
+        stack.addAll(rootNodes);
+        while (!stack.isEmpty()) {
+            TreeNode parentNode = stack.pop();
+            List<TreeNode> childrenList = childrenMap.getOrDefault(parentNode.getId(), Collections.emptyList());
+            childrenList = childrenList.stream().sorted(Comparator.comparing(TreeNode::getOrder, Comparator.nullsLast(Comparator.naturalOrder())).thenComparing(TreeNode::getId)).collect(Collectors.toList());
+            parentNode.setChildren(childrenList);
+            stack.addAll(childrenList);
+        }
+
+        // 对结果列表进行排序
+        return rootNodes;
     }
 
     /**
-     * 递归构建 子节点
+     * 递归设置节点的子节点
      *
-     * @param parentNode 父节点
-     * @param nodeList   节点集合
-     * @return 父节点 含下级
+     * @param parentNode  父节点
+     * @param childrenMap 子节点映射表
      */
-    public static TreeNode createChildren(TreeNode parentNode, List<TreeNode> nodeList) {
-        List<TreeNode> childrenList = new ArrayList<>();
-        for (TreeNode treeNode : nodeList) {
-            if (StrUtil.equals(treeNode.getParentId(), parentNode.getId())) {
-                childrenList.add(createChildren(treeNode, nodeList));
-            }
+    private static void setChildren(TreeNode parentNode, Map<String, List<TreeNode>> childrenMap) {
+        List<TreeNode> childrenList = childrenMap.getOrDefault(parentNode.getId(), Collections.emptyList());
+        parentNode.setChildren(childrenList);
+
+        for (TreeNode child : childrenList) {
+            setChildren(child, childrenMap);
         }
-        final List<TreeNode> collect = childrenList.stream().sorted(Comparator.comparing(TreeNode::getOrder, Comparator.nullsLast(Comparator.naturalOrder())).thenComparing(TreeNode::getId)).collect(Collectors.toList());
-        parentNode.setIsLeaf(collect.isEmpty());
-        parentNode.setChildren(collect);
-        return parentNode;
     }
 
     /**

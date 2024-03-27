@@ -24,7 +24,7 @@ CREATE TABLE efficient_ykz_org (
                                    error_info text,
                                    pull_time timestamp
 );
-COMMENT ON TABLE public.efficient_ykz_org IS '渝快政机构数据';
+COMMENT ON TABLE public.efficient_ykz_org IS 'YKZ 机构数据';
 COMMENT ON COLUMN efficient_ykz_org.id IS '机构id';
 COMMENT ON COLUMN efficient_ykz_org.name IS '机构全称';
 COMMENT ON COLUMN efficient_ykz_org.org_type IS '机构类型';
@@ -62,7 +62,7 @@ CREATE TABLE efficient_ykz_user (
                                     pull_time timestamp
 );
 
-COMMENT ON TABLE efficient_ykz_user IS '渝快政用户信息';
+COMMENT ON TABLE efficient_ykz_user IS 'YKZ 用户信息';
 
 COMMENT ON COLUMN efficient_ykz_user.id IS '用户中心 ID';
 COMMENT ON COLUMN efficient_ykz_user.name IS '姓名';

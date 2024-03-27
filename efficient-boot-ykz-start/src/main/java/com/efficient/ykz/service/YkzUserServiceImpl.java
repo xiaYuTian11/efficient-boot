@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * <p>
- * 渝快政用户信息 服务实现类
+ * YKZ 用户信息 服务实现类
  * </p>
  *
  * @author TMW
