@@ -1,5 +1,6 @@
 package com.efficient.common.util;
 
+import cn.hutool.core.collection.CollUtil;
 import com.efficient.common.entity.TreeNode;
 
 import java.util.*;
@@ -46,9 +47,14 @@ public class TreeUtil {
         while (!stack.isEmpty()) {
             TreeNode parentNode = stack.pop();
             List<TreeNode> childrenList = childrenMap.getOrDefault(parentNode.getId(), Collections.emptyList());
-            childrenList = childrenList.stream().sorted(Comparator.comparing(TreeNode::getOrder, Comparator.nullsLast(Comparator.naturalOrder())).thenComparing(TreeNode::getId)).collect(Collectors.toList());
-            parentNode.setChildren(childrenList);
-            stack.addAll(childrenList);
+            if (CollUtil.isNotEmpty(childrenList)) {
+                childrenList = childrenList.stream().sorted(Comparator.comparing(TreeNode::getOrder, Comparator.nullsLast(Comparator.naturalOrder())).thenComparing(TreeNode::getId)).collect(Collectors.toList());
+                parentNode.setChildren(childrenList);
+                stack.addAll(childrenList);
+                parentNode.setIsLeaf(false);
+            } else {
+                parentNode.setIsLeaf(true);
+            }
         }
 
         // 对结果列表进行排序

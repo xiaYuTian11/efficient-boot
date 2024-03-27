@@ -1,5 +1,10 @@
 package com.efficient.ykz.constant;
 
+import com.efficient.system.constant.UnitTypeEnum;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 区域级别areaLevel
  *
@@ -48,5 +53,12 @@ public enum YkzOrgAreaLevelEnum {
 
     public void setName(String name) {
         this.name = name;
+    }
+    public static Map<String, String> map() {
+        Map<String, String> map = new HashMap<>();
+        for (YkzOrgAreaLevelEnum value : YkzOrgAreaLevelEnum.values()) {
+            map.put(value.code, value.name);
+        }
+        return map;
     }
 }

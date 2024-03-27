@@ -1,5 +1,8 @@
 package com.efficient.system.constant;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author TMW
  * @since 2024/1/4 15:48
@@ -30,5 +33,13 @@ public enum UnitTypeEnum {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public static Map<String, String> map() {
+        Map<String, String> map = new HashMap<>();
+        for (UnitTypeEnum value : UnitTypeEnum.values()) {
+            map.put(value.code, value.name);
+        }
+        return map;
     }
 }
