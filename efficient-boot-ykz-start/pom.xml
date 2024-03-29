@@ -5,7 +5,7 @@
     <parent>
         <groupId>top.tanmw</groupId>
         <artifactId>efficient-boot</artifactId>
-        <version>0.10.11</version>
+        <version>0.10.12</version>
     </parent>
 
     <description>YKZ  start</description>

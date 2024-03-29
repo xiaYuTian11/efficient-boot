@@ -195,3 +195,45 @@ COMMENT ON COLUMN efficient_sys_config.code IS 'code';
 COMMENT ON COLUMN efficient_sys_config.config IS '配置';
 COMMENT ON COLUMN efficient_sys_config.remark IS '备注';
 COMMENT ON COLUMN efficient_sys_config.is_enable IS '是否启用';
+
+DROP TABLE IF EXISTS "efficient_dict_code";
+CREATE TABLE efficient_dict_code (
+                                        id int8 NOT NULL,
+                                        code_type varchar(100) NOT NULL,
+                                        code varchar(100) NOT NULL,
+                                        code_name varchar(100) NOT NULL,
+                                        short_name varchar(100) NULL,
+                                        sort int8 NOT NULL,
+                                        is_enable int2 NOT NULL default 0,
+                                        parent_code varchar(100) NOT NULL,
+                                        code_level int4 NULL,
+                                        is_leaf int2 NOT NULL,
+                                        pin_yin varchar(200) NULL,
+                                        remark text NULL
+);
+
+COMMENT ON TABLE efficient_dict_code IS '字典表';
+
+COMMENT ON COLUMN efficient_dict_code.id IS '主键';
+COMMENT ON COLUMN efficient_dict_code.code_type IS '类型';
+COMMENT ON COLUMN efficient_dict_code.code IS 'code';
+COMMENT ON COLUMN efficient_dict_code.code_name IS '名称';
+COMMENT ON COLUMN efficient_dict_code.short_name IS '简称';
+COMMENT ON COLUMN efficient_dict_code.sort IS '排序';
+COMMENT ON COLUMN efficient_dict_code.is_enable IS '是否启用';
+COMMENT ON COLUMN efficient_dict_code.parent_code IS '父级code';
+COMMENT ON COLUMN efficient_dict_code.code_level IS '层级';
+COMMENT ON COLUMN efficient_dict_code.is_leaf IS '是否叶子节点';
+COMMENT ON COLUMN efficient_dict_code.pin_yin IS '拼音';
+COMMENT ON COLUMN efficient_dict_code.remark IS '备注';
+
+CREATE SEQUENCE efficient_dict_code_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ALTER TABLE efficient_dict_code ALTER COLUMN id SET DEFAULT nextval('efficient_dict_code_sequence');
+
+ALTER SEQUENCE efficient_dict_code RESTART WITH 1000;
+
