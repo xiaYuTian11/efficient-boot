@@ -198,7 +198,7 @@ COMMENT ON COLUMN efficient_sys_config.is_enable IS '是否启用';
 
 DROP TABLE IF EXISTS "efficient_dict_code";
 CREATE TABLE efficient_dict_code (
-                                        id int8 NOT NULL,
+                                        id int8 NOT NULL PRIMARY KEY,
                                         code_type varchar(100) NOT NULL,
                                         code varchar(100) NOT NULL,
                                         code_name varchar(100) NOT NULL,

@@ -42,10 +42,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>top.tanmw</groupId>-->
-<!--            <artifactId>efficient-boot-common</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>top.tanmw</groupId>
+            <artifactId>efficient-boot-system-start</artifactId>
+        </dependency>
         <dependency>
             <groupId>top.tanmw</groupId>
             <artifactId>efficient-boot-auth-start</artifactId>

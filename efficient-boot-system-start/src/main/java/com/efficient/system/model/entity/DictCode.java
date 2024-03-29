@@ -27,7 +27,7 @@ public class DictCode implements Serializable {
     *
     */
     @ApiModelProperty(value = "")
-    @TableField("id")
+    @TableId("id")
     private Long id;
     /**
     *
