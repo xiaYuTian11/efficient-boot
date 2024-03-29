@@ -23,47 +23,47 @@ public class YkzUserDb implements Serializable {
 
     private static final long serialVersionUID = 2241850641676716527L;
     /**
-     *主键
+     * 主键
      */
     @TableId(value = "id")
     private String id;
     /**
-     *用户中心 ID
+     * 用户中心 ID
      */
     @TableField(value = "ykz_id")
     private Long ykzId;
     /**
-     *姓名
+     * 姓名
      */
     @TableField("name")
     private String name;
     /**
-     *用户名
+     * 用户名
      */
     @TableField("username")
     private String username;
     /**
-     *政务钉钉 ID
+     * 政务钉钉 ID
      */
     @TableField("account_id")
     private String accountId;
     /**
-     *政务钉钉员工编号
+     * 政务钉钉员工编号
      */
     @TableField("employee_code")
     private String employeeCode;
     /**
-     *电话号码
+     * 电话号码
      */
     @TableField("mobile")
     private String mobile;
     /**
-     *错误信息
+     * 错误信息
      */
     @TableField("error_info")
     private String errorInfo;
     /**
-     *拉取时间
+     * 拉取时间
      */
     @TableField("pull_time")
     private Date pullTime;

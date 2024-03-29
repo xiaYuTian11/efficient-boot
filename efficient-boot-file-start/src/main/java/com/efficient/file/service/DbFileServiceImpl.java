@@ -116,7 +116,7 @@ public class DbFileServiceImpl implements FileService {
     @Override
     public File getById(String fileId) {
         SysFileInfo sysFileInfo = fileInfoService.getById(fileId);
-        if(Objects.isNull(sysFileInfo)){
+        if (Objects.isNull(sysFileInfo)) {
             return null;
         }
         byte[] fileContent = sysFileInfo.getFileContent();

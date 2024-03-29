@@ -36,9 +36,8 @@ public class AuthUtil {
     }
 
     /**
-     *
      * @param cryptPassword 密文
-     * @param password 明文
+     * @param password      明文
      * @return
      */
     public boolean checkEncrypt(String cryptPassword, String password) {
@@ -48,6 +47,7 @@ public class AuthUtil {
 
     /**
      * 生成密码
+     *
      * @param password
      * @return
      */

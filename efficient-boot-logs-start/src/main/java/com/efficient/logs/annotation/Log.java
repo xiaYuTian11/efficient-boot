@@ -22,6 +22,7 @@ public @interface Log {
 
     /**
      * 自定义操作，当logOpt为CUSTOM时生效
+     *
      * @return
      */
     String customOpt() default "";

@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 /**
- *
  * @author TMW
  * @since 2024/1/25 16:53
  */
@@ -53,12 +52,13 @@ public class VideoController {
     /**
      * 文件分块上传
      * FORM-DATA 请求
-     * @param chunkSize 分块大小,字节
+     *
+     * @param chunkSize  分块大小,字节
      * @param totalChunk 总块数量
-     * @param currChunk 当前块数
-     * @param md5  文件MD5值
-     * @param module  所属模块
-     * @param file  文件
+     * @param currChunk  当前块数
+     * @param md5        文件MD5值
+     * @param module     所属模块
+     * @param file       文件
      * @return
      * @throws IOException
      */
@@ -94,7 +94,7 @@ public class VideoController {
     }
 
     /**
-     *秒传
+     * 秒传
      *
      * @return
      * @throws Exception
@@ -111,6 +111,7 @@ public class VideoController {
     /**
      * 获取文件分片状态，检测文件MD5合法性
      * FORM-DATA 请求
+     *
      * @param md5
      * @return
      * @throws Exception

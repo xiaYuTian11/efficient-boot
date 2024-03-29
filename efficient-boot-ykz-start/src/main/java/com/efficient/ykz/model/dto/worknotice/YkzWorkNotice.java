@@ -4,7 +4,6 @@ import com.efficient.ykz.constant.YkzSendMsgTypeEnum;
 import lombok.Data;
 
 /**
- *
  * @author TMW
  * @since 2024/1/12 14:18
  */
@@ -36,7 +35,7 @@ public class YkzWorkNotice {
      */
     private String msg;
     /**
-     *  消息类型
+     * 消息类型
      */
     private YkzSendMsgTypeEnum msgType;
     private YkzWorkNoticeMsgText msgText;

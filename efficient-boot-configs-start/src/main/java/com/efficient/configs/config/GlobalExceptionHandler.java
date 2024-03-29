@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
     public static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler({Exception.class,Throwable.class})
+    @ExceptionHandler({Exception.class, Throwable.class})
     @ResponseBody
     public Result<?> handler(Exception e) {
         LOGGER.error("error: {}", e.getMessage(), e);

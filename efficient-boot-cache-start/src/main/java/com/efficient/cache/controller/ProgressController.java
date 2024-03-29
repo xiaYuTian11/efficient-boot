@@ -28,7 +28,7 @@ public class ProgressController {
     /**
      * 获取进度条
      *
-     * @param progressKey   进度条key
+     * @param progressKey 进度条key
      * @return
      */
     @GetMapping(value = "/get")

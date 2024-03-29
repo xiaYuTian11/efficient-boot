@@ -13,265 +13,266 @@
         <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
     </repository>
 </repositories>
-<!-- 编译打包 -->
+        <!-- 编译打包 -->
 <build>
-    <finalName>${project.name}-${project.version}</finalName>
-    <resources>
-        <resource>
-            <directory>src/main/resources</directory>
-            <filtering>true</filtering>
-            <excludes>
-                <exclude>templates/**</exclude>
-                <exclude>**/*.xls</exclude>
-                <exclude>**/*.xlsx</exclude>
-                <exclude>**/*.xlsm</exclude>
-                <exclude>**/*.doc</exclude>
-                <exclude>**/*.docx</exclude>
-            </excludes>
-        </resource>
-        <resource>
-            <directory>src/main/resources</directory>
-            <filtering>false</filtering>
-            <includes>
-                <include>templates/**</include>
-                <include>**/*.xls</include>
-                <include>**/*.xlsx</include>
-                <include>**/*.xlsm</include>
-                <include>**/*.doc</include>
-                <include>**/*.docx</include>
-            </includes>
-        </resource>
-    </resources>
+<finalName>${project.name}-${project.version}</finalName>
+<resources>
+    <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+        <excludes>
+            <exclude>templates/**</exclude>
+            <exclude>**/*.xls</exclude>
+            <exclude>**/*.xlsx</exclude>
+            <exclude>**/*.xlsm</exclude>
+            <exclude>**/*.doc</exclude>
+            <exclude>**/*.docx</exclude>
+        </excludes>
+    </resource>
+    <resource>
+        <directory>src/main/resources</directory>
+        <filtering>false</filtering>
+        <includes>
+            <include>templates/**</include>
+            <include>**/*.xls</include>
+            <include>**/*.xlsx</include>
+            <include>**/*.xlsm</include>
+            <include>**/*.doc</include>
+            <include>**/*.docx</include>
+        </includes>
+    </resource>
+</resources>
 
 
-    <plugins>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-resources-plugin</artifactId>
-            <version>3.2.0</version>
-            <configuration>
-                <encoding>UTF-8</encoding>
-                <nonFilteredFileExtensions>
-                    <nonFilteredFileExtension>xls</nonFilteredFileExtension>
-                    <nonFilteredFileExtension>xlsx</nonFilteredFileExtension>
-                    <nonFilteredFileExtension>doc</nonFilteredFileExtension>
-                    <nonFilteredFileExtension>docx</nonFilteredFileExtension>
-                    <nonFilteredFileExtension>cer</nonFilteredFileExtension>
-                </nonFilteredFileExtensions>
-            </configuration>
-        </plugin>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-clean-plugin</artifactId>
-            <configuration>
-                <!-- 配置可选项 -->
-            </configuration>
-            <executions>
-                <execution>
-                    <id>auto-clean</id>
-                    <phase>clean</phase>
-                    <goals>
-                        <goal>clean</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
-        <!-- 这个插件是用来复制项目依赖的 jar 包 -->
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <version>3.2.0</version>
-            <executions>
-                <execution>
-                    <!-- 自定义 -->
-                    <id>copy-dependencies</id>
-                    <phase>package</phase>
-                    <goals>
-                        <!-- 复制依赖的 jar 包 -->
-                        <goal>copy-dependencies</goal>
-                    </goals>
-                    <configuration>
-                        <!-- 将依赖的 jar 包复制到该路径下 -->
-                        <outputDirectory>${project.build.directory}/lib</outputDirectory>
-                        <!-- 只复制指定的依赖 -->
-                        <includeGroupIds>com.alibaba, com.zenith.ykz, com.dcqc, dm</includeGroupIds>
-                        <includeArtifactIds>zwdd-sdk-java, ykz-sdk, dcqc-uc-oauth-sdk, Dm18</includeArtifactIds>
-                    </configuration>
-                </execution>
-            </executions>
-        </plugin>
+<plugins>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.2.0</version>
+        <configuration>
+            <encoding>UTF-8</encoding>
+            <nonFilteredFileExtensions>
+                <nonFilteredFileExtension>xls</nonFilteredFileExtension>
+                <nonFilteredFileExtension>xlsx</nonFilteredFileExtension>
+                <nonFilteredFileExtension>doc</nonFilteredFileExtension>
+                <nonFilteredFileExtension>docx</nonFilteredFileExtension>
+                <nonFilteredFileExtension>cer</nonFilteredFileExtension>
+            </nonFilteredFileExtensions>
+        </configuration>
+    </plugin>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+            <!-- 配置可选项 -->
+        </configuration>
+        <executions>
+            <execution>
+                <id>auto-clean</id>
+                <phase>clean</phase>
+                <goals>
+                    <goal>clean</goal>
+                </goals>
+            </execution>
+        </executions>
+    </plugin>
+    <!-- 这个插件是用来复制项目依赖的 jar 包 -->
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+            <execution>
+                <!-- 自定义 -->
+                <id>copy-dependencies</id>
+                <phase>package</phase>
+                <goals>
+                    <!-- 复制依赖的 jar 包 -->
+                    <goal>copy-dependencies</goal>
+                </goals>
+                <configuration>
+                    <!-- 将依赖的 jar 包复制到该路径下 -->
+                    <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                    <!-- 只复制指定的依赖 -->
+                    <includeGroupIds>com.alibaba, com.zenith.ykz, com.dcqc, dm</includeGroupIds>
+                    <includeArtifactIds>zwdd-sdk-java, ykz-sdk, dcqc-uc-oauth-sdk, Dm18</includeArtifactIds>
+                </configuration>
+            </execution>
+        </executions>
+    </plugin>
 
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-shade-plugin</artifactId>
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>${parent.version}</version>
-                </dependency>
-            </dependencies>
-            <configuration>
-                <!-- 禁用创建附加的 shaded JAR 文件 -->
-                <shadedArtifactAttached>false</shadedArtifactAttached>
-                <!--maven项目打包时不生成dependency-reduced-pom.xml-->
-                <createDependencyReducedPom>false</createDependencyReducedPom>
-                <filters>
-                    <filter>
-                        <artifact>*:*</artifact>
-                        <excludes>
-                            <!-- 排除签名文件 -->
-                            <exclude>META-INF/*.SF</exclude>
-                            <exclude>META-INF/*.sf</exclude>
-                            <exclude>META-INF/*.DSA</exclude>
-                            <exclude>META-INF/*.dsa</exclude>
-                            <exclude>META-INF/*.RSA</exclude>
-                            <exclude>META-INF/*.rsa</exclude>
-                            <exclude>META-INF/*.EC</exclude>
-                            <exclude>META-INF/*.ec</exclude>
-                            <exclude>META-INF/MSFTSIG.SF</exclude>
-                            <exclude>META-INF/MSFTSIG.RSA</exclude>
-                            <exclude>*.yml</exclude>
-                            <exclude>*.properties</exclude>
-                            <exclude>*.json</exclude>
-                            <exclude>*.cer</exclude>
-                            <exclude>templates/**</exclude>
-                            <exclude>public/**</exclude>
-                            <exclude>static/**</exclude>
-                            <exclude>assembly.xml</exclude>
-                        </excludes>
-                    </filter>
-                </filters>
-            </configuration>
-            <executions>
-                <execution>
-                    <id>shade-jar-with-dependencies</id>
-                    <phase>package</phase>
-                    <goals>
-                        <goal>shade</goal>
-                    </goals>
-                    <configuration>
-                        <transformers>
-                            <transformer
-                                    implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                <resource>META-INF/spring.handlers</resource>
-                            </transformer>
-                            <transformer
-                                    implementation="org.springframework.boot.maven.PropertiesMergingResourceTransformer">
-                                <resource>META-INF/spring.factories</resource>
-                            </transformer>
-                            <transformer
-                                    implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                <resource>META-INF/spring.schemas</resource>
-                            </transformer>
-                            <transformer
-                                    implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-                            <transformer
-                                    implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                <mainClass>${start-class}</mainClass>
-                                <manifestEntries>
-                                    <Class-Path>config/ lib/dcqc-uc-oauth-sdk-3.0.0-RELEASE.jar lib/ykz-sdk-2.0.2.jar lib/zwdd-sdk-java-1.2.0.jar lib/Dm18-18.jar
-                                    </Class-Path>
-                                </manifestEntries>
-                            </transformer>
-                        </transformers>
-                    </configuration>
-                </execution>
-            </executions>
-        </plugin>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${parent.version}</version>
+            </dependency>
+        </dependencies>
+        <configuration>
+            <!-- 禁用创建附加的 shaded JAR 文件 -->
+            <shadedArtifactAttached>false</shadedArtifactAttached>
+            <!--maven项目打包时不生成dependency-reduced-pom.xml-->
+            <createDependencyReducedPom>false</createDependencyReducedPom>
+            <filters>
+                <filter>
+                    <artifact>*:*</artifact>
+                    <excludes>
+                        <!-- 排除签名文件 -->
+                        <exclude>META-INF/*.SF</exclude>
+                        <exclude>META-INF/*.sf</exclude>
+                        <exclude>META-INF/*.DSA</exclude>
+                        <exclude>META-INF/*.dsa</exclude>
+                        <exclude>META-INF/*.RSA</exclude>
+                        <exclude>META-INF/*.rsa</exclude>
+                        <exclude>META-INF/*.EC</exclude>
+                        <exclude>META-INF/*.ec</exclude>
+                        <exclude>META-INF/MSFTSIG.SF</exclude>
+                        <exclude>META-INF/MSFTSIG.RSA</exclude>
+                        <exclude>*.yml</exclude>
+                        <exclude>*.properties</exclude>
+                        <exclude>*.json</exclude>
+                        <exclude>*.cer</exclude>
+                        <exclude>templates/**</exclude>
+                        <exclude>public/**</exclude>
+                        <exclude>static/**</exclude>
+                        <exclude>assembly.xml</exclude>
+                    </excludes>
+                </filter>
+            </filters>
+        </configuration>
+        <executions>
+            <execution>
+                <id>shade-jar-with-dependencies</id>
+                <phase>package</phase>
+                <goals>
+                    <goal>shade</goal>
+                </goals>
+                <configuration>
+                    <transformers>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                            <resource>META-INF/spring.handlers</resource>
+                        </transformer>
+                        <transformer
+                                implementation="org.springframework.boot.maven.PropertiesMergingResourceTransformer">
+                            <resource>META-INF/spring.factories</resource>
+                        </transformer>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                            <resource>META-INF/spring.schemas</resource>
+                        </transformer>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                            <mainClass>${start-class}</mainClass>
+                            <manifestEntries>
+                                <Class-Path>config/ lib/dcqc-uc-oauth-sdk-3.0.0-RELEASE.jar lib/ykz-sdk-2.0.2.jar
+                                    lib/zwdd-sdk-java-1.2.0.jar lib/Dm18-18.jar
+                                </Class-Path>
+                            </manifestEntries>
+                        </transformer>
+                    </transformers>
+                </configuration>
+            </execution>
+        </executions>
+    </plugin>
 
-        <!-- 这个插件是用来复制项目的静态资源 -->
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-resources-plugin</artifactId>
-            <version>3.2.0</version>
-            <executions>
-                <execution>
-                    <!-- 自定义 -->
-                    <id>copy-resources</id>
-                    <phase>package</phase>
-                    <goals>
-                        <!-- 复制静态资源 -->
-                        <goal>copy-resources</goal>
-                    </goals>
-                    <configuration>
-                        <!--忽略编译-->
-                        <nonFilteredFileExtensions>
-                            <nonFilteredFileExtension>cer</nonFilteredFileExtension>
-                        </nonFilteredFileExtensions>
-                        <useDefaultDelimiters>false</useDefaultDelimiters>
-                        <resources>
-                            <resource>
-                                <!-- 指定静态资源的路径 -->
-                                <directory>src/main/resources</directory>
-                                <!-- 处理文件时替换文件中的变量-->
-                                <filtering>true</filtering>
-                                <!-- 指定需要复制的文件 -->
-                                <includes>
-                                    <include>application.yml</include>
-                                </includes>
-                            </resource>
-                            <resource>
-                                <!-- 指定静态资源的路径 -->
-                                <directory>src/main/resources</directory>
-                                <filtering>false</filtering>
-                                <!-- 指定需要复制的文件 -->
-                                <includes>
-                                    <include>application-${env}.yml</include>
-                                    <include>*.xml</include>
-                                    <include>*.jks</include>
-                                    <include>*.properties</include>
-                                    <include>public/**</include>
-                                    <include>static/**</include>
-                                    <include>templates/**</include>
-                                    <include>xsd/**</include>
-                                    <include>*.cer</include>
-                                </includes>
-                            </resource>
-                        </resources>
-                        <!-- 指定复制到该目录下 -->
-                        <outputDirectory>${project.build.directory}/config</outputDirectory>
-                    </configuration>
-                </execution>
-            </executions>
-        </plugin>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-clean-plugin</artifactId>
-            <configuration>
-                <!-- 配置可选项 -->
-            </configuration>
-            <executions>
-                <execution>
-                    <id>auto-clean</id>
-                    <phase>clean</phase>
-                    <goals>
-                        <goal>clean</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
-        <!--     打包 zip    -->
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <configuration>
-                <!-- 这个插件需要指定一个配置文件 -->
-                <descriptors>
-                    <descriptor>src/main/resources/assembly.xml</descriptor>
-                </descriptors>
-            </configuration>
-            <executions>
-                <execution>
-                    <!-- 自定义 -->
-                    <id>make-assembly</id>
-                    <phase>package</phase>
-                    <goals>
-                        <!-- 只执行一次 -->
-                        <goal>single</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
-    </plugins>
+    <!-- 这个插件是用来复制项目的静态资源 -->
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+            <execution>
+                <!-- 自定义 -->
+                <id>copy-resources</id>
+                <phase>package</phase>
+                <goals>
+                    <!-- 复制静态资源 -->
+                    <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                    <!--忽略编译-->
+                    <nonFilteredFileExtensions>
+                        <nonFilteredFileExtension>cer</nonFilteredFileExtension>
+                    </nonFilteredFileExtensions>
+                    <useDefaultDelimiters>false</useDefaultDelimiters>
+                    <resources>
+                        <resource>
+                            <!-- 指定静态资源的路径 -->
+                            <directory>src/main/resources</directory>
+                            <!-- 处理文件时替换文件中的变量-->
+                            <filtering>true</filtering>
+                            <!-- 指定需要复制的文件 -->
+                            <includes>
+                                <include>application.yml</include>
+                            </includes>
+                        </resource>
+                        <resource>
+                            <!-- 指定静态资源的路径 -->
+                            <directory>src/main/resources</directory>
+                            <filtering>false</filtering>
+                            <!-- 指定需要复制的文件 -->
+                            <includes>
+                                <include>application-${env}.yml</include>
+                                <include>*.xml</include>
+                                <include>*.jks</include>
+                                <include>*.properties</include>
+                                <include>public/**</include>
+                                <include>static/**</include>
+                                <include>templates/**</include>
+                                <include>xsd/**</include>
+                                <include>*.cer</include>
+                            </includes>
+                        </resource>
+                    </resources>
+                    <!-- 指定复制到该目录下 -->
+                    <outputDirectory>${project.build.directory}/config</outputDirectory>
+                </configuration>
+            </execution>
+        </executions>
+    </plugin>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+            <!-- 配置可选项 -->
+        </configuration>
+        <executions>
+            <execution>
+                <id>auto-clean</id>
+                <phase>clean</phase>
+                <goals>
+                    <goal>clean</goal>
+                </goals>
+            </execution>
+        </executions>
+    </plugin>
+    <!--     打包 zip    -->
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+            <!-- 这个插件需要指定一个配置文件 -->
+            <descriptors>
+                <descriptor>src/main/resources/assembly.xml</descriptor>
+            </descriptors>
+        </configuration>
+        <executions>
+            <execution>
+                <!-- 自定义 -->
+                <id>make-assembly</id>
+                <phase>package</phase>
+                <goals>
+                    <!-- 只执行一次 -->
+                    <goal>single</goal>
+                </goals>
+            </execution>
+        </executions>
+    </plugin>
+</plugins>
 </build>

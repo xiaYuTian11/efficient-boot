@@ -22,57 +22,57 @@ public class SysUserPostVO implements Serializable {
     private static final long serialVersionUID = 7919025033396141079L;
 
     /**
-     *主键
+     * 主键
      */
     @ApiModelProperty(value = "主键")
     private String id;
     /**
-     *用户id
+     * 用户id
      */
     @ApiModelProperty(value = "用户id")
     private String userId;
     /**
-     *部门ID
+     * 部门ID
      */
     @ApiModelProperty(value = "部门ID")
     private String deptId;
     /**
-     *部门层级码
+     * 部门层级码
      */
     @ApiModelProperty(value = "部门层级码")
     private String deptLevelCode;
     /**
-     *单位ID
+     * 单位ID
      */
     @ApiModelProperty(value = "单位ID")
     private String unitId;
     /**
-     *单位层级码
+     * 单位层级码
      */
     @ApiModelProperty(value = "单位层级码")
     private String unitLevelCode;
     /**
-     *权限类型，1-个人，2-部门，3-单位，9-自定义
+     * 权限类型，1-个人，2-部门，3-单位，9-自定义
      */
     @ApiModelProperty(value = "权限类型，1-个人，2-部门，3-单位，9-自定义")
     private String permissionType;
     /**
-     *是否主职务
+     * 是否主职务
      */
     @ApiModelProperty(value = "是否主职务")
     private Integer mainJob;
     /**
-     *加入时间
+     * 加入时间
      */
     @ApiModelProperty(value = "加入时间")
     private Date joinDate;
     /**
-     *排序
+     * 排序
      */
     @ApiModelProperty(value = "排序")
     private Long sort;
     /**
-     *职务
+     * 职务
      */
     @ApiModelProperty(value = "职务")
     private String postName;
@@ -92,7 +92,7 @@ public class SysUserPostVO implements Serializable {
     @ApiModelProperty(value = "")
     private Integer isDelete;
     /**
-     *拉取时间
+     * 拉取时间
      */
     @ApiModelProperty(value = "拉取时间")
     private Date pullTime;

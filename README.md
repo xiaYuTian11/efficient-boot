@@ -6,6 +6,7 @@
 开发使用可以查看demo工程：https://github.com/xiaYuTian11/xxx-project
 配套的代码生成器地址可以查看：https://github.com/xiaYuTian11/efficient-generator
 ```
+
 - [efficient](#efficient)
     * [引入依赖](#%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96)
         + [说明](#%E8%AF%B4%E6%98%8E)
@@ -71,6 +72,7 @@
 ```
 
 ### 说明
+
 ```text
 下面所有的Sql语句都是以postgresql为基础的，使用其他数据库请自行修改
 ```
@@ -87,7 +89,7 @@ mvn install:install-file    -DgroupId=com.aspose -DartifactId=aspose-cells -Dver
 mvn install:install-file    -DgroupId=com.aspose -DartifactId=aspose-words -Dversion=21.6 -Dpackaging=jar   -Dfile=./aspose-words-21.11.0-jdk17.jar
 ```
 
-### YKZ 
+### YKZ
 
 ```text
 mvn -Dmaven.test.skip=true install
@@ -663,6 +665,7 @@ public class UserTest {
 ## YKZ 对接
 
 ### 安装YKZ 本地依赖
+
 ```text
 mvn -Dmaven.test.skip=true install
 mvn install:install-file    -DgroupId=com.dcqc -DartifactId=dcqc-uc-oauth-sdk -Dversion=3.0.0-RELEASE -Dpackaging=jar   -Dfile=./dcqc-uc-oauth-sdk-3.0.0-RELEASE.jar
@@ -671,6 +674,7 @@ mvn install:install-file    -DgroupId=com.alibaba -DartifactId=zwdd-sdk-java -Dv
 ```
 
 ### 引入框架依赖
+
 ```xml
 <dependency>
     <groupId>top.tanmw</groupId>
@@ -685,6 +689,7 @@ mvn install:install-file    -DgroupId=com.alibaba -DartifactId=zwdd-sdk-java -Dv
 ```
 
 ### 服务地址
+
 ```text
 用户中心
 com.efficient.ykz.controller.YkzUserCenterController
@@ -693,6 +698,7 @@ com.efficient.ykz.controller.YkzApiController
 ```
 
 ### 建表语句
+
 ```sql
 DROP TABLE IF EXISTS "efficient_ykz_org";
 CREATE TABLE efficient_ykz_org (

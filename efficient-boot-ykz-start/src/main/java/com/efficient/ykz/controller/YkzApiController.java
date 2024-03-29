@@ -105,9 +105,10 @@ public class YkzApiController {
 
     /**
      * 待办-完成
-     * @param assigneeId 接收人ID
-     * @param taskUuid 任务主键
-     * @param closePackage    是否同步关闭实例，默认false
+     *
+     * @param assigneeId   接收人ID
+     * @param taskUuid     任务主键
+     * @param closePackage 是否同步关闭实例，默认false
      */
     @GetMapping("/todo/finish")
     @ApiOperation(value = "待办-完成", response = String.class)
@@ -124,9 +125,10 @@ public class YkzApiController {
 
     /**
      * 待办-取消
-     * @param assigneeId 接收人ID
-     * @param taskUuid 任务主键
-     * @param closePackage    是否同步关闭实例，默认false
+     *
+     * @param assigneeId   接收人ID
+     * @param taskUuid     任务主键
+     * @param closePackage 是否同步关闭实例，默认false
      */
     @GetMapping("/todo/cancel")
     @ApiOperation(value = "待办-完成", response = String.class)

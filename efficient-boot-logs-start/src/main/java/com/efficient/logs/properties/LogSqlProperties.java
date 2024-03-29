@@ -3,7 +3,6 @@ package com.efficient.logs.properties;
 import lombok.Data;
 
 /**
- *
  * @author TMW
  * @since 2024/1/19 15:47
  */

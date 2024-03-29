@@ -18,10 +18,10 @@ public class DownloadVO {
     @ApiModelProperty(value = "文件名称")
     private String fileName;
     @ApiModelProperty(value = "文件全路径")
-    @NotBlank(groups = Common2Group.class,message = "filePath 不能为空")
+    @NotBlank(groups = Common2Group.class, message = "filePath 不能为空")
     private String filePath;
     @ApiModelProperty(value = "文件ID")
-    @NotBlank(groups = Common1Group.class,message = "fileId 不能为空")
+    @NotBlank(groups = Common1Group.class, message = "fileId 不能为空")
     private String fileId;
     @ApiModelProperty(value = "存储类型")
     private String storeType;

@@ -15,7 +15,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- *
  * @author TMW
  * @since 2024/2/1 16:01
  */
@@ -24,6 +23,7 @@ public class FileMd5Util {
 
     /**
      * 使用Java标准库的MessageDigest类获取MD5值
+     *
      * @param filePath 文件路径
      * @return 文件的md5值
      */
@@ -77,6 +77,7 @@ public class FileMd5Util {
 
     /**
      * 使用Java标准库的MessageDigest类获取MD5值
+     *
      * @return 文件的md5值
      */
     public static String calculateMD5(MultipartFile file) {
@@ -105,6 +106,7 @@ public class FileMd5Util {
 
     /**
      * 使用Apache Commons Codec库获取MD5值
+     *
      * @param filePath 文件路径
      * @return 文件的md5值
      */
@@ -128,6 +130,7 @@ public class FileMd5Util {
 
     /**
      * 使用Java NIO获取MD5值
+     *
      * @param filePath 文件路径
      * @return 文件的md5值
      */

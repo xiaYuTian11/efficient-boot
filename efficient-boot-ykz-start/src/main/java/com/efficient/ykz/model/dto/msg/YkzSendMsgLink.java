@@ -3,12 +3,11 @@ package com.efficient.ykz.model.dto.msg;
 import lombok.Data;
 
 /**
- *
  * @author TMW
  * @since 2024/1/12 10:45
  */
 @Data
-public class YkzSendMsgLink extends YkzSendMsgDetail{
+public class YkzSendMsgLink extends YkzSendMsgDetail {
 
     /**
      * 链接消息-点击跳转的链接
@@ -30,7 +29,6 @@ public class YkzSendMsgLink extends YkzSendMsgDetail{
      * 链接消息-来源地址
      */
     private String sourceUrl;
-
 
 
 }

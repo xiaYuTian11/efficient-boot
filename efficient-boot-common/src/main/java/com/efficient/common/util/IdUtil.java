@@ -18,6 +18,7 @@ public class IdUtil {
 
     /**
      * 生成唯一批次号，分布式可能重复
+     *
      * @return
      */
     public static synchronized String generateBatchNumber() {

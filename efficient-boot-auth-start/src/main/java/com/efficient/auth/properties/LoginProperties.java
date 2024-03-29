@@ -3,7 +3,6 @@ package com.efficient.auth.properties;
 import lombok.Data;
 
 /**
- *
  * @author TMW
  * @since 2024/1/22 16:36
  */

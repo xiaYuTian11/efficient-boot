@@ -14,7 +14,7 @@
     <artifactId>efficient-boot-task-start</artifactId>
 
     <properties>
-<!--        <maven.deploy.skip>true</maven.deploy.skip>-->
+        <!--        <maven.deploy.skip>true</maven.deploy.skip>-->
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
@@ -55,7 +55,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-quartz</artifactId>
-<!--            <version>${spring-boot.version}</version>-->
+            <!--            <version>${spring-boot.version}</version>-->
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -68,22 +68,22 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-<!--    <build>-->
-<!--        <plugins>-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-deploy-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <skip>true</skip>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-<!--            <plugin>-->
-<!--                <groupId>org.sonatype.plugins</groupId>-->
-<!--                <artifactId>nexus-staging-maven-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-<!--        </plugins>-->
-<!--    </build>-->
+    <!--    <build>-->
+    <!--        <plugins>-->
+    <!--            <plugin>-->
+    <!--                <groupId>org.apache.maven.plugins</groupId>-->
+    <!--                <artifactId>maven-deploy-plugin</artifactId>-->
+    <!--                <configuration>-->
+    <!--                    <skip>true</skip>-->
+    <!--                </configuration>-->
+    <!--            </plugin>-->
+    <!--            <plugin>-->
+    <!--                <groupId>org.sonatype.plugins</groupId>-->
+    <!--                <artifactId>nexus-staging-maven-plugin</artifactId>-->
+    <!--                <configuration>-->
+    <!--                    <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>-->
+    <!--                </configuration>-->
+    <!--            </plugin>-->
+    <!--        </plugins>-->
+    <!--    </build>-->
 </project>

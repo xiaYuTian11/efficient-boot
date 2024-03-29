@@ -22,7 +22,7 @@ public class SysLogDTO {
      */
     private String id;
     /**
-     *系统ID
+     * 系统ID
      */
     private String systemId;
     /**
@@ -34,7 +34,7 @@ public class SysLogDTO {
      */
     private String userId;
     /**
-     *用户单位ID
+     * 用户单位ID
      */
     private String userUnitId;
     /**

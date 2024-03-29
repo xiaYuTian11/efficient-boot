@@ -26,7 +26,7 @@ public class RateProperties {
      */
     private long expireTime = 1;
     /**
-     *  拦截方法名称
+     * 拦截方法名称
      */
     private List<String> methodList = new ArrayList<String>() {
 
@@ -40,7 +40,7 @@ public class RateProperties {
     };
 
     /**
-     *  排除拦截方法名称，针对特定包含在methodList中能匹配到的
+     * 排除拦截方法名称，针对特定包含在methodList中能匹配到的
      */
     private List<String> excludeApiList;
 }

@@ -21,18 +21,15 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.function.Predicate;
 
 /**
- *
  * private final List<String> excludePaths = Arrays.asList("/swagger**", "/webjars/springfox-swagger-ui/**");
  *
- *     @Override
- *     public void addInterceptors(InterceptorRegistry registry) {
- *         registry.addInterceptor(permissionInterceptor).addPathPatterns("/**")
- *                 .excludePathPatterns(excludePaths);
- *     }
- *
- * swagger 配置类
- *
  * @author TMW
+ * @Override public void addInterceptors(InterceptorRegistry registry) {
+ * registry.addInterceptor(permissionInterceptor).addPathPatterns("/**")
+ * .excludePathPatterns(excludePaths);
+ * }
+ * <p>
+ * swagger 配置类
  * @since 2022/3/1 14:24
  */
 @Configuration

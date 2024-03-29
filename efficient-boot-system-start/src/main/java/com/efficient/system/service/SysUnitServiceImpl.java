@@ -50,7 +50,8 @@ public class SysUnitServiceImpl extends ServiceImpl<SysUnitMapper, SysUnit> impl
             }
         }
     }
-    private String getNextLevelCode(String levelCode){
+
+    private String getNextLevelCode(String levelCode) {
         String substring = levelCode.substring(levelCode.length() - 3);
         int next = Integer.parseInt(substring) + 1;
         String format = String.format("%03d", next);

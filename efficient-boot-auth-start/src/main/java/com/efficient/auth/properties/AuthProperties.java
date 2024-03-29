@@ -26,7 +26,7 @@ public class AuthProperties {
     private String permissionCheckType = "default";
     private String userTicketClassName = "com.efficient.common.auth.UserTicket";
     /**
-     *  白名单
+     * 白名单
      */
     private List<String> whiteList = new ArrayList<String>() {
         private static final long serialVersionUID = -6831198909191678412L;
@@ -39,7 +39,7 @@ public class AuthProperties {
     };
 
     /**
-     *  get方式传递token
+     * get方式传递token
      */
     private List<String> tokenGet = new ArrayList<String>() {
         private static final long serialVersionUID = -6831198909191678412L;
@@ -49,7 +49,7 @@ public class AuthProperties {
         }
     };
     /**
-     *  post方式传递token
+     * post方式传递token
      */
     @Deprecated
     private List<String> tokenPost = new ArrayList<>();

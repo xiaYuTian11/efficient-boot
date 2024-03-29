@@ -8,13 +8,13 @@ import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 /**
-* <p>
-* 系统配置 模型转换器
-* </p>
-*
-* @author TMW
-* @date 2024-03-26 10:57:51
-*/
+ * <p>
+ * 系统配置 模型转换器
+ * </p>
+ *
+ * @author TMW
+ * @date 2024-03-26 10:57:51
+ */
 @Mapper(componentModel = "spring")
 public interface SysConfigConverter {
 

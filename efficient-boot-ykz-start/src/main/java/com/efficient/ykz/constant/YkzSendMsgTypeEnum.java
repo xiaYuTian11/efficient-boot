@@ -1,7 +1,6 @@
 package com.efficient.ykz.constant;
 
 /**
- *
  * @author TMW
  * @since 2024/1/12 10:42
  */

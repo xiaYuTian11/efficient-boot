@@ -7,7 +7,7 @@ package com.efficient.common.result;
  * @since 2022/7/5 14:50
  */
 public interface ResultConstant {
-    int getCode() ;
+    int getCode();
 
     void setCode(int code);
 

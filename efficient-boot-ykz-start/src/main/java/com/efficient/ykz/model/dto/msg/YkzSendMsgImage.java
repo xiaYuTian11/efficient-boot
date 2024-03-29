@@ -3,7 +3,6 @@ package com.efficient.ykz.model.dto.msg;
 import lombok.Data;
 
 /**
- *
  * @author TMW
  * @since 2024/1/12 10:45
  */

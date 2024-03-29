@@ -20,11 +20,11 @@ public class Page<T> implements Serializable {
     /**
      * Constructor.
      *
-     * @param list       the list of paginate result
-     * @param pageNum the page number
-     * @param pageSize   the page size
-     * @param totalPage  the total page of paginate
-     * @param totalRow   the total row of paginate
+     * @param list      the list of paginate result
+     * @param pageNum   the page number
+     * @param pageSize  the page size
+     * @param totalPage the total page of paginate
+     * @param totalRow  the total row of paginate
      */
     public Page(List<T> list, int pageNum, int pageSize, int totalPage, int totalRow) {
         this.list = list;

@@ -8,13 +8,13 @@ import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 /**
-* <p>
-* efficient_dict_code 模型转换器
-* </p>
-*
-* @author TMW
-* @date 2024-03-29 11:08:17
-*/
+ * <p>
+ * efficient_dict_code 模型转换器
+ * </p>
+ *
+ * @author TMW
+ * @date 2024-03-29 11:08:17
+ */
 @Mapper(componentModel = "spring")
 public interface DictCodeConverter {
 

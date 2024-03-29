@@ -7,7 +7,8 @@
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
     <springProperty scope="context" name="log.level" source="com.efficient.logs.level" defaultValue="info"/>
     <springProperty scope="context" name="log.sqlLevel" source="com.efficient.logs.sql.level" defaultValue="debug"/>
-    <springProperty scope="context" name="log.daoPackage" source="com.efficient.logs.sql.daoPackage" defaultValue="com.efficient"/>
+    <springProperty scope="context" name="log.daoPackage" source="com.efficient.logs.sql.daoPackage"
+                    defaultValue="com.efficient"/>
     <springProperty scope="context" name="logback.logDir" source="com.efficient.logs.path" defaultValue="./logs"/>
     <springProperty scope="context" name="logback.appName" source="com.efficient.logs.name" defaultValue="log"/>
 
@@ -81,7 +82,8 @@
         <!-- 滚动策略，按照时间滚动 TimeBasedRollingPolicy -->
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- 文件路径，定义了日志的切分方式 —— 把每一天的日志归档到一个文件中，以防止日志填满整个磁盘空间 -->
-            <FileNamePattern>${logback.logDir}/%d{yyyy-MM-dd}/${logback.appName}_error_%d{yyyy-MM-dd}_%i.log</FileNamePattern>
+            <FileNamePattern>${logback.logDir}/%d{yyyy-MM-dd}/${logback.appName}_error_%d{yyyy-MM-dd}_%i.log
+            </FileNamePattern>
             <!-- 只保留最近 90 天的日志 -->
             <maxHistory>90</maxHistory>
             <!-- 单文件最大值 -->
@@ -116,7 +118,7 @@
     <root level="${log.level}">
         <!-- appender 将会添加到这个 loger -->
         <appender-ref ref="console"/>
-<!--        <appender-ref ref="infoLog"/>-->
+        <!--        <appender-ref ref="infoLog"/>-->
         <appender-ref ref="errorLog"/>
         <appender-ref ref="asyncLog"/>
     </root>

@@ -54,6 +54,7 @@ public enum YkzOrgAreaLevelEnum {
     public void setName(String name) {
         this.name = name;
     }
+
     public static Map<String, String> map() {
         Map<String, String> map = new HashMap<>();
         for (YkzOrgAreaLevelEnum value : YkzOrgAreaLevelEnum.values()) {

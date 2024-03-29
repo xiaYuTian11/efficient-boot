@@ -7,5 +7,5 @@ import javax.validation.groups.Default;
  * @date 2021/2/25 9:07
  */
 public interface Common2Group extends Default {
-    
+
 }

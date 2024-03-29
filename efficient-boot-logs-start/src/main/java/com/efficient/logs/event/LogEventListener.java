@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 自定义需要发布的事件类，需要继承ApplicationEvent类或PayloadApplicationEvent(该类也仅仅是对ApplicationEvent的一层封装)
+ *
  * @author TMW
  * @since 2023/5/8 17:03
  */

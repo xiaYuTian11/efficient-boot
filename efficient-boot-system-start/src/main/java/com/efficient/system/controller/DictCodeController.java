@@ -21,13 +21,13 @@ import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
-* <p>
-* efficient_dict_code controller 层
-* </p>
-*
-* @author TMW
-* @date 2024-03-29 11:05:08
-*/
+ * <p>
+ * efficient_dict_code controller 层
+ * </p>
+ *
+ * @author TMW
+ * @date 2024-03-29 11:05:08
+ */
 @RestController
 @RequestMapping("/dict")
 @Validated
@@ -47,7 +47,7 @@ public class DictCodeController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "type", value = "数据类型", required = true)
     })
-    public Result find(@NotBlank(message = "type 不能为空") @RequestParam(name="type") String type) {
+    public Result find(@NotBlank(message = "type 不能为空") @RequestParam(name = "type") String type) {
         List<DictCode> list = dictCodeService.findByType(type);
         return Result.ok(list);
     }

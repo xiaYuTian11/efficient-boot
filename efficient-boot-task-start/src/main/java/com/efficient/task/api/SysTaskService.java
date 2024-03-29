@@ -23,6 +23,7 @@ public interface SysTaskService extends IService<SysTask> {
      * 新增
      */
     Result<SysTask> save(SysTaskDTO dto);
+
     SysTask findByCode(String code);
 
     /**

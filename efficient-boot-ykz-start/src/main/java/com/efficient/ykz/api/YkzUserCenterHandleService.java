@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * 自定义后续处理
+ *
  * @author TMW
  * @since 2024/3/21 10:56
  */
@@ -27,11 +28,10 @@ public interface YkzUserCenterHandleService {
     Result<List<YkzOrg>> handleOrgByCodeList(List<YkzOrg> data);
 
     /**
-     *
-     * @param orgCode  父级
-     * @param includeTop 是否包含父级
+     * @param orgCode     父级
+     * @param includeTop  是否包含父级
      * @param flattenTree 是否集合形式，默认树形结构
-     * @param data 数据集合
+     * @param data        数据集合
      * @return
      */
     Result<List<YkzOrg>> handleOrgByParentCode(String orgCode, boolean includeTop, boolean flattenTree, List<YkzOrg> data);

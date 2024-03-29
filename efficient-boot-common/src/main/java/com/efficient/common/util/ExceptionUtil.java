@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * 异常工具类
+ *
  * @author TMW
  * @since 2024/3/8 14:12
  */

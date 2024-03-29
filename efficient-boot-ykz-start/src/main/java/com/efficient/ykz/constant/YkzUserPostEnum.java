@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *任职类型 1主职、2兼职、3挂职、4借调
+ * 任职类型 1主职、2兼职、3挂职、4借调
+ *
  * @author TMW
  * @since 2024/1/10 14:18
  */
@@ -38,6 +39,7 @@ public enum YkzUserPostEnum {
     public void setName(String name) {
         this.name = name;
     }
+
     public static Map<Integer, String> map() {
         Map<Integer, String> map = new HashMap<>();
         for (YkzUserPostEnum value : YkzUserPostEnum.values()) {

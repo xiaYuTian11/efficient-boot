@@ -53,43 +53,43 @@ public class YkzOrg implements Serializable {
      */
     private String govDivisionCode;
     /**
-     *条线Code列表
+     * 条线Code列表
      */
     private String govBusinessStripCodes;
     /**
-     *机构/单位级别
+     * 机构/单位级别
      */
     private String govInstitutionLevelCode;
     /**
-     *机构简称
+     * 机构简称
      */
     private String govShortName;
     /**
-     *政务钉钉组织机构code
+     * 政务钉钉组织机构code
      */
     private String organizationCode;
     /**
-     *父组织机构code
+     * 父组织机构code
      */
     private String parentOrganizationCode;
     /**
-     *单位负责人userCode
+     * 单位负责人userCode
      */
     private String principal;
     /**
-     *更新时间
+     * 更新时间
      */
     private Long updateTime;
     /**
-     *统一信用代码
+     * 统一信用代码
      */
     private String creditCode;
     /**
-     *备注
+     * 备注
      */
     private String remark;
     /**
-     *区域级别
+     * 区域级别
      */
     private String areaLevel;
 

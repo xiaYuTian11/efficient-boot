@@ -13,6 +13,7 @@ import java.util.Objects;
 
 /**
  * 菜单权限校验，如果自定义实现，请先实现类com.efficient.auth.interceptor.PermissionCheck
+ *
  * @author TMW
  * @since 2023/3/21 10:47
  */

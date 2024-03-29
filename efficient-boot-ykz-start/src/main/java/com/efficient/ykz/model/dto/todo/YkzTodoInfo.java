@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *
  * @author TMW
  * @since 2024/1/15 10:34
  */
@@ -23,9 +22,9 @@ public class YkzTodoInfo {
      */
     private String subject;
     /**
-    //  * 1-YKZ 内部打开，2-外部浏览器打开
-    //  * 必填
-    //  */
+     //  * 1-YKZ 内部打开，2-外部浏览器打开
+     //  * 必填
+     //  */
     // private Integer openType = 1;
     /**
      * 创建人信息，示例：{“imgId”:"",“name”:“张三”}不传的话创建人缺少名称与头像信息

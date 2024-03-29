@@ -8,13 +8,13 @@ import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 /**
-* <p>
-* 定时任务表 模型转换器
-* </p>
-*
-* @author code generator
-* @date 2022-08-28 18:08:04
-*/
+ * <p>
+ * 定时任务表 模型转换器
+ * </p>
+ *
+ * @author code generator
+ * @date 2022-08-28 18:08:04
+ */
 @Mapper(componentModel = "spring")
 public interface SysTaskConverter {
 

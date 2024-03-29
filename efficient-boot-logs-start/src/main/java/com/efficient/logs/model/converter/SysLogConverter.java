@@ -8,13 +8,13 @@ import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 /**
-* <p>
-*  模型转换器
-* </p>
-*
-* @author code generator
-* @date 2022-09-05 16:24:37
-*/
+ * <p>
+ * 模型转换器
+ * </p>
+ *
+ * @author code generator
+ * @date 2022-09-05 16:24:37
+ */
 @Mapper(componentModel = "spring")
 public interface SysLogConverter {
 

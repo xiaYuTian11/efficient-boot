@@ -6,6 +6,7 @@ import org.springframework.context.annotation.AnnotationBeanNameGenerator;
 
 /**
  * 处理类名冲突
+ *
  * @author TMW
  * @since 2024/3/22 11:14
  */
