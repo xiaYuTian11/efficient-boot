@@ -41,7 +41,6 @@ public class DictCodeController {
     /**
      * 详情
      */
-    @Log(logOpt = LogEnum.QUERY)
     @GetMapping("/find")
     @ApiOperation(value = "详情", response = Result.class)
     @ApiImplicitParams({
