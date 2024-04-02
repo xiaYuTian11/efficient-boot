@@ -87,10 +87,10 @@ public class FileController {
     public ResponseEntity<byte[]> download(@Validated(value = Common1Group.class)
                                            @RequestBody DownloadVO downloadVO) throws Exception {
         SysFileInfo sysFileInfo = sysFileInfoService.getById(downloadVO.getFileId());
-        ResponseEntity<byte[]> responseEntity = null;
-        if (Objects.isNull(sysFileInfo)) {
-            return responseEntity;
+        if (sysFileInfo == null) {
+            return ResponseEntity.notFound().build();
         }
+        ResponseEntity<byte[]> responseEntity = null;
 
         ByteArrayOutputStream out = null;
         try (InputStream in = fileService.getFile(sysFileInfo)) {
@@ -106,6 +106,7 @@ public class FileController {
             responseEntity = new ResponseEntity<byte[]>(bytes, headers, HttpStatus.OK);
         } catch (Exception e) {
             log.error("文件下载异常：", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         } finally {
             try {
                 if (out != null) {
@@ -125,11 +126,11 @@ public class FileController {
         String filePath = downloadVO.getFilePath();
         ResponseEntity<byte[]> responseEntity = null;
         if (StrUtil.isBlank(filePath)) {
-            return responseEntity;
+            return ResponseEntity.notFound().build();
         }
         File file = new File(filePath);
         if (!file.exists()) {
-            return responseEntity;
+            return ResponseEntity.notFound().build();
         }
 
         ByteArrayOutputStream out = null;
@@ -146,6 +147,7 @@ public class FileController {
             responseEntity = new ResponseEntity<byte[]>(bytes, headers, HttpStatus.OK);
         } catch (Exception e) {
             log.error("文件下载异常：", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         } finally {
             try {
                 if (out != null) {
