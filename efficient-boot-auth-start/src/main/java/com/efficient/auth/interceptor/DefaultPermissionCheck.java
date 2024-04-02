@@ -17,7 +17,7 @@ import java.util.Objects;
  * @author TMW
  * @since 2023/3/21 10:47
  */
-@ConditionalOnProperty(name = "com.efficient.auth.permissionCheckType", havingValue = "default", matchIfMissing = false)
+@ConditionalOnProperty(name = "com.efficient.auth.permissionCheckType", havingValue = "default", matchIfMissing = true)
 @Service
 public class DefaultPermissionCheck implements PermissionCheck {
     @Override

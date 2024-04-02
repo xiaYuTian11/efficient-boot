@@ -48,7 +48,6 @@ public class LocalFileServiceImpl implements FileService {
         }
         // 根路径
         String basePath = fileProperties.getLocal().getLocalPath() + UPLOAD_LINE + module;
-        // String basePath = "D:\\efficient\\file\\";
         // 获取文件的名称
         String originalFilename = multipartFile.getOriginalFilename();
 
