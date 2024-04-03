@@ -1,5 +1,6 @@
 package com.efficient.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 
@@ -29,10 +30,6 @@ public class TreeNode {
      */
     private String name;
     /**
-     * 类型
-     */
-    private String type;
-    /**
      * 排序
      */
     private Long order;
@@ -43,9 +40,14 @@ public class TreeNode {
     /**
      * 是否顶级节点
      */
+    @JsonIgnore
     private Boolean isRoot;
     /**
      * 子节点
      */
     private List<TreeNode> children;
+    /**
+     * 补充信息
+     */
+    private Object info;
 }
