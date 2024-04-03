@@ -40,6 +40,11 @@
             <artifactId>hibernate-validator</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.mvel</groupId>
+            <artifactId>mvel2</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-cells</artifactId>
             <optional>true</optional>
