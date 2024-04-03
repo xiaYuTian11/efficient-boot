@@ -1,29 +1,26 @@
 package com.efficient.system.service;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.efficient.cache.api.CacheUtil;
 import com.efficient.cache.constant.CacheConstant;
 import com.efficient.common.constant.CommonConstant;
-import com.efficient.common.result.Result;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.efficient.common.entity.TreeNode;
+import com.efficient.common.util.TreeUtil;
 import com.efficient.system.api.DictCodeService;
-import com.efficient.system.model.converter.DictCodeConverter;
 import com.efficient.system.dao.DictCodeMapper;
-import com.efficient.system.model.dto.DictCodeDTO;
-import com.efficient.system.model.dto.DictCodeListDTO;
+import com.efficient.system.model.converter.DictCodeConverter;
 import com.efficient.system.model.entity.DictCode;
-import com.efficient.system.model.vo.DictCodeVO;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -80,5 +77,26 @@ public class DictCodeServiceImpl extends ServiceImpl<DictCodeMapper, DictCode> i
         Map<String, List<DictCode>> listMap = list.stream().collect(Collectors.groupingBy(DictCode::getCodeType));
         listMap.forEach((k, v) -> cacheUtil.put(CacheConstant.CACHE_DICT, k, v));
         log.info("load dict success!");
+    }
+
+    @Override
+    public List<TreeNode> findTree(String type) {
+        List<DictCode> list = this.findByType(type);
+        if (CollUtil.isEmpty(list)) {
+            return new ArrayList<>();
+        }
+        List<TreeNode> treeNodeList = new ArrayList<>();
+        list.forEach(et -> {
+            TreeNode treeNode = TreeNode.builder()
+                    .id(et.getCode())
+                    .code(et.getCode())
+                    .parentId(et.getParentCode())
+                    .order(et.getSort())
+                    .name(et.getCodeName())
+                    .isRoot(StrUtil.equals(et.getParentCode(), "-1"))
+                    .build();
+            treeNodeList.add(treeNode);
+        });
+        return TreeUtil.createListTree(treeNodeList);
     }
 }

@@ -18,7 +18,7 @@ import java.util.Date;
  */
 @Data
 @TableName("efficient_dict_code")
-@ApiModel("efficient_dict_code")
+@ApiModel("字典表")
 public class DictCode implements Serializable {
 
     private static final long serialVersionUID = 6545882351655499319L;

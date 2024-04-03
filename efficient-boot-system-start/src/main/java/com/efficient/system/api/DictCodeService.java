@@ -1,5 +1,6 @@
 package com.efficient.system.api;
 
+import com.efficient.common.entity.TreeNode;
 import com.efficient.common.result.Result;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.efficient.system.model.dto.DictCodeDTO;
@@ -13,7 +14,7 @@ import java.util.Map;
 
 /**
  * <p>
- * efficient_dict_code 服务Api
+ * 字典表 服务Api
  * </p>
  *
  * @author TMW
@@ -31,4 +32,6 @@ public interface DictCodeService extends IService<DictCode> {
      * 初始化字典表
      */
     void init();
+
+    List<TreeNode> findTree(String type);
 }
