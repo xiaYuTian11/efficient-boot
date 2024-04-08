@@ -3,7 +3,7 @@
     <parent>
         <groupId>top.tanmw</groupId>
         <artifactId>efficient-boot</artifactId>
-        <version>0.10.14</version>
+        <version>0.10.15</version>
     </parent>
     <description>用户体系 start</description>
     <modelVersion>4.0.0</modelVersion>

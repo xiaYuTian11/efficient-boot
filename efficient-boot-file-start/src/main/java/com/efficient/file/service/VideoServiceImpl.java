@@ -41,6 +41,7 @@ import static com.efficient.file.constant.FileConstant.*;
 @Service
 @Slf4j
 public class VideoServiceImpl implements VideoService {
+    private final String FILE_PATH = "%s" + File.separator + "%s" + File.separator + "%s";
     @Autowired
     private FileProperties fileProperties;
     @Autowired
@@ -63,10 +64,10 @@ public class VideoServiceImpl implements VideoService {
         if (fileProperties.getLocal().isAddDatePrefix()) {
             basePath += DateUtil.format(new Date(), "/yyyy/MM/dd/");
         }
-        String destFilePath = String.format("%s\\%s\\%s.%s", basePath, md5, md5, StringUtils.getFilenameExtension(filename));
+        String destFilePath = String.format(FILE_PATH + ".%s", basePath, md5, md5, StringUtils.getFilenameExtension(filename));
         File destFile = new File(destFilePath);
         // 上传分片信息存放位置
-        String confFile = String.format("%s\\%s\\%s.conf", basePath, md5, md5);
+        String confFile = String.format(FILE_PATH + ".conf", basePath, md5, md5);
         // 第一次创建分片记录文件
         // 创建目录
         File dir = new File(destFilePath).getParentFile();
@@ -150,7 +151,7 @@ public class VideoServiceImpl implements VideoService {
         if (fileProperties.getLocal().isAddDatePrefix()) {
             basePath += DateUtil.format(new Date(), "/yyyy/MM/dd/");
         }
-        String uploadPath = String.format("%s\\%s\\%s.conf", basePath, md5, md5);
+        String uploadPath = String.format(FILE_PATH + ".conf", basePath, md5, md5);
         Path path = Paths.get(uploadPath);
         // MD5目录不存在文件从未上传过
         if (!Files.exists(path.getParent())) {
@@ -164,10 +165,12 @@ public class VideoServiceImpl implements VideoService {
         }
         // 所有分片上传完成计算文件MD5
         if (!stringBuilder.toString().contains("0")) {
-            File file = new File(String.format("%s\\%s\\", basePath, md5));
+            File file = new File(String.format("%s" + File.separator + "%s", basePath, md5));
+            if (!file.exists()) {
+                return Result.ok(stringBuilder.toString().replaceAll("1", "0"));
+            }
             File[] files = file.listFiles();
-            int length = files.length;
-            if (length < 2) {
+            if (Objects.isNull(files) || files.length < 2) {
                 return Result.ok(stringBuilder.toString().replaceAll("1", "0"));
             }
             for (File f : files) {
