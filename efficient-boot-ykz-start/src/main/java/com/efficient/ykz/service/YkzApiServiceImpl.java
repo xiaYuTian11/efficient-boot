@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import com.alibaba.xxpt.gateway.shared.api.request.*;
 import com.alibaba.xxpt.gateway.shared.api.response.*;
+import com.alibaba.xxpt.gateway.shared.client.http.ExecutableClient;
 import com.alibaba.xxpt.gateway.shared.client.http.IntelligentGetClient;
 import com.alibaba.xxpt.gateway.shared.client.http.IntelligentPostClient;
 import com.alibaba.xxpt.gateway.shared.client.http.api.OapiSpResultContent;
@@ -15,7 +16,6 @@ import com.efficient.common.result.ResultEnum;
 import com.efficient.common.util.AESUtils;
 import com.efficient.common.util.JackSonUtil;
 import com.efficient.ykz.api.YkzApiService;
-import com.efficient.ykz.config.YkzConfig;
 import com.efficient.ykz.constant.YkzConstant;
 import com.efficient.ykz.constant.YkzSendMsgTypeEnum;
 import com.efficient.ykz.exception.YkzException;
@@ -42,10 +42,11 @@ import java.util.Objects;
 @Service
 @Slf4j
 public class YkzApiServiceImpl implements YkzApiService {
-    @Autowired
-    private YkzConfig ykzConfig;
+
     @Autowired
     private YkzProperties ykzProperties;
+    @Autowired
+    private ExecutableClient executableClient;
 
     private <T> Result<T> getApiResult(String content, Class<T> tClass) {
         JSONObject json = new JSONObject(content);
@@ -71,7 +72,7 @@ public class YkzApiServiceImpl implements YkzApiService {
     @Override
     public Result<YkzAccessToken> accessToken() {
         YkzApi ykzApi = ykzProperties.getYkzApi();
-        IntelligentGetClient intelligentGetClient = ykzConfig.getExecutableClient().newIntelligentGetClient(ykzApi.getAccessToken());
+        IntelligentGetClient intelligentGetClient = executableClient.newIntelligentGetClient(ykzApi.getAccessToken());
         OapiGettokenJsonRequest oapiGettokenJsonRequest = new OapiGettokenJsonRequest();
         //应用的唯一标识key
         oapiGettokenJsonRequest.setAppkey(ykzApi.getAppkey());
@@ -102,7 +103,7 @@ public class YkzApiServiceImpl implements YkzApiService {
 
         // executableClient保证单例
         YkzApi ykzApi = ykzProperties.getYkzApi();
-        IntelligentPostClient intelligentPostClient = ykzConfig.getExecutableClient().newIntelligentPostClient(ykzApi.getUserInfo());
+        IntelligentPostClient intelligentPostClient = executableClient.newIntelligentPostClient(ykzApi.getUserInfo());
         OapiRpcOauth2DingtalkAppUserJsonRequest oapiRpcOauth2DingtalkAppUserJsonRequest = new OapiRpcOauth2DingtalkAppUserJsonRequest();
         //登录access_token
         oapiRpcOauth2DingtalkAppUserJsonRequest.setAccess_token(ykzAccessTokenResult.getData().getAccessToken());
@@ -125,7 +126,7 @@ public class YkzApiServiceImpl implements YkzApiService {
             return Result.build(ykzAccessTokenResult.getCode(), ykzAccessTokenResult.getMsg());
         }
         //executableClient保证单例
-        IntelligentPostClient intelligentPostClient = ykzConfig.getExecutableClient().newIntelligentPostClient(ykzProperties.getYkzApi().getTokenInfo());
+        IntelligentPostClient intelligentPostClient = executableClient.newIntelligentPostClient(ykzProperties.getYkzApi().getTokenInfo());
         OapiRpcOauth2DingtalkAppTokenJsonRequest oapiRpcOauth2DingtalkAppTokenJsonRequest = new OapiRpcOauth2DingtalkAppTokenJsonRequest();
         //登录access_token
         oapiRpcOauth2DingtalkAppTokenJsonRequest.setAccess_token(ykzAccessTokenResult.getData().getAccessToken());
@@ -144,7 +145,7 @@ public class YkzApiServiceImpl implements YkzApiService {
     @Override
     public Result<String> sendMsg(YkzSendMsg ykzSendMsg) {
         //executableClient保证单例
-        IntelligentGetClient intelligentGetClient = ykzConfig.getExecutableClient().newIntelligentGetClient(ykzProperties.getYkzApi().getSendMsg());
+        IntelligentGetClient intelligentGetClient = executableClient.newIntelligentGetClient(ykzProperties.getYkzApi().getSendMsg());
         OapiChatSendMsgRequest oapiChatSendMsgRequest = new OapiChatSendMsgRequest();
         //消息体
         String msg = "";
@@ -226,7 +227,7 @@ public class YkzApiServiceImpl implements YkzApiService {
     @Override
     public Result<String> sendWorkNotice(YkzWorkNotice ykzWorkNotice) {
         // executableClient保证单例
-        IntelligentGetClient intelligentGetClient = ykzConfig.getExecutableClient().newIntelligentGetClient(ykzProperties.getYkzApi().getSendWorkNotice());
+        IntelligentGetClient intelligentGetClient = executableClient.newIntelligentGetClient(ykzProperties.getYkzApi().getSendWorkNotice());
         OapiMessageWorkNotificationRequest oapiMessageWorkNotificationRequest = new OapiMessageWorkNotificationRequest();
         //接收者的部门id列表
         oapiMessageWorkNotificationRequest.setOrganizationCodes(ykzWorkNotice.getOrganizationCodes());
@@ -293,7 +294,7 @@ public class YkzApiServiceImpl implements YkzApiService {
 
     @Override
     public Result<String> revokeWorkNotice(YkzWorkNoticeBackOut ykzWorkNotice) {
-        IntelligentGetClient intelligentGetClient = ykzConfig.getExecutableClient().newIntelligentGetClient(ykzProperties.getYkzApi().getRevokeWorkNotice());
+        IntelligentGetClient intelligentGetClient = executableClient.newIntelligentGetClient(ykzProperties.getYkzApi().getRevokeWorkNotice());
         OapiMessageRevokeRequest oapiMessageRevokeRequest = new OapiMessageRevokeRequest();
         //消息类型，固定填写：workNotification
         oapiMessageRevokeRequest.setMsgType(ykzWorkNotice.getMsgType());
@@ -317,7 +318,7 @@ public class YkzApiServiceImpl implements YkzApiService {
     @Override
     public Result<YkzTodoInfoVO> createTodo(YkzTodoInfo todoInfo) {
         //executableClient保证单例
-        IntelligentGetClient intelligentGetClient = ykzConfig.getExecutableClient().newIntelligentGetClient(ykzProperties.getYkzApi().getCreateTodo());
+        IntelligentGetClient intelligentGetClient = executableClient.newIntelligentGetClient(ykzProperties.getYkzApi().getCreateTodo());
         OapiTcV2OpenapiTaskCreateJsonRequest oapiTcV2OpenapiTaskCreateJsonRequest = new OapiTcV2OpenapiTaskCreateJsonRequest();
         //标题
         oapiTcV2OpenapiTaskCreateJsonRequest.setSubject(todoInfo.getSubject());
@@ -384,7 +385,7 @@ public class YkzApiServiceImpl implements YkzApiService {
     @Override
     public Result<String> finishTodo(String assigneeId, String taskUuid, boolean closePackage) {
         //executableClient保证单例
-        IntelligentGetClient intelligentGetClient = ykzConfig.getExecutableClient().newIntelligentGetClient(ykzProperties.getYkzApi().getFinishTodo());
+        IntelligentGetClient intelligentGetClient = executableClient.newIntelligentGetClient(ykzProperties.getYkzApi().getFinishTodo());
         OapiTcOpenapiTaskFinishJsonRequest oapiTcOpenapiTaskFinishJsonRequest = new OapiTcOpenapiTaskFinishJsonRequest();
         //同步处理实例
         oapiTcOpenapiTaskFinishJsonRequest.setClosePackage(closePackage);
@@ -405,7 +406,7 @@ public class YkzApiServiceImpl implements YkzApiService {
     @Override
     public Result<String> cancelTodo(String assigneeId, String taskUuid, boolean closePackage) {
         //executableClient保证单例
-        IntelligentGetClient intelligentGetClient = ykzConfig.getExecutableClient().newIntelligentGetClient(ykzProperties.getYkzApi().getCancelTodo());
+        IntelligentGetClient intelligentGetClient = executableClient.newIntelligentGetClient(ykzProperties.getYkzApi().getCancelTodo());
         OapiTcOpenapiTaskCancelJsonRequest oapiTcOpenapiTaskCancelJsonRequest = new OapiTcOpenapiTaskCancelJsonRequest();
         //同步处理实例
         oapiTcOpenapiTaskCancelJsonRequest.setCancelPakcage(closePackage);

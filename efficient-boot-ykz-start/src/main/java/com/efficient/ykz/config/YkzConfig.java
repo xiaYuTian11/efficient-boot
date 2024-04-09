@@ -16,9 +16,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
-
 /**
  * @author TMW
  * @since 2024/1/4 15:27
@@ -28,27 +25,13 @@ import java.util.concurrent.atomic.AtomicReference;
 @Slf4j
 @MapperScan(basePackages = {"com.efficient.ykz.dao"})
 public class YkzConfig {
-    private final AtomicReference<ExecutableClient> executableClientRef = new AtomicReference<>();
     @Autowired
     private YkzProperties ykzProperties;
 
-    public ExecutableClient getExecutableClient() {
-        ExecutableClient currentClient = executableClientRef.get();
-        if (Objects.isNull(currentClient)) {
-            synchronized (this) {
-                currentClient = executableClientRef.get();
-                if (Objects.isNull(currentClient)) {
-                    currentClient = init();
-                    executableClientRef.set(currentClient);
-                }
-            }
-        }
-        return currentClient;
-    }
-
+    @Bean
     public ExecutableClient init() {
         ExecutableClient executableClient;
-        log.info("初始化YKZ  executableClient");
+        log.info("初始化YKZ  executableClient start!");
         executableClient = ExecutableClient.getInstance();
         YkzApi ykzApi = ykzProperties.getYkzApi();
         // DomainName不同环境对应不同域名，示例为sass域名
@@ -57,16 +40,23 @@ public class YkzConfig {
         //应用App Key
         String appkey = ykzApi.getAppkey();
         if (StrUtil.isBlank(appkey)) {
-            throw new YkzException("请检查YKZ 配置是否正确");
+            // throw new YkzException("请检查YKZ 配置是否正确");
+            log.error("ExecutableClient init fail!");
+            log.error("请检查YKZ 配置是否正确");
+            return null;
         }
         executableClient.setAccessKey(appkey);
         //应用App Secret
         String appsecret = ykzApi.getAppsecret();
         if (StrUtil.isBlank(appsecret)) {
-            throw new YkzException("请检查YKZ 配置是否正确");
+            // throw new YkzException("请检查YKZ 配置是否正确");
+            log.error("ExecutableClient init fail!");
+            log.error("请检查YKZ 配置是否正确");
+            return null;
         }
         executableClient.setSecretKey(appsecret);
         executableClient.init();
+        log.info("初始化YKZ  executableClient  success!");
         return executableClient;
     }
 
