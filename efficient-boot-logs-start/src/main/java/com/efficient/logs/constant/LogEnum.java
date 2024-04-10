@@ -11,6 +11,7 @@ public enum LogEnum {
     CUSTOM(-1, ""),
     QUERY(1, "查询"),
     PAGE(2, "查询列表"),
+    SEND(3, "发送消息"),
     INSERT(10, "新增"),
     SAVE(20, "保存"),
     UPDATE(30, "修改"),

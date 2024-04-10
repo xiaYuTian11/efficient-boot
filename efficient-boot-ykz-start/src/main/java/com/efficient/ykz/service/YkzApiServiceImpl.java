@@ -318,30 +318,43 @@ public class YkzApiServiceImpl implements YkzApiService {
     @Override
     public Result<YkzTodoInfoVO> createTodo(YkzTodoInfo todoInfo) {
         //executableClient保证单例
-        IntelligentGetClient intelligentGetClient = executableClient.newIntelligentGetClient(ykzProperties.getYkzApi().getCreateTodo());
+        YkzApi ykzApi = ykzProperties.getYkzApi();
+        IntelligentGetClient intelligentGetClient = executableClient.newIntelligentGetClient(ykzApi.getCreateTodo());
         OapiTcV2OpenapiTaskCreateJsonRequest oapiTcV2OpenapiTaskCreateJsonRequest = new OapiTcV2OpenapiTaskCreateJsonRequest();
         //标题
         oapiTcV2OpenapiTaskCreateJsonRequest.setSubject(todoInfo.getSubject());
         //创建人ID
         oapiTcV2OpenapiTaskCreateJsonRequest.setCreatorId(todoInfo.getCreatorId());
         //租户ID
-        oapiTcV2OpenapiTaskCreateJsonRequest.setTenantId(String.valueOf(ykzProperties.getYkzApi().getTenantId()));
+        oapiTcV2OpenapiTaskCreateJsonRequest.setTenantId(String.valueOf(ykzApi.getTenantId()));
         //业务系统自定义ID
         oapiTcV2OpenapiTaskCreateJsonRequest.setBizTaskId(todoInfo.getBizTaskId());
         //URL
-        Boolean winOpen = ykzProperties.getYkzApi().getWinOpen();
+        Boolean winOpen = ykzApi.getWinOpen();
+        String appUrl = ykzApi.getAppUrl();
+        String pcUrl = ykzApi.getPcUrl();
         String url = todoInfo.getUrl();
         UserTicket userTicket = new UserTicket();
         userTicket.setZwddId(todoInfo.getAssigneeId());
         userTicket.setCreateTime(new Date().getTime());
         String token = URLEncodeUtil.encodeAll(AESUtils.encrypt(JackSonUtil.toJson(userTicket)));
         String bizTaskId = todoInfo.getBizTaskId();
-        if (StrUtil.isNotBlank(url)) {
-            url = url + "&authCode=" + token + "&bizTaskId=" + bizTaskId;
+        if (StrUtil.isNotBlank(pcUrl)) {
+            url = pcUrl + url;
+            if (url.contains("?")) {
+                url = url + "&authCode=" + token + "&bizTaskId=" + bizTaskId;
+            } else {
+                url = url + "?authCode=" + token + "&bizTaskId=" + bizTaskId;
+            }
         }
         String mobileUrl = todoInfo.getMobileUrl();
-        if (StrUtil.isNotBlank(mobileUrl)) {
-            mobileUrl = mobileUrl + "&authCode=" + token + "&bizTaskId=" + bizTaskId;
+        if (StrUtil.isNotBlank(appUrl)) {
+            mobileUrl = appUrl + mobileUrl;
+            if (mobileUrl.contains("?")) {
+                mobileUrl = mobileUrl + "&authCode=" + token + "&bizTaskId=" + bizTaskId;
+            } else {
+                mobileUrl = mobileUrl + "?authCode=" + token + "&bizTaskId=" + bizTaskId;
+            }
         }
 
         if (Objects.equals(winOpen, Boolean.TRUE)) {

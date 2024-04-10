@@ -9,13 +9,15 @@ CREATE TABLE efficient_sys_notify (
                                       notify_type VARCHAR(10) not null ,
                                       recipient_system_type VARCHAR(10) not null,
                                       create_user_id VARCHAR(255) not null,
+                                      create_zwdd_id VARCHAR(255),
                                       title text not null,
                                       content text,
                                       remark text,
                                       pc_url text ,
                                       app_url text,
-                                      recipient_type varchar(10) not null,
-                                      recipient_id text,
+                                      recipient_type varchar(10) ,
+                                      recipient_user_id  VARCHAR(255) not null,
+                                      recipient_zwdd_id  VARCHAR(255) ,
                                       recipient_msg_id VARCHAR(64),
                                       state varchar(10),
                                       create_time timestamp,
@@ -35,13 +37,15 @@ COMMENT ON COLUMN efficient_sys_notify.menu_id IS '菜单ID';
 COMMENT ON COLUMN efficient_sys_notify.notify_type IS '通知类型，1-普通消息，2-短信，3-邮件，4-待办，5-工作通知，6-ding消息，7-公告，9-其他';
 COMMENT ON COLUMN efficient_sys_notify.recipient_system_type IS '接收系统，1-本系统，2-YKZ ，9-其他系统';
 COMMENT ON COLUMN efficient_sys_notify.create_user_id IS '创建用户id';
+COMMENT ON COLUMN efficient_sys_notify.create_zwdd_id IS '创建用户政务钉钉id';
 COMMENT ON COLUMN efficient_sys_notify.title IS '标题';
 COMMENT ON COLUMN efficient_sys_notify.content IS '内容';
 COMMENT ON COLUMN efficient_sys_notify.remark IS '备注';
 COMMENT ON COLUMN efficient_sys_notify.pc_url IS 'pc路由';
 COMMENT ON COLUMN efficient_sys_notify.app_url IS 'app端路由';
 COMMENT ON COLUMN efficient_sys_notify.recipient_type IS '接受人类型，1-用户，2-角色，3-机构';
-COMMENT ON COLUMN efficient_sys_notify.recipient_id IS '接收人ID，ALL,代表全部';
+COMMENT ON COLUMN efficient_sys_notify.recipient_user_id IS '接收人ID';
+COMMENT ON COLUMN efficient_sys_notify.recipient_zwdd_id IS '接收人政务钉钉id';
 COMMENT ON COLUMN efficient_sys_notify.recipient_msg_id IS '接收系统消息ID';
 COMMENT ON COLUMN efficient_sys_notify.state IS '消息状态，1-待发送，2-已发送，3-已查看，4-已处理';
 COMMENT ON COLUMN efficient_sys_notify.update_time IS '修改时间';

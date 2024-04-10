@@ -190,6 +190,20 @@
       "sourceType": "com.efficient.ykz.properties.YkzApi"
     },
     {
+      "name": "com.efficient.ykz.ykzApi.pcUrl",
+      "type": "java.lang.String",
+      "description": "pc访问地址前缀",
+      "defaultValue": true,
+      "sourceType": "com.efficient.ykz.properties.YkzApi"
+    },
+    {
+      "name": "com.efficient.ykz.ykzApi.appUrl",
+      "type": "java.lang.String",
+      "description": "app访问地址前缀",
+      "defaultValue": true,
+      "sourceType": "com.efficient.ykz.properties.YkzApi"
+    },
+    {
       "name": "com.efficient.ykz.ykzApi.accessToken",
       "type": "java.lang.String",
       "description": "获取 accessToken",

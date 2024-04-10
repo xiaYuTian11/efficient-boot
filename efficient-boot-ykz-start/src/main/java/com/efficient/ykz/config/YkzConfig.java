@@ -31,7 +31,7 @@ public class YkzConfig {
     @Bean
     public ExecutableClient init() {
         ExecutableClient executableClient;
-        log.info("初始化YKZ  executableClient start!");
+        // log.info("初始化YKZ  executableClient start!");
         executableClient = ExecutableClient.getInstance();
         YkzApi ykzApi = ykzProperties.getYkzApi();
         // DomainName不同环境对应不同域名，示例为sass域名
@@ -41,8 +41,8 @@ public class YkzConfig {
         String appkey = ykzApi.getAppkey();
         if (StrUtil.isBlank(appkey)) {
             // throw new YkzException("请检查YKZ 配置是否正确");
-            log.error("ExecutableClient init fail!");
-            log.error("请检查YKZ 配置是否正确");
+            log.error("ykz ExecutableClient init fail!");
+            log.error("请检查 ykz 配置是否正确");
             return null;
         }
         executableClient.setAccessKey(appkey);
@@ -50,13 +50,13 @@ public class YkzConfig {
         String appsecret = ykzApi.getAppsecret();
         if (StrUtil.isBlank(appsecret)) {
             // throw new YkzException("请检查YKZ 配置是否正确");
-            log.error("ExecutableClient init fail!");
-            log.error("请检查YKZ 配置是否正确");
+            log.error("ykz ExecutableClient init fail!");
+            log.error("请检查 ykz 配置是否正确");
             return null;
         }
         executableClient.setSecretKey(appsecret);
         executableClient.init();
-        log.info("初始化YKZ  executableClient  success!");
+        log.info("ykz ExecutableClient  success!");
         return executableClient;
     }
 

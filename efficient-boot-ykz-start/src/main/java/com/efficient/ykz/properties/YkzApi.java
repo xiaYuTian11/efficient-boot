@@ -35,6 +35,14 @@ public class YkzApi {
      */
     private Boolean winOpen = true;
     /**
+     * pc访问地址前缀
+     */
+    private String pcUrl="http://127.0.0.1:8080";
+    /**
+     * app访问地址前缀
+     */
+    private String appUrl="http://127.0.0.1:8080";
+    /**
      * 获取accessToken
      */
     private String accessToken = "/gettoken.json";
