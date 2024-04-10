@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS "efficient_sys_notify";
 CREATE TABLE efficient_sys_notify (
                                       id VARCHAR(64) PRIMARY KEY,
                                       biz_id VARCHAR(64) not null ,
+                                      biz_type VARCHAR(64),
                                       batch_num VARCHAR(64) not null ,
                                       system_id VARCHAR(10),
                                       menu_id VARCHAR(64),
@@ -10,6 +11,8 @@ CREATE TABLE efficient_sys_notify (
                                       recipient_system_type VARCHAR(10) not null,
                                       create_user_id VARCHAR(255) not null,
                                       create_zwdd_id VARCHAR(255),
+                                      create_unit_id VARCHAR(255),
+                                      create_unit_name VARCHAR(255),
                                       title text not null,
                                       content text,
                                       remark text,
@@ -18,6 +21,8 @@ CREATE TABLE efficient_sys_notify (
                                       recipient_type varchar(10) ,
                                       recipient_user_id  VARCHAR(255) not null,
                                       recipient_zwdd_id  VARCHAR(255) ,
+                                      recipient_unit_id  VARCHAR(255) ,
+                                      recipient_unit_name  VARCHAR(255) ,
                                       recipient_msg_id VARCHAR(64),
                                       state varchar(10),
                                       create_time timestamp,
@@ -34,10 +39,13 @@ COMMENT ON COLUMN efficient_sys_notify.biz_id IS '业务主键';
 COMMENT ON COLUMN efficient_sys_notify.batch_num IS '批次号';
 COMMENT ON COLUMN efficient_sys_notify.system_id IS '系统标识';
 COMMENT ON COLUMN efficient_sys_notify.menu_id IS '菜单ID';
+COMMENT ON COLUMN efficient_sys_notify.biz_type IS '消息类型';
 COMMENT ON COLUMN efficient_sys_notify.notify_type IS '通知类型，1-普通消息，2-短信，3-邮件，4-待办，5-工作通知，6-ding消息，7-公告，9-其他';
 COMMENT ON COLUMN efficient_sys_notify.recipient_system_type IS '接收系统，1-本系统，2-YKZ ，9-其他系统';
 COMMENT ON COLUMN efficient_sys_notify.create_user_id IS '创建用户id';
 COMMENT ON COLUMN efficient_sys_notify.create_zwdd_id IS '创建用户政务钉钉id';
+COMMENT ON COLUMN efficient_sys_notify.create_unit_id IS '创建单位id';
+COMMENT ON COLUMN efficient_sys_notify.create_unit_name IS '创建单位名称';
 COMMENT ON COLUMN efficient_sys_notify.title IS '标题';
 COMMENT ON COLUMN efficient_sys_notify.content IS '内容';
 COMMENT ON COLUMN efficient_sys_notify.remark IS '备注';
@@ -46,6 +54,8 @@ COMMENT ON COLUMN efficient_sys_notify.app_url IS 'app端路由';
 COMMENT ON COLUMN efficient_sys_notify.recipient_type IS '接受人类型，1-用户，2-角色，3-机构';
 COMMENT ON COLUMN efficient_sys_notify.recipient_user_id IS '接收人ID';
 COMMENT ON COLUMN efficient_sys_notify.recipient_zwdd_id IS '接收人政务钉钉id';
+COMMENT ON COLUMN efficient_sys_notify.recipient_unit_id IS '接收单位ID';
+COMMENT ON COLUMN efficient_sys_notify.recipient_unit_name IS '接收单位名称';
 COMMENT ON COLUMN efficient_sys_notify.recipient_msg_id IS '接收系统消息ID';
 COMMENT ON COLUMN efficient_sys_notify.state IS '消息状态，1-待发送，2-已发送，3-已查看，4-已处理';
 COMMENT ON COLUMN efficient_sys_notify.update_time IS '修改时间';

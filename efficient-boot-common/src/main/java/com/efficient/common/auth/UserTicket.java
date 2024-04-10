@@ -11,7 +11,7 @@ import java.util.List;
  * @since 2022/10/28 11:34
  */
 @Data
-public class UserTicket {
+public class UserTicket<T> {
     private String token;
     private String userId;
     /**
@@ -33,7 +33,10 @@ public class UserTicket {
      * 登录类型
      */
     private Integer loginType;
-
+    /**
+     * 扩展信息
+     */
+    private T extendInfo;
     /**
      * 菜单权限
      */
@@ -42,9 +45,6 @@ public class UserTicket {
      * 二级权限
      */
     private List<String> operationList;
-    /**
-     * 扩展信息
-     */
-    private Object extendInfo;
+
 
 }

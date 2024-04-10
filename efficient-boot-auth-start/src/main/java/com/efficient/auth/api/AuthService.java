@@ -32,5 +32,4 @@ public interface AuthService {
 
     Result<UserTicket> getUserTicket(UserAuthInfo userAuthInfo);
 
-    UserAuthInfo getUserByUserId(String userId);
 }
