@@ -25,6 +25,8 @@ CREATE TABLE efficient_sys_notify (
                                       recipient_unit_name  VARCHAR(255) ,
                                       recipient_msg_id VARCHAR(64),
                                       state varchar(10),
+                                      read_time timestamp,
+                                      handle_time timestamp,
                                       create_time timestamp,
                                       create_user varchar(64),
                                       update_time timestamp,
@@ -58,6 +60,8 @@ COMMENT ON COLUMN efficient_sys_notify.recipient_unit_id IS '接收单位ID';
 COMMENT ON COLUMN efficient_sys_notify.recipient_unit_name IS '接收单位名称';
 COMMENT ON COLUMN efficient_sys_notify.recipient_msg_id IS '接收系统消息ID';
 COMMENT ON COLUMN efficient_sys_notify.state IS '消息状态，1-待发送，2-已发送，3-已查看，4-已处理';
+COMMENT ON COLUMN efficient_sys_notify.read_time IS '查看时间';
+COMMENT ON COLUMN efficient_sys_notify.handle_time IS '处理时间';
 COMMENT ON COLUMN efficient_sys_notify.update_time IS '修改时间';
 COMMENT ON COLUMN efficient_sys_notify.create_time IS '创建时间';
 COMMENT ON COLUMN efficient_sys_notify.is_delete IS '是否删除，1-是，0-否';
