@@ -1,4 +1,4 @@
-package com.efficient.configs.validate;
+package com.efficient.common.validate;
 
 import javax.validation.groups.Default;
 

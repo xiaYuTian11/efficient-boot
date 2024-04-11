@@ -1,4 +1,4 @@
-package com.efficient.configs.validate;
+package com.efficient.common.validate;
 
 import javax.validation.groups.Default;
 
@@ -6,5 +6,5 @@ import javax.validation.groups.Default;
  * @author TMW
  * @date 2021/2/25 9:07
  */
-public interface Common1Group extends Default {
+public interface UpdateGroup extends Default {
 }
