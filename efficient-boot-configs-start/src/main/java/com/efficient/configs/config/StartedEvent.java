@@ -25,6 +25,7 @@ public class StartedEvent implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         if (Objects.nonNull(startedEventServer)) {
+            log.info("Start StartedEventServer ...... ");
             startedEventServer.init();
         }
 
