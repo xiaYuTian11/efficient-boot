@@ -10,8 +10,6 @@ import com.hankcs.hanlp.mining.word2vec.DocVectorModel;
 import com.hankcs.hanlp.mining.word2vec.WordVectorModel;
 import com.hankcs.hanlp.seg.common.Term;
 import com.hankcs.hanlp.tokenizer.StandardTokenizer;
-import org.apache.commons.math3.linear.ArrayRealVector;
-import org.apache.commons.math3.linear.RealVector;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -137,23 +135,19 @@ public class HanLPUtil {
         List<String> sent2Words = getSplitWords(sentence2);
         List<String> allWords = mergeList(sent1Words, sent2Words);
 
-        // int[] statistic1 = statistic(allWords, sent1Words);
-        // int[] statistic2 = statistic(allWords, sent2Words);
-        //
-        // double dividend = 0;
-        // double divisor1 = 0;
-        // double divisor2 = 0;
-        // for (int i = 0; i < statistic1.length; i++) {
-        //     dividend += statistic1[i] * statistic2[i];
-        //     divisor1 += Math.pow(statistic1[i], 2);
-        //     divisor2 += Math.pow(statistic2[i], 2);
-        // }
-        //
-        // return dividend / (Math.sqrt(divisor1) * Math.sqrt(divisor2));
-        RealVector vector1 = vectorize(sent1Words, allWords);
-        RealVector vector2 = vectorize(sent2Words, allWords);
+        int[] statistic1 = statistic(allWords, sent1Words);
+        int[] statistic2 = statistic(allWords, sent2Words);
 
-        return cosineSimilarity(vector1, vector2);
+        double dividend = 0;
+        double divisor1 = 0;
+        double divisor2 = 0;
+        for (int i = 0; i < statistic1.length; i++) {
+            dividend += statistic1[i] * statistic2[i];
+            divisor1 += Math.pow(statistic1[i], 2);
+            divisor2 += Math.pow(statistic2[i], 2);
+        }
+
+        return dividend / (Math.sqrt(divisor1) * Math.sqrt(divisor2));
     }
 
     /**
@@ -171,19 +165,6 @@ public class HanLPUtil {
         result.addAll(list1);
         result.addAll(list2);
         return result.stream().distinct().collect(Collectors.toList());
-    }
-
-    private static RealVector vectorize(List<String> words, List<String> allWords) {
-        double[] vector = new double[allWords.size()];
-        for (int i = 0; i < allWords.size(); i++) {
-            String word = allWords.get(i);
-            vector[i] = words.contains(word) ? 1.0 : 0.0; // 使用二进制表示词语是否出现
-        }
-        return new ArrayRealVector(vector);
-    }
-
-    private static double cosineSimilarity(RealVector vector1, RealVector vector2) {
-        return vector1.cosine(vector2);
     }
 
     /**
