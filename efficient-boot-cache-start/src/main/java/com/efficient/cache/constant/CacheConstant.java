@@ -21,6 +21,10 @@ public class CacheConstant {
      */
     public static final String CACHE_DICT = "dict-cache";
     /**
+     * 幂等性缓存
+     */
+    public static final String RATE_CACHE = "rate-cache";
+    /**
      * 短时间存活
      */
     public static final Integer CACHE_SHORT_TIME = 60;

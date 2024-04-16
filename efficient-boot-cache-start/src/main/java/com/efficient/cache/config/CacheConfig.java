@@ -11,6 +11,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.net.URL;
+
 /**
  * @author TMW
  * @since 2022/9/2 10:07
@@ -26,7 +28,9 @@ public class CacheConfig {
     @ConditionalOnMissingBean
     public CacheUtil ehcache() {
         EhCacheUtil cacheUtil = new EhCacheUtil();
-        CacheManager cacheManager = new CacheManager(this.getClass().getResource(cacheProperties.getEhCache().getPath()));
+        URL resource = this.getClass().getResource(cacheProperties.getEhCache().getPath());
+        System.out.println(resource.getPath());
+        CacheManager cacheManager = new CacheManager(resource);
         cacheUtil.init(cacheManager);
         return cacheUtil;
     }

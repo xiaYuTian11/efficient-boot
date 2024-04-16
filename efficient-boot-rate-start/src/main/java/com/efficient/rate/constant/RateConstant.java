@@ -6,6 +6,4 @@ package com.efficient.rate.constant;
  */
 public class RateConstant {
 
-
-    public static final String RATE_CACHE = "rate_cache";
 }

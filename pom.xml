@@ -23,11 +23,11 @@
     </modules>
     <groupId>top.tanmw</groupId>
     <artifactId>efficient-boot</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>pom</packaging>
 
     <properties>
-        <efficient-boot.version>1.0.1</efficient-boot.version>
+        <efficient-boot.version>1.0.2</efficient-boot.version>
         <java.version>1.8</java.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -35,9 +35,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <resource.delimiter>@</resource.delimiter>
 
-        <spring-boot.version>2.7.15</spring-boot.version>
-        <mysql.version>8.0.33</mysql.version>
-        <pgsql.version>42.6.0</pgsql.version>
+        <spring-boot.version>2.7.18</spring-boot.version>
+        <mysql.version>8.3.0</mysql.version>
+        <pgsql.version>42.7.3</pgsql.version>
         <oracle.version>23.2.0.0</oracle.version>
         <dm.version>7.18</dm.version>
         <kingbase.version>8.2.0</kingbase.version>
@@ -46,9 +46,9 @@
         <aspose-words.version>21.6</aspose-words.version>
         <poi.version>5.2.5</poi.version>
 
-        <lombok.version>1.18.30</lombok.version>
-        <hutool.version>5.8.25</hutool.version>
-        <guava.version>33.0.0-jre</guava.version>
+        <lombok.version>1.18.32</lombok.version>
+        <hutool.version>5.8.27</hutool.version>
+        <guava.version>33.1.0-jre</guava.version>
         <transmittable.version>2.14.5</transmittable.version>
         <jooq.version>3.14.16</jooq.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
@@ -65,9 +65,9 @@
         <bcprov-jdk15on.version>1.70</bcprov-jdk15on.version>
         <bcpkix-jdk15on.version>1.70</bcpkix-jdk15on.version>
         <joda-time.version>2.12.6</joda-time.version>
-        <httpclient.version>4.5.14</httpclient.version>
-        <fastjson.version>2.0.45</fastjson.version>
-        <redisson.version>3.26.0</redisson.version>
+<!--        <httpclient.version>5.3.1</httpclient.version>-->
+        <fastjson.version>2.0.49</fastjson.version>
+        <redisson.version>3.28.0</redisson.version>
         <mvel2.version>2.5.2.Final</mvel2.version>
         <commons.version>1.16.1</commons.version>
     </properties>
@@ -305,16 +305,11 @@
                 <artifactId>joda-time</artifactId>
                 <version>${joda-time.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpclient</artifactId>
-                <version>${httpclient.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpmime</artifactId>
-                <version>${httpclient.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.apache.httpcomponents.client5</groupId>-->
+<!--                <artifactId>httpclient5</artifactId>-->
+<!--                <version>${httpclient.version}</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>

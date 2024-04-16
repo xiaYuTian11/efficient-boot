@@ -15,10 +15,24 @@
       "sourceType": "com.efficient.cache.properties.CacheProperties"
     },
     {
+      "name": "com.efficient.cache.ehCache",
+      "type": "com.efficient.cache.properties.CacheProperties.EhCache",
+      "description": "ehCache 缓存配置",
+      "defaultValue": "ehcache",
+      "sourceType": "com.efficient.cache.properties.CacheProperties"
+    },
+    {
       "name": "com.efficient.file.ehcache.path",
       "type": "java.lang.String",
       "description": "文件存储路径",
       "defaultValue": "/ehcache.xml",
+      "sourceType": "com.efficient.cache.properties.CacheProperties"
+    },
+    {
+      "name": "com.efficient.cache.redis",
+      "type": "com.efficient.cache.properties.CacheProperties.Redis",
+      "description": "redis 缓存配置",
+      "defaultValue": "ehcache",
       "sourceType": "com.efficient.cache.properties.CacheProperties"
     }
   ],
