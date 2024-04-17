@@ -1,0 +1,19 @@
+{
+  "groups": [
+    {
+      "name": "com.efficient.openApi",
+      "type": "com.efficient.openapi.properties.OpenApiProperties",
+      "sourceType": "com.efficient.openapi.config.OpenApiConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "com.efficient.openapi.timeToIdle",
+      "type": "java.lang.Integer",
+      "description": "accessToken&token 存活时间，分钟，默认五分钟",
+      "defaultValue": 5,
+      "sourceType": "com.efficient.openapi.properties.OpenApiProperties"
+    }
+  ],
+  "hints": []
+}

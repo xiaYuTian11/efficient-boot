@@ -108,17 +108,16 @@
         <appender-ref ref="infoLog"/>
     </appender>
 
-    <logger name="com.efficient" additivity="true" level="${log.sqlLevel}"/>
-    <logger name="springfox" additivity="true" level="error"/>
-    <logger name="${log.daoPackage}" additivity="true" level="${log.sqlLevel}"/>
+    <logger name="com.efficient" level="${log.sqlLevel}"/>
+    <logger name="com.efficient.logs.dao" level="error"/>
+    <logger name="springfox" level="error"/>
+    <logger name="${log.daoPackage}" level="${log.sqlLevel}"/>
 
     <!-- 指定最基础的日志输出级别 -->
 
 
     <root level="${log.level}">
-        <!-- appender 将会添加到这个 loger -->
         <appender-ref ref="console"/>
-        <!--        <appender-ref ref="infoLog"/>-->
         <appender-ref ref="errorLog"/>
         <appender-ref ref="asyncLog"/>
     </root>

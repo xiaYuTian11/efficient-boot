@@ -255,3 +255,34 @@ ALTER TABLE efficient_dict_code ALTER COLUMN id SET DEFAULT nextval('efficient_d
 
 ALTER SEQUENCE efficient_dict_code RESTART WITH 1000;
 
+
+
+DROP TABLE IF EXISTS "efficient_sys_application";
+CREATE TABLE efficient_sys_application (
+                                           id VARCHAR(64) PRIMARY KEY,
+                                           app_code VARCHAR(255) NOT NULL UNIQUE,
+                                           app_name VARCHAR(255) NOT NULL,
+                                           app_key text NOT NULL,
+                                           app_secret text NOT NULL,
+                                           pc_url text ,
+                                           mobile_url text,
+                                           sort int4 default 1,
+                                           is_enabled int2 NOT NULL DEFAULT 1,
+                                           create_time timestamp,
+                                           create_user varchar(255),
+                                           update_time timestamp,
+                                           update_user varchar(255),
+                                           is_delete int2 default 0
+);
+
+COMMENT ON TABLE efficient_sys_application IS '系统第三方应用';
+
+COMMENT ON COLUMN efficient_sys_application.id IS '主键';
+COMMENT ON COLUMN efficient_sys_application.app_code IS '系统code';
+COMMENT ON COLUMN efficient_sys_application.app_name IS '系统名称';
+COMMENT ON COLUMN efficient_sys_application.app_key IS '密钥对';
+COMMENT ON COLUMN efficient_sys_application.app_secret IS '密钥对';
+COMMENT ON COLUMN efficient_sys_application.pc_url IS 'pc端路由';
+COMMENT ON COLUMN efficient_sys_application.mobile_url IS '移动端路由';
+COMMENT ON COLUMN efficient_sys_application.sort IS '排序号';
+COMMENT ON COLUMN efficient_sys_application.is_enabled IS '是否启用，1-是，0-否';
