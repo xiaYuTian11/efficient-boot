@@ -68,10 +68,6 @@ public class RsaUtil {
         return new String(decrypt, StandardCharsets.UTF_8);
     }
 
-    public static void main(String[] args) {
-        System.out.println(RsaUtil.decryptReversal("n5ECLsh8lZNBeUwFNbilO6DG6PPXOESXwdp8m7HC1YgIg2D8Z8bU1qlg5LcPdrpBdZvRlur0dQLXIUnovm4cP7cAT0oMSXuhtF4VeuhhJ1tKLf+AqivWX/YXO7EtbhKVqYZxbnuFncjMA71TgpR0rElizTm1abbQ3DvXLeg2ZtI=", "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDJxB8TcseHJ+l+pcgDtZcKp4RX0NPn0hJfxRkepszyxxnX2VomB+9UvU8XOyTyvtVTANCPmWbn9g2KaonhcVNUJPcKPMFpJShXXReibI9gDs1wO7+KzWe+btCAngf90t9sl9U9O7Nhf/iVaaTr2jikQNNqpsjHrUTu2PcufS5UyQIDAQAB"));
-    }
-
     /**
      * 生成密钥对
      *
