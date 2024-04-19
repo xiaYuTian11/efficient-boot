@@ -60,6 +60,8 @@ public class SysLogListDTO implements Serializable {
      */
     @ApiModelProperty("操作类型")
     private String logOpt;
+    @ApiModelProperty("操作内容")
+    private String logContent;
     /**
      * 返回值
      */

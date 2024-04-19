@@ -19,9 +19,9 @@ public class TokenUtil {
     /***
      * 创建token
      * */
-    public static String createToken(String userId, long createTime, HttpServletRequest request) {
+    public static String createToken(String userId, long createTime, Integer loginType, HttpServletRequest request) {
         String ip = WebUtil.getIP(request);
-        String data = userId + SEPARATOR + ip + SEPARATOR + createTime;
+        String data = userId + SEPARATOR + ip + SEPARATOR + loginType + SEPARATOR + createTime;
         return DigestUtil.md5Hex(data);
     }
 

@@ -119,6 +119,10 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
         if (StrUtil.isNotBlank(logOpt)) {
             queryWrapper.eq(SysLog::getLogOpt, logOpt);
         }
+        String logContent = dto.getLogContent();
+        if (StrUtil.isNotBlank(logOpt)) {
+            queryWrapper.like(SysLog::getLogContent, logContent);
+        }
         String module = dto.getModule();
         if (StrUtil.isNotBlank(module)) {
             queryWrapper.eq(SysLog::getModule, module);
@@ -141,7 +145,7 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
         }
         Date endDate = dto.getEndDate();
         if (Objects.nonNull(endDate)) {
-            queryWrapper.ge(SysLog::getLogTime, DateUtil.endOfDay(endDate));
+            queryWrapper.le(SysLog::getLogTime, DateUtil.endOfDay(endDate));
         }
 
         Integer logType = dto.getLogType();

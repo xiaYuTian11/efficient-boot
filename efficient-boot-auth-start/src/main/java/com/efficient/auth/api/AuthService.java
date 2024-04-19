@@ -24,6 +24,8 @@ public interface AuthService {
 
     UserAuthInfo getUserByZwddId(String zwddId);
 
+    UserAuthInfo getUserByUserId(LoginInfo info);
+
     UserAuthInfo getUserByOtherAuthCode(String authCode);
 
     boolean unLockUser(String userId);
@@ -31,7 +33,5 @@ public interface AuthService {
     boolean lockUser(String userId, Date unLockTime);
 
     Result<UserTicket> getUserTicket(UserAuthInfo userAuthInfo);
-
-    UserTicket getOpenApiUserInfo(String userId);
 
 }

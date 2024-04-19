@@ -1,7 +1,12 @@
 package com.efficient.openapi.service;
 
 import cn.hutool.core.date.DateUtil;
-import com.efficient.auth.api.AuthService;
+import com.efficient.auth.api.LoginService;
+import com.efficient.auth.constant.AuthConstant;
+import com.efficient.auth.constant.LoginTypeEnum;
+import com.efficient.auth.model.dto.LoginInfo;
+import com.efficient.auth.properties.AuthProperties;
+import com.efficient.auth.util.JwtUtil;
 import com.efficient.cache.api.CacheUtil;
 import com.efficient.cache.constant.CacheConstant;
 import com.efficient.common.auth.RequestHolder;
@@ -35,9 +40,13 @@ public class OpenApiServiceImpl implements OpenApiService {
     @Autowired
     private CacheUtil cacheUtil;
     @Autowired
+    private JwtUtil jwtUtil;
+    @Autowired
     private OpenApiProperties openApiProperties;
     @Autowired
-    private AuthService authService;
+    private LoginService loginService;
+    @Autowired
+    private AuthProperties authProperties;
 
     @Override
     public Result<String> getAccessToken(OpenApiAccessTokenRequest tokenRequest) {
@@ -76,13 +85,26 @@ public class OpenApiServiceImpl implements OpenApiService {
         if (!Objects.equals(result.getCode(), Result.ok().getCode())) {
             return Result.fail(result.getMsg());
         }
-        SysApplicationVO sysApplicationVO = result.getData();
-        UserTicket userTicket = authService.getOpenApiUserInfo(openApiToken.getUserId());
+        String tokenToken = openApiToken.getToken();
+        String jwtToken = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.TOKEN_CACHE + tokenToken);
+        if (Objects.isNull(jwtToken)) {
+            return Result.fail("token已过期！");
+        }
+        UserTicket userTicket = jwtUtil.validateToken(jwtToken, authProperties.getUserTicketClass());
         if (Objects.isNull(userTicket)) {
-            return Result.fail("未查找到用户信息！");
+            return Result.fail("token已过期！");
         }
 
-        String encryptedReversal = RsaUtil.encryptReversal(JackSonUtil.toJson(userTicket), sysApplicationVO.getAppSecret());
+        UserTicket userTicketResult = new UserTicket();
+        userTicketResult.setToken(userTicket.getToken());
+        userTicketResult.setUserId(userTicket.getUserId());
+        userTicketResult.setZwddId(userTicket.getZwddId());
+        userTicketResult.setAccount(userTicket.getAccount());
+        userTicketResult.setUsername(userTicket.getUsername());
+        userTicketResult.setCreateTime(userTicket.getCreateTime());
+
+        SysApplicationVO sysApplicationVO = result.getData();
+        String encryptedReversal = RsaUtil.encryptReversal(JackSonUtil.toJson(userTicketResult), sysApplicationVO.getAppSecret());
         return Result.ok(encryptedReversal);
     }
 
@@ -92,10 +114,20 @@ public class OpenApiServiceImpl implements OpenApiService {
         if (!Objects.equals(result.getCode(), Result.ok().getCode())) {
             return Result.fail(result.getMsg());
         }
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setUserId(userId);
+        loginInfo.setLoginType(LoginTypeEnum.SSO_LOGIN.getCode());
+
+        Result<UserTicket> login = loginService.login(loginInfo);
+        if (!Objects.equals(login.getCode(), Result.ok().getCode())) {
+            return Result.build(login.getCode(), login.getMsg());
+        }
+        UserTicket userTicket = login.getData();
         OpenApiToken openApiToken = new OpenApiToken();
         openApiToken.setUserId(userId);
         openApiToken.setCreateTime(new Date().getTime());
         openApiToken.setAppCode(appCode);
+        openApiToken.setToken(userTicket.getToken());
         String encrypt = AESUtils.encrypt(JackSonUtil.toJson(openApiToken));
         return Result.ok(encrypt);
     }

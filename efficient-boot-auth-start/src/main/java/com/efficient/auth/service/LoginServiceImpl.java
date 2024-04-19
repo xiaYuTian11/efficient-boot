@@ -105,10 +105,12 @@ public class LoginServiceImpl implements LoginService {
         }
 
         int maxOnline = loginProperties.getMaxOnline();
-        List<String> userTokenList = new ArrayList<>();
+        List<String> userTokenList = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.ON_LINE_USER_CACHE + userId);
+        if (CollUtil.isEmpty(userTokenList)) {
+            userTokenList = new ArrayList<>();
+        }
         if (maxOnline > 0) {
             // 计数
-            userTokenList = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.ON_LINE_USER_CACHE + userId);
             if (CollUtil.isNotEmpty(userTokenList)) {
                 if (maxOnline <= userTokenList.size()) {
                     return Result.build(AuthResultEnum.USER_MAX_ONLINE);
@@ -130,7 +132,7 @@ public class LoginServiceImpl implements LoginService {
         userTicket.setUsername(userAuthInfo.getUsername());
         userTicket.setZwddId(userAuthInfo.getZwddId());
         long timeMillis = System.currentTimeMillis();
-        String token = TokenUtil.createToken(userTicket.getUserId(), timeMillis, RequestHolder.getCurrRequest());
+        String token = TokenUtil.createToken(userTicket.getUserId(), timeMillis, userTicket.getLoginType(), RequestHolder.getCurrRequest());
         userTicket.setToken(token);
         String jwtToken = jwtUtil.createToken(userTicket);
         userTicket.setCreateTime(timeMillis);
@@ -159,7 +161,13 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public boolean checkUserTokens(String userId) {
+        int maxOnline = authProperties.getLogin().getMaxOnline();
         int tokenLive = authProperties.getLogin().getTokenLive();
+        if (maxOnline <= 0) {
+            cacheUtil.refresh(AuthConstant.AUTH_CACHE, AuthConstant.ON_LINE_USER_CACHE + userId, tokenLive);
+            return true;
+        }
+
         List<String> userTokenList = cacheUtil.get(AuthConstant.AUTH_CACHE, AuthConstant.ON_LINE_USER_CACHE + userId);
         if (CollUtil.isNotEmpty(userTokenList)) {
             Iterator<String> iterator = userTokenList.iterator();
@@ -203,6 +211,8 @@ public class LoginServiceImpl implements LoginService {
                 return null;
             }
             return userByAccount;
+        } else if (Objects.equals(loginType, LoginTypeEnum.SSO_LOGIN.getCode())) {
+            return authService.getUserByUserId(info);
         } else {
             String authCode = info.getAuthCode();
             return authService.getUserByOtherAuthCode(authCode);

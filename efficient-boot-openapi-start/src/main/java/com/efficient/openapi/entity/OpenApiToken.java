@@ -11,4 +11,5 @@ public class OpenApiToken {
     private String userId;
     private Long createTime;
     private String appCode;
+    private String token;
 }

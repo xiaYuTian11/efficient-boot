@@ -1,6 +1,7 @@
 package com.efficient.auth.interceptor;
 
 import cn.hutool.core.util.StrUtil;
+import com.efficient.auth.api.LoginService;
 import com.efficient.auth.constant.AuthConstant;
 import com.efficient.auth.constant.AuthResultEnum;
 import com.efficient.auth.properties.AuthProperties;
@@ -40,6 +41,8 @@ public class PermissionInterceptor implements HandlerInterceptor {
     private AuthProperties authProperties;
     @Autowired
     private JwtUtil jwtUtil;
+    @Autowired
+    private LoginService loginService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -94,7 +97,8 @@ public class PermissionInterceptor implements HandlerInterceptor {
 
         // 刷新用户信息保留时间
         cacheUtil.refresh(AuthConstant.AUTH_CACHE, AuthConstant.TOKEN_CACHE + token, tokenLive);
-        cacheUtil.refresh(AuthConstant.AUTH_CACHE, AuthConstant.ON_LINE_USER_CACHE + userTicket.getUserId(), tokenLive);
+        loginService.checkUserTokens(userTicket.getUserId());
+
         // 权限校验
         final boolean checkPermission = permissionCheck.checkPermission(permission, userTicket);
         if (!checkPermission) {

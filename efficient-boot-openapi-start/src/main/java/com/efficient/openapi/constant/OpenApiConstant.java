@@ -6,5 +6,5 @@ package com.efficient.openapi.constant;
  */
 public class OpenApiConstant {
 
-    public final static String accessTokenCache = "-accessToken";
+    public final static String accessTokenCache = "accessToken:";
 }
