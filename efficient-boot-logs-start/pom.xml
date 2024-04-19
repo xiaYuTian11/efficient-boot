@@ -63,6 +63,10 @@
             <artifactId>efficient-boot-common</artifactId>
         </dependency>
         <dependency>
+            <groupId>top.tanmw</groupId>
+            <artifactId>efficient-boot-swagger-start</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <scope>provided</scope>
