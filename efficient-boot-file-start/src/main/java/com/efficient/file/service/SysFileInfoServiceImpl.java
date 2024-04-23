@@ -1,17 +1,27 @@
 package com.efficient.file.service;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.efficient.common.constant.DbConstant;
 import com.efficient.file.api.SysFileInfoService;
+import com.efficient.file.constant.FileConstant;
+import com.efficient.file.constant.StoreEnum;
 import com.efficient.file.dao.SysFileInfoMapper;
 import com.efficient.file.model.entity.SysFileInfo;
+import com.efficient.file.properties.FileProperties;
+import com.efficient.file.util.FileMd5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.util.Date;
 import java.util.List;
+
+import static com.efficient.file.constant.FileConstant.KB;
 
 /**
  * @author TMW
@@ -21,6 +31,8 @@ import java.util.List;
 public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFileInfo> implements SysFileInfoService {
     @Autowired
     private SysFileInfoMapper fileInfoMapper;
+    @Autowired
+    private FileProperties fileProperties;
 
     @Override
     public SysFileInfo findByPathFirst(String destFile) {
@@ -79,5 +91,43 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
         LambdaQueryWrapper<SysFileInfo> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(SysFileInfo::getFilePath, filePath);
         return fileInfoMapper.selectList(queryWrapper);
+    }
+
+    @Override
+    public SysFileInfo findByBizIdAndRemark(String bizId, String remark) {
+        LambdaQueryWrapper<SysFileInfo> queryWrapper = new LambdaQueryWrapper<>(SysFileInfo.class);
+        queryWrapper.eq(SysFileInfo::getBizId, bizId);
+        queryWrapper.eq(SysFileInfo::getRemark, remark);
+        queryWrapper.last(DbConstant.LIMIT_ONE);
+        return fileInfoMapper.selectOne(queryWrapper);
+    }
+
+    @Override
+    public File getDownPath(String fileName) {
+        String reName = System.currentTimeMillis() + "_" + fileName;
+        String filePath = fileProperties.getLocal().getLocalPath() + FileConstant.DOWNLOAD_LINE + DateUtil.format(new Date(), "/yyyy/MM/dd/") + reName;
+        File file = new File(filePath);
+        synchronized (this) {
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
+        }
+        return file;
+    }
+
+    @Override
+    public SysFileInfo saveDownFile(File downLoadFile, String bizId, String fileName, String remark) {
+        SysFileInfo sysFileInfo = new SysFileInfo();
+        sysFileInfo.setBizId(bizId);
+        sysFileInfo.setStoreType(StoreEnum.LOCAL.name());
+        sysFileInfo.setFileName(fileName);
+        sysFileInfo.setFilePath(downLoadFile.getAbsolutePath());
+        sysFileInfo.setFileSize(FileUtil.size(downLoadFile) / KB);
+        sysFileInfo.setCreateTime(new Date());
+        sysFileInfo.setMd5(FileMd5Util.calculateMD5(downLoadFile));
+        sysFileInfo.setRemark(remark);
+        sysFileInfo.setContentType(FileUtil.getMimeType(downLoadFile.getPath()));
+        this.save(sysFileInfo);
+        return sysFileInfo;
     }
 }

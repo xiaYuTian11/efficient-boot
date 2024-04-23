@@ -3,6 +3,7 @@ package com.efficient.file.api;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.efficient.file.model.entity.SysFileInfo;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -24,4 +25,10 @@ public interface SysFileInfoService extends IService<SysFileInfo> {
     void deleteByBizId(String bizId);
 
     List<SysFileInfo> findAllByPath(String filePath);
+
+    SysFileInfo findByBizIdAndRemark(String bizId, String remark);
+
+    File getDownPath(String fileName);
+
+    SysFileInfo saveDownFile(File downLoadFile, String bizId,String fileName, String remark);
 }

@@ -6,7 +6,13 @@ package com.efficient.cache.exception;
  */
 public class CacheException extends RuntimeException {
 
+    private static final long serialVersionUID = -4296315429936146936L;
+
     public CacheException(String message) {
         super(message);
+    }
+
+    public CacheException(String message, Throwable cause) {
+        super(message, cause);
     }
 }
