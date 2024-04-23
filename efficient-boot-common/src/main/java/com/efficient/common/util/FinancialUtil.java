@@ -31,6 +31,6 @@ public class FinancialUtil {
         }
         double totalInterest = totalAmount - totalDeposit;
         log.info("{}年后，累计本金：{}元，累计利息：{}元，总共存款金额：{} 元。", years, df.format(totalDeposit), df.format(totalInterest), df.format(totalAmount));
-        return totalAmount;
+        return Double.parseDouble(df.format(totalAmount));
     }
 }
