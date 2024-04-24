@@ -70,6 +70,7 @@
         <redisson.version>3.28.0</redisson.version>
         <mvel2.version>2.5.2.Final</mvel2.version>
         <commons.version>1.16.1</commons.version>
+        <googleauth.version>1.5.0</googleauth.version>
     </properties>
 
     <!-- 依赖管理 -->
@@ -336,6 +337,11 @@
                 <groupId>org.mvel</groupId>
                 <artifactId>mvel2</artifactId>
                 <version>${mvel2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.warrenstrange</groupId>
+                <artifactId>googleauth</artifactId>
+                <version>${googleauth.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
