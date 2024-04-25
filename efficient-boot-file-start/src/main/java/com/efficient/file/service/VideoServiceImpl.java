@@ -48,10 +48,13 @@ public class VideoServiceImpl implements VideoService {
     private SysFileInfoService sysFileInfoService;
     @Value("${com.efficient.cache.active:ehcache}")
     private String cacheType;
+    @Value("${com.efficient.cache.redis.enableRedisson:false}")
+    private boolean enableRedisson;
     @Autowired
     private ApplicationContext applicationContext;
 
     @Override
+
     public Result<SysFileInfo> chunkUpload(FileChunkDTO fileChunkDTO) throws Exception {
         String md5 = fileChunkDTO.getMd5();
         Integer totalChunk = fileChunkDTO.getTotalChunk();
@@ -90,8 +93,8 @@ public class VideoServiceImpl implements VideoService {
             // 设置当前分片上传状态为1
             randomAccessConfFile.write(1);
         }
-        SysFileInfo sysFileInfo = null;
-        if (StrUtil.equals(cacheType, "redis")) {
+        SysFileInfo sysFileInfo;
+        if (StrUtil.equals(cacheType, "redis") && enableRedisson) {
             RedissonClient redissonClient = applicationContext.getBean(RedissonClient.class);
             String lockName = "chunkUpload:" + md5;
             sysFileInfo = RedissonUtil.execute(redissonClient, lockName, null, (param) -> {

@@ -16,24 +16,45 @@
     },
     {
       "name": "com.efficient.cache.ehCache",
-      "type": "com.efficient.cache.properties.CacheProperties.EhCache",
+      "type": "com.efficient.cache.properties.EhCache",
       "description": "ehCache 缓存配置",
       "defaultValue": "ehcache",
-      "sourceType": "com.efficient.cache.properties.CacheProperties"
+      "sourceType": "com.efficient.cache.properties.EhCacheProperties"
     },
     {
-      "name": "com.efficient.file.ehcache.path",
+      "name": "com.efficient.cache.ehcache.path",
       "type": "java.lang.String",
       "description": "文件存储路径",
       "defaultValue": "/ehcache.xml",
-      "sourceType": "com.efficient.cache.properties.CacheProperties"
+      "sourceType": "com.efficient.cache.properties.EhCacheProperties"
     },
     {
       "name": "com.efficient.cache.redis",
-      "type": "com.efficient.cache.properties.CacheProperties.Redis",
+      "type": "com.efficient.cache.properties.Redis",
       "description": "redis 缓存配置",
       "defaultValue": "ehcache",
-      "sourceType": "com.efficient.cache.properties.CacheProperties"
+      "sourceType": "com.efficient.cache.properties.RedisProperties"
+    },
+    {
+      "name": "com.efficient.cache.redis.enableRedisson",
+      "type": "java.lang.Boolean",
+      "description": "是否 启用 Redisson,默认 false",
+      "defaultValue": false,
+      "sourceType": "com.efficient.cache.properties.RedisProperties"
+    },
+    {
+      "name": "com.efficient.cache.redis.customRedisson",
+      "type": "java.lang.Boolean",
+      "description": "是否自定义 redisson  url ,默认 false",
+      "defaultValue": "false",
+      "sourceType": "com.efficient.cache.properties.RedisProperties"
+    },
+    {
+      "name": "com.efficient.cache.redis.redissonUrl",
+      "type": "java.lang.String",
+      "description": "自定义路由",
+      "defaultValue": null,
+      "sourceType": "com.efficient.cache.properties.RedisProperties"
     }
   ],
   "hints": [
