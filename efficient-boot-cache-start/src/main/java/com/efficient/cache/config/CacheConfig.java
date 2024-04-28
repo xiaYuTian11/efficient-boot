@@ -29,7 +29,6 @@ public class CacheConfig {
     public CacheUtil ehcache() {
         EhCacheUtil cacheUtil = new EhCacheUtil();
         URL resource = this.getClass().getResource(cacheProperties.getEhCache().getPath());
-        System.out.println(resource.getPath());
         CacheManager cacheManager = new CacheManager(resource);
         cacheUtil.init(cacheManager);
         return cacheUtil;
