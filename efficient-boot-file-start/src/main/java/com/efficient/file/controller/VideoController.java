@@ -100,7 +100,7 @@ public class VideoController {
      * @throws Exception
      */
     @PostMapping("/quickUpload")
-    @ApiOperation(value = "检查分片文件完整性", response = Result.class)
+    @ApiOperation(value = "秒传", response = Result.class)
     public Result quickUpload(@RequestParam(value = "module", required = false) String module,
                               @RequestParam(value = "remark", required = false) String remark,
                               @RequestParam("md5") String md5,
