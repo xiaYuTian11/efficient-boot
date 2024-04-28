@@ -15,23 +15,61 @@ import java.util.Date;
  */
 public interface AuthService {
     /**
-     * 获取用户基本信息
+     * 获取用户信息-普通登录
      *
      * @param info
      * @return
      */
     UserAuthInfo getUserByAccount(LoginInfo info);
 
+    /**
+     * 获取用户信息-政务钉登录
+     *
+     * @param zwddId
+     * @return
+     */
     UserAuthInfo getUserByZwddId(String zwddId);
 
+    /**
+     * 获取用户信息-本系统单点登录
+     *
+     * @param info
+     * @return
+     */
     UserAuthInfo getUserByUserId(LoginInfo info);
 
-    UserAuthInfo getUserByOtherAuthCode(String authCode);
+    /**
+     * 获取用户信息- 其他认证方式登录
+     *
+     * @param info
+     * @return
+     */
 
+    UserAuthInfo getUserByOtherAuthCode(LoginInfo info);
+
+    /**
+     * 解锁用户
+     *
+     * @param userId
+     * @return
+     */
     boolean unLockUser(String userId);
 
+    /**
+     * 锁定用户
+     *
+     * @param userId
+     * @param unLockTime
+     * @return
+     */
     boolean lockUser(String userId, Date unLockTime);
 
-    Result<UserTicket> getUserTicket(UserAuthInfo userAuthInfo);
+    /**
+     * 加载登录信息
+     *
+     * @param userAuthInfo
+     * @return
+     */
+    Result<UserTicket> loadUserTicket(UserAuthInfo userAuthInfo);
 
 }

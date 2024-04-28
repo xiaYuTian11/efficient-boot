@@ -20,7 +20,7 @@ public class LoginInfo {
     /**
      * com.efficient.auth.constant.LoginTypeEnum
      */
-    @NotNull(message = "loginType 不能为空")
+    // @NotNull(message = "loginType 不能为空")
     private Integer loginType;
     /**
      * 验证码

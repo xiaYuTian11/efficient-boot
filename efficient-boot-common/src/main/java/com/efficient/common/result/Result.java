@@ -1,6 +1,7 @@
 package com.efficient.common.result;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * @author TMW
@@ -66,24 +67,28 @@ public class Result<T> implements Serializable {
         return new Result<>(resultEnum, null);
     }
 
+    public static <T> boolean isSuccess(Result<T> result) {
+        return !Objects.isNull(result) && Objects.equals(result.getCode(), ResultEnum.SUCCESS.getCode());
+    }
+
     public Integer getCode() {
         return code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public T getData() {
-        return data;
     }
 
     public void setCode(Integer code) {
         this.code = code;
     }
 
+    public String getMsg() {
+        return msg;
+    }
+
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public T getData() {
+        return data;
     }
 
     public void setData(T data) {

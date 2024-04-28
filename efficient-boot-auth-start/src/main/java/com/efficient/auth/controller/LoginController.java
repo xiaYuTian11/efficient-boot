@@ -6,6 +6,7 @@ import cn.hutool.captcha.generator.RandomGenerator;
 import com.efficient.auth.api.LoginService;
 import com.efficient.auth.constant.AuthConstant;
 import com.efficient.auth.constant.AuthResultEnum;
+import com.efficient.auth.constant.LoginTypeEnum;
 import com.efficient.auth.model.dto.LoginInfo;
 import com.efficient.auth.properties.AuthProperties;
 import com.efficient.cache.api.CacheUtil;
@@ -27,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotBlank;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -58,6 +60,10 @@ public class LoginController {
         }
         String loginIp = WebUtil.getIP(request);
         info.setLoginIp(loginIp);
+        Integer loginType = info.getLoginType();
+        if (Objects.isNull(loginType)) {
+            info.setLoginType(LoginTypeEnum.LOGIN.getCode());
+        }
         return loginService.login(info);
     }
 

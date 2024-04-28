@@ -1,10 +1,8 @@
 package com.efficient.swagger.config;
 
 import com.efficient.swagger.properties.SwaggerProperties;
-import com.google.common.base.Predicates;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -17,8 +15,6 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
-import java.util.function.Predicate;
 
 /**
  * private final List<String> excludePaths = Arrays.asList("/swagger**", "/webjars/springfox-swagger-ui/**");
@@ -35,7 +31,7 @@ import java.util.function.Predicate;
 @Configuration
 @EnableSwagger2
 @EnableConfigurationProperties(SwaggerProperties.class)
-@ConditionalOnProperty(name = "com.efficient.swagger.enable", havingValue = "true")
+// @ConditionalOnProperty(name = "com.efficient.swagger.enable", havingValue = "true")
 public class SwaggerConfig {
     @Autowired
     private SwaggerProperties swaggerProperties;
@@ -49,7 +45,6 @@ public class SwaggerConfig {
                 .select()
                 //apis： 添加swagger接口提取范围
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
-                .paths(Predicates.not(PathSelectors.regex("/error.*")))
                 .paths(PathSelectors.any())
                 .build();
     }

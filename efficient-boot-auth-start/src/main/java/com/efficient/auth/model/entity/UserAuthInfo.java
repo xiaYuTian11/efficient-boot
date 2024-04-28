@@ -24,6 +24,6 @@ public class UserAuthInfo {
      * 解锁时间
      */
     private Date unLockTime;
-    private Object userInfo;
+    private Object realUserInfo;
 
 }

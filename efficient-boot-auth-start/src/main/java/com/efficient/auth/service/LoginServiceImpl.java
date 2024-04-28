@@ -23,8 +23,7 @@ import com.efficient.common.auth.UserTicket;
 import com.efficient.common.result.Result;
 import com.efficient.common.util.AESUtils;
 import com.efficient.common.util.JackSonUtil;
-import com.efficient.ykz.api.YkzApiService;
-import com.efficient.ykz.model.vo.YkzLoginUser;
+import com.efficient.system.api.YkzLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,8 +37,8 @@ import java.util.*;
 public class LoginServiceImpl implements LoginService {
     @Autowired
     private AuthService authService;
-    @Autowired
-    private YkzApiService ykzApiService;
+    @Autowired(required = false)
+    private YkzLoginService ykzLoginService;
     @Autowired
     private AuthProperties authProperties;
     @Autowired
@@ -120,7 +119,7 @@ public class LoginServiceImpl implements LoginService {
             }
         }
 
-        Result<UserTicket> result = authService.getUserTicket(userAuthInfo);
+        Result<UserTicket> result = authService.loadUserTicket(userAuthInfo);
         if (!Objects.equals(result.getCode(), Result.ok().getCode())) {
             return result;
         }
@@ -194,12 +193,12 @@ public class LoginServiceImpl implements LoginService {
             return authService.getUserByAccount(info);
         } else if (Objects.equals(loginType, LoginTypeEnum.YKZ_LOGIN.getCode())) {
             String authCode = info.getAuthCode();
-            Result<YkzLoginUser> result = ykzApiService.getUserInfo(authCode);
-            if (!Objects.equals(result.getCode(), Result.ok().getCode())) {
+            UserTicket userTicket = ykzLoginService.getUserTicket(authCode);
+            if (Objects.isNull(userTicket)) {
                 return null;
             }
-            Long accountId = result.getData().getAccountId();
-            return authService.getUserByZwddId(String.valueOf(accountId));
+            String accountId = userTicket.getZwddId();
+            return authService.getUserByZwddId(accountId);
         } else if (Objects.equals(loginType, LoginTypeEnum.YKZ_TODO_LOGIN.getCode())) {
             String authCode = info.getAuthCode();
             UserTicket userTicket = JackSonUtil.toObject(AESUtils.decrypt(authCode), UserTicket.class);
@@ -214,8 +213,7 @@ public class LoginServiceImpl implements LoginService {
         } else if (Objects.equals(loginType, LoginTypeEnum.SSO_LOGIN.getCode())) {
             return authService.getUserByUserId(info);
         } else {
-            String authCode = info.getAuthCode();
-            return authService.getUserByOtherAuthCode(authCode);
+            return authService.getUserByOtherAuthCode(info);
         }
     }
 

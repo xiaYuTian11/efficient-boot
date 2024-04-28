@@ -60,6 +60,7 @@
         + [服务地址](#%E6%9C%8D%E5%8A%A1%E5%9C%B0%E5%9D%80)
         + [建表语句](#%E5%BB%BA%E8%A1%A8%E8%AF%AD%E5%8F%A5-1)
 
+
 ## 引入依赖
 
 ```xml
@@ -794,4 +795,14 @@ COMMENT ON COLUMN efficient_ykz_user_post.post_type IS '任职类型 1主职、2
 COMMENT ON COLUMN efficient_ykz_user_post.pos_job IS '职务';
 COMMENT ON COLUMN efficient_ykz_user_post.pull_time IS '拉取时间';
 COMMENT ON COLUMN efficient_ykz_user_post.error_info IS '错误信息';
+```
+
+
+## 常见问题
+### swagger 和 springboot 版本冲突
+```yaml
+spring:
+  mvc:
+    path-match:
+      matching-strategy: ant_path_matcher
 ```

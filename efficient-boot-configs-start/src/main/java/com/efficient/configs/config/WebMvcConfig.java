@@ -9,7 +9,6 @@ import com.efficient.rate.properties.RateProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -47,18 +46,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
             registry.addInterceptor(rateInterceptor).addPathPatterns(methodList)
                     .excludePathPatterns(excludeApiList);
         }
-    }
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOriginPatterns("*")
-                .allowedMethods("*")
-                .allowedHeaders("Content-Type", "X-Requested-With", "accept",
-                        "Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers")
-                .allowCredentials(true)
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .maxAge(3600);
     }
 
 }

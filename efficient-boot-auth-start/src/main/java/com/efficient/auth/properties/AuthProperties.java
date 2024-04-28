@@ -17,13 +17,29 @@ import java.util.List;
 @Data
 @Slf4j
 public class AuthProperties {
+    /**
+     * 用户类
+     */
     private static volatile Class<? extends UserTicket> userTicketClassInstance = null;
+    /**
+     * 登录信息
+     */
     private LoginProperties login = new LoginProperties();
+    /**
+     * 系统认证方式，默认系统自带认证
+     */
+    private String authService = "default";
     /**
      * 系统ID字段
      */
     private String systemIdField = "systemId";
+    /**
+     * 权限认证方式
+     */
     private String permissionCheckType = "default";
+    /**
+     * 用户类
+     */
     private String userTicketClassName = "com.efficient.common.auth.UserTicket";
     /**
      * 白名单
@@ -54,6 +70,11 @@ public class AuthProperties {
     @Deprecated
     private List<String> tokenPost = new ArrayList<>();
 
+    /**
+     * 加载用户类
+     *
+     * @return
+     */
     public Class<? extends UserTicket> getUserTicketClass() {
         if (userTicketClassInstance == null) {
             synchronized (AuthProperties.class) {
@@ -65,6 +86,11 @@ public class AuthProperties {
         return userTicketClassInstance;
     }
 
+    /**
+     * 加载用户类
+     *
+     * @return
+     */
     private Class<? extends UserTicket> initializeUserTicketClass() {
 
         if (StrUtil.equals(userTicketClassName, "com.efficient.common.auth.UserTicket")) {

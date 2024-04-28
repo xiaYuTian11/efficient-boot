@@ -15,6 +15,13 @@
       "sourceType": "com.efficient.auth.properties.AuthProperties"
     },
     {
+      "name": "com.efficient.auth.authService",
+      "type": "java.lang.String",
+      "description": "系统认证方式，默认系统自带认证",
+      "defaultValue": "default",
+      "sourceType": "com.efficient.auth.properties.AuthProperties"
+    },
+    {
       "name": "com.efficient.auth.permissionCheckType",
       "type": "java.lang.String",
       "description": "菜单权限校验实现类",
@@ -138,6 +145,19 @@
         {
           "value": "custom",
           "description": "自定义实现，请先实现类 com.efficient.auth.interceptor.PermissionCheck"
+        }
+      ]
+    },
+    {
+      "name": "com.efficient.auth.authService",
+      "values": [
+        {
+          "value": "default",
+          "description": "默认实现"
+        },
+        {
+          "value": "custom",
+          "description": "自定义实现，请先实现类 com.efficient.auth.api.AuthService"
         }
       ]
     }
