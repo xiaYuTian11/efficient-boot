@@ -39,7 +39,7 @@ import java.util.Objects;
  * @date 2022-09-05 16:24:37
  */
 @Service
-@ConditionalOnProperty(name = "com.efficient.logs.db", havingValue = "true")
+// @ConditionalOnProperty(name = "com.efficient.logs.db", havingValue = "true")
 public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> implements SysLogService {
 
     @Autowired
