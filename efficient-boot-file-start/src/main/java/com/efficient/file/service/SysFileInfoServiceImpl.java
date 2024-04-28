@@ -130,4 +130,18 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
         this.save(sysFileInfo);
         return sysFileInfo;
     }
+
+    @Override
+    public SysFileInfo findById(String id) {
+        return this.getById(id);
+    }
+
+    @Override
+    public SysFileInfo findByPath(String filePath) {
+        LambdaQueryWrapper<SysFileInfo> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SysFileInfo::getFilePath, filePath);
+        queryWrapper.orderByDesc(SysFileInfo::getCreateTime);
+        queryWrapper.last(DbConstant.LIMIT_ONE);
+        return this.getOne(queryWrapper);
+    }
 }

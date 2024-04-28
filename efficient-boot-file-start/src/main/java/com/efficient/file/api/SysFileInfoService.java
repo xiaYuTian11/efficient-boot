@@ -31,4 +31,8 @@ public interface SysFileInfoService extends IService<SysFileInfo> {
     File getDownPath(String fileName);
 
     SysFileInfo saveDownFile(File downLoadFile, String bizId,String fileName, String remark);
+
+    SysFileInfo findById(String id);
+
+    SysFileInfo findByPath(String filePath);
 }

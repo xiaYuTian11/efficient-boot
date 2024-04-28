@@ -44,9 +44,27 @@ public class SysFileInfoController {
      * 根据业务主键获取关联的文件信息
      */
     @GetMapping("/findByBizId")
-    @ApiOperation(value = "根据业务主键获取关联的文件信息", response = Boolean.class)
+    @ApiOperation(value = "根据业务主键获取关联的文件信息", response = SysFileInfo.class)
     public Result<List<SysFileInfo>> findByBizId(@NotBlank(message = "bizId 不能为空") String bizId) {
         return Result.ok(fileInfoService.findByBizId(bizId));
+    }
+
+    /**
+     * 根据主键获取文件信息
+     */
+    @GetMapping("/findById")
+    @ApiOperation(value = "根据主键获取文件信息", response = SysFileInfo.class)
+    public Result<SysFileInfo> findById(@NotBlank(message = "id 不能为空") String id) {
+        return Result.ok(fileInfoService.findById(id));
+    }
+
+    /**
+     * 根据路径获取文件信息
+     */
+    @GetMapping("/findByPath")
+    @ApiOperation(value = "根据路径获取文件信息", response = SysFileInfo.class)
+    public Result<SysFileInfo> findByPath(@NotBlank(message = "filePath 不能为空") String filePath) {
+        return Result.ok(fileInfoService.findByPath(filePath));
     }
 
 }
