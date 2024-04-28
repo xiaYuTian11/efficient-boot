@@ -29,7 +29,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @since 2022/3/1 14:24
  */
 @Configuration
-@EnableSwagger2
+// @EnableSwagger2
 @EnableConfigurationProperties(SwaggerProperties.class)
 // @ConditionalOnProperty(name = "com.efficient.swagger.enable", havingValue = "true")
 public class SwaggerConfig {
