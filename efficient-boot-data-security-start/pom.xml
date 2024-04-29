@@ -6,7 +6,7 @@
     <parent>
         <groupId>top.tanmw</groupId>
         <artifactId>efficient-boot</artifactId>
-        <version>1.0.11</version>
+        <version>1.0.12</version>
     </parent>
 
     <artifactId>efficient-boot-data-security-start</artifactId>
@@ -38,6 +38,7 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>

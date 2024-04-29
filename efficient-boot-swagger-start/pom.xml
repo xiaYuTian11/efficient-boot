@@ -5,7 +5,7 @@
     <parent>
         <artifactId>efficient-boot</artifactId>
         <groupId>top.tanmw</groupId>
-        <version>1.0.11</version>
+        <version>1.0.12</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <description>swagger start</description>
@@ -36,23 +36,10 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-boot-starter</artifactId>
         </dependency>
+        <dependency>
+            <groupId>top.tanmw</groupId>
+            <artifactId>efficient-boot-common</artifactId>
+        </dependency>
     </dependencies>
-    <!--    <build>-->
-    <!--        <plugins>-->
-    <!--            <plugin>-->
-    <!--                <groupId>org.apache.maven.plugins</groupId>-->
-    <!--                <artifactId>maven-deploy-plugin</artifactId>-->
-    <!--                <configuration>-->
-    <!--                    <skip>true</skip>-->
-    <!--                </configuration>-->
-    <!--            </plugin>-->
-    <!--            <plugin>-->
-    <!--                <groupId>org.sonatype.plugins</groupId>-->
-    <!--                <artifactId>nexus-staging-maven-plugin</artifactId>-->
-    <!--                <configuration>-->
-    <!--                    <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>-->
-    <!--                </configuration>-->
-    <!--            </plugin>-->
-    <!--        </plugins>-->
-    <!--    </build>-->
+
 </project>

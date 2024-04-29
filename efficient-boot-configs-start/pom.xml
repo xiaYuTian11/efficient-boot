@@ -5,7 +5,7 @@
     <parent>
         <artifactId>efficient-boot</artifactId>
         <groupId>top.tanmw</groupId>
-        <version>1.0.11</version>
+        <version>1.0.12</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <description>全局配置：全局异常，参数校验，mybatis-plus分页插件</description>
@@ -54,15 +54,27 @@
         </dependency>
         <dependency>
             <groupId>top.tanmw</groupId>
-            <artifactId>efficient-boot-system-start</artifactId>
+            <artifactId>efficient-boot-common</artifactId>
         </dependency>
-        <dependency>
-            <groupId>top.tanmw</groupId>
-            <artifactId>efficient-boot-auth-start</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>top.tanmw</groupId>
-            <artifactId>efficient-boot-rate-start</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>top.tanmw</groupId>-->
+<!--            <artifactId>efficient-boot-system-start</artifactId>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>top.tanmw</groupId>-->
+<!--            <artifactId>efficient-boot-auth-start</artifactId>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>top.tanmw</groupId>-->
+<!--            <artifactId>efficient-boot-rate-start</artifactId>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>top.tanmw</groupId>-->
+<!--            <artifactId>efficient-boot-swagger-start</artifactId>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
     </dependencies>
 </project>

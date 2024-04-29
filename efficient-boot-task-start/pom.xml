@@ -5,7 +5,7 @@
     <parent>
         <artifactId>efficient-boot</artifactId>
         <groupId>top.tanmw</groupId>
-        <version>1.0.11</version>
+        <version>1.0.12</version>
     </parent>
     <description>定时任务 start</description>
     <modelVersion>4.0.0</modelVersion>
@@ -14,7 +14,6 @@
     <artifactId>efficient-boot-task-start</artifactId>
 
     <properties>
-        <!--        <maven.deploy.skip>true</maven.deploy.skip>-->
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
@@ -66,11 +65,11 @@
         <dependency>
             <groupId>top.tanmw</groupId>
             <artifactId>efficient-boot-swagger-start</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-quartz</artifactId>
-            <!--            <version>${spring-boot.version}</version>-->
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>

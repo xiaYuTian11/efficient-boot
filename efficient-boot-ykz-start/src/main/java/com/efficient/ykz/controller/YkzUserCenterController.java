@@ -93,8 +93,8 @@ public class YkzUserCenterController {
     @ApiOperation(value = "根据机构Code拉取机构", response = YkzOrg.class)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "orgCode", value = "YKZ orgCode", required = true),
-            @ApiImplicitParam(name = "pageNum", value = "pageNum", required = true),
-            @ApiImplicitParam(name = "pageSize", value = "pageSize 最大 100", required = true),
+            @ApiImplicitParam(name = "pageNum", value = "pageNum", defaultValue = "1", required = true),
+            @ApiImplicitParam(name = "pageSize", value = "pageSize 最大 100", defaultValue = "100", required = true),
             @ApiImplicitParam(name = "includeTop", value = "是否包含当前机构", required = false, defaultValue = "true"),
             @ApiImplicitParam(name = "flattenTree", value = "是否扁平化机构", required = false, defaultValue = "false"),
     })

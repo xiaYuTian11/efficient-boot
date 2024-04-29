@@ -64,14 +64,15 @@ public class VideoController {
      */
     @PostMapping(value = "/chunkUpload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ApiOperation(value = "分片上传", response = Result.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "chunkSize", value = "分块大小,字节", required = true),
-            @ApiImplicitParam(name = "totalChunk", value = "总块数量", required = true),
-            @ApiImplicitParam(name = "currChunk", value = "当前块数，从0开始", required = true),
-            @ApiImplicitParam(name = "md5", value = "文件MD5值", required = true),
-            @ApiImplicitParam(name = "file", value = "文件内容", required = true),
-            @ApiImplicitParam(name = "module", value = "文件所属模块", defaultValue = "false")
-    })
+    // @ApiImplicitParams({
+    //         @ApiImplicitParam(name = "chunkSize", value = "分块大小,字节", required = true),
+    //         @ApiImplicitParam(name = "totalChunk", value = "总块数量", required = true),
+    //         @ApiImplicitParam(name = "currChunk", value = "当前块数，从0开始", required = true),
+    //         @ApiImplicitParam(name = "md5", value = "文件MD5值", required = true),
+    //         @ApiImplicitParam(name = "file", value = "文件内容", required = true),
+    //         @ApiImplicitParam(name = "module", value = "文件所属模块", defaultValue = "false"),
+    //         @ApiImplicitParam(name = "remark", value = "备注", defaultValue = "false")
+    // })
     public Result chunkUpload(@RequestParam Long chunkSize,
                               @RequestParam Integer totalChunk,
                               @RequestParam Integer currChunk,

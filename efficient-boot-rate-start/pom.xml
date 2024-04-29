@@ -6,7 +6,7 @@
     <parent>
         <groupId>top.tanmw</groupId>
         <artifactId>efficient-boot</artifactId>
-        <version>1.0.11</version>
+        <version>1.0.12</version>
     </parent>
     <description>接口幂等性校验</description>
     <artifactId>efficient-boot-rate-start</artifactId>
@@ -33,6 +33,7 @@
         <dependency>
             <groupId>top.tanmw</groupId>
             <artifactId>efficient-boot-cache-start</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>top.tanmw</groupId>

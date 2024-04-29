@@ -1,9 +1,11 @@
 package com.efficient.file.controller;
 
+import cn.hutool.core.codec.Base64;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.efficient.common.permission.Permission;
 import com.efficient.common.result.Result;
+import com.efficient.common.result.ResultEnum;
 import com.efficient.common.validate.Common1Group;
 import com.efficient.common.validate.Common2Group;
 import com.efficient.file.api.FileService;
@@ -36,7 +38,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Collections;
-import java.util.Objects;
 
 /**
  * @author TMW
@@ -68,7 +69,8 @@ public class FileController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "file", value = "文件标识", required = true),
             @ApiImplicitParam(name = "unique", value = "是否唯一文件，true标识删除现有同名文件", defaultValue = "false"),
-            @ApiImplicitParam(name = "module", value = "文件所属模块", defaultValue = "false")
+            @ApiImplicitParam(name = "module", value = "文件所属模块", defaultValue = "false"),
+            @ApiImplicitParam(name = "remark", value = "备注", defaultValue = "false")
     })
     public Result upload(@RequestParam("file") MultipartFile file,
                          @RequestParam(value = "unique", required = false) boolean unique,
@@ -117,6 +119,24 @@ public class FileController {
             }
         }
         return responseEntity;
+    }
+
+    @PostMapping("/downloadBase64")
+    @ApiOperation(value = "根据Id下载Base64")
+    public Result<String> downloadBase64(@Validated(value = Common1Group.class)
+                                   @RequestBody DownloadVO downloadVO) throws Exception {
+        SysFileInfo sysFileInfo = sysFileInfoService.getById(downloadVO.getFileId());
+        if (sysFileInfo == null) {
+            return Result.build(ResultEnum.DATA_NOT_EXIST);
+        }
+
+        File file = new File(sysFileInfo.getFilePath());
+        if (!file.exists()) {
+            return Result.build(ResultEnum.DATA_NOT_EXIST);
+        }
+
+        String encode = Base64.encode(file);
+        return Result.ok(encode);
     }
 
     @PostMapping("/downloadByPath")
