@@ -2,6 +2,7 @@ package com.efficient.file.controller;
 
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.net.URLDecoder;
 import cn.hutool.core.util.StrUtil;
 import com.efficient.common.permission.Permission;
 import com.efficient.common.result.Result;
@@ -10,6 +11,7 @@ import com.efficient.common.validate.Common1Group;
 import com.efficient.common.validate.Common2Group;
 import com.efficient.file.api.FileService;
 import com.efficient.file.api.SysFileInfoService;
+import com.efficient.file.config.NonStaticResourceHttpRequestHandler;
 import com.efficient.file.constant.FileResultEnum;
 import com.efficient.file.model.dto.DownloadVO;
 import com.efficient.file.model.entity.SysFileInfo;
@@ -29,7 +31,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotBlank;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -56,6 +60,10 @@ public class FileController {
     private SysFileInfoService sysFileInfoService;
     @Autowired
     private HttpServletResponse response;
+    @Autowired
+    private NonStaticResourceHttpRequestHandler nonStaticResourceHttpRequestHandler;
+    @Autowired
+    private HttpServletRequest request;
 
     /**
      * 上传文件
@@ -92,6 +100,11 @@ public class FileController {
         if (sysFileInfo == null) {
             return ResponseEntity.notFound().build();
         }
+
+        File file = new File(sysFileInfo.getFilePath());
+        if (!file.exists()) {
+            return ResponseEntity.notFound().build();
+        }
         ResponseEntity<byte[]> responseEntity = null;
 
         ByteArrayOutputStream out = null;
@@ -124,7 +137,7 @@ public class FileController {
     @PostMapping("/downloadBase64")
     @ApiOperation(value = "根据Id下载Base64")
     public Result<String> downloadBase64(@Validated(value = Common1Group.class)
-                                   @RequestBody DownloadVO downloadVO) throws Exception {
+                                         @RequestBody DownloadVO downloadVO) throws Exception {
         SysFileInfo sysFileInfo = sysFileInfoService.getById(downloadVO.getFileId());
         if (sysFileInfo == null) {
             return Result.build(ResultEnum.DATA_NOT_EXIST);
@@ -192,5 +205,41 @@ public class FileController {
     public Result deleteByBizId(@Validated @RequestBody DownloadVO downloadVO) throws Exception {
         boolean flag = fileService.deleteByBizId(downloadVO.getBizId());
         return flag ? Result.ok() : Result.fail();
+    }
+
+    @GetMapping(value = "/preview")
+    @ApiOperation(value = "预览文件", response = Result.class)
+    public void preview(@NotBlank(message = "fileId 不能为空") @RequestParam("fileId") String fileId) {
+        SysFileInfo sysFileInfo = sysFileInfoService.getById(fileId);
+        try {
+            String path = sysFileInfo.getFilePath();
+            File file = new File(path);
+            if (file.exists()) {
+                request.setAttribute(NonStaticResourceHttpRequestHandler.ATTR_FILE, path);
+                nonStaticResourceHttpRequestHandler.handleRequest(request, response);
+            } else {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
+            }
+        } catch (Exception e) {
+            log.error("文件访问失败", e);
+        }
+    }
+
+    @GetMapping(value = "/previewByPath")
+    public void previewByPath(@NotBlank(message = "filePath 不能为空") @RequestParam("filePath") String filePath) {
+        try {
+            String decode = URLDecoder.decode(filePath, StandardCharsets.UTF_8);
+            File file = new File(decode);
+            if (file.exists()) {
+                request.setAttribute(NonStaticResourceHttpRequestHandler.ATTR_FILE, decode);
+                nonStaticResourceHttpRequestHandler.handleRequest(request, response);
+            } else {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
+            }
+        } catch (Exception e) {
+            log.error("文件访问失败", e);
+        }
     }
 }
