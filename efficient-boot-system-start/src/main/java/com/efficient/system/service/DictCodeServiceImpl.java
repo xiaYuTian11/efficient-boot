@@ -17,10 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -63,6 +60,12 @@ public class DictCodeServiceImpl extends ServiceImpl<DictCodeMapper, DictCode> i
             return new HashMap<>();
         }
         return list.stream().collect(Collectors.toMap(DictCode::getCode, DictCode::getCodeName, (k1, k2) -> k1));
+    }
+
+    @Override
+    public Map<String, String> findReversalMapByType(String type) {
+        Map<String, String> mapByType = this.findMapByType(type);
+        return com.efficient.common.util.CollUtil.reverseMap(mapByType);
     }
 
     @Override
