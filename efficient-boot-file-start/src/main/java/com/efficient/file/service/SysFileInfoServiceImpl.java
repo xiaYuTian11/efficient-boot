@@ -20,9 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.efficient.file.constant.FileConstant.KB;
@@ -95,12 +93,51 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
     }
 
     @Override
+    public List<FileVO> findVOByBizId(String bizId) {
+        List<SysFileInfo> byBizIdList = this.findByBizId(bizId);
+        List<FileVO> fileVOList = new ArrayList<>();
+        if (CollUtil.isNotEmpty(byBizIdList)) {
+            for (SysFileInfo sysFileInfo : byBizIdList) {
+                fileVOList.add(entity2VO(sysFileInfo));
+            }
+        }
+        return fileVOList;
+    }
+
+    public static FileVO entity2VO(SysFileInfo sysFileInfo) {
+        FileVO fileVO = new FileVO();
+        if (Objects.isNull(sysFileInfo)) {
+            return fileVO;
+        }
+        fileVO.setFileName(sysFileInfo.getFileName());
+        fileVO.setFileContent(sysFileInfo.getFileContent());
+        fileVO.setFilePath(sysFileInfo.getFilePath());
+        fileVO.setFileId(sysFileInfo.getId());
+        fileVO.setStoreType(sysFileInfo.getStoreType());
+        fileVO.setRemark(sysFileInfo.getRemark());
+        fileVO.setContentType(sysFileInfo.getContentType());
+        return fileVO;
+    }
+
+    @Override
     public List<SysFileInfo> findByBizIdList(List<String> bizIdList) {
         LambdaQueryWrapper<SysFileInfo> queryWrapper = new LambdaQueryWrapper<>(SysFileInfo.class);
         queryWrapper.select(SysFileInfo::getId, SysFileInfo::getBizId, SysFileInfo::getFileName, SysFileInfo::getFileSize, SysFileInfo::getRemark);
         queryWrapper.in(SysFileInfo::getBizId, bizIdList);
         queryWrapper.orderByAsc(SysFileInfo::getCreateTime);
         return this.list(queryWrapper);
+    }
+
+    @Override
+    public List<FileVO> findVOByBizIdList(List<String> bizIdList) {
+        List<SysFileInfo> byBizIdList = this.findByBizIdList(bizIdList);
+        List<FileVO> fileVOList = new ArrayList<>();
+        if (CollUtil.isNotEmpty(byBizIdList)) {
+            for (SysFileInfo sysFileInfo : byBizIdList) {
+                fileVOList.add(entity2VO(sysFileInfo));
+            }
+        }
+        return fileVOList;
     }
 
     @Override

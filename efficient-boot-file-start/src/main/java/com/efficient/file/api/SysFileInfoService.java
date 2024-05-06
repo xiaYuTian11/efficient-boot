@@ -24,8 +24,10 @@ public interface SysFileInfoService extends IService<SysFileInfo> {
     boolean saveStrListByBizId(String fileIdStr, String bizId);
 
     List<SysFileInfo> findByBizId(String bizId);
+    List<FileVO> findVOByBizId(String bizId);
 
     List<SysFileInfo> findByBizIdList(List<String> bizIdList);
+    List<FileVO> findVOByBizIdList(List<String> bizIdList);
 
     void deleteByBizId(String bizId);
 
