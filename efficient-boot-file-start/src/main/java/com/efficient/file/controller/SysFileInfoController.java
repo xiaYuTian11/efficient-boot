@@ -3,7 +3,9 @@ package com.efficient.file.controller;
 import com.efficient.common.permission.Permission;
 import com.efficient.common.result.Result;
 import com.efficient.file.api.SysFileInfoService;
-import com.efficient.file.model.dto.FileBizRelation;
+import com.efficient.file.model.dto.FileIdList;
+import com.efficient.file.model.dto.FileInfoList;
+import com.efficient.file.model.dto.FileStrList;
 import com.efficient.file.model.entity.SysFileInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,12 +33,32 @@ public class SysFileInfoController {
     private SysFileInfoService fileInfoService;
 
     /**
-     * 保存文件业务关联性
+     * 保存文件业务关联性-文件ID集合
      */
-    @PostMapping("/saveListByBizId")
-    @ApiOperation(value = "保存文件业务关联性", response = Boolean.class)
-    public Result<Boolean> saveListByBizId(@Validated @RequestBody FileBizRelation dto) {
-        boolean saved = fileInfoService.saveListByBizId(dto.getFileIdList(), dto.getBizId());
+    @PostMapping("/saveIdListByBizId")
+    @ApiOperation(value = "保存文件业务关联性-文件ID集合", response = Boolean.class)
+    public Result<Boolean> saveIdListByBizId(@Validated @RequestBody FileIdList dto) {
+        boolean saved = fileInfoService.saveIdListByBizId(dto.getFileIdList(), dto.getBizId());
+        return saved ? Result.ok() : Result.fail();
+    }
+
+    /**
+     * 保存文件业务关联性-文件ID集合
+     */
+    @PostMapping("/saveFileListByBizId")
+    @ApiOperation(value = "保存文件业务关联性-文件对象集合", response = Boolean.class)
+    public Result<Boolean> saveFileListByBizId(@Validated @RequestBody FileInfoList dto) {
+        boolean saved = fileInfoService.saveFileListByBizId(dto.getFileList(), dto.getBizId());
+        return saved ? Result.ok() : Result.fail();
+    }
+
+    /**
+     * 保存文件业务关联性-文件ID集合
+     */
+    @PostMapping("/saveStrListByBizId")
+    @ApiOperation(value = "保存文件业务关联性-文件ID字符串", response = Boolean.class)
+    public Result<Boolean> saveStrListByBizId(@Validated @RequestBody FileStrList dto) {
+        boolean saved = fileInfoService.saveStrListByBizId(dto.getFileIdStr(), dto.getBizId());
         return saved ? Result.ok() : Result.fail();
     }
 

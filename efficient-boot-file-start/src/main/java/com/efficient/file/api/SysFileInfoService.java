@@ -2,6 +2,7 @@ package com.efficient.file.api;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.efficient.file.model.entity.SysFileInfo;
+import com.efficient.file.model.vo.FileVO;
 
 import java.io.File;
 import java.util.List;
@@ -16,7 +17,11 @@ public interface SysFileInfoService extends IService<SysFileInfo> {
 
     SysFileInfo findByPathAndMd5(String destFile, String md5);
 
-    boolean saveListByBizId(List<String> fileIdList, String bizId);
+    boolean saveIdListByBizId(List<String> fileIdList, String bizId);
+
+    boolean saveFileListByBizId(List<FileVO> fileList, String bizId);
+
+    boolean saveStrListByBizId(String fileIdStr, String bizId);
 
     List<SysFileInfo> findByBizId(String bizId);
 
@@ -30,7 +35,7 @@ public interface SysFileInfoService extends IService<SysFileInfo> {
 
     File getDownPath(String fileName);
 
-    SysFileInfo saveDownFile(File downLoadFile, String bizId,String fileName, String remark);
+    SysFileInfo saveDownFile(File downLoadFile, String bizId, String fileName, String remark);
 
     SysFileInfo findById(String id);
 

@@ -6,20 +6,24 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.efficient.common.constant.CommonConstant;
 import com.efficient.common.constant.DbConstant;
 import com.efficient.file.api.SysFileInfoService;
 import com.efficient.file.constant.FileConstant;
 import com.efficient.file.constant.StoreEnum;
 import com.efficient.file.dao.SysFileInfoMapper;
 import com.efficient.file.model.entity.SysFileInfo;
+import com.efficient.file.model.vo.FileVO;
 import com.efficient.file.properties.FileProperties;
 import com.efficient.file.util.FileMd5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.efficient.file.constant.FileConstant.KB;
 
@@ -54,13 +58,31 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
     }
 
     @Override
-    public boolean saveListByBizId(List<String> fileIdList, String bizId) {
+    public boolean saveIdListByBizId(List<String> fileIdList, String bizId) {
         if (CollUtil.isEmpty(fileIdList) || StrUtil.isBlank(bizId)) {
             return false;
         }
         fileInfoMapper.deleteByFIleIdListAndBizId(fileIdList, bizId);
         fileInfoMapper.setBizIdWithFileIdList(fileIdList, bizId);
         return true;
+    }
+
+    @Override
+    public boolean saveFileListByBizId(List<FileVO> fileList, String bizId) {
+        if (CollUtil.isEmpty(fileList) || StrUtil.isBlank(bizId)) {
+            return false;
+        }
+        List<String> fileIdList = fileList.stream().map(FileVO::getFileId).collect(Collectors.toList());
+        return this.saveIdListByBizId(fileIdList, bizId);
+    }
+
+    @Override
+    public boolean saveStrListByBizId(String fileIdStr, String bizId) {
+        if (StrUtil.isBlank(fileIdStr) || StrUtil.isBlank(bizId)) {
+            return false;
+        }
+        String[] split = fileIdStr.split(CommonConstant.COMMA);
+        return this.saveIdListByBizId(Arrays.asList(split), bizId);
     }
 
     @Override

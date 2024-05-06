@@ -2,7 +2,7 @@ package com.efficient.file.aop;
 
 import com.efficient.common.result.Result;
 import com.efficient.file.api.SysFileInfoService;
-import com.efficient.file.model.dto.FileBizRelation;
+import com.efficient.file.model.dto.FileIdList;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -56,7 +56,7 @@ public class AutoSaveFileInfoAspect {
 
                 // 如果有参数
                 if (args.length > 0) {
-                    FileBizRelation firstArg = (FileBizRelation) args[0];
+                    FileIdList firstArg = (FileIdList) args[0];
 
                     // 判断参数是否是预期的类型（这里简单地以 YourRequestObject 为例）
                     if (Objects.nonNull(firstArg)) {
@@ -69,7 +69,7 @@ public class AutoSaveFileInfoAspect {
                         // 进一步处理，注意判断空
                         if (bizId != null && fileIdList != null) {
                             // 调用全局接口的逻辑
-                            boolean saved = fileInfoService.saveListByBizId(fileIdList, bizId);
+                            boolean saved = fileInfoService.saveIdListByBizId(fileIdList, bizId);
                             if (!saved) {
                                 log.info("文件关联失败");
                             }
