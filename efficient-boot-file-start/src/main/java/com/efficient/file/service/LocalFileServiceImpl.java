@@ -103,6 +103,7 @@ public class LocalFileServiceImpl implements FileService {
         SysFileInfo sysFileInfo = this.saveFileInfo(realFile, md5, remark);
         fileVo.setFileId(sysFileInfo.getId());
         fileVo.setContentType(sysFileInfo.getContentType());
+        fileVo.setCreateTime(sysFileInfo.getCreateTime());
         return Result.ok(fileVo);
     }
 

@@ -3,6 +3,8 @@ package com.efficient.file.model.vo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * 文件实体类
  *
@@ -36,4 +38,5 @@ public class FileVO {
      */
     private String remark;
     private String contentType;
+    private Date createTime;
 }

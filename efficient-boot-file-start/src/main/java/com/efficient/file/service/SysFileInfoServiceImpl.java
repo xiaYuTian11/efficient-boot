@@ -18,6 +18,7 @@ import com.efficient.file.properties.FileProperties;
 import com.efficient.file.util.FileMd5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.util.*;
@@ -86,7 +87,7 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
     @Override
     public List<SysFileInfo> findByBizId(String bizId) {
         LambdaQueryWrapper<SysFileInfo> queryWrapper = new LambdaQueryWrapper<>(SysFileInfo.class);
-        queryWrapper.select(SysFileInfo::getId, SysFileInfo::getBizId, SysFileInfo::getFileName, SysFileInfo::getFileSize, SysFileInfo::getRemark);
+        queryWrapper.select(SysFileInfo::getId, SysFileInfo::getBizId, SysFileInfo::getStoreType, SysFileInfo::getFileName, SysFileInfo::getFileSize, SysFileInfo::getRemark, SysFileInfo::getCreateTime);
         queryWrapper.eq(SysFileInfo::getBizId, bizId);
         queryWrapper.orderByAsc(SysFileInfo::getCreateTime);
         return this.list(queryWrapper);
@@ -116,6 +117,7 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
         fileVO.setStoreType(sysFileInfo.getStoreType());
         fileVO.setRemark(sysFileInfo.getRemark());
         fileVO.setContentType(sysFileInfo.getContentType());
+        fileVO.setCreateTime(sysFileInfo.getCreateTime());
         return fileVO;
     }
 
@@ -172,6 +174,22 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
             }
         }
         return file;
+    }
+
+    @Override
+    public FileVO createTempByTemplate(String TemplateClassPath, String fileName) throws Exception {
+        String basePath = ResourceUtils.getURL(ResourceUtils.CLASSPATH_URL_PREFIX).getPath();
+        String filePath = basePath + TemplateClassPath;
+        String tempFilePath = fileProperties.getLocal().getLocalPath() + FileConstant.TEMP_LINE + DateUtil.format(new Date(), "/yyyy/MM/dd/") + fileName;
+        File temp = new File(tempFilePath);
+        synchronized (this) {
+            if (!temp.getParentFile().exists()) {
+                temp.getParentFile().mkdirs();
+            }
+        }
+        FileUtil.copy(new File(filePath), temp, true);
+        FileVO fileVO = entity2VO(this.saveDownFile(temp, "temp", fileName, null));
+        return fileVO;
     }
 
     @Override
