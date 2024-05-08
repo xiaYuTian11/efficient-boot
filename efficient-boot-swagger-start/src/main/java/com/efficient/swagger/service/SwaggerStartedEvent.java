@@ -23,6 +23,9 @@ public class SwaggerStartedEvent implements StartedEventServer {
     @Override
     public void init() {
         DOC_SUFFIX = contextPath + "/swagger-ui/index.html";
+        if (DOC_SUFFIX.contains("//")) {
+            DOC_SUFFIX = DOC_SUFFIX.replaceAll("//", "/");
+        }
         // String swaggerAddress = "http://localhost:" + port + DOC_SUFFIX;
         String docAddress = "http://localhost:" + port + contextPath + "/doc.html";
         // log.info("swagger doc url: {}", swaggerAddress);
