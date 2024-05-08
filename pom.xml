@@ -24,11 +24,11 @@
     </modules>
     <groupId>top.tanmw</groupId>
     <artifactId>efficient-boot</artifactId>
-    <version>1.0.16</version>
+    <version>1.0.17</version>
     <packaging>pom</packaging>
 
     <properties>
-        <efficient-boot.version>1.0.16</efficient-boot.version>
+        <efficient-boot.version>1.0.17</efficient-boot.version>
         <java.version>1.8</java.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -421,7 +421,7 @@
 
     <developers>
         <developer>
-            <name>tanmw</name>
+            <name>谭明武</name>
             <email>2998662089@qq.com</email>
         </developer>
     </developers>
