@@ -6,20 +6,23 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.efficient.common.constant.CommonConstant;
 import com.efficient.common.constant.DbConstant;
 import com.efficient.file.api.SysFileInfoService;
 import com.efficient.file.constant.FileConstant;
 import com.efficient.file.constant.StoreEnum;
 import com.efficient.file.dao.SysFileInfoMapper;
 import com.efficient.file.model.entity.SysFileInfo;
+import com.efficient.file.model.vo.FileVO;
 import com.efficient.file.properties.FileProperties;
 import com.efficient.file.util.FileMd5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
 import java.io.File;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.efficient.file.constant.FileConstant.KB;
 
@@ -54,7 +57,7 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
     }
 
     @Override
-    public boolean saveListByBizId(List<String> fileIdList, String bizId) {
+    public boolean saveIdListByBizId(List<String> fileIdList, String bizId) {
         if (CollUtil.isEmpty(fileIdList) || StrUtil.isBlank(bizId)) {
             return false;
         }
@@ -64,12 +67,58 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
     }
 
     @Override
+    public boolean saveFileListByBizId(List<FileVO> fileList, String bizId) {
+        if (CollUtil.isEmpty(fileList) || StrUtil.isBlank(bizId)) {
+            return false;
+        }
+        List<String> fileIdList = fileList.stream().map(FileVO::getFileId).collect(Collectors.toList());
+        return this.saveIdListByBizId(fileIdList, bizId);
+    }
+
+    @Override
+    public boolean saveStrListByBizId(String fileIdStr, String bizId) {
+        if (StrUtil.isBlank(fileIdStr) || StrUtil.isBlank(bizId)) {
+            return false;
+        }
+        String[] split = fileIdStr.split(CommonConstant.COMMA);
+        return this.saveIdListByBizId(Arrays.asList(split), bizId);
+    }
+
+    @Override
     public List<SysFileInfo> findByBizId(String bizId) {
         LambdaQueryWrapper<SysFileInfo> queryWrapper = new LambdaQueryWrapper<>(SysFileInfo.class);
-        queryWrapper.select(SysFileInfo::getId, SysFileInfo::getBizId, SysFileInfo::getFileName, SysFileInfo::getFileSize, SysFileInfo::getRemark);
+        queryWrapper.select(SysFileInfo::getId, SysFileInfo::getBizId, SysFileInfo::getStoreType, SysFileInfo::getFileName, SysFileInfo::getFileSize, SysFileInfo::getRemark, SysFileInfo::getCreateTime);
         queryWrapper.eq(SysFileInfo::getBizId, bizId);
         queryWrapper.orderByAsc(SysFileInfo::getCreateTime);
         return this.list(queryWrapper);
+    }
+
+    @Override
+    public List<FileVO> findVOByBizId(String bizId) {
+        List<SysFileInfo> byBizIdList = this.findByBizId(bizId);
+        List<FileVO> fileVOList = new ArrayList<>();
+        if (CollUtil.isNotEmpty(byBizIdList)) {
+            for (SysFileInfo sysFileInfo : byBizIdList) {
+                fileVOList.add(entity2VO(sysFileInfo));
+            }
+        }
+        return fileVOList;
+    }
+
+    public static FileVO entity2VO(SysFileInfo sysFileInfo) {
+        FileVO fileVO = new FileVO();
+        if (Objects.isNull(sysFileInfo)) {
+            return fileVO;
+        }
+        fileVO.setFileName(sysFileInfo.getFileName());
+        fileVO.setFileContent(sysFileInfo.getFileContent());
+        fileVO.setFilePath(sysFileInfo.getFilePath());
+        fileVO.setFileId(sysFileInfo.getId());
+        fileVO.setStoreType(sysFileInfo.getStoreType());
+        fileVO.setRemark(sysFileInfo.getRemark());
+        fileVO.setContentType(sysFileInfo.getContentType());
+        fileVO.setCreateTime(sysFileInfo.getCreateTime());
+        return fileVO;
     }
 
     @Override
@@ -79,6 +128,18 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
         queryWrapper.in(SysFileInfo::getBizId, bizIdList);
         queryWrapper.orderByAsc(SysFileInfo::getCreateTime);
         return this.list(queryWrapper);
+    }
+
+    @Override
+    public List<FileVO> findVOByBizIdList(List<String> bizIdList) {
+        List<SysFileInfo> byBizIdList = this.findByBizIdList(bizIdList);
+        List<FileVO> fileVOList = new ArrayList<>();
+        if (CollUtil.isNotEmpty(byBizIdList)) {
+            for (SysFileInfo sysFileInfo : byBizIdList) {
+                fileVOList.add(entity2VO(sysFileInfo));
+            }
+        }
+        return fileVOList;
     }
 
     @Override
@@ -113,6 +174,22 @@ public class SysFileInfoServiceImpl extends ServiceImpl<SysFileInfoMapper, SysFi
             }
         }
         return file;
+    }
+
+    @Override
+    public FileVO createTempByTemplate(String TemplateClassPath, String fileName) throws Exception {
+        String basePath = ResourceUtils.getURL(ResourceUtils.CLASSPATH_URL_PREFIX).getPath();
+        String filePath = basePath + TemplateClassPath;
+        String tempFilePath = fileProperties.getLocal().getLocalPath() + FileConstant.TEMP_LINE + DateUtil.format(new Date(), "/yyyy/MM/dd/") + fileName;
+        File temp = new File(tempFilePath);
+        synchronized (this) {
+            if (!temp.getParentFile().exists()) {
+                temp.getParentFile().mkdirs();
+            }
+        }
+        FileUtil.copy(new File(filePath), temp, true);
+        FileVO fileVO = entity2VO(this.saveDownFile(temp, "temp", fileName, null));
+        return fileVO;
     }
 
     @Override

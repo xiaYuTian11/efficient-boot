@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 @ConditionalOnProperty(name = "com.efficient.swagger.enable", havingValue = "true")
 @Service
 public class SwaggerStartedEvent implements StartedEventServer {
+    public static String DOC_SUFFIX = "";
     @Value("${server.port:8080}")
     private Integer port;
     @Value("${server.servlet.context-path:}")
@@ -21,7 +22,13 @@ public class SwaggerStartedEvent implements StartedEventServer {
 
     @Override
     public void init() {
-        String serverAddress = "http://localhost:" + port + contextPath + "/swagger-ui/index.html";
-        log.info("swagger doc url: {}", serverAddress);
+        DOC_SUFFIX = contextPath + "/swagger-ui/index.html";
+        if (DOC_SUFFIX.contains("//")) {
+            DOC_SUFFIX = DOC_SUFFIX.replaceAll("//", "/");
+        }
+        // String swaggerAddress = "http://localhost:" + port + DOC_SUFFIX;
+        String docAddress = "http://localhost:" + port + contextPath + "/doc.html";
+        // log.info("swagger doc url: {}", swaggerAddress);
+        log.info("swagger doc url: {}", docAddress);
     }
 }

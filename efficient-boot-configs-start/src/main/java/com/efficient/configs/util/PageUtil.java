@@ -3,7 +3,6 @@ package com.efficient.configs.util;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,13 +22,4 @@ public class PageUtil<T> implements Serializable {
         return newPage;
     }
 
-    public static void main(String[] args) {
-        Page page = new Page(1, 10, 24);
-        ArrayList arrayList = new ArrayList();
-        arrayList.add("111");
-        page.setRecords(arrayList);
-
-        com.efficient.common.page.Page change = com.efficient.common.page.PageUtil.change(page.getCurrent(), page.getSize(), page.getTotal(), page.getRecords());
-        System.out.println(change);
-    }
 }

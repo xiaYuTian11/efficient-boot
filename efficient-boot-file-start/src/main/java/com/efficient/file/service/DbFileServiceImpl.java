@@ -57,6 +57,7 @@ public class DbFileServiceImpl implements FileService {
         fileVO.setStoreType(StoreEnum.DB.name());
         fileVO.setFileId(sysFileInfo.getId());
         fileVO.setContentType(sysFileInfo.getContentType());
+        fileVO.setCreateTime(sysFileInfo.getCreateTime());
         return Result.ok(fileVO);
     }
 

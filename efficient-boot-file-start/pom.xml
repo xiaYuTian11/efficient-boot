@@ -5,7 +5,7 @@
     <parent>
         <artifactId>efficient-boot</artifactId>
         <groupId>top.tanmw</groupId>
-        <version>1.0.13</version>
+        <version>1.0.18</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <description>文件存储 start</description>
@@ -68,6 +68,7 @@
         <dependency>
             <groupId>top.tanmw</groupId>
             <artifactId>efficient-boot-swagger-start</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.minio</groupId>

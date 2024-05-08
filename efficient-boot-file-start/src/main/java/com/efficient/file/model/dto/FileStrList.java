@@ -2,8 +2,6 @@ package com.efficient.file.model.dto;
 
 import lombok.Data;
 
-import java.util.List;
-
 /**
  * 绑定文件关系
  *
@@ -11,7 +9,7 @@ import java.util.List;
  * @since 2024/3/4 13:51
  */
 @Data
-public class FileBizRelation {
+public class FileStrList {
     private String bizId;
-    private List<String> fileIdList;
+    private String fileIdStr;
 }

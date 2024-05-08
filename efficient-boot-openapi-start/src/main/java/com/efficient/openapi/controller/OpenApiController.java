@@ -55,7 +55,7 @@ public class OpenApiController {
      */
     @Log(logOpt = LogEnum.QUERY, module = "系统第三方应用")
     @GetMapping("/getUserInfo")
-    @ApiOperation(value = "获取accessToken")
+    @ApiOperation(value = "获取用户信息")
     public Result<String> getUserInfo() {
         return openApiService.getUserInfo();
     }
