@@ -29,6 +29,10 @@ public class CacheConstant {
      */
     public static final Integer CACHE_SHORT_TIME = 60;
     /**
+     * 短时间存活
+     */
+    public static final Integer CACHE_COMMON_TIME = 600;
+    /**
      * 长时间存活
      */
     public static final Integer CACHE_LONG_TIME = 86400;

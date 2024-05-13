@@ -44,13 +44,29 @@ public class ProgressUtil {
         progressVo.setRatio(result);
 
         progressVo.setCode(ProgressStatus.RUNNING.getCode());
-        cacheUtil.put(CacheConstant.SYSTEM_CACHE, CacheConstant.PROGRESS_CACHE + key, progressVo, CacheConstant.CACHE_SHORT_TIME);
+        cacheUtil.put(CacheConstant.SYSTEM_CACHE, CacheConstant.PROGRESS_CACHE + key, progressVo, CacheConstant.CACHE_COMMON_TIME);
     }
 
     public static NumberFormat getNumFormat() {
         NumberFormat num = NumberFormat.getInstance();
         num.setMaximumFractionDigits(2);
         return num;
+    }
+
+    /**
+     * @param currDataName      当前进度描述
+     * @param ratio             当前进度
+     * @param key               唯一标识
+     * @param timeToIdleSeconds 缓存存活时间，秒
+     */
+    public void running(String currDataName, double ratio, String key, int timeToIdleSeconds) {
+        String result = getNumFormat().format(ratio);
+        DataProgressVO progressVo = new DataProgressVO();
+        progressVo.setCurrDataName(currDataName);
+        progressVo.setRatio(result);
+
+        progressVo.setCode(ProgressStatus.RUNNING.getCode());
+        cacheUtil.put(CacheConstant.SYSTEM_CACHE, CacheConstant.PROGRESS_CACHE + key, progressVo, timeToIdleSeconds);
     }
 
     public void success(String currDataName, String key) {
