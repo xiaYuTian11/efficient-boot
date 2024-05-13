@@ -10,6 +10,7 @@ public class DbConstant {
      * */
     // public static final DSLContext DSL_CONTEXT = DSL.using(SQLDialect.POSTGRES);
     public static final Integer BATCH_SIZE = 10000;
+    public static final Integer BATCH_LITTLE_SIZE = 1000;
     public static final String LIMIT_ONE = " limit 1";
 
 }
