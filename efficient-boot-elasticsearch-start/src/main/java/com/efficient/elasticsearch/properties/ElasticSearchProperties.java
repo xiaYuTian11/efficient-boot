@@ -65,4 +65,12 @@ public class ElasticSearchProperties {
      * 这个参数指定了每个目标主机的最大连接数。HttpClient在执行请求时会根据目标主机的路由信息从连接池中选择连接。这个参数可以用来限制每个目标主机的最大连接数，以防止某个主机占用过多的连接资源。
      */
     private Integer maxConnectPerRoute = 100;
+    /**
+     * 主键字段名称
+     */
+    private String pkFieldName = "id";
+    /**
+     * 一次最多查询数据量
+     */
+    private Long maxBuckets = 10000L;
 }

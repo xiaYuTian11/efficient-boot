@@ -83,6 +83,20 @@
       "description": "最大路由连接数",
       "defaultValue": 100,
       "sourceType": "com.efficient.elasticsearch.properties.ElasticSearchProperties"
+    },
+    {
+      "name": "com.efficient.elasticsearch.pkFieldName",
+      "type": "java.lang.String",
+      "description": "主键字段名称",
+      "defaultValue": "id",
+      "sourceType": "com.efficient.elasticsearch.properties.ElasticSearchProperties"
+    },
+    {
+      "name": "com.efficient.elasticsearch.maxBuckets",
+      "type": "java.lang.Long",
+      "description": "一次最多查询数据量",
+      "defaultValue": 10000,
+      "sourceType": "com.efficient.elasticsearch.properties.ElasticSearchProperties"
     }
   ],
   "hints": [

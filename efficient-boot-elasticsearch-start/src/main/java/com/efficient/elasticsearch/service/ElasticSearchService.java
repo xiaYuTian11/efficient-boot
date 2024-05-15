@@ -64,9 +64,9 @@ import java.util.*;
  */
 @Slf4j
 public class ElasticSearchService {
-    public final static String PK_FIELD_NAME = "id";
-    public final static Long MAX_BUCKETS = 20000000L;
     public RestHighLevelClient restHighLevelClient = null;
+    private String pkFieldName;
+    private Long maxBuckets;
     private boolean dateToTimestamp = false;
     private RestClient restClient = null;
     private SqlParser sqlParser = null;
@@ -100,6 +100,8 @@ public class ElasticSearchService {
         restHighLevelClient = new RestHighLevelClient(builder);
         sqlParser = new SqlParser(properties);
         dateToTimestamp = properties.isDateToTimestamp();
+        pkFieldName = properties.getPkFieldName();
+        maxBuckets = properties.getMaxBuckets();
     }
 
     /**
@@ -253,7 +255,7 @@ public class ElasticSearchService {
      * @return 是否成功
      */
     public boolean saveByPkField(String index, Map<String, Object> data) {
-        return saveByPkField(index, PK_FIELD_NAME, data);
+        return saveByPkField(index, pkFieldName, data);
     }
 
     /**
@@ -340,7 +342,7 @@ public class ElasticSearchService {
      * @return 是否成功
      */
     public boolean batchSaveByPkField(String index, List<Map<String, Object>> mapList) {
-        return batchSaveByPkField(index, PK_FIELD_NAME, mapList);
+        return batchSaveByPkField(index, pkFieldName, mapList);
     }
 
     /**
@@ -445,7 +447,7 @@ public class ElasticSearchService {
      * @return 更新条数
      */
     public boolean updateByPkField(String index, Map<String, Object> document) {
-        return updateByPkField(index, PK_FIELD_NAME, document);
+        return updateByPkField(index, pkFieldName, document);
     }
 
     /**
@@ -677,7 +679,7 @@ public class ElasticSearchService {
         Request request = new Request("POST", "/_sql?format=json");
         final JSONObject jsonObject = new JSONObject();
         jsonObject.put("query", sql);
-        jsonObject.put("fetch_size", MAX_BUCKETS);
+        jsonObject.put("fetch_size", maxBuckets);
         final String json = jsonObject.toString();
         request.setJsonEntity(json);
         try {
