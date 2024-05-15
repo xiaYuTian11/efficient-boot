@@ -21,14 +21,15 @@
         <module>efficient-boot-ykz-start</module>
         <module>efficient-boot-system-start</module>
         <module>efficient-boot-openapi-start</module>
+        <module>efficient-boot-elasticsearch-start</module>
     </modules>
     <groupId>top.tanmw</groupId>
     <artifactId>efficient-boot</artifactId>
-    <version>1.0.20</version>
+    <version>1.1.0</version>
     <packaging>pom</packaging>
 
     <properties>
-        <efficient-boot.version>1.0.20</efficient-boot.version>
+        <efficient-boot.version>1.1.0</efficient-boot.version>
         <java.version>1.8</java.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -73,6 +74,8 @@
         <googleauth.version>1.5.0</googleauth.version>
         <easyexcel.version>3.3.4</easyexcel.version>
         <easypoi.version>4.5.0</easypoi.version>
+        <elasticsearch.version>7.17.21</elasticsearch.version>
+        <druid.version>1.2.22</druid.version>
     </properties>
 
     <!-- 依赖管理 -->
@@ -275,6 +278,11 @@
                 <artifactId>efficient-boot-openapi-start</artifactId>
                 <version>${efficient-boot.version}</version>
             </dependency>
+            <dependency>
+                <groupId>top.tanmw</groupId>
+                <artifactId>efficient-boot-elasticsearch-start</artifactId>
+                <version>${efficient-boot.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.auth0</groupId>
@@ -349,6 +357,21 @@
                 <groupId>com.warrenstrange</groupId>
                 <artifactId>googleauth</artifactId>
                 <version>${googleauth.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>co.elastic.clients</groupId>
+                <artifactId>elasticsearch-java</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

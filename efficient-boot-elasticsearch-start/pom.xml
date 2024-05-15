@@ -8,14 +8,15 @@
         <artifactId>efficient-boot</artifactId>
         <version>1.1.0</version>
     </parent>
-    <description>接口幂等性校验</description>
-    <artifactId>efficient-boot-rate-start</artifactId>
+
+    <artifactId>efficient-boot-elasticsearch-start</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>cn.hutool</groupId>
@@ -27,18 +28,26 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>top.tanmw</groupId>
-            <artifactId>efficient-boot-cache-start</artifactId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>top.tanmw</groupId>
             <artifactId>efficient-boot-common</artifactId>
         </dependency>
-    </dependencies>
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-high-level-client</artifactId>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>co.elastic.clients</groupId>-->
+<!--            <artifactId>elasticsearch-java</artifactId>-->
+<!--        </dependency>-->
 
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+        </dependency>
+
+    </dependencies>
 </project>

@@ -1,0 +1,90 @@
+{
+  "groups": [
+    {
+      "name": "com.efficient.elasticsearch",
+      "type": "com.efficient.elasticsearch.properties.ElasticSearchProperties",
+      "sourceType": "com.efficient.elasticsearch.config.ElasticSearchConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "com.efficient.elasticsearch.enable",
+      "type": "java.lang.Boolean",
+      "description": "是否启用，默认 true",
+      "defaultValue": true,
+      "sourceType": "com.efficient.elasticsearch.properties.ElasticSearchProperties"
+    },
+    {
+      "name": "com.efficient.elasticsearch.ip",
+      "type": "java.lang.String",
+      "description": "ip地址",
+      "defaultValue": "127.0.0.1",
+      "sourceType": "com.efficient.elasticsearch.properties.ElasticSearchProperties"
+    },
+    {
+      "name": "com.efficient.elasticsearch.port",
+      "type": "java.lang.Integer",
+      "description": "端口",
+      "defaultValue": 9200,
+      "sourceType": "com.efficient.elasticsearch.properties.ElasticSearchProperties"
+    },
+    {
+      "name": "com.efficient.elasticsearch.username",
+      "type": "java.lang.String",
+      "description": "用户名",
+      "defaultValue": "elastic",
+      "sourceType": "com.efficient.elasticsearch.properties.ElasticSearchProperties"
+    },
+    {
+      "name": "com.efficient.elasticsearch.password",
+      "type": "java.lang.String",
+      "description": "密码",
+      "defaultValue": null,
+      "sourceType": "com.efficient.elasticsearch.properties.ElasticSearchProperties"
+    },
+    {
+      "name": "com.efficient.elasticsearch.dateToTimestamp",
+      "type": "java.lang.Boolean",
+      "description": "是否将时间格式转成时间戳，提高查询效率，默认 true",
+      "defaultValue": true,
+      "sourceType": "com.efficient.elasticsearch.properties.ElasticSearchProperties"
+    },
+    {
+      "name": "com.efficient.elasticsearch.connectTimeout",
+      "type": "java.lang.Integer",
+      "description": "连接超时时间,单位毫秒",
+      "defaultValue": 5000,
+      "sourceType": "com.efficient.elasticsearch.properties.ElasticSearchProperties"
+    },
+    {
+      "name": "com.efficient.elasticsearch.socketTimeout",
+      "type": "java.lang.Integer",
+      "description": "socket 超时时间,单位毫秒",
+      "defaultValue": 10000,
+      "sourceType": "com.efficient.elasticsearch.properties.ElasticSearchProperties"
+    },
+    {
+      "name": "com.efficient.elasticsearch.connectionRequestTimeout",
+      "type": "java.lang.Integer",
+      "description": "获取连接的超时时间,单位毫秒",
+      "defaultValue": 0,
+      "sourceType": "com.efficient.elasticsearch.properties.ElasticSearchProperties"
+    },
+    {
+      "name": "com.efficient.elasticsearch.maxConnectNum",
+      "type": "java.lang.Integer",
+      "description": "最大连接数",
+      "defaultValue": 100,
+      "sourceType": "com.efficient.elasticsearch.properties.ElasticSearchProperties"
+    },
+    {
+      "name": "com.efficient.elasticsearch.maxConnectPerRoute",
+      "type": "java.lang.Integer",
+      "description": "最大路由连接数",
+      "defaultValue": 100,
+      "sourceType": "com.efficient.elasticsearch.properties.ElasticSearchProperties"
+    }
+  ],
+  "hints": [
+  ]
+}
