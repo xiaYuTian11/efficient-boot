@@ -49,5 +49,5 @@ public class TreeNode {
     /**
      * 补充信息
      */
-    private Object info;
+    private TreeInfo extInfo;
 }
