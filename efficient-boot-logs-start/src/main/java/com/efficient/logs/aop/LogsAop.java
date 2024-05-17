@@ -109,12 +109,14 @@ public class LogsAop {
                 }
 
                 if (Objects.nonNull(exp)) {
+                    String message = exp.getMessage();
                     StringWriter sw = new StringWriter();
                     PrintWriter pw = new PrintWriter(sw);
                     exp.printStackTrace(pw);
                     pw.close();
                     expStr = sw.toString();
-                    LOGGER.error(String.format(REQUEST_ERROR_FORMAT, ip, requestUrl, className, argsStr, token, "无", sw, 0L), exp);
+                    // 有全局异常，这里输出异常日志过于重复，简化
+                    LOGGER.error(String.format(REQUEST_ERROR_FORMAT, ip, requestUrl, className, argsStr, token, "无", message, 0L));
                 } else {
                     LOGGER.info(String.format(REQUEST_NORMAL_FORMAT, ip, requestUrl, className, argsStr, token, returnValue, (endTime - START_TIME.get())));
                 }
