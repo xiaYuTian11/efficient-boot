@@ -7,6 +7,9 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.efficient.common.page.Page;
 import com.efficient.common.util.JackSonUtil;
+import com.efficient.elasticsearch.entity.ElasticSearchRangeEntity;
+import com.efficient.elasticsearch.entity.ElasticSearchRequestEntity;
+import com.efficient.elasticsearch.entity.RangeEntity;
 import com.efficient.elasticsearch.entity.ResponseEntity;
 import com.efficient.elasticsearch.parser.SqlParser;
 import com.efficient.elasticsearch.parser.TableNameParser;
@@ -44,7 +47,9 @@ import org.elasticsearch.cluster.metadata.MappingMetadata;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.core.TimeValue;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
 import org.elasticsearch.index.reindex.UpdateByQueryRequest;
 import org.elasticsearch.script.Script;
@@ -917,5 +922,76 @@ public class ElasticSearchService implements Serializable {
         // 发送请求并获取响应
         AcknowledgedResponse acknowledgedResponse = restHighLevelClient.indices().putMapping(request, RequestOptions.DEFAULT);
         return acknowledgedResponse.isAcknowledged();
+    }
+
+    /**
+     * 根据列值查询数据
+     *
+     * @return ResponseEntity 结果
+     */
+    public SearchResponse findByMultipleFields(List<ElasticSearchRequestEntity> requestEntityList, String indexName, Integer pageSize) throws IOException {
+        // 构建查询
+        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        if (CollUtil.isNotEmpty(requestEntityList)) {
+            requestEntityList.forEach(et -> {
+                if (Objects.equals(et.getSearchType(), 2)) {
+                    boolQueryBuilder.must(QueryBuilders.wildcardQuery(et.getKey(), et.getValue()));
+                } else {
+                    boolQueryBuilder.must(QueryBuilders.matchQuery(et.getKey(), et.getValue()));
+                }
+            });
+        }
+        sourceBuilder.query(boolQueryBuilder);
+        // 设置文档返回大小  默认值是10
+        sourceBuilder.size(pageSize);
+        // 执行查询
+        SearchRequest searchRequest = new SearchRequest(indexName);
+        searchRequest.source(sourceBuilder);
+        return restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+    }
+
+    /**
+     * 范围查找
+     *
+     * @param rangeEntityList
+     * @param requestEntityList
+     * @param indexName
+     * @return
+     */
+    public SearchResponse findByRangeAndMatch(List<ElasticSearchRangeEntity> rangeEntityList, List<ElasticSearchRequestEntity> requestEntityList, String indexName, Integer pageSize) throws IOException {
+        // 构建查询
+        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+        // 添加范围查询
+        if (CollUtil.isNotEmpty(rangeEntityList)) {
+            rangeEntityList.forEach(et -> {
+                RangeEntity rangeEntity = et.getRangeEntity();
+                boolQueryBuilder.must(QueryBuilders.rangeQuery(et.getKey())
+                        .from(rangeEntity.getFrom())
+                        .to(rangeEntity.getTo()));
+            });
+        }
+
+        // 添加单值匹配查询
+        if (CollUtil.isNotEmpty(requestEntityList)) {
+            requestEntityList.forEach(et -> {
+                if (Objects.equals(et.getSearchType(), 2)) {
+                    boolQueryBuilder.must(QueryBuilders.wildcardQuery(et.getKey(), et.getValue()));
+                } else {
+                    boolQueryBuilder.must(QueryBuilders.matchQuery(et.getKey(), et.getValue()));
+                }
+            });
+        }
+
+        sourceBuilder.query(boolQueryBuilder);
+        // 设置文档返回大小  默认值是10
+        sourceBuilder.size(pageSize);
+        // 执行查询
+        SearchRequest searchRequest = new SearchRequest(indexName);
+        searchRequest.source(sourceBuilder);
+        return restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+
     }
 }

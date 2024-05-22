@@ -2,7 +2,6 @@ package com.efficient.elasticsearch.flink;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.efficient.common.util.JackSonUtil;
-import com.efficient.common.util.ThreadUtil;
 import com.efficient.elasticsearch.properties.ElasticSearchProperties;
 import com.efficient.elasticsearch.properties.FlinkProperties;
 import com.efficient.elasticsearch.service.ElasticSearchService;
@@ -13,6 +12,8 @@ import org.elasticsearch.action.bulk.BackoffPolicy;
 import org.elasticsearch.action.bulk.BulkProcessor;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.support.WriteRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.unit.ByteSizeUnit;
@@ -53,6 +54,7 @@ public class ElasticsearchSink extends RichSinkFunction<String> {
         super.open(parameters);
         elasticSearchService = new ElasticSearchService();
         elasticSearchService.init(elasticSearchProperties);
+        client = elasticSearchService.restHighLevelClient;
         // 构建BulkProcessor
         BulkProcessor.Listener listener = new BulkProcessor.Listener() {
             @Override
@@ -76,7 +78,11 @@ public class ElasticsearchSink extends RichSinkFunction<String> {
         };
 
         // 构建并初始化BulkProcessor
-        BulkProcessor.Builder bulkProcessorBuilder = BulkProcessor.builder((request, listener1) -> client.bulkAsync(request, RequestOptions.DEFAULT, listener1), listener);
+        BulkProcessor.Builder bulkProcessorBuilder = BulkProcessor.builder((request, bulkListener) -> {
+                    client.bulkAsync(request, RequestOptions.DEFAULT, bulkListener);
+                    request.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
+                }
+                , listener);
 
         // 配置BulkProcessor的行为
         bulkProcessorBuilder.setBulkActions(flinkProperties.getBulkActions()) // 批处理操作数
@@ -105,12 +111,16 @@ public class ElasticsearchSink extends RichSinkFunction<String> {
         if (Objects.isNull(document)) {
             return;
         }
-        ThreadUtil.EXECUTOR_SERVICE.execute(() -> elasticSearchService.saveByPkField(indexName, document));
+        // 确保document中有主键字段，这里以pkFieldName为例，需要替换为你实际的主键字段名
+        String pkFieldValue = String.valueOf(document.get(elasticSearchProperties.getPkFieldName()));
+        if (pkFieldValue == null) {
+            log.error("Document missing primary key field.");
+            return;
+        }
+        // 存在即修改，不存在则新增
+        IndexRequest indexRequest = new IndexRequest(indexName)
+                .id(pkFieldValue).source(document);
 
-        // // bulkProcessor.add(new IndexRequest(indexName).source(document));
-        // UpdateRequest updateRequest = new UpdateRequest(indexName, String.valueOf(document.get(elasticSearchProperties.getPkFieldName())))
-        //         .doc(document) // 数据
-        //         .upsert(document); // 如果文档不存在，则插入这些数据
-        // bulkProcessor.add(updateRequest);
+        bulkProcessor.add(indexRequest);
     }
 }
