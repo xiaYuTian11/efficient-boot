@@ -61,11 +61,8 @@ public class JackSonUtil {
             JavaType javaType = JSON.getTypeFactory().constructParametricType(List.class, clsChild);
             return JSON.readValue(str, javaType);
         } catch (JsonProcessingException e) {
-            LOGGER.error("toObject 转换异常", e);
+            LOGGER.error("toObjectList 转换异常", e);
         }
-        // TypeReference<List<User>> type = new TypeReference<List<User>>() {
-        // };
-        // List<User> userList = mapper.readValue(json, type);
         return null;
     }
 
@@ -85,7 +82,7 @@ public class JackSonUtil {
             };
             return JSON.readValue(str, type);
         } catch (JsonProcessingException e) {
-            LOGGER.error("toObject 转换异常", e);
+            LOGGER.error("toObjectListByType 转换异常", e);
         }
         return null;
     }
@@ -98,11 +95,20 @@ public class JackSonUtil {
             JavaType javaType = JSON.getTypeFactory().constructParametricType(Map.class, String.class, vCls);
             return JSON.readValue(str, javaType);
         } catch (JsonProcessingException e) {
-            LOGGER.error("toObject 转换异常", e);
+            LOGGER.error("toObjectMap 转换异常", e);
         }
-        // TypeReference<HashMap<String, String>> type = new TypeReference<HashMap<String, String>>() {
-        // };
-        // HashMap<String, String> map = mapper.readValue(json, type);
+        return null;
+    }
+
+    public static Map<String, Object> toMap(String str) {
+        if (StrUtil.isBlank(str)) {
+            return null;
+        }
+        try {
+            return JSON.readValue(str, Map.class);
+        } catch (JsonProcessingException e) {
+            LOGGER.error("toMap 转换异常", e);
+        }
         return null;
     }
 

@@ -3,14 +3,16 @@ package com.efficient.elasticsearch.properties;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.io.Serializable;
+
 /**
  * @author TMW
  * @since 2022/8/26 9:59
  */
 @ConfigurationProperties("com.efficient.elasticsearch")
 @Data
-public class ElasticSearchProperties {
-
+public class ElasticSearchProperties implements Serializable {
+    private static final long serialVersionUID = 2237439631301047071L;
     /**
      * 是否启用，默认 true
      */

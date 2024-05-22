@@ -55,6 +55,7 @@ import org.elasticsearch.xcontent.XContentBuilder;
 import org.elasticsearch.xcontent.XContentType;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -63,7 +64,8 @@ import java.util.*;
  * @since 2024/5/15 10:06
  */
 @Slf4j
-public class ElasticSearchService {
+public class ElasticSearchService implements Serializable {
+    private static final long serialVersionUID = -7686867207799800071L;
     public RestHighLevelClient restHighLevelClient = null;
     private String pkFieldName;
     private Long maxBuckets;
@@ -186,6 +188,9 @@ public class ElasticSearchService {
      * @return 是否成功
      */
     public boolean save(String index, Map<String, Object> data) {
+        if (Objects.isNull(data)) {
+            return false;
+        }
         IndexRequest request = new IndexRequest(index);
         // 刷新策略
         request.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
@@ -267,6 +272,9 @@ public class ElasticSearchService {
      * @return 是否成功
      */
     public boolean saveByPkField(String index, String pkFieldName, Map<String, Object> data) {
+        if (Objects.isNull(data)) {
+            return false;
+        }
         IndexRequest request = new IndexRequest(index);
         // 刷新策略
         request.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
@@ -300,6 +308,9 @@ public class ElasticSearchService {
      * @return 是否成功
      */
     public boolean batchSaveWithRecord(String index, List<Map<String, Object>> recordList) {
+        if (CollUtil.isEmpty(recordList)) {
+            return false;
+        }
         BulkRequest request = new BulkRequest();
         // 刷新策略
         request.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
@@ -322,6 +333,9 @@ public class ElasticSearchService {
      * @return 是否成功
      */
     public boolean batchSave(String index, List<Map<String, Object>> mapList) {
+        if (CollUtil.isEmpty(mapList)) {
+            return false;
+        }
         BulkRequest request = new BulkRequest();
         mapList.forEach(record -> request.add(new IndexRequest(index).source(formatMap(record))));
         final BulkResponse bulk;
@@ -354,6 +368,9 @@ public class ElasticSearchService {
      * @return 是否成功
      */
     public boolean batchSaveByPkField(String index, String pkFieldName, List<Map<String, Object>> mapList) {
+        if (CollUtil.isEmpty(mapList)) {
+            return false;
+        }
         BulkRequest request = new BulkRequest();
         // 刷新策略
         request.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
@@ -386,6 +403,9 @@ public class ElasticSearchService {
      * @return 更新条数
      */
     public boolean batchUpdateByPkField(String index, String pkFieldName, List<Map<String, Object>> documentList) {
+        if (CollUtil.isEmpty(documentList)) {
+            return false;
+        }
         BulkRequest bulkRequest = new BulkRequest(index);
         // 刷新策略
         bulkRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
@@ -414,6 +434,9 @@ public class ElasticSearchService {
      * @throws Exception
      */
     public long updateWithQuery(String index, QueryBuilder query, Map<String, Object> document) throws Exception {
+        if (Objects.isNull(document)) {
+            return 0L;
+        }
         UpdateByQueryRequest updateByQueryRequest = new UpdateByQueryRequest(index);
         updateByQueryRequest.setQuery(query);
         formatMap(document);
@@ -459,6 +482,9 @@ public class ElasticSearchService {
      * @return 更新条数
      */
     public boolean updateByPkField(String index, String pkFieldName, Map<String, Object> document) {
+        if (Objects.isNull(document)) {
+            return false;
+        }
         final String id = String.valueOf(document.get(pkFieldName));
         UpdateRequest updateRequest = new UpdateRequest(index, id);
         // 刷新策略
@@ -491,6 +517,9 @@ public class ElasticSearchService {
      * @return 更新条数
      */
     public boolean updateById(String index, String id, Map<String, Object> document) {
+        if (Objects.isNull(document)) {
+            return false;
+        }
         UpdateRequest updateRequest = new UpdateRequest(index, id);
         // 刷新策略
         updateRequest.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);

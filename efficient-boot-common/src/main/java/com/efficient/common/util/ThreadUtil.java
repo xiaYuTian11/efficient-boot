@@ -30,9 +30,32 @@ public class ThreadUtil {
                             .setUncaughtExceptionHandler((t, e) -> {
                                 StringWriter sw = new StringWriter();
                                 e.printStackTrace(new PrintWriter(sw));
-                                LOGGER.info("任务处理异常!" + sw);
+                                LOGGER.warning("任务处理异常!" + sw);
                             })
-                            .setThreadFactory(Thread::new).build()
+                            .setThreadFactory(Thread::new).build(),
+                    // 设置拒绝策略为CallerRunsPolicy
+                    new ThreadPoolExecutor.CallerRunsPolicy()
             ))
     );
+
+    /**
+     * 增加了JVM关闭钩子，确保在应用退出时能尝试优雅地关闭线程池，避免资源泄露
+     */
+    static {
+        Runtime.getRuntime().addShutdownHook(new Thread(ThreadUtil::shutdownThreadPoolGracefully));
+    }
+
+    private static void shutdownThreadPoolGracefully() {
+        EXECUTOR_SERVICE.shutdown();
+        try {
+            if (!EXECUTOR_SERVICE.awaitTermination(60, TimeUnit.SECONDS)) {
+                EXECUTOR_SERVICE.shutdownNow();
+                if (!EXECUTOR_SERVICE.awaitTermination(60, TimeUnit.SECONDS))
+                    LOGGER.warning("线程池未优雅关闭");
+            }
+        } catch (InterruptedException ie) {
+            EXECUTOR_SERVICE.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
+    }
 }
