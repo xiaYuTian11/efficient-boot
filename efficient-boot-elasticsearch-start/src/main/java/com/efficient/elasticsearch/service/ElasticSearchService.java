@@ -14,6 +14,7 @@ import com.efficient.elasticsearch.entity.ResponseEntity;
 import com.efficient.elasticsearch.parser.SqlParser;
 import com.efficient.elasticsearch.parser.TableNameParser;
 import com.efficient.elasticsearch.properties.ElasticSearchProperties;
+import com.efficient.elasticsearch.properties.FlinkProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
@@ -25,6 +26,8 @@ import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.DocWriteRequest;
 import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
+import org.elasticsearch.action.bulk.BackoffPolicy;
+import org.elasticsearch.action.bulk.BulkProcessor;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteRequest;
@@ -46,6 +49,8 @@ import org.elasticsearch.client.indices.*;
 import org.elasticsearch.cluster.metadata.MappingMetadata;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.unit.ByteSizeUnit;
+import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.core.TimeValue;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -80,6 +85,7 @@ public class ElasticSearchService implements Serializable {
     private boolean dateToTimestamp = false;
     private RestClient restClient = null;
     private SqlParser sqlParser = null;
+    private BulkProcessor bulkProcessor = null;
 
     private ElasticSearchProperties properties;
 
@@ -112,6 +118,8 @@ public class ElasticSearchService implements Serializable {
         dateToTimestamp = properties.isDateToTimestamp();
         pkFieldName = properties.getPkFieldName();
         maxBuckets = properties.getMaxBuckets();
+        // 初始化 BulkProcessor
+
         // 启用打印
         if (elasticSearchProperties.isPrintDist()) {
             Long printDistInterval = elasticSearchProperties.getPrintDistInterval();
@@ -161,6 +169,50 @@ public class ElasticSearchService implements Serializable {
         } else {
             log.warn("磁盘空间已使用：{},占比：{}%,磁盘空间一旦超过95%，ElasticSearch 将不能写入数据，只能读取！", diskUsed, diskPercent);
         }
+    }
+
+    /**
+     * 创建批处理对象
+     *
+     * @param flinkProperties
+     */
+    public void buildBulkProcessor(FlinkProperties flinkProperties) {
+        // 构建BulkProcessor
+        BulkProcessor.Listener listener = new BulkProcessor.Listener() {
+            @Override
+            public void beforeBulk(long executionId, BulkRequest request) {
+                log.info("Executing bulk [{}] with {} requests", executionId, request.numberOfActions());
+            }
+
+            @Override
+            public void afterBulk(long executionId, BulkRequest request, BulkResponse response) {
+                if (response.hasFailures()) {
+                    log.error("Bulk [{}] executed with failures", executionId);
+                } else {
+                    log.info("Bulk [{}] completed in {} milliseconds", executionId, response.getTook().getMillis());
+                }
+            }
+
+            @Override
+            public void afterBulk(long executionId, BulkRequest request, Throwable failure) {
+                log.error("Failed to execute bulk", failure);
+            }
+        };
+
+        // 构建并初始化BulkProcessor
+        BulkProcessor.Builder bulkProcessorBuilder = BulkProcessor.builder((request, bulkListener) -> {
+                    restHighLevelClient.bulkAsync(request, RequestOptions.DEFAULT, bulkListener);
+                    request.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
+                }
+                , listener);
+
+        // 配置BulkProcessor的行为
+        bulkProcessorBuilder.setBulkActions(flinkProperties.getBulkActions()) // 批处理操作数
+                .setBulkSize(new ByteSizeValue(flinkProperties.getBulkSize(), ByteSizeUnit.MB)) // 批处理大小
+                .setFlushInterval(TimeValue.timeValueSeconds(flinkProperties.getFlushInterval())) // 刷新间隔
+                .setConcurrentRequests(flinkProperties.getConcurrentRequests()) // 并发请求数
+                .setBackoffPolicy(BackoffPolicy.exponentialBackoff(TimeValue.timeValueMillis(flinkProperties.getTryWaitTime()), flinkProperties.getTryCount())); // 重试策略
+        bulkProcessor = bulkProcessorBuilder.build();
     }
 
     /**
