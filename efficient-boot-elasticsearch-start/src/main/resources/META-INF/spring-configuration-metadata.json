@@ -97,6 +97,20 @@
       "description": "一次最多查询数据量",
       "defaultValue": 10000,
       "sourceType": "com.efficient.elasticsearch.properties.ElasticSearchProperties"
+    },
+    {
+      "name": "com.efficient.elasticsearch.printDist",
+      "type": "java.lang.Double",
+      "description": "是否打印ES服务磁盘空间占比,默认 是",
+      "defaultValue": true,
+      "sourceType": "com.efficient.elasticsearch.properties.ElasticSearchProperties"
+    },
+    {
+      "name": "com.efficient.elasticsearch.printDistInterval",
+      "type": "java.lang.Long",
+      "description": "输出ES服务磁盘空间占比时间间隔，默认60s",
+      "defaultValue": 60,
+      "sourceType": "com.efficient.elasticsearch.properties.ElasticSearchProperties"
     }
   ],
   "hints": [

@@ -75,4 +75,12 @@ public class ElasticSearchProperties implements Serializable {
      * 一次最多查询数据量
      */
     private Long maxBuckets = 10000L;
+    /**
+     * 是否打印ES服务磁盘空间占比
+     */
+    private boolean printDist = true;
+    /**
+     * 输出ES服务磁盘空间占比时间间隔
+     */
+    private Long printDistInterval = 60L;
 }

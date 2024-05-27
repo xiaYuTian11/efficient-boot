@@ -63,6 +63,9 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author TMW
@@ -109,6 +112,55 @@ public class ElasticSearchService implements Serializable {
         dateToTimestamp = properties.isDateToTimestamp();
         pkFieldName = properties.getPkFieldName();
         maxBuckets = properties.getMaxBuckets();
+        // 启用打印
+        if (elasticSearchProperties.isPrintDist()) {
+            Long printDistInterval = elasticSearchProperties.getPrintDistInterval();
+            ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+            scheduler.scheduleAtFixedRate(() -> {
+                try {
+                    this.printDisk();
+                } catch (IOException e) {
+                    log.error("监控ES服务器磁盘异常", e);
+                }
+            }, 0, printDistInterval, TimeUnit.SECONDS);
+
+        }
+
+    }
+
+    public void printDisk() throws IOException {
+        // 执行 Cat API 请求
+        Request request = new Request("GET", "/_cat/allocation?v=true&pretty");
+        Response response = restClient.performRequest(request);
+        if (response.getStatusLine().getStatusCode() != 200) {
+            log.warn("监控ES服务器磁盘请求失败");
+        }
+        // 解析响应并存储为 Map
+        Map<String, String> resultMap = new HashMap<>();
+        try (Scanner scanner = new Scanner(response.getEntity().getContent())) {
+            String title = scanner.nextLine();
+            String value = scanner.nextLine();
+
+            if (!title.trim().isEmpty() && !title.startsWith("id")) { // 过滤掉标题行和空行
+                String[] parts = title.split("\\s+", 9); // 使用空格分割，限制为2个元素，以避免索引和值中可能存在的空格干扰
+                String[] values = value.split("\\s+", 10); // 使用空格分割，限制为2个元素，以避免索引和值中可能存在的空格干扰
+                for (int i = 0; i < parts.length; i++) {
+                    resultMap.put(parts[i], values[i + 1]);
+                }
+            }
+        }
+        log.info("resultMap:{}", resultMap);
+        String diskUsed = resultMap.get("disk.used");
+        String diskAvail = resultMap.get("disk.avail");
+        String diskTotal = resultMap.get("disk.total");
+        double diskPercent = Double.parseDouble(resultMap.get("disk.percent"));
+        if (diskPercent < 80) {
+            log.info("磁盘空间已使用：{},占比：{}%", diskUsed, diskPercent);
+        } else if (diskPercent >= 95) {
+            log.error("磁盘空间已使用：{},占比：{}%,磁盘空间已超过95%，ElasticSearch 将不能写入数据，只能读取！", diskUsed, diskPercent);
+        } else {
+            log.warn("磁盘空间已使用：{},占比：{}%,磁盘空间一旦超过95%，ElasticSearch 将不能写入数据，只能读取！", diskUsed, diskPercent);
+        }
     }
 
     /**
