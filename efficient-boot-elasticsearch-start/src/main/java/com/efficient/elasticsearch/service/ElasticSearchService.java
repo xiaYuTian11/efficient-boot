@@ -80,19 +80,22 @@ import java.util.concurrent.TimeUnit;
 public class ElasticSearchService implements Serializable {
     private static final long serialVersionUID = -7686867207799800071L;
     public RestHighLevelClient restHighLevelClient = null;
+    public BulkProcessor bulkProcessor = null;
     private String pkFieldName;
     private Long maxBuckets;
     private boolean dateToTimestamp = false;
     private RestClient restClient = null;
     private SqlParser sqlParser = null;
-    private BulkProcessor bulkProcessor = null;
-
     private ElasticSearchProperties properties;
+
+    public void init(ElasticSearchProperties elasticSearchProperties) {
+        this.init(elasticSearchProperties, new FlinkProperties());
+    }
 
     /**
      * 初始化
      */
-    public void init(ElasticSearchProperties elasticSearchProperties) {
+    public void init(ElasticSearchProperties elasticSearchProperties, FlinkProperties flinkProperties) {
         this.properties = elasticSearchProperties;
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(AuthScope.ANY,
@@ -119,7 +122,7 @@ public class ElasticSearchService implements Serializable {
         pkFieldName = properties.getPkFieldName();
         maxBuckets = properties.getMaxBuckets();
         // 初始化 BulkProcessor
-
+        this.buildBulkProcessor(flinkProperties);
         // 启用打印
         if (elasticSearchProperties.isPrintDist()) {
             Long printDistInterval = elasticSearchProperties.getPrintDistInterval();
@@ -133,7 +136,51 @@ public class ElasticSearchService implements Serializable {
             }, 0, printDistInterval, TimeUnit.SECONDS);
 
         }
+    }
 
+    /**
+     * 创建批处理对象
+     *
+     * @param flinkProperties
+     */
+    public void buildBulkProcessor(FlinkProperties flinkProperties) {
+        // 构建BulkProcessor
+        log.info("构建BulkProcessor");
+        BulkProcessor.Listener listener = new BulkProcessor.Listener() {
+            @Override
+            public void beforeBulk(long executionId, BulkRequest request) {
+                log.info("Executing bulk [{}] with {} requests", executionId, request.numberOfActions());
+            }
+
+            @Override
+            public void afterBulk(long executionId, BulkRequest request, BulkResponse response) {
+                if (response.hasFailures()) {
+                    log.error("Bulk [{}] executed with failures", executionId);
+                } else {
+                    log.info("Bulk [{}] completed in {} milliseconds", executionId, response.getTook().getMillis());
+                }
+            }
+
+            @Override
+            public void afterBulk(long executionId, BulkRequest request, Throwable failure) {
+                log.error("Failed to execute bulk", failure);
+            }
+        };
+
+        // 构建并初始化BulkProcessor
+        BulkProcessor.Builder bulkProcessorBuilder = BulkProcessor.builder((request, bulkListener) -> {
+                    restHighLevelClient.bulkAsync(request, RequestOptions.DEFAULT, bulkListener);
+                    request.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
+                }
+                , listener);
+
+        // 配置BulkProcessor的行为
+        bulkProcessorBuilder.setBulkActions(flinkProperties.getBulkActions()) // 批处理操作数
+                .setBulkSize(new ByteSizeValue(flinkProperties.getBulkSize(), ByteSizeUnit.MB)) // 批处理大小
+                .setFlushInterval(TimeValue.timeValueSeconds(flinkProperties.getFlushInterval())) // 刷新间隔
+                .setConcurrentRequests(flinkProperties.getConcurrentRequests()) // 并发请求数
+                .setBackoffPolicy(BackoffPolicy.exponentialBackoff(TimeValue.timeValueMillis(flinkProperties.getTryWaitTime()), flinkProperties.getTryCount())); // 重试策略
+        bulkProcessor = bulkProcessorBuilder.build();
     }
 
     public void printDisk() throws IOException {
@@ -172,47 +219,57 @@ public class ElasticSearchService implements Serializable {
     }
 
     /**
-     * 创建批处理对象
+     * 使用bulk保存数据
      *
-     * @param flinkProperties
+     * @param index
+     * @param mapList
      */
-    public void buildBulkProcessor(FlinkProperties flinkProperties) {
-        // 构建BulkProcessor
-        BulkProcessor.Listener listener = new BulkProcessor.Listener() {
-            @Override
-            public void beforeBulk(long executionId, BulkRequest request) {
-                log.info("Executing bulk [{}] with {} requests", executionId, request.numberOfActions());
+    public void saveByBulk(String index, List<Map<String, Object>> mapList) {
+        mapList.forEach(et -> {
+            IndexRequest indexRequest = new IndexRequest(index).source(formatMap(et));
+            this.bulkProcessor.add(indexRequest);
+        });
+        this.bulkProcessor.flush();
+    }
+
+    /**
+     * 格式化 数据
+     *
+     * @param map 数据
+     * @return 格式化后数据
+     */
+    private Map<String, Object> formatMap(Map<String, Object> map) {
+        map.keySet().forEach(key -> map.compute(key, (k, value) -> formatValue(value)));
+        return map;
+    }
+
+    private Object formatValue(Object value) {
+        if (Objects.isNull(value)) {
+            return null;
+        } else if (value instanceof java.sql.Date) {
+            final long dateLong = ((java.sql.Date) value).getTime();
+            if (dateToTimestamp) {
+                return processDateLong(dateLong);
             }
-
-            @Override
-            public void afterBulk(long executionId, BulkRequest request, BulkResponse response) {
-                if (response.hasFailures()) {
-                    log.error("Bulk [{}] executed with failures", executionId);
-                } else {
-                    log.info("Bulk [{}] completed in {} milliseconds", executionId, response.getTook().getMillis());
-                }
+            return new Date(dateLong);
+        } else if (value instanceof java.sql.Timestamp) {
+            final long dateLong = ((java.sql.Timestamp) value).getTime();
+            if (dateToTimestamp) {
+                return processDateLong(dateLong);
             }
-
-            @Override
-            public void afterBulk(long executionId, BulkRequest request, Throwable failure) {
-                log.error("Failed to execute bulk", failure);
+            return new Date(dateLong);
+        } else if (value instanceof Date) {
+            final Date date = (Date) value;
+            if (dateToTimestamp) {
+                return DateUtil.beginOfDay(date).getTime();
             }
-        };
+            return date;
+        }
+        return value;
+    }
 
-        // 构建并初始化BulkProcessor
-        BulkProcessor.Builder bulkProcessorBuilder = BulkProcessor.builder((request, bulkListener) -> {
-                    restHighLevelClient.bulkAsync(request, RequestOptions.DEFAULT, bulkListener);
-                    request.setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
-                }
-                , listener);
-
-        // 配置BulkProcessor的行为
-        bulkProcessorBuilder.setBulkActions(flinkProperties.getBulkActions()) // 批处理操作数
-                .setBulkSize(new ByteSizeValue(flinkProperties.getBulkSize(), ByteSizeUnit.MB)) // 批处理大小
-                .setFlushInterval(TimeValue.timeValueSeconds(flinkProperties.getFlushInterval())) // 刷新间隔
-                .setConcurrentRequests(flinkProperties.getConcurrentRequests()) // 并发请求数
-                .setBackoffPolicy(BackoffPolicy.exponentialBackoff(TimeValue.timeValueMillis(flinkProperties.getTryWaitTime()), flinkProperties.getTryCount())); // 重试策略
-        bulkProcessor = bulkProcessorBuilder.build();
+    private Long processDateLong(long dateLong) {
+        return DateUtil.beginOfDay(new Date(dateLong)).getTime();
     }
 
     /**
@@ -319,46 +376,6 @@ public class ElasticSearchService implements Serializable {
             log.error(index + " 批量保存失败", e);
             return false;
         }
-    }
-
-    /**
-     * 格式化 数据
-     *
-     * @param map 数据
-     * @return 格式化后数据
-     */
-    private Map<String, Object> formatMap(Map<String, Object> map) {
-        map.keySet().forEach(key -> map.compute(key, (k, value) -> formatValue(value)));
-        return map;
-    }
-
-    private Object formatValue(Object value) {
-        if (Objects.isNull(value)) {
-            return null;
-        } else if (value instanceof java.sql.Date) {
-            final long dateLong = ((java.sql.Date) value).getTime();
-            if (dateToTimestamp) {
-                return processDateLong(dateLong);
-            }
-            return new Date(dateLong);
-        } else if (value instanceof java.sql.Timestamp) {
-            final long dateLong = ((java.sql.Timestamp) value).getTime();
-            if (dateToTimestamp) {
-                return processDateLong(dateLong);
-            }
-            return new Date(dateLong);
-        } else if (value instanceof Date) {
-            final Date date = (Date) value;
-            if (dateToTimestamp) {
-                return DateUtil.beginOfDay(date).getTime();
-            }
-            return date;
-        }
-        return value;
-    }
-
-    private Long processDateLong(long dateLong) {
-        return DateUtil.beginOfDay(new Date(dateLong)).getTime();
     }
 
     /**
