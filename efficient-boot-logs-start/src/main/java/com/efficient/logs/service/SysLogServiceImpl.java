@@ -21,7 +21,6 @@ import com.efficient.logs.model.entity.SysLog;
 import com.efficient.logs.model.vo.SysLogVO;
 import com.efficient.logs.properties.LogsProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,7 +51,7 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
     private SysLogConverter sysLogConverter;
 
     @Override
-    public boolean saveLog(Log log, String ip, String url, String params, String resultCode, String result, String exception) {
+    public boolean saveLog(Log log, String ip, String desc, String url, String params, String resultCode, String result, String exception) {
         UserTicket userTicket = RequestHolder.getCurrUser();
         if (Objects.isNull(userTicket)) {
             userTicket = new UserTicket();
@@ -74,7 +73,7 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
         }
         sysLog.setLogOpt(optText);
         String account = userTicket.getAccount();
-        String desc = log.desc();
+        // String desc = log.desc();
         StringBuilder sb = new StringBuilder(account);
         if (StrUtil.isBlank(desc)) {
             if (log.join()) {
@@ -83,12 +82,10 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
             if (StrUtil.isNotBlank(log.module())) {
                 sb.append(log.module());
             }
-            sysLog.setLogContent(sb.toString());
         } else {
             sb.append(desc);
-            sysLog.setLogContent(sb.toString());
         }
-
+        sysLog.setLogContent(sb.toString());
         sysLog.setParams(params);
         sysLog.setResultCode(resultCode);
         sysLog.setResult(result);
@@ -97,8 +94,8 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
     }
 
     @Override
-    public void saveLogAsync(Log log, String ip, String url, String params, String resultCode, String result, String exception) {
-        ThreadUtil.EXECUTOR_SERVICE.execute(() -> this.saveLog(log, ip, url, params, resultCode, result, exception));
+    public void saveLogAsync(Log log, String ip, String desc, String url, String params, String resultCode, String result, String exception) {
+        ThreadUtil.EXECUTOR_SERVICE.execute(() -> this.saveLog(log, ip, desc, url, params, resultCode, result, exception));
     }
 
     @Override

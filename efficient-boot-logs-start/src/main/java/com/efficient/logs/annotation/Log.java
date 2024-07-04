@@ -34,6 +34,10 @@ public @interface Log {
 
     /**
      * 操作说明
+     * get请求参数{#id}，eg: 通过 {#id} 查询用户
+     * post请求参数{#dto.id},eg: 将用户id为{#dto.userId} 的用户名更新为{#dto.userName}
+     * 请求方法[getUserNameByUserId{#userId}],eg:用户id为 {#userId} 用户名为 [getUserNameByUserId{#userId}] 已被删除
+     * 三目运算，eg: #dto.userId == null ? '新增' + #dto.userName + '用户':'将用户id为' + #dto.userId + '的用户名更新为' + #dto.userName
      */
     String desc() default "";
 

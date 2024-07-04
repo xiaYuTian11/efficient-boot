@@ -1,7 +1,7 @@
 package com.efficient.file.util;
 
+import cn.hutool.crypto.SecureUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -112,7 +112,7 @@ public class FileMd5Util {
      */
     public static String getMD5ByApacheCommonsCodec(String filePath) {
         try {
-            return DigestUtils.md5Hex(Files.newInputStream(Paths.get(filePath)));
+            return SecureUtil.md5(Files.newInputStream(Paths.get(filePath)));
         } catch (IOException e) {
             log.error("计算文件md5异常", e);
             return null;
@@ -121,7 +121,7 @@ public class FileMd5Util {
 
     public static String getMD5ByApacheCommonsCodec(MultipartFile file) {
         try (InputStream inputStream = file.getInputStream()) {
-            return DigestUtils.md5Hex(inputStream);
+            return SecureUtil.md5(inputStream);
         } catch (IOException e) {
             log.error("计算文件md5异常", e);
             return null;

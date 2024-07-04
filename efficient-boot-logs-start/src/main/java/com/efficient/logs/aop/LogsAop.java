@@ -1,5 +1,6 @@
 package com.efficient.logs.aop;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.ttl.TransmittableThreadLocal;
 import com.efficient.common.auth.RequestHolder;
 import com.efficient.common.constant.CommonConstant;
@@ -10,14 +11,15 @@ import com.efficient.common.util.WebUtil;
 import com.efficient.logs.annotation.Log;
 import com.efficient.logs.api.SysLogService;
 import com.efficient.logs.constant.LogEnum;
+import com.efficient.logs.handle.LogSpelProcess;
 import com.efficient.logs.properties.LogsProperties;
+import com.google.common.collect.Lists;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -27,7 +29,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author TMW
@@ -47,7 +52,7 @@ public class LogsAop {
     @Autowired
     private LogsProperties logsProperties;
     @Autowired
-    private ApplicationEventPublisher publisher;
+    private LogSpelProcess logSpelProcess;
 
     @Pointcut("@annotation(com.efficient.logs.annotation.Log)")
     public void pointCut() {
@@ -122,10 +127,9 @@ public class LogsAop {
                 }
 
                 // 获取操作
-
-                if (logsProperties.isDb() && Objects.nonNull(log)) {
-                    // publisher.publishEvent(log);
-                    logService.saveLog(log, ip, requestUrl, argsStr, resultCode, returnValue, expStr);
+                if (logsProperties.isDb()) {
+                    String parseContent = this.parseContent(log, joinPoint);
+                    logService.saveLog(log, ip, parseContent, requestUrl, argsStr, resultCode, returnValue, expStr);
                 }
             } catch (Exception e) {
                 LOGGER.error("日志记录异常：", e);
@@ -133,9 +137,30 @@ public class LogsAop {
         });
     }
 
+    /**
+     * 解析数据
+     *
+     * @param log
+     * @param joinPoint
+     * @return
+     */
+    public String parseContent(Log log, JoinPoint joinPoint) {
+        // 获取存在Spel表达式的属性
+        String content = log.desc();
+        if (StrUtil.isBlank(content)) {
+            return null;
+        }
+        List<String> templates = Lists.newArrayList(content);
+        templates = templates.stream().filter(StrUtil::isNotBlank).collect(Collectors.toList());
+        // 解析SPEL属性和方法
+        HashMap<String, String> processMap = logSpelProcess.processBeforeExec(templates, joinPoint);
+        // 解析三目运算
+        HashMap<String, String> process = logSpelProcess.ternaryProcess(processMap, joinPoint);
+        return process.get(log.desc());
+    }
+
     @AfterThrowing(value = "pointCut()", throwing = "exp")
     public void doAfterThrowing(JoinPoint joinPoint, Exception exp) {
         recordLog(joinPoint, null, exp);
     }
-
 }

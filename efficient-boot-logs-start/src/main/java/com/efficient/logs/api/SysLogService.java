@@ -17,9 +17,9 @@ import com.efficient.logs.model.vo.SysLogVO;
  */
 public interface SysLogService extends IService<SysLog> {
 
-    boolean saveLog(Log log, String ip, String url, String params, String resultCode, String result, String exception);
+    boolean saveLog(Log log, String ip, String desc, String url, String params, String resultCode, String result, String exception);
 
-    void saveLogAsync(Log log, String ip, String url, String params, String resultCode, String result, String exception);
+    void saveLogAsync(Log log, String ip, String desc, String url, String params, String resultCode, String result, String exception);
 
     Page<SysLogVO> list(SysLogListDTO dto);
 
