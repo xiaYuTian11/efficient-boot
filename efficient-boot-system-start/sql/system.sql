@@ -222,7 +222,7 @@ CREATE TABLE efficient_dict_code (
                                         code_name varchar(100) NOT NULL,
                                         short_name varchar(100) NULL,
                                         sort int8 NOT NULL,
-                                        is_enable int2 NOT NULL default 0,
+                                        is_enable int2 NOT NULL default 1,
                                         parent_code varchar(100) NOT NULL,
                                         code_level int4 NULL,
                                         is_leaf int2 NOT NULL,
@@ -245,6 +245,226 @@ COMMENT ON COLUMN efficient_dict_code.is_leaf IS '是否叶子节点';
 COMMENT ON COLUMN efficient_dict_code.pin_yin IS '拼音';
 COMMENT ON COLUMN efficient_dict_code.remark IS '备注';
 
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(3, 'GB2261', '1', '男', NULL, 1, 1, '-1', 1, 1, 'N', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(4, 'GB2261', '2', '女', NULL, 2, 1, '-1', 1, 1, 'N', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(5, 'GB2261', '9', '未知', NULL, 9, 1, '-1', 1, 1, 'WZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(6, 'GB3304', '01', '汉族', NULL, 1, 1, '-1', 1, 1, 'HZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(7, 'GB3304', '02', '蒙古族', NULL, 2, 1, '-1', 1, 1, 'MGZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(8, 'GB3304', '03', '回族', NULL, 3, 1, '-1', 1, 1, 'HZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(9, 'GB3304', '04', '藏族', NULL, 4, 1, '-1', 1, 1, 'CZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(10, 'GB3304', '05', '维吾尔族', NULL, 5, 1, '-1', 1, 1, 'WWEZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(11, 'GB3304', '06', '苗族', NULL, 6, 1, '-1', 1, 1, 'MZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(12, 'GB3304', '07', '彝族', NULL, 7, 1, '-1', 1, 1, 'YZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(13, 'GB3304', '08', '壮族', NULL, 8, 1, '-1', 1, 1, 'ZZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(14, 'GB3304', '09', '布依族', NULL, 9, 1, '-1', 1, 1, 'BYZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(15, 'GB3304', '10', '朝鲜族', NULL, 10, 1, '-1', 1, 1, 'CXZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(16, 'GB3304', '11', '满族', NULL, 11, 1, '-1', 1, 1, 'MZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(17, 'GB3304', '12', '侗族', NULL, 12, 1, '-1', 1, 1, 'DZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(18, 'GB3304', '13', '瑶族', NULL, 13, 1, '-1', 1, 1, 'YZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(19, 'GB3304', '14', '白族', NULL, 14, 1, '-1', 1, 1, 'BZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(20, 'GB3304', '15', '土家族', NULL, 15, 1, '-1', 1, 1, 'TJZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(21, 'GB3304', '16', '哈尼族', NULL, 16, 1, '-1', 1, 1, 'HNZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(22, 'GB3304', '17', '哈萨克族', NULL, 17, 1, '-1', 1, 1, 'HSKZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(23, 'GB3304', '18', '傣族', NULL, 18, 1, '-1', 1, 1, 'DZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(24, 'GB3304', '19', '黎族', NULL, 19, 1, '-1', 1, 1, 'LZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(25, 'GB3304', '20', '傈僳族', NULL, 20, 1, '-1', 1, 1, 'LSZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(26, 'GB3304', '21', '佤族', NULL, 21, 1, '-1', 1, 1, 'WZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(27, 'GB3304', '22', '畲族', NULL, 22, 1, '-1', 1, 1, 'SZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(28, 'GB3304', '23', '高山族', NULL, 23, 1, '-1', 1, 1, 'GSZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(29, 'GB3304', '24', '拉祜族', NULL, 24, 1, '-1', 1, 1, 'LHZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(30, 'GB3304', '25', '水族', NULL, 25, 1, '-1', 1, 1, 'SZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(31, 'GB3304', '26', '东乡族', NULL, 26, 1, '-1', 1, 1, 'DXZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(32, 'GB3304', '27', '纳西族', NULL, 27, 1, '-1', 1, 1, 'NXZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(33, 'GB3304', '28', '景颇族', NULL, 28, 1, '-1', 1, 1, 'JPZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(34, 'GB3304', '29', '柯尔克孜族', NULL, 29, 1, '-1', 1, 1, 'KEKZZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(35, 'GB3304', '30', '土族', NULL, 30, 1, '-1', 1, 1, 'TZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(36, 'GB3304', '31', '达斡尔族', NULL, 31, 1, '-1', 1, 1, 'DWEZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(37, 'GB3304', '32', '仫佬族', NULL, 32, 1, '-1', 1, 1, 'MLZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(38, 'GB3304', '33', '羌族', NULL, 33, 1, '-1', 1, 1, 'QZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(39, 'GB3304', '34', '布朗族', NULL, 34, 1, '-1', 1, 1, 'BLZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(40, 'GB3304', '35', '撒拉族', NULL, 35, 1, '-1', 1, 1, 'SLZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(41, 'GB3304', '36', '毛南族', NULL, 36, 1, '-1', 1, 1, 'MNZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(42, 'GB3304', '37', '仡佬族', NULL, 37, 1, '-1', 1, 1, 'GLZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(43, 'GB3304', '38', '锡伯族', NULL, 38, 1, '-1', 1, 1, 'XBZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(44, 'GB3304', '39', '阿昌族', NULL, 39, 1, '-1', 1, 1, 'ACZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(45, 'GB3304', '40', '普米族', NULL, 40, 1, '-1', 1, 1, 'PMZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(46, 'GB3304', '41', '塔吉克族', NULL, 41, 1, '-1', 1, 1, 'TJKZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(47, 'GB3304', '42', '怒族', NULL, 42, 1, '-1', 1, 1, 'NZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(48, 'GB3304', '43', '乌孜别克族', NULL, 43, 1, '-1', 1, 1, 'WZBKZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(49, 'GB3304', '44', '俄罗斯族', NULL, 44, 1, '-1', 1, 1, 'ELSZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(50, 'GB3304', '45', '鄂温克族', NULL, 45, 1, '-1', 1, 1, 'EWKZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(51, 'GB3304', '46', '德昂族', NULL, 46, 1, '-1', 1, 1, 'DAZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(52, 'GB3304', '47', '保安族', NULL, 47, 1, '-1', 1, 1, 'BAZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(53, 'GB3304', '48', '裕固族', NULL, 48, 1, '-1', 1, 1, 'YGZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(54, 'GB3304', '49', '京族', NULL, 49, 1, '-1', 1, 1, 'JZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(55, 'GB3304', '50', '塔塔尔族', NULL, 50, 1, '-1', 1, 1, 'TTEZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(56, 'GB3304', '51', '独龙族', NULL, 51, 1, '-1', 1, 1, 'DLZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(57, 'GB3304', '52', '鄂伦春族', NULL, 52, 1, '-1', 1, 1, 'ELCZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(58, 'GB3304', '53', '赫哲族', NULL, 53, 1, '-1', 1, 1, 'HZZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(59, 'GB3304', '54', '门巴族', NULL, 54, 1, '-1', 1, 1, 'MBZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(60, 'GB3304', '55', '珞巴族', NULL, 55, 1, '-1', 1, 1, 'LBZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(61, 'GB3304', '56', '基诺族', NULL, 56, 1, '-1', 1, 1, 'JNZ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(62, 'GB3304', '91', '其他', NULL, 91, 1, '-1', 1, 1, 'QT', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(63, 'GB4762', '01', '中共党员', NULL, 1, 1, '-1', 1, 1, 'ZGDY', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(64, 'GB4762', '02', '预备党员', NULL, 2, 1, '-1', 1, 1, 'YBDY', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(65, 'GB4762', '03', '共青团员', NULL, 3, 1, '-1', 1, 1, 'GQTY', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(66, 'GB4762', '04', '民革', NULL, 4, 1, '-1', 1, 1, 'MG', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(67, 'GB4762', '05', '民盟', NULL, 5, 1, '-1', 1, 1, 'MM', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(68, 'GB4762', '06', '民建', NULL, 6, 1, '-1', 1, 1, 'MJ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(69, 'GB4762', '07', '民进', NULL, 7, 1, '-1', 1, 1, 'MJ', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(70, 'GB4762', '08', '农工党', NULL, 8, 1, '-1', 1, 1, 'NGD', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(71, 'GB4762', '09', '致公党', NULL, 9, 1, '-1', 1, 1, 'ZGD', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(72, 'GB4762', '10', '九三学社', NULL, 10, 1, '-1', 1, 1, 'JSXS', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(73, 'GB4762', '11', '台盟', NULL, 11, 1, '-1', 1, 1, 'TM', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(74, 'GB4762', '12', '无党派', NULL, 12, 1, '-1', 1, 1, 'WDP', NULL);
+INSERT INTO public.efficient_dict_code
+(id, code_type, code, code_name, short_name, sort, is_enable, parent_code, code_level, is_leaf, pin_yin, remark)
+VALUES(75, 'GB4762', '13', '群众', NULL, 13, 1, '-1', 1, 1, 'QZ', NULL);
+DROP sequence IF EXISTS efficient_dict_code_sequence;
 CREATE SEQUENCE efficient_dict_code_sequence
     START WITH 1
     INCREMENT BY 1

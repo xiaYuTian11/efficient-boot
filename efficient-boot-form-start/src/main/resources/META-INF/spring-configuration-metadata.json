@@ -1,0 +1,21 @@
+{
+  "groups": [
+    {
+      "name": "com.efficient.form",
+      "type": "com.efficient.from.properties.FromProperties",
+      "sourceType": "com.efficient.form.config.FormConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "com.efficient.form.db",
+      "type": "java.lang.Boolean",
+      "description": "是否存储数据库",
+      "defaultValue": false,
+      "sourceType": "com.efficient.from.properties.FromProperties"
+    }
+  ],
+  "hints": [
+
+  ]
+}

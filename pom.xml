@@ -22,6 +22,7 @@
         <module>efficient-boot-system-start</module>
         <module>efficient-boot-openapi-start</module>
         <module>efficient-boot-elasticsearch-start</module>
+        <module>efficient-boot-form-start</module>
     </modules>
     <groupId>top.tanmw</groupId>
     <artifactId>efficient-boot</artifactId>

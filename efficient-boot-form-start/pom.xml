@@ -8,8 +8,9 @@
         <artifactId>efficient-boot</artifactId>
         <version>1.1.5</version>
     </parent>
-    <description>对外统一开发接口模块</description>
-    <artifactId>efficient-boot-openapi-start</artifactId>
+
+    <artifactId>efficient-boot-form-start</artifactId>
+    <description>动态表单</description>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -33,39 +34,38 @@
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-annotation</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-extension</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
         <dependency>
             <groupId>top.tanmw</groupId>
             <artifactId>efficient-boot-common</artifactId>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>top.tanmw</groupId>
-            <artifactId>efficient-boot-logs-start</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>top.tanmw</groupId>
-            <artifactId>efficient-boot-swagger-start</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>top.tanmw</groupId>
-            <artifactId>efficient-boot-system-start</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>top.tanmw</groupId>
-            <artifactId>efficient-boot-auth-start</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>top.tanmw</groupId>
-            <artifactId>efficient-boot-cache-start</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
     </dependencies>
+
 </project>
