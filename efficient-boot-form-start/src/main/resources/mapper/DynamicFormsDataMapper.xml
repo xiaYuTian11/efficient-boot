@@ -31,8 +31,9 @@
                 </if>
                 FROM
                     public.efficient_dynamic_forms_data_detail
+                where is_delete = 0
                 <if test= "dto.keyword != null">
-                   where data_id in(select data_id from efficient_dynamic_forms_data_detail where field_value like concat('%',#{dto.keyword},'%'))
+                   and data_id in(select data_id from efficient_dynamic_forms_data_detail where field_value like concat('%',#{dto.keyword},'%'))
                 </if>
                 GROUP BY
                     data_id

@@ -64,7 +64,9 @@ public class DynamicFormsDataServiceImpl extends ServiceImpl<DynamicFormsDataMap
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> update(DynamicFormsDataDTO dto) {
-        boolean flag = this.updateById(dynamicFormsDataConverter.dto2Entity(dto));
+        DynamicFormsData dynamicFormsData = dynamicFormsDataConverter.dto2Entity(dto);
+        dynamicFormsData.setRecordData(JackSonUtil.toJson(dto.getDataDetailList()));
+        boolean flag = this.updateById(dynamicFormsData);
         dynamicFormsDataDetailService.saveByDataId(dto.getFormsId(), dto.getId(), dto.getDataDetailList());
         return flag ? Result.ok() : Result.fail();
     }
