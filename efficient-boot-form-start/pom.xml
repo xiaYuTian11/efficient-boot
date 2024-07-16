@@ -6,7 +6,7 @@
     <parent>
         <groupId>top.tanmw</groupId>
         <artifactId>efficient-boot</artifactId>
-        <version>1.1.5</version>
+        <version>1.1.6</version>
     </parent>
 
     <artifactId>efficient-boot-form-start</artifactId>
@@ -62,9 +62,35 @@
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>top.tanmw</groupId>
             <artifactId>efficient-boot-common</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>top.tanmw</groupId>
+            <artifactId>efficient-boot-swagger-start</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>top.tanmw</groupId>
+            <artifactId>efficient-boot-system-start</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>top.tanmw</groupId>
+            <artifactId>efficient-boot-logs-start</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>top.tanmw</groupId>
+            <artifactId>efficient-boot-configs-start</artifactId>
         </dependency>
     </dependencies>
 

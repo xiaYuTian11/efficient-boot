@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableConfigurationProperties(ElasticSearchProperties.class)
-@ConditionalOnProperty(name = "com.efficient.elasticsearch.enable", havingValue = "true", matchIfMissing = true)
+
 @Slf4j
 public class ElasticSearchConfig {
     @Autowired
@@ -24,6 +24,7 @@ public class ElasticSearchConfig {
 
     @Bean
     @ConditionalOnMissingBean
+    @ConditionalOnProperty(name = "com.efficient.elasticsearch.enable", havingValue = "true", matchIfMissing = true)
     public ElasticSearchService createElasticSearchService() {
         ElasticSearchService elasticSearchService = new ElasticSearchService();
         elasticSearchService.init(properties);

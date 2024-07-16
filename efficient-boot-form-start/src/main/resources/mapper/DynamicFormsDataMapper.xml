@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.efficient.form.dao.DynamicFormsDataMapper">
+
+
+    <select id="listMap" resultType="java.util.Map">
+        WITH aggregated_data AS (
+            SELECT
+                data_id,
+                <if test= "dto.dbType != null and dto.dbType == 'postgresql'">
+                    jsonb_object_agg(field_id, field_value ORDER BY field_id) AS data
+                </if>
+                <if test= "dto.dbType != null and dto.dbType == 'kingbasees'">
+                    jsonb_object_agg(field_id, field_value ORDER BY field_id) AS data
+                </if>
+                <if test= "dto.dbType != null and dto.dbType == 'mysql'">
+                    JSON_OBJECTAGG(field_id, field_value) AS data
+                </if>
+                <if test= "dto.dbType != null and dto.dbType == 'sqlserver'">
+                    (SELECT field_id, field_value FROM public.efficient_dynamic_forms_data_detail AS D WHERE D.data_id = M.data_id FOR JSON PATH) AS data
+                </if>
+                <if test= "dto.dbType != null and dto.dbType == 'dm'">
+                    JSON_OBJECTAGG(field_id VALUE field_value) AS data
+                </if>
+                <if test= "dto.dbType != null and dto.dbType == 'oracle'">
+                    JSON_OBJECTAGG(field_id VALUE field_value) AS data
+                </if>
+                <if test= "dto.orderField != null">
+                    ,MAX(CASE WHEN field_id = #{dto.orderField} THEN field_value END) AS sort_value
+                </if>
+                FROM
+                    public.efficient_dynamic_forms_data_detail
+                <if test= "dto.keyword != null">
+                   where data_id in(select data_id from efficient_dynamic_forms_data_detail where field_value like concat('%',#{dto.keyword},'%'))
+                </if>
+                GROUP BY
+                    data_id
+        )
+        SELECT
+            data_id,
+            data
+        FROM
+            aggregated_data
+        <if test= "dto.orderField != null">
+            ORDER BY sort_value ${dto.orderType}
+        </if>
+        <if test= "dto.orderField == null">
+            ORDER BY  data_id desc
+        </if>
+    </select>
+</mapper>
+
