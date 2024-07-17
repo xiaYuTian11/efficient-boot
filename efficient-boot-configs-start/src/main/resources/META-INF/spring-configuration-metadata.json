@@ -9,10 +9,17 @@
   "properties": [
     {
       "name": "com.efficient.configs.cors.enable",
-      "type": "java.lang.String",
+      "type": "java.lang.Boolean",
       "description": "是否启用跨越配置",
-      "defaultValue": "true",
+      "defaultValue": true,
       "sourceType": "com.efficient.configs.properties.CorsProperties"
+    },
+    {
+      "name": "com.efficient.configs.webSocket.enable",
+      "type": "java.lang.Boolean",
+      "description": "是否启用跨越配置",
+      "defaultValue": false,
+      "sourceType": "com.efficient.configs.properties.WebSocketProperties"
     }
   ],
   "hints": [

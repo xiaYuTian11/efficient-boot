@@ -11,4 +11,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 public class ConfigsProperties {
     private CorsProperties cors = new CorsProperties();
+    private WebSocketProperties webSocket = new WebSocketProperties();
 }
