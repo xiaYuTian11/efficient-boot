@@ -6,7 +6,7 @@
     <parent>
         <groupId>top.tanmw</groupId>
         <artifactId>efficient-boot</artifactId>
-        <version>1.1.8</version>
+        <version>1.1.9</version>
     </parent>
     <description>数据加密插件，支持请求、返回、入库出库</description>
     <artifactId>efficient-boot-data-security-start</artifactId>

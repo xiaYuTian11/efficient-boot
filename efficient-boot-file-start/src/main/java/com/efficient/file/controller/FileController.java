@@ -23,6 +23,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -174,6 +176,49 @@ public class FileController {
             byte[] bytes = out.toByteArray();
             HttpHeaders headers = new HttpHeaders();
             headers.add("Content-Disposition", "attachment;filename=" + URLEncoder.encode(FileUtil.getName(filePath), StandardCharsets.UTF_8.name()));
+            headers.setContentLength(bytes.length);
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setAccessControlExposeHeaders(Collections.singletonList("*"));
+            responseEntity = new ResponseEntity<byte[]>(bytes, headers, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("文件下载异常：", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                log.error("文件下载-关闭文件流异常：", e);
+            }
+        }
+        return responseEntity;
+    }
+
+    @PostMapping("/downloadClassPath")
+    @ApiOperation(value = "根据路径下载")
+    public ResponseEntity<byte[]> downloadClassPath(@Validated(value = Common2Group.class)
+                                                 @RequestBody DownloadVO downloadVO) throws Exception {
+        String filePath = downloadVO.getFilePath();
+        Resource resource = new ClassPathResource(filePath);
+        String path = resource.getFile().getPath();
+        ResponseEntity<byte[]> responseEntity = null;
+        if (StrUtil.isBlank(path)) {
+            return ResponseEntity.notFound().build();
+        }
+        File file = new File(path);
+        if (!file.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        ByteArrayOutputStream out = null;
+        try (InputStream in = Files.newInputStream(file.toPath())) {
+            out = new ByteArrayOutputStream();
+            IOUtils.copy(in, out);
+            // 封装返回值
+            byte[] bytes = out.toByteArray();
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Disposition", "attachment;filename=" + URLEncoder.encode(FileUtil.getName(path), StandardCharsets.UTF_8.name()));
             headers.setContentLength(bytes.length);
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
             headers.setAccessControlExposeHeaders(Collections.singletonList("*"));
